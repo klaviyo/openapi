@@ -1,4 +1,4 @@
 # Revision `2022-10-17`
-* Welcome to our new API changelog! This log will be kept up-to-date on the latest changes, bug fixes, and breaking changes to Klaviyo's APIs. Please note that this changelog only includes changes to new APIs released after **10/19/2022**.
+* Welcome to our new API changelog! This log will be kept up-to-date on the latest changes, bug fixes, and breaking changes to Klaviyo's APIs. Please note that this changelog only includes changes to new APIs released after **10/17/2022**.
 * For further information about revisions and breaking changes, please review the [API versioning & deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy).
 * Kickstart your migration to Klaviyo's new APIs with the [API comparison chart](https://developers.klaviyo.com/en/docs/apis_comparison_chart), a detailed overview of what's changed from the v1/v2 endpoints to the new endpoints.
