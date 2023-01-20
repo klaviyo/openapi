@@ -1108,7 +1108,7 @@
       "post": {
         "operationId": "request_profile_deletion",
         "summary": "Request Profile Deletion",
-        "description": "Request a deletion for a single profile with one of the following identifiers: `email`, `phone_number`, or `profile_id`. If multiple are provided, we will return an error. \n\n**If multiple profiles exist for the provided identifier, only one of them will be deleted.**\n\nThe deletion occurs asynchronously; however, once it has completed, the deleted profile will appear on the [Deleted Profiles page](https://www.klaviyo.com/account/deleted).\n\nFor more information on the deletion process, please refer to our [Help Center docs on how to handle GDPR and CCPA deletion requests](https://help.klaviyo.com/hc/en-us/articles/360004217631-How-to-Handle-GDPR-Requests#record-gdpr-and-ccpa%20%20-deletion-requests2).",
+        "description": "Request a deletion for the profiles corresponding to one of the following identifiers: `email`, `phone_number`, or `profile_id`. If multiple identifiers are provided, we will return an error.\nAll profiles that match the provided identifier will be deleted.\n        The deletion occurs asynchronously; however, once it has completed, the deleted profile will appear on the [Deleted Profiles page](https://www.klaviyo.com/account/deleted).\n        For more information on the deletion process, please refer to our [Help Center docs on how to handle GDPR and CCPA deletion requests](https://help.klaviyo.com/hc/en-us/articles/360004217631-How-to-Handle-GDPR-Requests#record-gdpr-and-ccpa%20%20-deletion-requests2).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`Data Privacy Write`",
         "parameters": [
           {
             "name": "revision",
@@ -1550,9 +1550,11 @@
           {
             "name": "id",
             "required": true,
-            "description": "",
+            "description": "The Tag ID",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+              "description": "The Tag ID"
             },
             "in": "path"
           },
@@ -1623,9 +1625,11 @@
           {
             "name": "id",
             "required": true,
-            "description": "",
+            "description": "The Tag ID",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+              "description": "The Tag ID"
             },
             "in": "path"
           },
@@ -1691,9 +1695,11 @@
           {
             "name": "id",
             "required": true,
-            "description": "",
+            "description": "The Tag ID",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+              "description": "The Tag ID"
             },
             "in": "path"
           },
@@ -1909,9 +1915,11 @@
           {
             "name": "id",
             "required": true,
-            "description": "",
+            "description": "The Tag Group ID",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+              "description": "The Tag Group ID"
             },
             "in": "path"
           },
@@ -1984,9 +1992,11 @@
           {
             "name": "id",
             "required": true,
-            "description": "",
+            "description": "The Tag Group ID",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+              "description": "The Tag Group ID"
             },
             "in": "path"
           },
@@ -2052,9 +2062,11 @@
           {
             "name": "id",
             "required": true,
-            "description": "",
+            "description": "The Tag Group ID",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+              "description": "The Tag Group ID"
             },
             "in": "path"
           },
@@ -2481,13 +2493,17 @@
                   ]
                 },
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                  "description": "The Tag ID"
                 },
                 "attributes": {
                   "type": "object",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "My Tag",
+                      "description": "The Tag name"
                     }
                   },
                   "required": [
@@ -2564,13 +2580,17 @@
                   ]
                 },
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                  "description": "The Tag ID"
                 },
                 "attributes": {
                   "type": "object",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "My Tag",
+                      "description": "The Tag name"
                     }
                   },
                   "required": [
@@ -2621,6 +2641,103 @@
             ]
           }
         }
+      },
+      "UtmParamInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
+      "EmailTrackingOptions": {
+        "type": "object",
+        "properties": {
+          "add_utm": {
+            "type": "boolean"
+          },
+          "utm_params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UtmParamInfo"
+            }
+          },
+          "is_tracking_opens": {
+            "type": "boolean"
+          },
+          "is_tracking_clicks": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "add_utm",
+          "utm_params",
+          "is_tracking_opens",
+          "is_tracking_clicks"
+        ]
+      },
+      "SMSTrackingOptions": {
+        "type": "object",
+        "properties": {
+          "add_utm": {
+            "type": "boolean"
+          },
+          "utm_params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UtmParamInfo"
+            }
+          }
+        },
+        "required": [
+          "add_utm",
+          "utm_params"
+        ]
+      },
+      "SendOptions": {
+        "type": "object",
+        "properties": {
+          "use_smart_sending": {
+            "type": "boolean"
+          },
+          "is_transactional": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "use_smart_sending",
+          "is_transactional"
+        ]
+      },
+      "SMSRenderOptions": {
+        "type": "object",
+        "properties": {
+          "shorten_links": {
+            "type": "boolean"
+          },
+          "add_org_prefix": {
+            "type": "boolean"
+          },
+          "add_info_link": {
+            "type": "boolean"
+          },
+          "add_opt_out_language": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "shorten_links",
+          "add_org_prefix",
+          "add_info_link",
+          "add_opt_out_language"
+        ]
       },
       "GetFlowTagResponseCollection": {
         "type": "object",
@@ -2647,13 +2764,17 @@
                   ]
                 },
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                  "description": "The Tag ID"
                 },
                 "attributes": {
                   "type": "object",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "My Tag",
+                      "description": "The Tag name"
                     }
                   },
                   "required": [
@@ -2705,6 +2826,44 @@
           }
         }
       },
+      "EmailMessageContent": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "preview_text": {
+            "type": "string"
+          },
+          "from_email": {
+            "type": "string"
+          },
+          "from_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject",
+          "preview_text",
+          "from_email",
+          "from_name"
+        ]
+      },
+      "SMSMessageContent": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string"
+          },
+          "media": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "body",
+          "media"
+        ]
+      },
       "AudiencesSubObject": {
         "type": "object",
         "properties": {
@@ -2713,6 +2872,9 @@
             "items": {
               "type": "string"
             },
+            "example": [
+              "Y6nRLr"
+            ],
             "description": "A list of included audiences"
           },
           "excluded": {
@@ -2720,6 +2882,9 @@
             "items": {
               "type": "string"
             },
+            "example": [
+              "UTd5ui"
+            ],
             "description": "An optional list of excluded audiences"
           }
         }
@@ -2742,10 +2907,12 @@
         "properties": {
           "name": {
             "type": "string",
+            "example": "utm_medium",
             "description": "Name of the UTM param"
           },
           "value": {
             "type": "string",
+            "example": "campaign",
             "description": "Value of the UTM param. Can be templated data."
           }
         },
@@ -2759,11 +2926,11 @@
         "properties": {
           "is_tracking_opens": {
             "type": "boolean",
-            "description": "Whether the campaign is tracking open events."
+            "description": "Whether the campaign is tracking open events. If not specified, uses company defaults."
           },
           "is_tracking_clicks": {
             "type": "boolean",
-            "description": "Whether the campaign is tracking click events."
+            "description": "Whether the campaign is tracking click events. If not specified, uses company defaults."
           },
           "is_add_utm": {
             "type": "boolean",
@@ -2774,7 +2941,7 @@
             "items": {
               "$ref": "#/components/schemas/UTMParamsSubObject"
             },
-            "description": "A list of UTM parameters. If an empty list is given and is_add_utm is True, company defaults will be used."
+            "description": "A list of UTM parameters. If an empty list is given and is_add_utm is True, uses company defaults."
           }
         }
       },
@@ -2784,6 +2951,7 @@
           "datetime": {
             "type": "string",
             "format": "date-time",
+            "example": "2022-12-15T12:00:00",
             "description": "The time to send at"
           },
           "is_local": {
@@ -2805,10 +2973,12 @@
           "datetime": {
             "type": "string",
             "format": "date-time",
+            "example": "2022-12-15T12:00:00",
             "description": "The time to send at"
           },
           "throttle_percentage": {
             "type": "integer",
+            "example": 10,
             "description": "The percentage of recipients per hour to send to. Allowed values: [10, 11, 13, 14, 17, 20, 25, 33, 50]"
           }
         },
@@ -2822,7 +2992,8 @@
         "properties": {
           "method": {
             "type": "string",
-            "description": "Describes the shape of the options object"
+            "example": "static",
+            "description": "Describes the shape of the options object. Allowed values: ['static', 'throttled', 'immediate']"
           },
           "options_static": {
             "$ref": "#/components/schemas/StaticScheduleOptions",
@@ -2986,12 +3157,6 @@
                   "required": [
                     "self"
                   ]
-                },
-                "included": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IncludedTags"
-                  }
                 }
               }
             }
@@ -3023,6 +3188,12 @@
             "required": [
               "self"
             ]
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncludedTags"
+            }
           }
         }
       },
@@ -3172,13 +3343,13 @@
                 "required": [
                   "self"
                 ]
-              },
-              "included": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/IncludedTags"
-                }
               }
+            }
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncludedTags"
             }
           }
         }
@@ -3188,26 +3359,32 @@
         "properties": {
           "subject": {
             "type": "string",
+            "example": "Buy our product!",
             "description": "The subject of the message"
           },
           "preview_text": {
             "type": "string",
+            "example": "My preview text",
             "description": "Preview text associated with the message"
           },
           "from_email": {
             "type": "string",
+            "example": "store@my-company.com",
             "description": "The email the message should be sent from"
           },
           "from_label": {
             "type": "string",
+            "example": "My Company",
             "description": "The label associated with the from_email"
           },
           "template_id": {
             "type": "string",
+            "example": "RipRmi",
             "description": "The ID of the template associated to the message"
           },
           "template_name": {
             "type": "string",
+            "example": "My email template",
             "description": "The name of the template associated to the message"
           }
         }
@@ -3371,13 +3548,17 @@
                   ]
                 },
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                  "description": "The Tag ID"
                 },
                 "attributes": {
                   "type": "object",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "My Tag",
+                      "description": "The Tag name"
                     }
                   },
                   "required": [
@@ -3482,6 +3663,46 @@
           }
         }
       },
+      "ErrorSource": {
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "type": "string",
+            "example": "/data",
+            "default": "/data"
+          }
+        },
+        "required": [
+          "pointer"
+        ]
+      },
+      "CatalogJobErrorPayload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/ErrorSource"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "title",
+          "detail",
+          "source"
+        ]
+      },
       "GetTagResponseCollection": {
         "type": "object",
         "required": [
@@ -3507,13 +3728,17 @@
                   ]
                 },
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                  "description": "The Tag ID"
                 },
                 "attributes": {
                   "type": "object",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "My Tag",
+                      "description": "The Tag name"
                     }
                   },
                   "required": [
@@ -3587,13 +3812,17 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                "description": "The Tag ID"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "My Tag",
+                    "description": "The Tag name"
                   }
                 },
                 "required": [
@@ -3641,19 +3870,25 @@
                   ]
                 },
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+                  "description": "The Tag Group ID"
                 },
                 "attributes": {
                   "type": "object",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "My Tag Group",
+                      "description": "The Tag Group name"
                     },
                     "exclusive": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "If a tag group is non-exclusive, any given related resource (campaign, flow, etc.) can be linked to multiple tags from that tag group. If a tag group is exclusive, any given related resource can only be linked to one tag from that tag group."
                     },
                     "default": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Every company automatically has one Default Tag Group. The Default Tag Group cannot be deleted, and no other Default Tag Groups can be created. This value is true for the Default Tag Group and false for all other Tag Groups."
                     }
                   },
                   "required": [
@@ -3729,19 +3964,25 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+                "description": "The Tag Group ID"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "My Tag Group",
+                    "description": "The Tag Group name"
                   },
                   "exclusive": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "If a tag group is non-exclusive, any given related resource (campaign, flow, etc.) can be linked to multiple tags from that tag group. If a tag group is exclusive, any given related resource can only be linked to one tag from that tag group."
                   },
                   "default": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Every company automatically has one Default Tag Group. The Default Tag Group cannot be deleted, and no other Default Tag Groups can be created. This value is true for the Default Tag Group and false for all other Tag Groups."
                   }
                 },
                 "required": [
@@ -3824,6 +4065,703 @@
           }
         }
       },
+      "CatalogItemCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-item"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "type": "string"
+              },
+              "integration_type": {
+                "type": "string",
+                "enum": [
+                  "$custom"
+                ],
+                "description": "The integration type. Currently, this can only be set to $custom (and defaults to $custom if not included in the payload)."
+              },
+              "title": {
+                "type": "string"
+              },
+              "catalog_type": {
+                "type": "string",
+                "example": "$default",
+                "default": "$default"
+              },
+              "description": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "image_full_url": {
+                "type": "string"
+              },
+              "image_thumbnail_url": {
+                "type": "string"
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "custom_metadata": {
+                "type": "object"
+              },
+              "published": {
+                "type": "boolean",
+                "example": true,
+                "default": true
+              }
+            },
+            "required": [
+              "external_id",
+              "title",
+              "description",
+              "url"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "categories": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "catalog-category"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CatalogItemCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogItemCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogVariantCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-variant"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "type": "string"
+              },
+              "catalog_type": {
+                "type": "string",
+                "example": "$default",
+                "default": "$default"
+              },
+              "integration_type": {
+                "type": "string",
+                "enum": [
+                  "$custom"
+                ],
+                "description": "The integration type. Currently, this can only be set to $custom (and defaults to $custom if not included in the payload)."
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "sku": {
+                "type": "string"
+              },
+              "inventory_policy": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
+                "description": "A field that controls product visibility in product feeds/blocks. This field has two options:     DENY (1): a product will not appear in dynamic product recommendation feeds and blocks if it is out of stock.     CONTINUE (2): a product can appear in dynamic product recommendation feeds and blocks regardless of inventory quantity.     UNKNOWN (0): the behavior will be the same as if it were set to 2 [Default]"
+              },
+              "inventory_quantity": {
+                "type": "number"
+              },
+              "price": {
+                "type": "number"
+              },
+              "url": {
+                "type": "string"
+              },
+              "image_full_url": {
+                "type": "string"
+              },
+              "image_thumbnail_url": {
+                "type": "string"
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "custom_metadata": {
+                "type": "object"
+              },
+              "published": {
+                "type": "boolean",
+                "example": true,
+                "default": true
+              }
+            },
+            "required": [
+              "external_id",
+              "title",
+              "description",
+              "sku",
+              "inventory_policy",
+              "inventory_quantity",
+              "price",
+              "url"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "catalog-item"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CatalogVariantCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogVariantCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogCategoryCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-category"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "integration_type": {
+                "type": "string",
+                "enum": [
+                  "$custom"
+                ],
+                "description": "The integration type. Currently, this can only be set to $custom (and defaults to $custom if not included in the payload)."
+              },
+              "catalog_type": {
+                "type": "string",
+                "example": "$default",
+                "default": "$default"
+              }
+            },
+            "required": [
+              "external_id",
+              "name"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "catalog-item"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CatalogCategoryCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogCategoryCreateQueryAsSubResource"
+          }
+        }
+      },
+      "_MetricCreateQuery": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Viewed Product",
+            "description": "Name of the event. Must be less than 128 characters."
+          },
+          "service": {
+            "type": "string",
+            "description": "This is for advanced usage. For api requests, this should use the default, which is set to api."
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "EventCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "profile": {
+                "type": "object",
+                "example": {
+                  "$email": "matt.kemp@klaviyo-demo.com"
+                },
+                "description": "\nProperties of the profile that triggered this event. The profile must contain an\nidentifier. The $email and/or $phone_number can be used as the identify the profile.\nOther key value pairs can be used to create segments. For example, to create a list of\npeople on trial plans, include a profile's plan type in the profile. The profile\nsupports special fields. The fields include: $email (string), $first_name (string),\n$last_name (string), $phone_number (string), $city (string), $region (string; state or\nother region), $country (string), $zip (string), $image (string; url to a photo of a\nperson), and $consent (list of strings; eg: ['sms', 'email', 'web', 'directmail',\n'mobile']).\n"
+              },
+              "metric": {
+                "$ref": "#/components/schemas/_MetricCreateQuery",
+                "example": {
+                  "name": "Viewed Product"
+                },
+                "description": "The associated metric for the event. An account can have up to 200 unique metrics."
+              },
+              "properties": {
+                "type": "object",
+                "example": {
+                  "Brand": "Kids Book",
+                  "Categories": [
+                    "Fiction",
+                    "Children"
+                  ],
+                  "ProductID": 1111,
+                  "ProductName": "Winnie the Pooh",
+                  "$extra": {
+                    "URL": "http://www.example.com/path/to/product",
+                    "ImageURL": "http://www.example.com/path/to/product/image.png"
+                  }
+                },
+                "description": "\n Properties of this event. Any top level property (that are not objects) can be\nused to create segments. The $extra property is a special property. This records any\nnon-segmentable values that can be references later. For example, HTML templates are\nuseful on a segment, but itself is not used in creating a segment. There are limits\nplaced onto the size of the data present. This must not exceed 5 MB. This must not\nexceed 300 event properties. A single string cannot be larger than 100 KB. Each array\nmust not exceed 4000 elements. The properties cannot contain more than 10 nested levels.\n"
+              },
+              "time": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00",
+                "description": "\nWhen this event occurred. By default, the time the request was received will be used.\nThe time is truncated to the second. The time must be after the year 2000 and can only\nbe up to 1 year in the future.\n"
+              },
+              "value": {
+                "type": "number",
+                "example": 9.99,
+                "description": "A numeric value to associate with this event. For example, the dollar amount of a purchase."
+              },
+              "unique_id": {
+                "type": "string",
+                "description": "\nA unique identifier for an event. If the unique_id is repeated for the same\nprofile and metric, only the first processed event will be recorded. If this is not\npresent, this will use the time to the second. Using the default, this limits only one\nevent per profile per second.\n"
+              }
+            },
+            "required": [
+              "profile",
+              "metric",
+              "properties"
+            ]
+          }
+        }
+      },
+      "EventCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/EventCreateQueryAsSubResource"
+          }
+        }
+      },
+      "MetricAggregateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "metric-aggregate"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "metric_id": {
+                "type": "string",
+                "example": "0rG4eQ",
+                "description": "The metric ID used in the aggregation. A metric ID is the `id` field for a metric, as returned by the [Get Metrics endpoint](https://developers.klaviyo.com/en/reference/get_metrics)."
+              },
+              "measurements": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "count",
+                    "sum_value",
+                    "unique"
+                  ],
+                  "description": "Supported measurements for aggregation"
+                },
+                "example": "count",
+                "description": "Measurement key, e.g. `unique`, `sum_value`, `count`"
+              },
+              "interval": {
+                "type": "string",
+                "enum": [
+                  "day",
+                  "hour",
+                  "month",
+                  "week"
+                ],
+                "description": "Aggregation interval, e.g. \"hour\", \"day\", \"week\", \"month\"",
+                "example": "day"
+              },
+              "page_size": {
+                "type": "integer",
+                "example": 500,
+                "default": 500,
+                "description": "Alter the maximum number of returned rows in a single page of aggregation results"
+              },
+              "by": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "$attributed_channel",
+                    "$attributed_flow",
+                    "$attributed_message",
+                    "$attributed_variation",
+                    "$campaign_channel",
+                    "$flow",
+                    "$flow_channel",
+                    "$message",
+                    "$message_send_cohort",
+                    "$variation",
+                    "$variation_send_cohort",
+                    "Bounce Type",
+                    "Campaign Name",
+                    "Client Canonical",
+                    "Client Name",
+                    "Client Type",
+                    "Email Domain",
+                    "Failure Source",
+                    "Failure Type",
+                    "From Number",
+                    "From Phone Region",
+                    "List",
+                    "Message Name",
+                    "Message Type",
+                    "Method",
+                    "Subject",
+                    "To Number",
+                    "To Phone Region",
+                    "URL",
+                    "form_id"
+                  ],
+                  "description": "Supported dimensions for grouping and filtering"
+                },
+                "example": "$message",
+                "description": "Optional attribute(s) used for partitioning by the aggregation function"
+              },
+              "return_fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Provide fields to limit the returned data"
+              },
+              "filter": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "greater-or-equal(datetime,2022-12-01T00:00:00)",
+                  "less-than(datetime,2022-12-08T00:00:00"
+                ],
+                "description": "List of filters, must include time range using ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).\n            These filters follow a similar format to those in `GET` requests, the primary difference is that this endpoint asks for a list.\n            The time range can be filtered by providing a `greater_or_equal` and a `less-than` filter on the `datetime` field."
+              },
+              "timezone": {
+                "type": "string",
+                "example": "America/New_York",
+                "default": "UTC",
+                "description": "The timezone used for processing the query, e.g. `'America/New_York'`.\n            This field is validated against a list of common timezones from the [IANA Time Zone Database](https://www.iana.org/time-zones).\n            While most are supported, a few notable exceptions are `Factory`, `Europe/Kyiv` and `Pacific/Kanton`. This field is case-sensitive."
+              }
+            },
+            "required": [
+              "metric_id",
+              "measurements",
+              "interval",
+              "filter"
+            ]
+          }
+        }
+      },
+      "MetricAggregateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MetricAggregateQueryAsSubResource"
+          }
+        }
+      },
+      "MetricAggregateRowDTO": {
+        "type": "object",
+        "properties": {
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of dimensions associated with this set of measurements"
+          },
+          "measurements": {
+            "type": "object",
+            "description": "Dictionary of measurement_key, values"
+          }
+        },
+        "required": [
+          "dimensions",
+          "measurements"
+        ]
+      },
+      "ListCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        }
+      },
+      "ListCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ListCreateQueryAsSubResource"
+          }
+        }
+      },
+      "ProfileCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "phone_number": {
+                "type": "string"
+              },
+              "external_id": {
+                "type": "string"
+              },
+              "anonymous_id": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "organization": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation"
+              },
+              "properties": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "ProfileCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ProfileCreateQueryAsSubResource"
+          }
+        }
+      },
       "CampaignCreateQueryAsSubResource": {
         "type": "object",
         "required": [
@@ -3842,10 +4780,12 @@
             "properties": {
               "name": {
                 "type": "string",
+                "example": "My new campaign",
                 "description": "The campaign name"
               },
               "channel": {
                 "type": "string",
+                "example": "email",
                 "description": "The type of campaign (email or sms, for example)"
               },
               "audiences": {
@@ -3854,7 +4794,7 @@
               },
               "send_strategy": {
                 "$ref": "#/components/schemas/SendStrategySubObject",
-                "description": "The send strategy the campaign will send with"
+                "description": "The send strategy the campaign will send with. Defaults to 'Immediate' send strategy."
               },
               "send_options": {
                 "$ref": "#/components/schemas/SendOptionsSubObject",
@@ -4025,6 +4965,7 @@
               },
               "new_name": {
                 "type": "string",
+                "example": "My cloned campaign's new name",
                 "description": "The name for the new cloned campaign"
               }
             },
@@ -4067,6 +5008,7 @@
               },
               "template_id": {
                 "type": "string",
+                "example": "RipRmi",
                 "description": "The template ID to assign"
               }
             },
@@ -4266,6 +5208,535 @@
           }
         }
       },
+      "TemplateCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "template"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Monthly Newsletter Template",
+                "description": "The name of the template"
+              },
+              "editor_type": {
+                "type": "string",
+                "description": "Restricted to CODE"
+              },
+              "html": {
+                "type": "string",
+                "example": "\n            <html>\n                <body>\n                    hello world\n                </body>\n            </html>\n        ",
+                "description": "The HTML contents of the template"
+              },
+              "text": {
+                "type": "string",
+                "example": "hello world",
+                "description": "The plaintext version of the template"
+              },
+              "return_fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Provide fields to limit the returned data"
+              }
+            },
+            "required": [
+              "name",
+              "editor_type"
+            ]
+          }
+        }
+      },
+      "TemplateCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateCreateQueryAsSubResource"
+          }
+        }
+      },
+      "TemplateRenderQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "template"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of template"
+              },
+              "context": {
+                "type": "object",
+                "example": {
+                  "first_name": "Jane",
+                  "last_name": "Smith"
+                },
+                "description": "The context for the template render. This must be a JSON object which has values for any tags used in the template. See [this doc](https://help.klaviyo.com/hc/en-us/articles/115005084927-Template-tags-and-variable-syntax-reference-classic-editor-) for more details."
+              },
+              "return_fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Provide fields to limit the returned data"
+              }
+            },
+            "required": [
+              "id",
+              "context"
+            ]
+          }
+        }
+      },
+      "TemplateRenderQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateRenderQueryAsSubResource"
+          }
+        }
+      },
+      "TemplateCloneQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes",
+          "id"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "template"
+            ]
+          },
+          "id": {
+            "description": "The ID of MessageTemplate"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of template to be cloned"
+              },
+              "name": {
+                "type": "string",
+                "example": "Clone of Monthly Newsletter Template",
+                "description": "The name of the template"
+              },
+              "return_fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Any subset of TemplateResponse fields"
+              }
+            },
+            "required": [
+              "id"
+            ]
+          }
+        }
+      },
+      "TemplateCloneQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateCloneQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogItemCreateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-item-bulk-create-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogItemCreateQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "items"
+            ]
+          }
+        }
+      },
+      "CatalogItemCreateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogItemCreateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogItemUpdateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-item-bulk-update-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogItemUpdateQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "items"
+            ]
+          }
+        }
+      },
+      "CatalogItemUpdateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogItemUpdateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogItemDeleteJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-item-bulk-delete-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogItemDeleteQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "items"
+            ]
+          }
+        }
+      },
+      "CatalogItemDeleteJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogItemDeleteJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogVariantCreateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-variant-bulk-create-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "variants": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogVariantCreateQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "variants"
+            ]
+          }
+        }
+      },
+      "CatalogVariantCreateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogVariantCreateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogVariantUpdateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-variant-bulk-update-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "variants": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogVariantUpdateQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "variants"
+            ]
+          }
+        }
+      },
+      "CatalogVariantUpdateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogVariantUpdateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogVariantDeleteJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-variant-bulk-delete-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "variants": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogVariantDeleteQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "variants"
+            ]
+          }
+        }
+      },
+      "CatalogVariantDeleteJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogVariantDeleteJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogCategoryCreateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-category-bulk-create-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "categories": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogCategoryCreateQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "categories"
+            ]
+          }
+        }
+      },
+      "CatalogCategoryCreateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogCategoryCreateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogCategoryUpdateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-category-bulk-update-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "categories": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogCategoryUpdateQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "categories"
+            ]
+          }
+        }
+      },
+      "CatalogCategoryUpdateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogCategoryUpdateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogCategoryDeleteJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-category-bulk-delete-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "categories": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CatalogCategoryDeleteQueryAsSubResource"
+                }
+              }
+            },
+            "required": [
+              "categories"
+            ]
+          }
+        }
+      },
+      "CatalogCategoryDeleteJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogCategoryDeleteJobCreateQueryAsSubResource"
+          }
+        }
+      },
       "TagCreateQueryAsSubResource": {
         "type": "object",
         "required": [
@@ -4283,10 +5754,14 @@
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "example": "My Tag",
+                "description": "The Tag name"
               },
               "tag_group_id": {
-                "type": "string"
+                "type": "string",
+                "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+                "description": "The ID of the Tag Group to associate the Tag with. If this field is not specified, the Tag will be associated with the company's Default Tag Group."
               }
             },
             "required": [
@@ -4328,13 +5803,17 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                "description": "The Tag ID"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "My Tag",
+                    "description": "The Tag name"
                   }
                 },
                 "required": [
@@ -4374,7 +5853,9 @@
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "example": "My Tag Group",
+                "description": "The Tag Group name"
               },
               "exclusive": {
                 "type": "boolean"
@@ -4419,19 +5900,25 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+                "description": "The Tag Group ID"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "My Tag Group",
+                    "description": "The Tag Group name"
                   },
                   "exclusive": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "If a tag group is non-exclusive, any given related resource (campaign, flow, etc.) can be linked to multiple tags from that tag group. If a tag group is exclusive, any given related resource can only be linked to one tag from that tag group."
                   },
                   "default": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Every company automatically has one Default Tag Group. The Default Tag Group cannot be deleted, and no other Default Tag Groups can be created. This value is true for the Default Tag Group and false for all other Tag Groups."
                   }
                 },
                 "required": [
@@ -4485,6 +5972,210 @@
           }
         }
       },
+      "Suppression": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email of the profile to suppress / unsuppress."
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "SuppressionCreateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-suppression-bulk-create-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "suppressions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Suppression"
+                },
+                "description": "One or more suppressions to be created."
+              }
+            },
+            "required": [
+              "suppressions"
+            ]
+          }
+        }
+      },
+      "SuppressionCreateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SuppressionCreateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "UnsuppressionCreateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-unsuppression-bulk-create-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "suppressions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Suppression"
+                },
+                "description": "One or more suppressions to be removed."
+              }
+            },
+            "required": [
+              "suppressions"
+            ]
+          }
+        }
+      },
+      "UnsuppressionCreateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/UnsuppressionCreateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          }
+        }
+      },
+      "SubscriptionCreateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-subscription-bulk-create-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "list_id": {
+                "type": "string",
+                "description": "The list to add the newly subscribed profiles to"
+              },
+              "custom_source": {
+                "type": "string",
+                "description": "A custom method detail or source to store on the consent records."
+              },
+              "subscriptions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Subscription"
+                },
+                "description": "One or more subscriptions to be created."
+              }
+            },
+            "required": [
+              "list_id",
+              "subscriptions"
+            ]
+          }
+        }
+      },
+      "SubscriptionCreateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SubscriptionCreateJobCreateQueryAsSubResource"
+          }
+        }
+      },
+      "UnsubscriptionCreateJobCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-unsubscription-bulk-create-job"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "list_id": {
+                "type": "string",
+                "description": "Optional, the list to remove the profiles from"
+              },
+              "emails": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The emails to unsubscribe if any."
+              },
+              "phone_numbers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The phone numbers to unsubscribe if any."
+              }
+            }
+          }
+        }
+      },
+      "UnsubscriptionCreateJobCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/UnsubscriptionCreateJobCreateQueryAsSubResource"
+          }
+        }
+      },
       "DataPrivacyCreateDeletionJobQueryAsSubResource": {
         "type": "object",
         "required": [
@@ -4502,13 +6193,19 @@
             "type": "object",
             "properties": {
               "profile_id": {
-                "type": "string"
+                "type": "string",
+                "example": "01F2VWQ645BES947MP1BPAKVMB",
+                "description": "The profile ID of the profile to delete. This is the `id` field on the profile, as it is returned by the [Get Profiles endpoint](https://developers.klaviyo.com/en/reference/get_profiles)."
               },
               "email": {
-                "type": "string"
+                "type": "string",
+                "example": "matt.kemp@klaviyo-demo.com",
+                "description": "The email address of the profile to delete."
               },
               "phone_number": {
-                "type": "string"
+                "type": "string",
+                "example": "+15005550006",
+                "description": "The phone number of the profile to delete."
               }
             }
           }
@@ -4522,6 +6219,609 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/DataPrivacyCreateDeletionJobQueryAsSubResource"
+          }
+        }
+      },
+      "OnsiteSubscriptionCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "subscription"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "list_id": {
+                "type": "string",
+                "example": "Y6nRLr",
+                "description": "The list ID to add the newly subscribed profile to."
+              },
+              "custom_source": {
+                "type": "string",
+                "example": "Homepage footer signup form",
+                "description": "A custom method detail or source to store on the consent records for this subscription."
+              },
+              "email": {
+                "type": "string",
+                "example": "matt.kemp@klaviyo-demo.com",
+                "description": "Email address to create subscription and email consent record for."
+              },
+              "phone_number": {
+                "type": "string",
+                "example": "+15005550006",
+                "description": "Phone number to create subscription and SMS consent record for, in E.164 format."
+              },
+              "properties": {
+                "type": "object",
+                "example": {
+                  "first_name": "Matt",
+                  "last_name": "Kemp",
+                  "favorite_color": "Blue"
+                },
+                "description": "Profile properties to set on the newly subscribed profile."
+              }
+            },
+            "required": [
+              "list_id"
+            ]
+          }
+        }
+      },
+      "OnsiteSubscriptionCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/OnsiteSubscriptionCreateQueryAsSubResource"
+          }
+        }
+      },
+      "_OnsiteProfileMetaIdentifiers": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "external_id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "anonymous_id": {
+            "type": "string"
+          },
+          "_kx": {
+            "type": "string"
+          }
+        }
+      },
+      "_OnsiteProfileMeta": {
+        "type": "object",
+        "properties": {
+          "identifiers": {
+            "$ref": "#/components/schemas/_OnsiteProfileMetaIdentifiers"
+          }
+        },
+        "required": [
+          "identifiers"
+        ]
+      },
+      "OnsiteProfileCreateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "phone_number": {
+                "type": "string"
+              },
+              "external_id": {
+                "type": "string"
+              },
+              "anonymous_id": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "organization": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation"
+              },
+              "properties": {
+                "type": "object"
+              }
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/_OnsiteProfileMeta"
+          }
+        }
+      },
+      "OnsiteProfileCreateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/OnsiteProfileCreateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogItemUpdateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-item"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog item ID is a compound ID (string), with format: `${integration}:::${catalog}:::${external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`, but support for multiple catalogs  & non-custom integrations is forthcoming."
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "image_full_url": {
+                "type": "string"
+              },
+              "image_thumbnail_url": {
+                "type": "string"
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "custom_metadata": {
+                "type": "object"
+              },
+              "published": {
+                "type": "boolean"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "categories": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "catalog-category"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CatalogItemUpdateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogItemUpdateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogVariantUpdateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-variant"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog variant ID is a compound ID (string), with format: `${integration}:::${catalog}:::${external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`, but support for multiple catalogs  & non-custom integrations is forthcoming."
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "inventory_policy": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
+                "description": "A field that controls product visibility in product feeds/blocks. This field has two options:     DENY (1): a product will not appear in dynamic product recommendation feeds and blocks if it is out of stock.     CONTINUE (2): a product can appear in dynamic product recommendation feeds and blocks regardless of inventory quantity.     UNKNOWN (0): the behavior will be the same as if it were set to 2 [Default]"
+              },
+              "inventory_quantity": {
+                "type": "number"
+              },
+              "price": {
+                "type": "number"
+              },
+              "url": {
+                "type": "string"
+              },
+              "image_full_url": {
+                "type": "string"
+              },
+              "image_thumbnail_url": {
+                "type": "string"
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "custom_metadata": {
+                "type": "object"
+              },
+              "published": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "CatalogVariantUpdateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogVariantUpdateQueryAsSubResource"
+          }
+        }
+      },
+      "CatalogCategoryUpdateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-category"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog category ID is a compound ID (string), with format: `${integration}:::${catalog}:::${external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`, but support for multiple catalogs  & non-custom integrations is forthcoming."
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "catalog-item"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CatalogCategoryUpdateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogCategoryUpdateQueryAsSubResource"
+          }
+        }
+      },
+      "ListPartialUpdateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        }
+      },
+      "ListPartialUpdateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ListPartialUpdateQueryAsSubResource"
+          }
+        }
+      },
+      "SegmentPartialUpdateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "segment"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        }
+      },
+      "SegmentPartialUpdateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SegmentPartialUpdateQueryAsSubResource"
+          }
+        }
+      },
+      "ProfilePartialUpdateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "phone_number": {
+                "type": "string"
+              },
+              "external_id": {
+                "type": "string"
+              },
+              "anonymous_id": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "organization": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation"
+              },
+              "properties": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "ProfilePartialUpdateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ProfilePartialUpdateQueryAsSubResource"
+          }
+        }
+      },
+      "FlowUpdateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "flow"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        }
+      },
+      "FlowUpdateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/FlowUpdateQueryAsSubResource"
           }
         }
       },
@@ -4548,6 +6848,7 @@
             "properties": {
               "name": {
                 "type": "string",
+                "example": "My new campaign",
                 "description": "The campaign name"
               },
               "audiences": {
@@ -4721,6 +7022,7 @@
             "properties": {
               "label": {
                 "type": "string",
+                "example": "My message name",
                 "description": "The label or name on the message"
               },
               "content": {
@@ -4852,6 +7154,7 @@
             "properties": {
               "action": {
                 "type": "string",
+                "example": "cancel",
                 "description": "The action you would like to take with this send job from among 'cancel' and 'revert'"
               }
             },
@@ -4872,6 +7175,64 @@
           }
         }
       },
+      "TemplateUpdateQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "template"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The ID of template"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Monthly Newsletter Template",
+                "description": "The name of the template"
+              },
+              "html": {
+                "type": "string",
+                "example": "\n              <html>\n                  <body>\n                      hello world\n                  </body>\n              </html>\n          ",
+                "description": "The HTML of the template"
+              },
+              "text": {
+                "type": "string",
+                "example": "hello world",
+                "description": "The plaintext of the template"
+              },
+              "return_fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Provide fields to limit the returned data"
+              }
+            }
+          }
+        }
+      },
+      "TemplateUpdateQuery": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateUpdateQueryAsSubResource"
+          }
+        }
+      },
       "TagUpdateQueryAsSubResource": {
         "type": "object",
         "required": [
@@ -4887,13 +7248,17 @@
             ]
           },
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+            "description": "The Tag ID"
           },
           "attributes": {
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "example": "My Tag",
+                "description": "The Tag name"
               }
             },
             "required": [
@@ -4935,13 +7300,17 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                "description": "The Tag ID"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "My Tag",
+                    "description": "The Tag name"
                   }
                 },
                 "required": [
@@ -4979,13 +7348,17 @@
             ]
           },
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+            "description": "The Tag Group ID"
           },
           "attributes": {
             "type": "object",
             "properties": {
               "name": {
-                "type": "string"
+                "type": "string",
+                "example": "My Tag Group",
+                "description": "The Tag Group name"
               },
               "return_fields": {
                 "type": "array",
@@ -5033,19 +7406,25 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+                "description": "The Tag Group ID"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "My Tag Group",
+                    "description": "The Tag Group name"
                   },
                   "exclusive": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "If a tag group is non-exclusive, any given related resource (campaign, flow, etc.) can be linked to multiple tags from that tag group. If a tag group is exclusive, any given related resource can only be linked to one tag from that tag group."
                   },
                   "default": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Every company automatically has one Default Tag Group. The Default Tag Group cannot be deleted, and no other Default Tag Groups can be created. This value is true for the Default Tag Group and false for all other Tag Groups."
                   }
                 },
                 "required": [
@@ -5067,6 +7446,63 @@
                 ]
               }
             }
+          }
+        }
+      },
+      "CatalogItemDeleteQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-item"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog item ID is a compound ID (string), with format: `${integration}:::${catalog}:::${external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`, but support for multiple catalogs  & non-custom integrations is forthcoming."
+          }
+        }
+      },
+      "CatalogVariantDeleteQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-variant"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog variant ID is a compound ID (string), with format: `${integration}:::${catalog}:::${external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`, but support for multiple catalogs  & non-custom integrations is forthcoming."
+          }
+        }
+      },
+      "CatalogCategoryDeleteQueryAsSubResource": {
+        "type": "object",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-category"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog category ID is a compound ID (string), with format: `${integration}:::${catalog}:::${external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`, but support for multiple catalogs  & non-custom integrations is forthcoming."
           }
         }
       },
@@ -5092,13 +7528,17 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+                "description": "The Tag ID"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "My Tag",
+                    "description": "The Tag name"
                   }
                 },
                 "required": [
@@ -5143,19 +7583,25 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321",
+                "description": "The Tag Group ID"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "My Tag Group",
+                    "description": "The Tag Group name"
                   },
                   "exclusive": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "If a tag group is non-exclusive, any given related resource (campaign, flow, etc.) can be linked to multiple tags from that tag group. If a tag group is exclusive, any given related resource can only be linked to one tag from that tag group."
                   },
                   "default": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Every company automatically has one Default Tag Group. The Default Tag Group cannot be deleted, and no other Default Tag Groups can be created. This value is true for the Default Tag Group and false for all other Tag Groups."
                   }
                 },
                 "required": [
@@ -5180,6 +7626,240 @@
           }
         }
       },
+      "IncludedVariants": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "catalog-variant"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "sku": {
+                "type": "string"
+              },
+              "inventory_policy": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
+                "description": "A field that controls product visibility in product feeds/blocks. This field has two options:     DENY (1): a product will not appear in dynamic product recommendation feeds and blocks if it is out of stock.     CONTINUE (2): a product can appear in dynamic product recommendation feeds and blocks regardless of inventory quantity.     UNKNOWN (0): the behavior will be the same as if it were set to 2 [Default]"
+              },
+              "inventory_quantity": {
+                "type": "number"
+              },
+              "price": {
+                "type": "number"
+              },
+              "url": {
+                "type": "string"
+              },
+              "image_full_url": {
+                "type": "string"
+              },
+              "image_thumbnail_url": {
+                "type": "string"
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "custom_metadata": {
+                "type": "object"
+              },
+              "published": {
+                "type": "boolean"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "self"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "IncludedMetrics": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "metric"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The Metric ID"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the metric"
+              },
+              "created": {
+                "type": "string",
+                "description": "Creation time in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
+              },
+              "updated": {
+                "type": "string",
+                "description": "Last updated time in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
+              },
+              "integration": {
+                "type": "object",
+                "description": "The integration associated with the event"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "self"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "IncludedProfiles": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "phone_number": {
+                "type": "string"
+              },
+              "external_id": {
+                "type": "string"
+              },
+              "anonymous_id": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "organization": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "last_event_date": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation"
+              },
+              "properties": {
+                "type": "object"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "self"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
       "IncludedTags": {
         "type": "object",
         "properties": {
@@ -5190,6 +7870,53 @@
             ]
           },
           "id": {
+            "type": "string",
+            "example": "abcd1234-ef56-gh78-ij90-abcdef123456",
+            "description": "The Tag ID"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "My Tag",
+                "description": "The Tag name"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "self"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "IncludedLists": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "id": {
             "type": "string"
           },
           "attributes": {
@@ -5197,11 +7924,68 @@
             "properties": {
               "name": {
                 "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
               }
             },
             "required": [
-              "name"
+              "self"
             ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "IncludedSegments": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "segment"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              }
+            }
           },
           "links": {
             "type": "object",
@@ -5308,17 +8092,278 @@
           "links"
         ]
       },
-      "V2TemplateRenderQueryAsSubResource": {
+      "IncludedFlowActions": {
+        "type": "object",
         "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "flow-action"
+            ]
+          },
           "id": {
-            "description": "The ID of MessageTemplate"
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "action_type": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "settings": {
+                "type": "object"
+              },
+              "tracking_options": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/EmailTrackingOptions"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SMSTrackingOptions"
+                  }
+                ]
+              },
+              "send_options": {
+                "$ref": "#/components/schemas/SendOptions"
+              },
+              "render_options": {
+                "$ref": "#/components/schemas/SMSRenderOptions"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "self"
+            ]
           }
         },
         "required": [
-          "id"
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
       },
-      "TemplateCloneQueryAsSubResource": {
+      "IncludedFlowMessages": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "flow-message"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "channel": {
+                "type": "string"
+              },
+              "content": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/EmailMessageContent"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SMSMessageContent"
+                  }
+                ]
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              }
+            },
+            "required": [
+              "name",
+              "channel",
+              "content"
+            ]
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "self"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "IncludedFlows": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "flow"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "archived": {
+                "type": "boolean"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "trigger_type": {
+                "type": "string"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "self"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "IncludedFlowAction": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "flow-action"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "action_type": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "settings": {
+                "type": "object"
+              },
+              "tracking_options": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/EmailTrackingOptions"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SMSTrackingOptions"
+                  }
+                ]
+              },
+              "send_options": {
+                "$ref": "#/components/schemas/SendOptions"
+              },
+              "render_options": {
+                "$ref": "#/components/schemas/SMSRenderOptions"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "self"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "V2TemplateRenderQueryAsSubResource": {
         "properties": {
           "id": {
             "description": "The ID of MessageTemplate"
