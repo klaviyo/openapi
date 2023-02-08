@@ -7413,7 +7413,7 @@
       "post": {
         "operationId": "query_metric_aggregates",
         "summary": "Query Metric Aggregates",
-        "description": "Query and aggregate event data associated with a metric, including native Klaviyo metrics, integration-specific metrics, and custom events. Queries must be passed in the JSON body of your `POST` request.\n\nResults can be filtered and grouped by time, event, or profile dimensions.\n\n**Request body parameters** (nested under `attributes`):\n\n* `return_fields`: request specific fields using [sparse fieldsets](https://developers.klaviyo.com/en/reference/api_overview#sparse-fieldsets)\n* `sort`: sort results by a specified field, such as `\"-timestamp\"`\n* `page_cursor`: results can be paginated with [cursor-based pagination](https://developers.klaviyo.com/en/reference/api_overview#pagination)\n* `page_size`: limit the number of returned results per page\n* `by`: optional attributes used to group by the aggregation function\n    * When using `by` attributes, an empty `dimensions` response is expected when the counts for the events do not have the associated dimension requested by the set `by` attribute. For example, a query including `\"by\": [\"$flow\"]` will return an empty dimensions response for counts of metrics not associated with a `$flow`\n* `measurement`: the measurement key supports the following values:\n    * `\"sum_value\"`: perform a summation of the `_Event Value_`, optionally partitioned over any dimension provided in the `by` field\n    * `\"count\"`: counts the number of events associated to a metric, optionally partitioned over any dimension provided in the `by` field\n    * `\"unique\"` counts the number of unique customers associated to a metric, optionally partitioned over any dimension provided in the `by` field\n* `interval`: aggregation interval, such as `\"hour\"`,`\"day\"`,`\"week\"`, and `\"month\"`\n* `metric_id`: the metric ID used in the aggregation\n* `filter`: list of filters for specific fields, must include time range using ISO 8601 format (`\"YYYY-MM-DDTHH:MM:SS.mmmmmm\"`)\n    * The time range can be filtered by providing a `greater_or_equal` filter on the datetime field, such as `\"greater-or-equal(datetime,2021-07-01T00:00:00)\"` and a `less-than` filter on the same datetime field, such as `\"less-than(datetime,2022-07-01T00:00:00)\"`\n    * The time range may span a maximum of one year. Time range dates may be set to a maximum of 5 years prior to the current date\n    * Filter the list of supported aggregate dimensions using the common filter syntax, such as `\"equals(URL,\\\"https://www.klaviyo.com/\\\")\"`\n* `timezone`: the timezone used when processing the query. Case sensitive. This field is validated against a list of common timezones from the [IANA Time Zone Database](https://www.iana.org/time-zones)\n\nFor a comprehensive list of native Klaviyo metrics and their associated attributes for grouping and filtering, please refer to the [metrics attributes guide](https://developers.klaviyo.com/en/docs/supported_metrics_and_attributes).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`Metrics Read`",
+        "description": "Query and aggregate event data associated with a metric, including native Klaviyo metrics, integration-specific metrics, and custom events. Queries must be passed in the JSON body of your `POST` request.\n\nResults can be filtered and grouped by time, event, or profile dimensions.\n\n**Request body parameters** (nested under `attributes`):\n\n* `return_fields`: request specific fields using [sparse fieldsets](https://developers.klaviyo.com/en/reference/api_overview#sparse-fieldsets)\n* `sort`: sort results by a specified field, such as `\"-timestamp\"`\n* `page_cursor`: results can be paginated with [cursor-based pagination](https://developers.klaviyo.com/en/reference/api_overview#pagination)\n* `page_size`: limit the number of returned results per page\n* `by`: optional attributes used to group by the aggregation function\n    * When using `by` attributes, an empty `dimensions` response is expected when the counts for the events do not have the associated dimension requested by the set `by` attribute. For example, a query including `\"by\": [\"$flow\"]` will return an empty dimensions response for counts of metrics not associated with a `$flow`\n* `measurement`: the measurement key supports the following values:\n    * `\"sum_value\"`: perform a summation of the `_Event Value_`, optionally partitioned over any dimension provided in the `by` field\n    * `\"count\"`: counts the number of events associated to a metric, optionally partitioned over any dimension provided in the `by` field\n    * `\"unique\"` counts the number of unique customers associated to a metric, optionally partitioned over any dimension provided in the `by` field\n* `interval`: aggregation interval, such as `\"hour\"`,`\"day\"`,`\"week\"`, and `\"month\"`\n* `metric_id`: the metric ID used in the aggregation\n* `filter`: list of filters for specific fields, must include time range using ISO 8601 format (`\"YYYY-MM-DDTHH:MM:SS.mmmmmm\"`)\n    * The time range can be filtered by providing a `greater-or-equal` filter on the datetime field, such as `\"greater-or-equal(datetime,2021-07-01T00:00:00)\"` and a `less-than` filter on the same datetime field, such as `\"less-than(datetime,2022-07-01T00:00:00)\"`\n    * The time range may span a maximum of one year. Time range dates may be set to a maximum of 5 years prior to the current date\n    * Filter the list of supported aggregate dimensions using the common filter syntax, such as `\"equals(URL,\\\"https://www.klaviyo.com/\\\")\"`\n* `timezone`: the timezone used when processing the query. Case sensitive. This field is validated against a list of common timezones from the [IANA Time Zone Database](https://www.iana.org/time-zones)\n\nFor a comprehensive list of native Klaviyo metrics and their associated attributes for grouping and filtering, please refer to the [metrics attributes guide](https://developers.klaviyo.com/en/docs/supported_metrics_and_attributes).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`Metrics Read`",
         "parameters": [
           {
             "name": "revision",
@@ -7804,9 +7804,11 @@
           {
             "name": "id",
             "required": true,
-            "description": "",
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+              "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo."
             },
             "in": "path"
           },
@@ -8821,7 +8823,7 @@
       "get": {
         "operationId": "get_tags",
         "summary": "Get Tags",
-        "description": "List all tags in an account.\nTags can be filtered by `name`, and sorted by `name` or `id` in ascending or descending order.\nReturns a maximum of 50 tags per request, which can be paginated with [cursor-based pagination](https://developers.klaviyo.com/en/v2023-01-24/reference/api_overview#pagination).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`Tags Read`",
+        "description": "List all tags in an account.\nTags can be filtered by `name`, and sorted by `name` or `id` in ascending or descending order.\nReturns a maximum of 50 tags per request, which can be paginated with [cursor-based pagination](https://developers.klaviyo.com/en/v2022-10-17/reference/api_overview#pagination).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`Tags Read`",
         "parameters": [
           {
             "name": "fields[tag]",
@@ -9184,7 +9186,7 @@
       "get": {
         "operationId": "get_tag_groups",
         "summary": "Get Tag Groups",
-        "description": "List all tag groups in an account. Every account has one default tag group.\nTag groups can be filtered by `name`, `exclusive`, and `default`, and sorted by `name` or `id` in ascending or descending order.\nReturns a maximum of 25 tag groups per request, which can be paginated with [cursor-based pagination](https://developers.klaviyo.com/en/v2023-01-24/reference/api_overview#pagination).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`Tags Read`",
+        "description": "List all tag groups in an account. Every account has one default tag group.\nTag groups can be filtered by `name`, `exclusive`, and `default`, and sorted by `name` or `id` in ascending or descending order.\nReturns a maximum of 25 tag groups per request, which can be paginated with [cursor-based pagination](https://developers.klaviyo.com/en/v2022-10-17/reference/api_overview#pagination).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`Tags Read`",
         "parameters": [
           {
             "name": "fields[tag-group]",
@@ -11842,16 +11844,24 @@
         "type": "object",
         "properties": {
           "address1": {
-            "type": "string"
+            "type": "string",
+            "example": "89 E 42nd St",
+            "description": "First line of street address"
           },
           "address2": {
-            "type": "string"
+            "type": "string",
+            "example": "1st floor",
+            "description": "Second line of street address"
           },
           "city": {
-            "type": "string"
+            "type": "string",
+            "example": "New York",
+            "description": "City name"
           },
           "country": {
-            "type": "string"
+            "type": "string",
+            "example": "United States",
+            "description": "Country name"
           },
           "latitude": {
             "oneOf": [
@@ -11861,7 +11871,9 @@
               {
                 "type": "number"
               }
-            ]
+            ],
+            "example": "40.7128",
+            "description": "Latitude coordinate. We recommend providing a precision of four decimal places."
           },
           "longitude": {
             "oneOf": [
@@ -11871,16 +11883,24 @@
               {
                 "type": "number"
               }
-            ]
+            ],
+            "example": "74.0060",
+            "description": "Longitude coordinate. We recommend providing a precision of four decimal places."
           },
           "region": {
-            "type": "string"
+            "type": "string",
+            "example": "NY",
+            "description": "Region within a country, such as state or province"
           },
           "zip": {
-            "type": "string"
+            "type": "string",
+            "example": "10017",
+            "description": "Zip code"
           },
           "timezone": {
-            "type": "string"
+            "type": "string",
+            "example": "America/New_York",
+            "description": "Time zone name. We recommend using time zones from the IANA Time Zone Database."
           }
         }
       },
@@ -11909,58 +11929,83 @@
                   ]
                 },
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+                  "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo."
                 },
                 "attributes": {
                   "type": "object",
                   "properties": {
                     "email": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "sarah.mason@klaviyo-demo.com",
+                      "description": "Individual's email address"
                     },
                     "phone_number": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "+15005550006",
+                      "description": "Individual's phone number in E.164 format"
                     },
                     "external_id": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                      "description": "\nA unique identifier used by customers to associate Klaviyo profiles with profiles in\nan external system, such as a point-of-sale system. Format varies based on the external system.\n"
                     },
                     "anonymous_id": {
                       "type": "string"
                     },
                     "first_name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "Sarah",
+                      "description": "Individual's first name"
                     },
                     "last_name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "Mason",
+                      "description": "Individual's last name"
                     },
                     "organization": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "Klaviyo",
+                      "description": "Name of the company or organization within the company for whom the individual works"
                     },
                     "title": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "Engineer",
+                      "description": "Individual's job title"
                     },
                     "image": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                      "description": "URL pointing to the location of a profile image"
                     },
                     "created": {
                       "type": "string",
                       "format": "date-time",
-                      "example": "2022-11-08T00:00:00"
+                      "example": "2022-11-08T00:00:00",
+                      "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                     },
                     "updated": {
                       "type": "string",
                       "format": "date-time",
-                      "example": "2022-11-08T00:00:00"
+                      "example": "2022-11-08T00:00:00",
+                      "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                     },
                     "last_event_date": {
                       "type": "string",
                       "format": "date-time",
-                      "example": "2022-11-08T00:00:00"
+                      "example": "2022-11-08T00:00:00",
+                      "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                     },
                     "location": {
                       "$ref": "#/components/schemas/ProfileLocation"
                     },
                     "properties": {
-                      "type": "object"
+                      "type": "object",
+                      "example": {
+                        "pseudonym": "Dr. Octopus"
+                      },
+                      "description": "An object containing key/value pairs for any custom properties assigned to this profile"
                     }
                   }
                 },
@@ -12653,58 +12698,83 @@
                   ]
                 },
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+                  "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo."
                 },
                 "attributes": {
                   "type": "object",
                   "properties": {
                     "email": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "sarah.mason@klaviyo-demo.com",
+                      "description": "Individual's email address"
                     },
                     "phone_number": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "+15005550006",
+                      "description": "Individual's phone number in E.164 format"
                     },
                     "external_id": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                      "description": "\nA unique identifier used by customers to associate Klaviyo profiles with profiles in\nan external system, such as a point-of-sale system. Format varies based on the external system.\n"
                     },
                     "anonymous_id": {
                       "type": "string"
                     },
                     "first_name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "Sarah",
+                      "description": "Individual's first name"
                     },
                     "last_name": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "Mason",
+                      "description": "Individual's last name"
                     },
                     "organization": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "Klaviyo",
+                      "description": "Name of the company or organization within the company for whom the individual works"
                     },
                     "title": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "Engineer",
+                      "description": "Individual's job title"
                     },
                     "image": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                      "description": "URL pointing to the location of a profile image"
                     },
                     "created": {
                       "type": "string",
                       "format": "date-time",
-                      "example": "2022-11-08T00:00:00"
+                      "example": "2022-11-08T00:00:00",
+                      "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                     },
                     "updated": {
                       "type": "string",
                       "format": "date-time",
-                      "example": "2022-11-08T00:00:00"
+                      "example": "2022-11-08T00:00:00",
+                      "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                     },
                     "last_event_date": {
                       "type": "string",
                       "format": "date-time",
-                      "example": "2022-11-08T00:00:00"
+                      "example": "2022-11-08T00:00:00",
+                      "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                     },
                     "location": {
                       "$ref": "#/components/schemas/ProfileLocation"
                     },
                     "properties": {
-                      "type": "object"
+                      "type": "object",
+                      "example": {
+                        "pseudonym": "Dr. Octopus"
+                      },
+                      "description": "An object containing key/value pairs for any custom properties assigned to this profile"
                     }
                   }
                 },
@@ -12851,58 +12921,83 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+                "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo."
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "sarah.mason@klaviyo-demo.com",
+                    "description": "Individual's email address"
                   },
                   "phone_number": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "+15005550006",
+                    "description": "Individual's phone number in E.164 format"
                   },
                   "external_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                    "description": "\nA unique identifier used by customers to associate Klaviyo profiles with profiles in\nan external system, such as a point-of-sale system. Format varies based on the external system.\n"
                   },
                   "anonymous_id": {
                     "type": "string"
                   },
                   "first_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Sarah",
+                    "description": "Individual's first name"
                   },
                   "last_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Mason",
+                    "description": "Individual's last name"
                   },
                   "organization": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Klaviyo",
+                    "description": "Name of the company or organization within the company for whom the individual works"
                   },
                   "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Engineer",
+                    "description": "Individual's job title"
                   },
                   "image": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                    "description": "URL pointing to the location of a profile image"
                   },
                   "created": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "updated": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "last_event_date": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "location": {
                     "$ref": "#/components/schemas/ProfileLocation"
                   },
                   "properties": {
-                    "type": "object"
+                    "type": "object",
+                    "example": {
+                      "pseudonym": "Dr. Octopus"
+                    },
+                    "description": "An object containing key/value pairs for any custom properties assigned to this profile"
                   }
                 }
               },
@@ -14515,13 +14610,27 @@
           "throttle_percentage"
         ]
       },
+      "STOScheduleOptions": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2022-12-15",
+            "description": "The day to send on"
+          }
+        },
+        "required": [
+          "date"
+        ]
+      },
       "SendStrategySubObject": {
         "type": "object",
         "properties": {
           "method": {
             "type": "string",
             "example": "static",
-            "description": "Describes the shape of the options object. Allowed values: ['static', 'throttled', 'immediate']"
+            "description": "Describes the shape of the options object. Allowed values: ['static', 'throttled', 'immediate', 'smart_send_time']"
           },
           "options_static": {
             "$ref": "#/components/schemas/StaticScheduleOptions",
@@ -14530,6 +14639,10 @@
           "options_throttled": {
             "$ref": "#/components/schemas/ThrottledScheduleOptions",
             "description": "The send configuration options the campaign will send with. These define variables that alter the send strategy and must match the given method. Intended to be used with the 'throttled' method."
+          },
+          "options_sto": {
+            "$ref": "#/components/schemas/STOScheduleOptions",
+            "description": "The send configuration options the campaign will send with. These define variables that alter the send strategy and must match the given method. Intended to be used with the 'smart_send_time' method."
           }
         },
         "required": [
@@ -18946,37 +19059,57 @@
             "type": "object",
             "properties": {
               "email": {
-                "type": "string"
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "description": "Individual's email address"
               },
               "phone_number": {
-                "type": "string"
+                "type": "string",
+                "example": "+15005550006",
+                "description": "Individual's phone number in E.164 format"
               },
               "external_id": {
-                "type": "string"
+                "type": "string",
+                "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                "description": "\nA unique identifier used by customers to associate Klaviyo profiles with profiles in\nan external system, such as a point-of-sale system. Format varies based on the external system.\n"
               },
               "anonymous_id": {
                 "type": "string"
               },
               "first_name": {
-                "type": "string"
+                "type": "string",
+                "example": "Sarah",
+                "description": "Individual's first name"
               },
               "last_name": {
-                "type": "string"
+                "type": "string",
+                "example": "Mason",
+                "description": "Individual's last name"
               },
               "organization": {
-                "type": "string"
+                "type": "string",
+                "example": "Klaviyo",
+                "description": "Name of the company or organization within the company for whom the individual works"
               },
               "title": {
-                "type": "string"
+                "type": "string",
+                "example": "Engineer",
+                "description": "Individual's job title"
               },
               "image": {
-                "type": "string"
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "description": "URL pointing to the location of a profile image"
               },
               "location": {
                 "$ref": "#/components/schemas/ProfileLocation"
               },
               "properties": {
-                "type": "object"
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile"
               }
             }
           }
@@ -19015,58 +19148,83 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+                "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo."
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "sarah.mason@klaviyo-demo.com",
+                    "description": "Individual's email address"
                   },
                   "phone_number": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "+15005550006",
+                    "description": "Individual's phone number in E.164 format"
                   },
                   "external_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                    "description": "\nA unique identifier used by customers to associate Klaviyo profiles with profiles in\nan external system, such as a point-of-sale system. Format varies based on the external system.\n"
                   },
                   "anonymous_id": {
                     "type": "string"
                   },
                   "first_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Sarah",
+                    "description": "Individual's first name"
                   },
                   "last_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Mason",
+                    "description": "Individual's last name"
                   },
                   "organization": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Klaviyo",
+                    "description": "Name of the company or organization within the company for whom the individual works"
                   },
                   "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Engineer",
+                    "description": "Individual's job title"
                   },
                   "image": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                    "description": "URL pointing to the location of a profile image"
                   },
                   "created": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "updated": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "last_event_date": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "location": {
                     "$ref": "#/components/schemas/ProfileLocation"
                   },
                   "properties": {
-                    "type": "object"
+                    "type": "object",
+                    "example": {
+                      "pseudonym": "Dr. Octopus"
+                    },
+                    "description": "An object containing key/value pairs for any custom properties assigned to this profile"
                   }
                 }
               },
@@ -21232,6 +21390,7 @@
         "properties": {
           "email": {
             "type": "string",
+            "example": "matt-kemp@klaviyo-demo.com",
             "description": "The email of the profile to suppress / unsuppress."
           }
         },
@@ -21321,14 +21480,60 @@
           }
         }
       },
-      "Subscription": {
+      "SubscriptionChannels": {
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "MARKETING"
+              ],
+              "description": "The communication types supported by email subscriptions."
+            },
+            "example": [
+              "MARKETING"
+            ],
+            "description": "The communication types to subscribe to on the \"EMAIL\" Channel. Currently supports \"MARKETING\"."
+          },
+          "sms": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "MARKETING"
+              ],
+              "description": "The communication types supported by SMS subscriptions."
+            },
+            "example": [
+              "MARKETING"
+            ],
+            "description": "The communication types to subscribe to on the \"SMS\" Channel. Currently supports \"MARKETING\"."
+          }
+        }
+      },
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "channels": {
+            "$ref": "#/components/schemas/SubscriptionChannels",
+            "description": "When provided, this will provide consent for the indicated message types on the specified channels. If omitted, we will subscribe the profile to all message types on the channels corresponding to the provided identifiers."
+          },
+          "email": {
+            "type": "string",
+            "example": "matt-kemp@klaviyo-demo.com",
+            "description": "The email address to subscribe or to set on the profile if `channels` is specified and the email channel is omitted."
           },
           "phone_number": {
-            "type": "string"
+            "type": "string",
+            "example": "+15005550006",
+            "description": "The phone number to subscribe or to set on the profile if `channels` is specified and the SMS channel is omitted."
+          },
+          "profile_id": {
+            "type": "string",
+            "example": "\"01GDDKASAP8TKDDA2GRZDSVP4H\"",
+            "description": "The ID of the profile to subscribe. If provided, this will be used to perform the lookup."
           }
         }
       },
@@ -21350,10 +21555,12 @@
             "properties": {
               "list_id": {
                 "type": "string",
+                "example": "Y6nRLr",
                 "description": "The list to add the newly subscribed profiles to"
               },
               "custom_source": {
                 "type": "string",
+                "example": "Marketing Event",
                 "description": "A custom method detail or source to store on the consent records."
               },
               "subscriptions": {
@@ -21400,6 +21607,7 @@
             "properties": {
               "list_id": {
                 "type": "string",
+                "example": "Y6nRLr",
                 "description": "Optional, the list to remove the profiles from"
               },
               "emails": {
@@ -21407,6 +21615,7 @@
                 "items": {
                   "type": "string"
                 },
+                "example": "[\"matt-kemp@klaviyo-demo.com\", \"sarah.mason@klaviyo-demo.com\"",
                 "description": "The emails to unsubscribe if any."
               },
               "phone_numbers": {
@@ -21414,6 +21623,7 @@
                 "items": {
                   "type": "string"
                 },
+                "example": "[\"+15005550006\",\"+15005550007\"]",
                 "description": "The phone numbers to unsubscribe if any."
               }
             }
@@ -22347,43 +22557,65 @@
             ]
           },
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo."
           },
           "attributes": {
             "type": "object",
             "properties": {
               "email": {
-                "type": "string"
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "description": "Individual's email address"
               },
               "phone_number": {
-                "type": "string"
+                "type": "string",
+                "example": "+15005550006",
+                "description": "Individual's phone number in E.164 format"
               },
               "external_id": {
-                "type": "string"
+                "type": "string",
+                "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                "description": "\nA unique identifier used by customers to associate Klaviyo profiles with profiles in\nan external system, such as a point-of-sale system. Format varies based on the external system.\n"
               },
               "anonymous_id": {
                 "type": "string"
               },
               "first_name": {
-                "type": "string"
+                "type": "string",
+                "example": "Sarah",
+                "description": "Individual's first name"
               },
               "last_name": {
-                "type": "string"
+                "type": "string",
+                "example": "Mason",
+                "description": "Individual's last name"
               },
               "organization": {
-                "type": "string"
+                "type": "string",
+                "example": "Klaviyo",
+                "description": "Name of the company or organization within the company for whom the individual works"
               },
               "title": {
-                "type": "string"
+                "type": "string",
+                "example": "Engineer",
+                "description": "Individual's job title"
               },
               "image": {
-                "type": "string"
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "description": "URL pointing to the location of a profile image"
               },
               "location": {
                 "$ref": "#/components/schemas/ProfileLocation"
               },
               "properties": {
-                "type": "object"
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile"
               }
             }
           }
@@ -22422,58 +22654,83 @@
                 ]
               },
               "id": {
-                "type": "string"
+                "type": "string",
+                "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+                "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo."
               },
               "attributes": {
                 "type": "object",
                 "properties": {
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "sarah.mason@klaviyo-demo.com",
+                    "description": "Individual's email address"
                   },
                   "phone_number": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "+15005550006",
+                    "description": "Individual's phone number in E.164 format"
                   },
                   "external_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                    "description": "\nA unique identifier used by customers to associate Klaviyo profiles with profiles in\nan external system, such as a point-of-sale system. Format varies based on the external system.\n"
                   },
                   "anonymous_id": {
                     "type": "string"
                   },
                   "first_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Sarah",
+                    "description": "Individual's first name"
                   },
                   "last_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Mason",
+                    "description": "Individual's last name"
                   },
                   "organization": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Klaviyo",
+                    "description": "Name of the company or organization within the company for whom the individual works"
                   },
                   "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Engineer",
+                    "description": "Individual's job title"
                   },
                   "image": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                    "description": "URL pointing to the location of a profile image"
                   },
                   "created": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "updated": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "last_event_date": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00",
+                    "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
                   },
                   "location": {
                     "$ref": "#/components/schemas/ProfileLocation"
                   },
                   "properties": {
-                    "type": "object"
+                    "type": "object",
+                    "example": {
+                      "pseudonym": "Dr. Octopus"
+                    },
+                    "description": "An object containing key/value pairs for any custom properties assigned to this profile"
                   }
                 }
               },
@@ -23556,58 +23813,83 @@
             ]
           },
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo."
           },
           "attributes": {
             "type": "object",
             "properties": {
               "email": {
-                "type": "string"
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "description": "Individual's email address"
               },
               "phone_number": {
-                "type": "string"
+                "type": "string",
+                "example": "+15005550006",
+                "description": "Individual's phone number in E.164 format"
               },
               "external_id": {
-                "type": "string"
+                "type": "string",
+                "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                "description": "\nA unique identifier used by customers to associate Klaviyo profiles with profiles in\nan external system, such as a point-of-sale system. Format varies based on the external system.\n"
               },
               "anonymous_id": {
                 "type": "string"
               },
               "first_name": {
-                "type": "string"
+                "type": "string",
+                "example": "Sarah",
+                "description": "Individual's first name"
               },
               "last_name": {
-                "type": "string"
+                "type": "string",
+                "example": "Mason",
+                "description": "Individual's last name"
               },
               "organization": {
-                "type": "string"
+                "type": "string",
+                "example": "Klaviyo",
+                "description": "Name of the company or organization within the company for whom the individual works"
               },
               "title": {
-                "type": "string"
+                "type": "string",
+                "example": "Engineer",
+                "description": "Individual's job title"
               },
               "image": {
-                "type": "string"
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "description": "URL pointing to the location of a profile image"
               },
               "created": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00",
+                "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
               },
               "updated": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00",
+                "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
               },
               "last_event_date": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00",
+                "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)"
               },
               "location": {
                 "$ref": "#/components/schemas/ProfileLocation"
               },
               "properties": {
-                "type": "object"
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile"
               }
             }
           },
