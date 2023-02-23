@@ -1,4 +1,4 @@
-Welcome to the Klaviyo API Changelog! Review new and breaking changes to Klaviyo's APIs. Select a revision header from the table of contents on the right to review changes for a specific revision. To view API reference and guides for a specific revision header, select it from the version dropdown in the upper left menu.
+For our complete changelog, and more, see our [dev portal](https://developers.klaviyo.com/en/docs/changelog_): 
 
 # Revision `2023-02-22`
 ### New endpoints
