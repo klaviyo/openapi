@@ -1596,7 +1596,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`category`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`category.id`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
             "schema": {
               "type": "string"
             }
@@ -3092,7 +3092,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`item`: `equals`<br>`sku`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`item.id`: `equals`<br>`sku`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
             "schema": {
               "type": "string"
             }
@@ -4549,7 +4549,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`category`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`category.id`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
             "schema": {
               "type": "string"
             }
@@ -5595,7 +5595,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`item`: `equals`<br>`sku`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`item.id`: `equals`<br>`sku`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
             "schema": {
               "type": "string"
             }
@@ -6516,7 +6516,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`item`: `equals`<br>`name`: `contains`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`item.id`: `equals`<br>`name`: `contains`",
             "schema": {
               "type": "string"
             }
@@ -10526,7 +10526,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`item`: `equals`<br>`name`: `contains`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`item.id`: `equals`<br>`name`: `contains`",
             "schema": {
               "type": "string"
             }
@@ -16076,20 +16076,35 @@
       "EmailContentSubObject": {
         "type": "object",
         "properties": {
-          "preview_text": {
-            "description": "Preview text associated with the message",
+          "from_label": {
+            "description": "The label associated with the from_email",
             "type": "string",
-            "example": "My preview text"
+            "example": "My Company"
           },
           "from_email": {
             "description": "The email the message should be sent from",
             "type": "string",
             "example": "store@my-company.com"
           },
-          "from_label": {
-            "description": "The label associated with the from_email",
+          "cc_email": {
+            "description": "Optional CC email address",
             "type": "string",
-            "example": "My Company"
+            "example": "cc@my-company.com"
+          },
+          "bcc_email": {
+            "description": "Optional BCC email address",
+            "type": "string",
+            "example": "bcc@my-company.com"
+          },
+          "preview_text": {
+            "description": "Preview text associated with the message",
+            "type": "string",
+            "example": "My preview text"
+          },
+          "reply_to_email": {
+            "description": "Optional Reply-To email address",
+            "type": "string",
+            "example": "reply-to@my-company.com"
           },
           "subject": {
             "description": "The subject of the message",
@@ -18708,7 +18723,15 @@
                 "type": "string"
               },
               "trigger_type": {
-                "type": "string"
+                "description": "Corresponds to the object which triggered the flow.",
+                "type": "string",
+                "enum": [
+                  "Added to List",
+                  "Date Based",
+                  "Metric",
+                  "Price Drop",
+                  "Unconfigured"
+                ]
               },
               "created": {
                 "type": "string",
@@ -25439,13 +25462,22 @@
       "EmailMessageContent": {
         "type": "object",
         "properties": {
-          "preview_text": {
+          "from_label": {
             "type": "string"
           },
           "from_email": {
             "type": "string"
           },
-          "from_label": {
+          "cc_email": {
+            "type": "string"
+          },
+          "bcc_email": {
+            "type": "string"
+          },
+          "preview_text": {
+            "type": "string"
+          },
+          "reply_to_email": {
             "type": "string"
           },
           "subject": {
@@ -29854,7 +29886,15 @@
                     "type": "string"
                   },
                   "trigger_type": {
-                    "type": "string"
+                    "description": "Corresponds to the object which triggered the flow.",
+                    "type": "string",
+                    "enum": [
+                      "Added to List",
+                      "Date Based",
+                      "Metric",
+                      "Price Drop",
+                      "Unconfigured"
+                    ]
                   },
                   "created": {
                     "type": "string",
