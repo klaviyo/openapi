@@ -1,0 +1,2432 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2023-08-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/api/coupons/": {
+      "get": {
+        "operationId": "get_coupons",
+        "summary": "Get Coupons",
+        "description": "Get all coupons in an account.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`coupons:read`",
+        "parameters": [
+          {
+            "name": "fields[coupon]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "external_id",
+                  "description"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCouponResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupons:read"
+        ]
+      },
+      "post": {
+        "operationId": "create_coupon",
+        "summary": "Create Coupon",
+        "description": "Creates a new coupon.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CouponCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostCouponResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupons:write"
+        ]
+      }
+    },
+    "/api/coupons/{id}/": {
+      "get": {
+        "operationId": "get_coupon",
+        "summary": "Get Coupon",
+        "description": "Get a specific coupon with the given coupon ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`coupons:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+            "required": true,
+            "schema": {
+              "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+              "type": "string",
+              "example": "10OFF"
+            }
+          },
+          {
+            "name": "fields[coupon]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "external_id",
+                  "description"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCouponResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupons:read"
+        ]
+      },
+      "patch": {
+        "operationId": "update_coupon",
+        "summary": "Update Coupon",
+        "description": "*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+            "required": true,
+            "schema": {
+              "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+              "type": "string",
+              "example": "10OFF"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CouponUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchCouponResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupons:write"
+        ]
+      },
+      "delete": {
+        "operationId": "delete_coupon",
+        "summary": "Delete Coupon",
+        "description": "Delete the coupon with the given coupon ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+            "required": true,
+            "schema": {
+              "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+              "type": "string",
+              "example": "10OFF"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCouponResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupons:write"
+        ]
+      }
+    },
+    "/api/coupon-codes/": {
+      "get": {
+        "operationId": "get_coupon_codes",
+        "summary": "Get Coupon Codes",
+        "description": "Gets a list of coupon codes associated with a coupon/coupons or a profile/profiles.\n\nA coupon/coupons or a profile/profiles must be provided as required filter params.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "parameters": [
+          {
+            "name": "fields[coupon-code]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "unique_code",
+                  "expires_at",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`expires_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`status`: `equals`<br>`coupon.id`: `any`, `equals`<br>`profile.id`: `any`, `equals`",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCouponCodeResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupon-codes:read"
+        ]
+      },
+      "post": {
+        "operationId": "create_coupon_code",
+        "summary": "Create Coupon Code",
+        "description": "Synchronously creates a coupon code for the given coupon.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CouponCodeCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostCouponCodeResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupon-codes:write"
+        ]
+      }
+    },
+    "/api/coupon-codes/{id}/": {
+      "get": {
+        "operationId": "get_coupon_code",
+        "summary": "Get Coupon Code",
+        "description": "Returns a Coupon Code specified by the given identifier.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+            "required": true,
+            "schema": {
+              "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+              "type": "string",
+              "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+            }
+          },
+          {
+            "name": "fields[coupon-code]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "unique_code",
+                  "expires_at",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCouponCodeResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupon-codes:read"
+        ]
+      },
+      "patch": {
+        "operationId": "update_coupon_code",
+        "summary": "Update Coupon Code",
+        "description": "Updates a coupon code specified by the given identifier synchronously. We allow updating the 'status' and\n'expiration_date' of coupon codes.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+            "required": true,
+            "schema": {
+              "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+              "type": "string",
+              "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CouponCodeUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchCouponCodeResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupon-codes:write"
+        ]
+      }
+    },
+    "/api/coupon-code-bulk-create-jobs/": {
+      "get": {
+        "operationId": "get_coupon_code_bulk_create_jobs",
+        "summary": "Get Coupon Code Bulk Create Jobs",
+        "description": "Get all coupon code bulk create jobs.\n\nReturns a maximum of 100 jobs per request.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "parameters": [
+          {
+            "name": "fields[coupon-code-bulk-create-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "job_id",
+                  "status",
+                  "created_at",
+                  "total_count",
+                  "completed_count",
+                  "failed_count",
+                  "completed_at",
+                  "errors",
+                  "expires_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`status`: `equals`",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCouponCodeCreateJobResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupon-codes:read"
+        ]
+      },
+      "post": {
+        "operationId": "spawn_coupon_code_bulk_create_job",
+        "summary": "Spawn Coupon Code Bulk Create Job",
+        "description": "Create a coupon-code-bulk-create-job to bulk create a list of coupon codes.\n\nMax number of jobs queued at once we allow for is 100.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`coupon-codes:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CouponCodeCreateJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostCouponCodeCreateJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupon-codes:write"
+        ]
+      }
+    },
+    "/api/coupon-code-bulk-create-jobs/{job_id}/": {
+      "get": {
+        "operationId": "get_coupon_code_bulk_create_job",
+        "summary": "Get Coupon Code Bulk Create Job",
+        "description": "Get a coupon code bulk create job with the given job ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "description": "ID of the job to retrieve.",
+            "required": true,
+            "schema": {
+              "description": "ID of the job to retrieve.",
+              "type": "string",
+              "example": "01GSQPBF74KQ5YTDEPP41T1BZH"
+            }
+          },
+          {
+            "name": "fields[coupon-code-bulk-create-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "job_id",
+                  "status",
+                  "created_at",
+                  "total_count",
+                  "completed_count",
+                  "failed_count",
+                  "completed_at",
+                  "errors",
+                  "expires_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-08-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCouponCodeCreateJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "",
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "description": "",
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Coupons"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "coupon-codes:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CouponResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CouponEnum"
+          },
+          "id": {
+            "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+            "type": "string",
+            "example": "10OFF"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "description": "This is the id that is stored in an integration such as Shopify or Magento.",
+                "type": "string",
+                "example": "This is the id that is stored in an integration such as Shopify or Magento."
+              },
+              "description": {
+                "description": "A description of the coupon.",
+                "type": "string",
+                "example": "10% off for purchases over $50"
+              }
+            },
+            "required": [
+              "external_id"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetCouponResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CouponResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data",
+          "links"
+        ]
+      },
+      "GetCouponResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CouponResponseObjectResource"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CouponCodeResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CouponCodeEnum"
+          },
+          "id": {
+            "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+            "type": "string",
+            "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "unique_code": {
+                "description": "This is a unique string that will be or is assigned to each customer/profile and is associated with a coupon.",
+                "type": "string",
+                "example": "ASD325FHK324UJDOI2M3JNES99"
+              },
+              "expires_at": {
+                "description": "The datetime when this coupon code will expire. Can be used as an optional filter when getting coupon codes.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2023-01-01:T00:00:00Z"
+              },
+              "status": {
+                "description": "The current status of the coupon code.",
+                "type": "string",
+                "example": "UNASSIGNED",
+                "enum": [
+                  "ASSIGNED_TO_PROFILE",
+                  "DELETING",
+                  "PROCESSING",
+                  "UNASSIGNED",
+                  "VERSION_NOT_ACTIVE"
+                ]
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetCouponCodeResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/CouponCodeResponseObjectResource"
+                },
+                {
+                  "properties": {
+                    "relationships": {
+                      "type": "object",
+                      "properties": {
+                        "coupon": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/CouponEnum"
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "id"
+                              ]
+                            },
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          },
+                          "required": [
+                            "data"
+                          ]
+                        },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ProfileEnum"
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "id"
+                              ]
+                            },
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          },
+                          "required": [
+                            "data"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data",
+          "links"
+        ]
+      },
+      "GetCouponCodeResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CouponCodeResponseObjectResource"
+              },
+              {
+                "properties": {
+                  "relationships": {
+                    "type": "object",
+                    "properties": {
+                      "coupon": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "$ref": "#/components/schemas/CouponEnum"
+                              },
+                              "id": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id"
+                            ]
+                          },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        },
+                        "required": [
+                          "data"
+                        ]
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "$ref": "#/components/schemas/ProfileEnum"
+                              },
+                              "id": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id"
+                            ]
+                          },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        },
+                        "required": [
+                          "data"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ErrorSource": {
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "description": "A pointer to the source of the error in the request payload.",
+            "type": "string",
+            "example": "/data",
+            "default": "/data"
+          }
+        },
+        "required": [
+          "pointer"
+        ]
+      },
+      "APIJobErrorPayload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the error.",
+            "type": "string",
+            "example": "e4eebb08-b055-4a6f-bb13-c8cb69c9eb94"
+          },
+          "code": {
+            "description": "A code for classifying the error type.",
+            "type": "string",
+            "example": "invalid"
+          },
+          "title": {
+            "description": "A high-level message about the error.",
+            "type": "string",
+            "example": "Invalid input"
+          },
+          "detail": {
+            "description": "Specific details about the error.",
+            "type": "string",
+            "example": "The payload provided in the request is invalid."
+          },
+          "source": {
+            "description": "Additional information on the source of the error.",
+            "$ref": "#/components/schemas/ErrorSource"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "title",
+          "detail",
+          "source"
+        ]
+      },
+      "CouponCodeCreateJobResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CouponCodeBulkCreateJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "description": "Unique identifier for retrieving the job. Generated by Klaviyo.",
+                "type": "string"
+              },
+              "status": {
+                "description": "Status of the asynchronous job.",
+                "type": "string",
+                "example": "processing",
+                "enum": [
+                  "cancelled",
+                  "complete",
+                  "processing",
+                  "queued"
+                ]
+              },
+              "created_at": {
+                "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "total_count": {
+                "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
+                "type": "integer",
+                "example": 10
+              },
+              "completed_count": {
+                "description": "The total number of operations that have been completed by the job.",
+                "type": "integer",
+                "example": 9
+              },
+              "failed_count": {
+                "description": "The total number of operations that have failed as part of the job.",
+                "type": "integer",
+                "example": 1
+              },
+              "completed_at": {
+                "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              },
+              "errors": {
+                "description": "Array of errors encountered during the processing of the job.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/APIJobErrorPayload"
+                }
+              },
+              "expires_at": {
+                "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00"
+              }
+            },
+            "required": [
+              "job_id",
+              "status",
+              "created_at",
+              "total_count"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetCouponCodeCreateJobResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/CouponCodeCreateJobResponseObjectResource"
+                },
+                {
+                  "properties": {
+                    "relationships": {
+                      "type": "object",
+                      "properties": {
+                        "coupon-codes": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/CouponCodeEnum"
+                                  },
+                                  "id": {
+                                    "type": "string",
+                                    "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+                                  }
+                                }
+                              }
+                            },
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          },
+                          "required": [
+                            "data"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data",
+          "links"
+        ]
+      },
+      "GetCouponCodeCreateJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CouponCodeCreateJobResponseObjectResource"
+              },
+              {
+                "properties": {
+                  "relationships": {
+                    "type": "object",
+                    "properties": {
+                      "coupon-codes": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/CouponCodeEnum"
+                                },
+                                "id": {
+                                  "type": "string",
+                                  "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+                                }
+                              }
+                            }
+                          },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        },
+                        "required": [
+                          "data"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CouponCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CouponEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "description": "This is the id that is stored in an integration such as Shopify or Magento.",
+                "type": "string",
+                "example": "10OFF"
+              },
+              "description": {
+                "description": "A description of the coupon.",
+                "type": "string",
+                "example": "10% off for purchases over $50"
+              }
+            },
+            "required": [
+              "external_id"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "CouponCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CouponCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostCouponResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CouponEnum"
+              },
+              "id": {
+                "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+                "type": "string",
+                "example": "10OFF"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "external_id": {
+                    "description": "This is the id that is stored in an integration such as Shopify or Magento.",
+                    "type": "string",
+                    "example": "This is the id that is stored in an integration such as Shopify or Magento."
+                  },
+                  "description": {
+                    "description": "A description of the coupon.",
+                    "type": "string",
+                    "example": "10% off for purchases over $50"
+                  }
+                },
+                "required": [
+                  "external_id"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CouponCodeCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CouponCodeEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "unique_code": {
+                "description": "This is a unique string that will be or is assigned to each customer/profile and is associated with a coupon.",
+                "type": "string",
+                "example": "ASD325FHK324UJDOI2M3JNES99"
+              },
+              "expires_at": {
+                "description": "The datetime when this coupon code will expire. Can be used as an optional filter when getting coupon codes.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2023-01-01:T00:00:00Z"
+              }
+            },
+            "required": [
+              "unique_code",
+              "expires_at"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "coupon": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CouponEnum"
+                      },
+                      "id": {
+                        "type": "string",
+                        "example": "10OFF"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "CouponCodeCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CouponCodeCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostCouponCodeResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CouponCodeEnum"
+              },
+              "id": {
+                "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+                "type": "string",
+                "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "unique_code": {
+                    "description": "This is a unique string that will be or is assigned to each customer/profile and is associated with a coupon.",
+                    "type": "string",
+                    "example": "ASD325FHK324UJDOI2M3JNES99"
+                  },
+                  "expires_at": {
+                    "description": "The datetime when this coupon code will expire. Can be used as an optional filter when getting coupon codes.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-01-01:T00:00:00Z"
+                  },
+                  "status": {
+                    "description": "The current status of the coupon code.",
+                    "type": "string",
+                    "example": "UNASSIGNED",
+                    "enum": [
+                      "ASSIGNED_TO_PROFILE",
+                      "DELETING",
+                      "PROCESSING",
+                      "UNASSIGNED",
+                      "VERSION_NOT_ACTIVE"
+                    ]
+                  }
+                }
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "coupon": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/CouponEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    },
+                    "required": [
+                      "data"
+                    ]
+                  },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/ProfileEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    },
+                    "required": [
+                      "data"
+                    ]
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CouponCodeCreateJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CouponCodeBulkCreateJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "coupon-codes": {
+                "description": "Array of coupon codes to create.",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CouponCodeCreateQueryResourceObject"
+                    }
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "coupon-codes"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "CouponCodeCreateJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CouponCodeCreateJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostCouponCodeCreateJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CouponCodeBulkCreateJobEnum"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "job_id": {
+                    "description": "Unique identifier for retrieving the job. Generated by Klaviyo.",
+                    "type": "string"
+                  },
+                  "status": {
+                    "description": "Status of the asynchronous job.",
+                    "type": "string",
+                    "example": "processing",
+                    "enum": [
+                      "cancelled",
+                      "complete",
+                      "processing",
+                      "queued"
+                    ]
+                  },
+                  "created_at": {
+                    "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00"
+                  },
+                  "total_count": {
+                    "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "completed_count": {
+                    "description": "The total number of operations that have been completed by the job.",
+                    "type": "integer",
+                    "example": 9
+                  },
+                  "failed_count": {
+                    "description": "The total number of operations that have failed as part of the job.",
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "completed_at": {
+                    "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00"
+                  },
+                  "errors": {
+                    "description": "Array of errors encountered during the processing of the job.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/APIJobErrorPayload"
+                    }
+                  },
+                  "expires_at": {
+                    "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00"
+                  }
+                },
+                "required": [
+                  "job_id",
+                  "status",
+                  "created_at",
+                  "total_count"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "coupon-codes": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/CouponCodeEnum"
+                            },
+                            "id": {
+                              "type": "string",
+                              "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    },
+                    "required": [
+                      "data"
+                    ]
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "attributes",
+              "links"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CouponUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CouponEnum"
+          },
+          "id": {
+            "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+            "type": "string",
+            "example": "10OFF"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "description": "A description of the coupon.",
+                "type": "string",
+                "example": "10% off for purchases over $50"
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "CouponUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CouponUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PatchCouponResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CouponEnum"
+              },
+              "id": {
+                "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+                "type": "string",
+                "example": "10OFF"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "external_id": {
+                    "description": "This is the id that is stored in an integration such as Shopify or Magento.",
+                    "type": "string",
+                    "example": "This is the id that is stored in an integration such as Shopify or Magento."
+                  },
+                  "description": {
+                    "description": "A description of the coupon.",
+                    "type": "string",
+                    "example": "10% off for purchases over $50"
+                  }
+                },
+                "required": [
+                  "external_id"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CouponCodeUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CouponCodeEnum"
+          },
+          "id": {
+            "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+            "type": "string",
+            "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "The API status of our coupon codes.",
+                "type": "string",
+                "enum": [
+                  "ASSIGNED_TO_PROFILE",
+                  "DELETING",
+                  "PROCESSING",
+                  "UNASSIGNED",
+                  "VERSION_NOT_ACTIVE"
+                ]
+              },
+              "expires_at": {
+                "description": "The datetime when this coupon code will expire. Can be used as an optional filter when getting coupon codes.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2023-01-01:T00:00:00Z"
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "CouponCodeUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CouponCodeUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PatchCouponCodeResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CouponCodeEnum"
+              },
+              "id": {
+                "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+                "type": "string",
+                "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "unique_code": {
+                    "description": "This is a unique string that will be or is assigned to each customer/profile and is associated with a coupon.",
+                    "type": "string",
+                    "example": "ASD325FHK324UJDOI2M3JNES99"
+                  },
+                  "expires_at": {
+                    "description": "The datetime when this coupon code will expire. Can be used as an optional filter when getting coupon codes.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-01-01:T00:00:00Z"
+                  },
+                  "status": {
+                    "description": "The current status of the coupon code.",
+                    "type": "string",
+                    "example": "UNASSIGNED",
+                    "enum": [
+                      "ASSIGNED_TO_PROFILE",
+                      "DELETING",
+                      "PROCESSING",
+                      "UNASSIGNED",
+                      "VERSION_NOT_ACTIVE"
+                    ]
+                  }
+                }
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "coupon": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/CouponEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    },
+                    "required": [
+                      "data"
+                    ]
+                  },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/ProfileEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    },
+                    "required": [
+                      "data"
+                    ]
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "DeleteCouponResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CouponEnum"
+              },
+              "id": {
+                "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+                "type": "string",
+                "example": "10OFF"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "external_id": {
+                    "description": "This is the id that is stored in an integration such as Shopify or Magento.",
+                    "type": "string",
+                    "example": "This is the id that is stored in an integration such as Shopify or Magento."
+                  },
+                  "description": {
+                    "description": "A description of the coupon.",
+                    "type": "string",
+                    "example": "10% off for purchases over $50"
+                  }
+                },
+                "required": [
+                  "external_id"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "CouponEnum": {
+        "type": "string",
+        "enum": [
+          "coupon"
+        ]
+      },
+      "CouponCodeEnum": {
+        "type": "string",
+        "enum": [
+          "coupon-code"
+        ]
+      },
+      "CouponCodeBulkCreateJobEnum": {
+        "type": "string",
+        "enum": [
+          "coupon-code-bulk-create-job"
+        ]
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
+        ]
+      }
+    },
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2023-08-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Accounts",
+      "description": "accounts"
+    },
+    {
+      "name": "Campaigns",
+      "description": "campaigns"
+    },
+    {
+      "name": "Catalogs",
+      "description": "catalogs"
+    },
+    {
+      "name": "Coupons",
+      "description": "coupons"
+    },
+    {
+      "name": "Data Privacy",
+      "description": "data privacy"
+    },
+    {
+      "name": "Events",
+      "description": "events"
+    },
+    {
+      "name": "Flows",
+      "description": "flows"
+    },
+    {
+      "name": "Lists",
+      "description": "lists"
+    },
+    {
+      "name": "Metrics",
+      "description": "metrics"
+    },
+    {
+      "name": "Profiles",
+      "description": "profiles"
+    },
+    {
+      "name": "Segments",
+      "description": "segments"
+    },
+    {
+      "name": "Tags",
+      "description": "tags"
+    },
+    {
+      "name": "Templates",
+      "description": "templates"
+    },
+    {
+      "name": "Client",
+      "description": "client"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "x-readme": {
+    "explorer-enabled": false,
+    "proxy-enabled": true,
+    "samples-enabled": true
+  }
+}
