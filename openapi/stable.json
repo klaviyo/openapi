@@ -11244,7 +11244,7 @@
       "post": {
         "operationId": "create_list_relationships",
         "summary": "Add Profile To List",
-        "description": "Add a profile to a list with the given list ID.\n\nIt is recommended that you use the [Subscribe Profiles endpoint](https://developers.klaviyo.com/en/reference/subscribe_profiles) if you're trying to give a profile consent to receive email marketing, SMS marketing, or both.\n\nThis endpoint accepts a maximum of 1000 profiles per call.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`list:write`\n`profiles:write`",
+        "description": "Add a profile to a list with the given list ID.\n\nIt is recommended that you use the [Subscribe Profiles endpoint](https://developers.klaviyo.com/en/reference/subscribe_profiles) if you're trying to give a profile [consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api) to receive email marketing, SMS marketing, or both.\n\nThis endpoint accepts a maximum of 1000 profiles per call.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`list:write`\n`profiles:write`",
         "parameters": [
           {
             "name": "id",
@@ -11303,7 +11303,7 @@
       "delete": {
         "operationId": "delete_list_relationships",
         "summary": "Remove Profile From List",
-        "description": "Remove a profile from a list with the given list ID.\n\nThe provided profile will no longer receive marketing from this particular list once removed.\n\nRemoving a profile from a list will not impact the profile's consent status or subscription status in general.\nTo update a profile's subscription status, please use the [Unsubscribe Profiles endpoint](https://developers.klaviyo.com/en/reference/unsubscribe_profiles).\n\nThis endpoint accepts a maximum of 1000 profiles per call.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`list:write`\n`profiles:write`",
+        "description": "Remove a profile from a list with the given list ID.\n\nThe provided profile will no longer receive marketing from this particular list once removed.\n\nRemoving a profile from a list will not impact the profile's [consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api) status or subscription status in general.\nTo update a profile's subscription status, please use the [Unsubscribe Profiles endpoint](https://developers.klaviyo.com/en/reference/unsubscribe_profiles).\n\nThis endpoint accepts a maximum of 1000 profiles per call.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`list:write`\n`profiles:write`",
         "parameters": [
           {
             "name": "id",
@@ -12331,7 +12331,7 @@
       "post": {
         "operationId": "suppress_profiles",
         "summary": "Suppress Profiles",
-        "description": "Manually suppress one or more profiles. Such profiles will have `USER_SUPPRESSED` as their suppression reason. Manually suppressed profiles _will not_ receive email marketing. Learn more about suppressed profiles [in this document](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nNot supported for SMS marketing.\n\nMaximum number of profile can be submitted for suppression: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`subscriptions:write`",
+        "description": "Manually suppress one or more profiles. Such profiles will have `USER_SUPPRESSED` as their suppression reason. Manually suppressed profiles _will not_ receive email marketing. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\nLearn about [collecting consent and best practices](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nNot supported for SMS marketing.\n\nMaximum number of profile can be submitted for suppression: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -12384,7 +12384,7 @@
       "post": {
         "operationId": "unsuppress_profiles",
         "summary": "Unsuppress Profiles",
-        "description": "Unsuppress one or more profiles, this will remove any Manual Suppressions (USER_SUPPRESSED) on these profiles. A profile may receive email marketing after a manual suppression is removed so long as they have not revoked consent, i.e. unsubscribed.\n\nNot supported for SMS marketing. Only manual suppressions (USER_SUPPRESSED) will be removed. `UNSUBSCRIBE` and `SPAM_REPORT` suppressions are removed whenever a [profile resubscribes](https://developers.klaviyo.com/en/reference/subscribe_profiles).\n`INVALID_EMAIL` and `HARD_BOUNCE` suppressions cannot be removed by the API.\n\nMaximum number of profile can be submitted for unsuppression: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
+        "description": "Unsuppress one or more profiles, this will remove any Manual Suppressions (USER_SUPPRESSED) on these profiles. A profile may receive email marketing after a manual suppression is removed so long as they have not revoked [consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api), i.e. unsubscribed.\n\nNot supported for SMS marketing. Only manual suppressions (USER_SUPPRESSED) will be removed. `UNSUBSCRIBE` and `SPAM_REPORT` suppressions are removed whenever a [profile resubscribes](https://developers.klaviyo.com/en/reference/subscribe_profiles).\n`INVALID_EMAIL` and `HARD_BOUNCE` suppressions cannot be removed by the API.\n\nMaximum number of profile can be submitted for unsuppression: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -12436,7 +12436,7 @@
       "post": {
         "operationId": "subscribe_profiles",
         "summary": "Subscribe Profiles",
-        "description": "Subscribe one or more profiles to email marketing, SMS marketing, or both. If the list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message.\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about suppressed profiles in [this document](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profile can be submitted for subscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`list:write`\n`profiles:write`\n`subscriptions:write`",
+        "description": "Subscribe one or more profiles to email marketing, SMS marketing, or both. If the list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message. Learn more about [consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profile can be submitted for subscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`list:write`\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -12490,7 +12490,7 @@
       "post": {
         "operationId": "unsubscribe_profiles",
         "summary": "Unsubscribe Profiles",
-        "description": "Unsubscribe one or more profiles to email marketing, SMS marketing, or both.\n\nTo remove someone from a list without changing their subscription status, use [Remove Profile from List](https://developers.klaviyo.com/en/reference/delete_list_relationships).\n\nMaximum number of profile can be submitted for unsubscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`list:write`\n`profiles:write`\n`subscriptions:write`",
+        "description": "Unsubscribe one or more profiles to email marketing, SMS marketing, or both. Learn more about [consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nTo remove someone from a list without changing their subscription status, use [Remove Profile from List](https://developers.klaviyo.com/en/reference/delete_list_relationships).\n\nMaximum number of profile can be submitted for unsubscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`list:write`\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -17610,10 +17610,9 @@
                 "type": "object"
               },
               "datetime": {
-                "description": "Event timestamp in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "description": "Event timestamp in string format (YYYY-MM-DD HH:MM:SS+hh:mm)",
                 "type": "string",
-                "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08 01:23:45+00:00"
               },
               "uuid": {
                 "description": "A unique identifier for the event, this can be used as a cursor in pagination",
