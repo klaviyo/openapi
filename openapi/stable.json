@@ -1534,7 +1534,7 @@
             }
           },
           {
-            "name": "fields[campaign-message]",
+            "name": "fields[campaign]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2023-12-15/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -1543,17 +1543,29 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "label",
-                  "channel",
-                  "content",
-                  "send_times",
-                  "render_options",
-                  "render_options.shorten_links",
-                  "render_options.add_org_prefix",
-                  "render_options.add_info_link",
-                  "render_options.add_opt_out_language",
+                  "name",
+                  "status",
+                  "archived",
+                  "audiences",
+                  "audiences.included",
+                  "audiences.excluded",
+                  "send_options",
+                  "tracking_options",
+                  "send_strategy",
+                  "send_strategy.method",
+                  "send_strategy.options_static",
+                  "send_strategy.options_static.datetime",
+                  "send_strategy.options_static.is_local",
+                  "send_strategy.options_static.send_past_recipients_immediately",
+                  "send_strategy.options_throttled",
+                  "send_strategy.options_throttled.datetime",
+                  "send_strategy.options_throttled.throttle_percentage",
+                  "send_strategy.options_sto",
+                  "send_strategy.options_sto.date",
                   "created_at",
-                  "updated_at"
+                  "scheduled_at",
+                  "updated_at",
+                  "send_time"
                 ]
               }
             },
@@ -1576,7 +1588,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCampaignMessageResponse"
+                  "$ref": "#/components/schemas/GetCampaignResponse"
                 }
               }
             }
@@ -7962,7 +7974,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetEventResponseCollectionCompoundDocument"
+                  "$ref": "#/components/schemas/GetEventResponse20231215CollectionCompoundDocument"
                 }
               }
             }
@@ -8161,7 +8173,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetEventResponseCompoundDocument"
+                  "$ref": "#/components/schemas/GetEventResponse20231215CompoundDocument"
                 }
               }
             }
@@ -10597,7 +10609,8 @@
                 "enum": [
                   "name",
                   "created",
-                  "updated"
+                  "updated",
+                  "opt_in_process"
                 ]
               }
             },
@@ -10795,6 +10808,7 @@
                   "name",
                   "created",
                   "updated",
+                  "opt_in_process",
                   "profile_count"
                 ]
               }
@@ -12033,7 +12047,8 @@
                 "enum": [
                   "name",
                   "created",
-                  "updated"
+                  "updated",
+                  "opt_in_process"
                 ]
               }
             },
@@ -12452,7 +12467,8 @@
                 "enum": [
                   "name",
                   "created",
-                  "updated"
+                  "updated",
+                  "opt_in_process"
                 ]
               }
             },
@@ -12616,7 +12632,7 @@
           }
         ],
         "requestBody": {
-          "description": "Suppresses one or more profiles from receiving marketing. Currently, supports email only. If a profile is not found\nwith the given email, one will be created and immediately suppressed.",
+          "description": "Suppresses one or more profiles from receiving marketing. Currently, supports email only. If a profile is not found with the given email, one will be created and immediately suppressed.",
           "required": true,
           "content": {
             "application/json": {
@@ -12707,7 +12723,7 @@
       "post": {
         "operationId": "subscribe_profiles",
         "summary": "Subscribe Profiles",
-        "description": "Subscribe one or more profiles to email marketing, SMS marketing, or both. If the provided list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message.\n\nIf a list is not provided, the opt-in process used will be determined by the [account-level default opt-in setting](https://www.klaviyo.com/settings/account/api-keys).\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profiles can be submitted for subscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
+        "description": "Subscribe one or more profiles to email marketing, SMS marketing, or both. If the provided list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message.\nLearn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nIf a list is not provided, the opt-in process used will be determined by the [account-level default opt-in setting](https://www.klaviyo.com/settings/account/api-keys).\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profiles can be submitted for subscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -12721,7 +12737,7 @@
           }
         ],
         "requestBody": {
-          "description": "Subscribes one or more profiles to marketing. Currently, supports email and SMS only. All profiles will be added to\nthe provided list. Either email or phone number is required. Both may be specified to subscribe to both channels.\nIf a profile cannot be found matching the given identifier(s), a new profile will be created and then subscribed.",
+          "description": "Subscribes one or more profiles to marketing. Currently, supports email and SMS only. All profiles will be added to the provided list. Either email or phone number is required. Both may be specified to subscribe to both channels.\nIf a profile cannot be found matching the given identifier(s), a new profile will be created and then subscribed.",
           "required": true,
           "content": {
             "application/json": {
@@ -12761,7 +12777,7 @@
       "post": {
         "operationId": "unsubscribe_profiles",
         "summary": "Unsubscribe Profiles",
-        "description": "Unsubscribe one or more profiles to email marketing, SMS marketing, or both. Learn more about [consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nTo remove someone from a list without changing their subscription status, use [Remove Profile from List](https://developers.klaviyo.com/en/reference/delete_list_relationships).\n\nMaximum number of profile can be submitted for unsubscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
+        "description": "Unsubscribe one or more profiles to email marketing, SMS marketing, or both. Learn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nTo remove someone from a list without changing their subscription status, use [Remove Profile from List](https://developers.klaviyo.com/en/reference/delete_list_relationships).\n\nMaximum number of profile can be submitted for unsubscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -12775,7 +12791,7 @@
           }
         ],
         "requestBody": {
-          "description": "Unsubscribes one or more profiles from marketing. Currently, supports email and SMS only. All profiles will be\nremoved from the provided list. Either email or phone number is required. If a profile cannot be found matching the\ngiven identifier(s), a new profile will be created and then unsubscribed.",
+          "description": "Unsubscribes one or more profiles from marketing. Currently, supports email and SMS only. All profiles will be removed from the provided list.\nEither email or phone number is required. If a profile cannot be found matching the given identifier(s), a new profile will be created and then unsubscribed.",
           "required": true,
           "content": {
             "application/json": {
@@ -12890,7 +12906,8 @@
                 "enum": [
                   "name",
                   "created",
-                  "updated"
+                  "updated",
+                  "opt_in_process"
                 ]
               }
             },
@@ -13160,7 +13177,8 @@
                 "enum": [
                   "name",
                   "created",
-                  "updated"
+                  "updated",
+                  "opt_in_process"
                 ]
               }
             },
@@ -17181,29 +17199,10 @@
                         "profile": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ProfileEnum"
-                                },
-                                "id": {
-                                  "type": "string",
-                                  "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -17270,29 +17269,10 @@
                       "profile": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/ProfileEnum"
-                              },
-                              "id": {
-                                "type": "string",
-                                "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -17329,56 +17309,18 @@
                         "coupon": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CouponEnum"
-                                },
-                                "id": {
-                                  "type": "string",
-                                  "example": "10OFF"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "profile": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ProfileEnum"
-                                },
-                                "id": {
-                                  "type": "string",
-                                  "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -17779,28 +17721,10 @@
                         "item": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CatalogItemEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -17834,28 +17758,10 @@
                       "item": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/CatalogItemEnum"
-                              },
-                              "id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -17929,31 +17835,10 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CatalogItemEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -17987,31 +17872,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CatalogItemEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -18337,7 +18201,7 @@
           "data"
         ]
       },
-      "EventResponseObjectResource": {
+      "EventResponse20231215ObjectResource": {
         "type": "object",
         "properties": {
           "type": {
@@ -18380,7 +18244,7 @@
           "links"
         ]
       },
-      "GetEventResponseCollectionCompoundDocument": {
+      "GetEventResponse20231215CollectionCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
@@ -18388,7 +18252,7 @@
             "items": {
               "allOf": [
                 {
-                  "$ref": "#/components/schemas/EventResponseObjectResource"
+                  "$ref": "#/components/schemas/EventResponse20231215ObjectResource"
                 },
                 {
                   "properties": {
@@ -18478,13 +18342,13 @@
           "links"
         ]
       },
-      "GetEventResponseCompoundDocument": {
+      "GetEventResponse20231215CompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/EventResponseObjectResource"
+                "$ref": "#/components/schemas/EventResponse20231215ObjectResource"
               },
               {
                 "properties": {
@@ -19038,60 +18902,18 @@
                       "lists": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ListEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "segments": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/SegmentEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -19217,6 +19039,14 @@
                 "type": "string",
                 "format": "date-time",
                 "example": "2022-11-08T00:00:00"
+              },
+              "opt_in_process": {
+                "description": "The opt-in process for this list.  Could be either 'single_opt_in' or 'double_opt_in'.",
+                "type": "string",
+                "enum": [
+                  "double_opt_in",
+                  "single_opt_in"
+                ]
               }
             }
           },
@@ -19249,31 +19079,10 @@
                         "profiles": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ProfileEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "tags": {
                           "type": "object",
@@ -19356,6 +19165,14 @@
                 "type": "string",
                 "format": "date-time",
                 "example": "2022-11-08T00:00:00"
+              },
+              "opt_in_process": {
+                "description": "The opt-in process for this list.  Could be either 'single_opt_in' or 'double_opt_in'.",
+                "type": "string",
+                "enum": [
+                  "double_opt_in",
+                  "single_opt_in"
+                ]
               }
             }
           },
@@ -19386,31 +19203,10 @@
                       "profiles": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ProfileEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "tags": {
                         "type": "object",
@@ -19551,144 +19347,42 @@
                         "tag-group": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/TagGroupEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "lists": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ListEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "segments": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/SegmentEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "campaigns": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CampaignEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "flows": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/FlowEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -19853,60 +19547,18 @@
                         "lists": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ListEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "segments": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/SegmentEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -20001,31 +19653,10 @@
                         "profiles": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ProfileEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "tags": {
                           "type": "object",
@@ -20136,31 +19767,10 @@
                       "profiles": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ProfileEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "tags": {
                         "type": "object",
@@ -20395,60 +20005,18 @@
                         "lists": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ListEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "segments": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/SegmentEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -20689,6 +20257,14 @@
                 "type": "string",
                 "format": "date-time",
                 "example": "2022-11-08T00:00:00"
+              },
+              "opt_in_process": {
+                "description": "The opt-in process for this list.  Could be either 'single_opt_in' or 'double_opt_in'.",
+                "type": "string",
+                "enum": [
+                  "double_opt_in",
+                  "single_opt_in"
+                ]
               }
             }
           },
@@ -20721,60 +20297,18 @@
                         "profiles": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ProfileEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "tags": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/TagEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -20878,60 +20412,18 @@
                         "profiles": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ProfileEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "tags": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/TagEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -21106,62 +20598,18 @@
                         "profiles": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ProfileEnum"
-                                  },
-                                  "id": {
-                                    "description": "IDs of the created/updated profiles",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "import-errors": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ImportErrorEnum"
-                                  },
-                                  "id": {
-                                    "description": "Errors encountering during import",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -21225,62 +20673,18 @@
                       "profiles": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ProfileEnum"
-                                },
-                                "id": {
-                                  "description": "IDs of the created/updated profiles",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "import-errors": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ImportErrorEnum"
-                                },
-                                "id": {
-                                  "description": "Errors encountering during import",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -21343,60 +20747,18 @@
                         "lists": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ListEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "segments": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/SegmentEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -21567,6 +20929,7 @@
                 "enum": [
                   "Added to List",
                   "Date Based",
+                  "Low Inventory",
                   "Metric",
                   "Price Drop",
                   "Unconfigured"
@@ -21957,57 +21320,18 @@
                         "flow": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/FlowEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "flow-messages": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/FlowMessageEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -22185,60 +21509,18 @@
                       "flow-actions": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/FlowActionEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "tags": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/TagEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -22394,54 +21676,18 @@
                         "flow-action": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/FlowActionEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "template": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/TemplateEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -22590,57 +21836,18 @@
                       "flow": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/FlowEnum"
-                              },
-                              "id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "flow-messages": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/FlowMessageEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -23537,72 +22744,34 @@
           "data"
         ]
       },
-      "GetCampaignMessageResponse": {
+      "GetCampaignResponse": {
         "type": "object",
         "properties": {
           "data": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/CampaignMessageResponseObjectResource"
+                "$ref": "#/components/schemas/CampaignResponseObjectResource"
               },
               {
                 "properties": {
                   "relationships": {
                     "type": "object",
                     "properties": {
-                      "campaign": {
+                      "campaign-messages": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/CampaignEnum"
-                              },
-                              "id": {
-                                "description": "The parent campaign id",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
-                      "template": {
+                      "tags": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/TemplateEnum"
-                              },
-                              "id": {
-                                "description": "The associated template id",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -24467,33 +23636,10 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CatalogItemEnum"
-                                  },
-                                  "id": {
-                                    "description": "IDs of the deleted catalog items.",
-                                    "type": "string",
-                                    "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -24527,33 +23673,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CatalogItemEnum"
-                                },
-                                "id": {
-                                  "description": "IDs of the deleted catalog items.",
-                                  "type": "string",
-                                  "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -25082,33 +24205,10 @@
                         "variants": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CatalogVariantEnum"
-                                  },
-                                  "id": {
-                                    "description": "IDs of the deleted catalog variants.",
-                                    "type": "string",
-                                    "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -25142,33 +24242,10 @@
                       "variants": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CatalogVariantEnum"
-                                },
-                                "id": {
-                                  "description": "IDs of the deleted catalog variants.",
-                                  "type": "string",
-                                  "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -25697,33 +24774,10 @@
                         "categories": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CatalogCategoryEnum"
-                                  },
-                                  "id": {
-                                    "description": "IDs of the deleted catalog categories.",
-                                    "type": "string",
-                                    "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -25757,33 +24811,10 @@
                       "categories": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CatalogCategoryEnum"
-                                },
-                                "id": {
-                                  "description": "IDs of the deleted catalog categories.",
-                                  "type": "string",
-                                  "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -25840,118 +24871,34 @@
                         "lists": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ListEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "segments": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/SegmentEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "campaigns": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CampaignEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         },
                         "flows": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/FlowEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -26017,118 +24964,34 @@
                       "lists": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ListEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "segments": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/SegmentEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "campaigns": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CampaignEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       },
                       "flows": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/FlowEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -26210,31 +25073,10 @@
                         "tags": {
                           "type": "object",
                           "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/TagEnum"
-                                  },
-                                  "id": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
-                          },
-                          "required": [
-                            "data"
-                          ]
+                          }
                         }
                       }
                     }
@@ -26268,31 +25110,10 @@
                       "tags": {
                         "type": "object",
                         "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/TagEnum"
-                                },
-                                "id": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
-                        },
-                        "required": [
-                          "data"
-                        ]
+                        }
                       }
                     }
                   }
@@ -28735,6 +27556,14 @@
                     "type": "string",
                     "format": "date-time",
                     "example": "2022-11-08T00:00:00"
+                  },
+                  "opt_in_process": {
+                    "description": "The opt-in process for this list.  Could be either 'single_opt_in' or 'double_opt_in'.",
+                    "type": "string",
+                    "enum": [
+                      "double_opt_in",
+                      "single_opt_in"
+                    ]
                   }
                 }
               },
@@ -32801,6 +31630,12 @@
             "enum": [
               "SUBSCRIBED"
             ]
+          },
+          "consented_at": {
+            "description": "The timestamp of when the profile's consent was gathered",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-23T14:00:00-0400"
           }
         },
         "required": [
@@ -32863,7 +31698,7 @@
                 "example": "matt-kemp@klaviyo-demo.com"
               },
               "phone_number": {
-                "description": "The phone number to subscribe or to set on the profile if `channels` is specified and the SMS channel is omitted.",
+                "description": "The phone number to subscribe or to set on the profile if `channels` is specified and the SMS channel is omitted. This must be in E.164 format.",
                 "type": "string",
                 "example": "+15005550006"
               },
@@ -32974,7 +31809,7 @@
                 "example": "matt-kemp@klaviyo-demo.com"
               },
               "phone_number": {
-                "description": "The phone number to unsubscribe.",
+                "description": "The phone number to unsubscribe. This must be in E.164 format.",
                 "type": "string",
                 "example": "+15005550006"
               }
@@ -34708,6 +33543,14 @@
                     "type": "string",
                     "format": "date-time",
                     "example": "2022-11-08T00:00:00"
+                  },
+                  "opt_in_process": {
+                    "description": "The opt-in process for this list.  Could be either 'single_opt_in' or 'double_opt_in'.",
+                    "type": "string",
+                    "enum": [
+                      "double_opt_in",
+                      "single_opt_in"
+                    ]
                   }
                 }
               },
@@ -35282,6 +34125,7 @@
                     "enum": [
                       "Added to List",
                       "Date Based",
+                      "Low Inventory",
                       "Metric",
                       "Price Drop",
                       "Unconfigured"
