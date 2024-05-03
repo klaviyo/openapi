@@ -12693,7 +12693,7 @@
       "post": {
         "operationId": "suppress_profiles",
         "summary": "Suppress Profiles",
-        "description": "Manually suppress one or more profiles. Such profiles will have `USER_SUPPRESSED` as their suppression reason. Manually suppressed profiles _will not_ receive email marketing. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\nLearn about [collecting consent and best practices](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nNot supported for SMS marketing.\n\nMaximum number of profile can be submitted for suppression: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`subscriptions:write`",
+        "description": "Manually suppress profiles using their email address, or by specifying a segment or list ID to suppress all current members.\n\nSuppressed profiles cannot receive email marketing, independent of their consent status. To learn more, see our [email suppressions guide](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1) and our [collecting consent guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nEmail addresses per request limit: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -12746,7 +12746,7 @@
       "post": {
         "operationId": "unsuppress_profiles",
         "summary": "Unsuppress Profiles",
-        "description": "Unsuppress one or more profiles, this will remove any Manual Suppressions (USER_SUPPRESSED) on these profiles. A profile may receive email marketing after a manual suppression is removed so long as they have not revoked [consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api), i.e. unsubscribed.\n\nNot supported for SMS marketing. Only manual suppressions (USER_SUPPRESSED) will be removed. `UNSUBSCRIBE` and `SPAM_REPORT` suppressions are removed whenever a [profile resubscribes](https://developers.klaviyo.com/en/reference/subscribe_profiles).\n`INVALID_EMAIL` and `HARD_BOUNCE` suppressions cannot be removed by the API.\n\nMaximum number of profile can be submitted for unsuppression: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
+        "description": "Manually unsuppress profiles using their email address, or by specifying a segment or list ID to unsuppress all current members.\n\nThis only removes suppressions with reason `USER_SUPPRESSED`, leaving unsubscribed profiles and profiles suppressed with reason `INVALID_EMAIL` or `HARD_BOUNCE` unchanged. To learn more, see our [email suppressions guide](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1) and our [collecting consent guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nEmail addresses per request limit: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -12798,7 +12798,7 @@
       "post": {
         "operationId": "subscribe_profiles",
         "summary": "Subscribe Profiles",
-        "description": "Subscribe one or more profiles to email marketing, SMS marketing, or both. If the provided list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message.\nLearn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nIf a list is not provided, the opt-in process used will be determined by the [account-level default opt-in setting](https://www.klaviyo.com/settings/account/api-keys).\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profiles can be submitted for subscription: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
+        "description": "Subscribe one or more profiles to email marketing, SMS marketing, or both. If the provided list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message.\nLearn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nIf a list is not provided, the opt-in process used will be determined by the [account-level default opt-in setting](https://www.klaviyo.com/settings/account/api-keys).\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profiles can be submitted for subscription: 100\n\nNOTE: if `consented_at` is provided for a double opt-in subscription, it will be ignored and the subscription will be processed without backdating.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -16925,7 +16925,7 @@
       "post": {
         "operationId": "create_client_push_token",
         "summary": "Create or Update Client Push Token",
-        "description": "Create or update a push token.\n\nThis endpoint is designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)).\nYou must have push notifications enabled to use this endpoint.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`",
+        "description": "Create or update a push token.\n\nThis endpoint is designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)).\nYou must have push notifications enabled to use this endpoint.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `150/m`",
         "parameters": [
           {
             "name": "company_id",
@@ -16977,7 +16977,7 @@
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "3/s",
-          "steady": "60/m"
+          "steady": "150/m"
         },
         "x-klaviyo-scopes": []
       }
@@ -17047,7 +17047,7 @@
       "post": {
         "operationId": "create_client_event",
         "summary": "Create Client Event",
-        "description": "Create a new event to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only. To create events from server-based applications, please use [POST /api/events](https://developers.klaviyo.com/en/reference/create_event)<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`",
+        "description": "Create a new event to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only. To create events from server-based applications, please use [POST /api/events](https://developers.klaviyo.com/en/reference/create_event)\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`",
         "parameters": [
           {
             "name": "company_id",
@@ -17110,7 +17110,7 @@
       "post": {
         "operationId": "create_client_profile",
         "summary": "Create or Update Client Profile",
-        "description": "Create and update properties about a profile without tracking an associated event.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only. To create profiles from server applications (e.g. custom server-side scripts / applications), please use [POST /api/profiles](https://developers.klaviyo.com/en/reference/create_profile)<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`profiles:write`",
+        "description": "Create and update properties about a profile without tracking an associated event.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only. To create profiles from server applications (e.g. custom server-side scripts / applications), please use [POST /api/profiles](https://developers.klaviyo.com/en/reference/create_profile)\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`profiles:write`",
         "parameters": [
           {
             "name": "company_id",
@@ -17744,14 +17744,14 @@
                 "description": "Date and time when the catalog item was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the catalog item was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             }
@@ -18000,14 +18000,14 @@
                 "description": "Date and time when the catalog item  variant was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the catalog item variant was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             }
@@ -18124,7 +18124,7 @@
                 "description": "Date and time when the catalog category was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             }
@@ -18286,7 +18286,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -18311,7 +18311,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -18326,7 +18326,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -19219,7 +19219,7 @@
             "description": "Expected date of next order, as calculated at the time of their most recent order",
             "type": "string",
             "format": "date-time",
-            "example": "2022-11-08T00:00:00",
+            "example": "2022-11-08T00:00:00+00:00",
             "nullable": true
           }
         }
@@ -19291,21 +19291,21 @@
                 "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "last_event_date": {
                 "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "location": {
@@ -19481,14 +19481,14 @@
                 "description": "Date and time when the list was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the list was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "opt_in_process": {
@@ -19611,14 +19611,14 @@
                 "description": "Date and time when the list was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the list was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "opt_in_process": {
@@ -19950,21 +19950,21 @@
                 "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "last_event_date": {
                 "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "location": {
@@ -19983,7 +19983,7 @@
                 "description": "The datetime when this profile most recently joined the list.",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               }
             },
             "required": [
@@ -20088,14 +20088,14 @@
                 "description": "Date and time when the segment was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the segment was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "is_active": {
@@ -20221,14 +20221,14 @@
                 "description": "Date and time when the segment was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the segment was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "is_active": {
@@ -20459,21 +20459,21 @@
                 "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "last_event_date": {
                 "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "location": {
@@ -20492,7 +20492,7 @@
                 "description": "The datetime when this profile most recently joined the segment.",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               }
             },
             "required": [
@@ -20779,14 +20779,14 @@
                 "description": "Date and time when the list was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the list was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "opt_in_process": {
@@ -20906,14 +20906,14 @@
                 "description": "Date and time when the segment was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "Date and time when the segment was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "is_active": {
@@ -21044,7 +21044,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -21069,21 +21069,21 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "expires_at": {
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "started_at": {
                 "description": "Date and time the job started processing in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -21476,13 +21476,13 @@
               "created": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "trigger_type": {
@@ -21828,13 +21828,13 @@
               "created": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "settings": {
@@ -22208,13 +22208,13 @@
               "created": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -22517,14 +22517,14 @@
                 "description": "The date the template was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated": {
                 "description": "The date the template was updated in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -22675,7 +22675,7 @@
             "description": "The time to send at",
             "type": "string",
             "format": "date-time",
-            "example": "2022-11-08T00:00:00"
+            "example": "2022-11-08T00:00:00+00:00"
           },
           "is_local": {
             "description": "If the campaign should be sent with local recipient timezone send (requires UTC time) or statically sent at the given time. Defaults to False.",
@@ -22810,25 +22810,25 @@
                 "description": "The datetime when the campaign was created",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "scheduled_at": {
                 "description": "The datetime when the campaign was scheduled for future sending",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "updated_at": {
                 "description": "The datetime when the campaign was last updated by a user or the system",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "send_time": {
                 "description": "The datetime when the campaign will be / was sent or None if not yet scheduled by a send_job.",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               }
             },
             "required": [
@@ -23125,7 +23125,7 @@
             "description": "The datetime that the message is to be sent",
             "type": "string",
             "format": "date-time",
-            "example": "2022-11-08T00:00:00"
+            "example": "2022-11-08T00:00:00+00:00"
           },
           "is_local": {
             "description": "Whether that datetime is to be a local datetime for the recipient",
@@ -23214,14 +23214,14 @@
                 "description": "The datetime when the message was created",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "updated_at": {
                 "description": "The datetime when the message was last updated",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -23760,7 +23760,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -23785,7 +23785,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -23800,7 +23800,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -23972,7 +23972,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -23997,7 +23997,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -24012,7 +24012,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -24184,7 +24184,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -24209,7 +24209,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -24224,7 +24224,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -24344,7 +24344,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -24369,7 +24369,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -24384,7 +24384,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -24556,7 +24556,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -24581,7 +24581,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -24596,7 +24596,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -24768,7 +24768,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -24793,7 +24793,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -24808,7 +24808,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -24928,7 +24928,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -24953,7 +24953,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -24968,7 +24968,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -25140,7 +25140,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -25165,7 +25165,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -25180,7 +25180,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -25352,7 +25352,7 @@
                 "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               },
               "total_count": {
                 "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -25377,7 +25377,7 @@
                 "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "errors": {
@@ -25392,7 +25392,7 @@
                 "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               }
             },
@@ -26142,7 +26142,7 @@
               "updated_at": {
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00"
+                "example": "2022-11-08T00:00:00+00:00"
               }
             },
             "required": [
@@ -26717,14 +26717,14 @@
                     "description": "Date and time when the catalog item was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the catalog item was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 }
@@ -27063,14 +27063,14 @@
                     "description": "Date and time when the catalog item  variant was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the catalog item variant was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 }
@@ -27247,7 +27247,7 @@
                     "description": "Date and time when the catalog category was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 }
@@ -27379,7 +27379,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -27404,7 +27404,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -27419,7 +27419,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -27765,7 +27765,7 @@
           }
         }
       },
-      "OnsiteProfileCreateQueryResourceObject": {
+      "EventProfileCreateQueryResourceObject": {
         "type": "object",
         "properties": {
           "type": {
@@ -27778,14 +27778,7 @@
             "nullable": true
           },
           "attributes": {
-            "type": "object",
             "properties": {
-              "email": {
-                "description": "Individual's email address",
-                "type": "string",
-                "example": "sarah.mason@klaviyo-demo.com",
-                "nullable": true
-              },
               "phone_number": {
                 "description": "Individual's phone number in E.164 format",
                 "type": "string",
@@ -27849,12 +27842,18 @@
                   "pseudonym": "Dr. Octopus"
                 },
                 "nullable": true
+              },
+              "meta": {
+                "$ref": "#/components/schemas/OnsiteProfileMeta",
+                "nullable": true
+              },
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
               }
             }
-          },
-          "meta": {
-            "$ref": "#/components/schemas/OnsiteProfileMeta",
-            "nullable": true
           }
         },
         "required": [
@@ -27892,7 +27891,7 @@
                 "description": "When this event occurred. By default, the time the request was received will be used.\nThe time is truncated to the second. The time must be after the year 2000 and can only\nbe up to 1 year in the future.",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "value": {
@@ -27927,7 +27926,7 @@
                 "type": "object",
                 "properties": {
                   "data": {
-                    "$ref": "#/components/schemas/OnsiteProfileCreateQueryResourceObject"
+                    "$ref": "#/components/schemas/EventProfileCreateQueryResourceObject"
                   }
                 },
                 "required": [
@@ -28217,7 +28216,7 @@
                       "type": "string",
                       "format": "date-time"
                     },
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "data": {
                     "description": "Aggregation result data",
@@ -28311,14 +28310,14 @@
                     "description": "Date and time when the list was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the list was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "opt_in_process": {
@@ -28595,21 +28594,21 @@
                     "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "last_event_date": {
                     "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "location": {
@@ -28939,7 +28938,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -28964,21 +28963,21 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "expires_at": {
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "started_at": {
                     "description": "Date and time the job started processing in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -29410,25 +29409,25 @@
                     "description": "The datetime when the campaign was created",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "scheduled_at": {
                     "description": "The datetime when the campaign was scheduled for future sending",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "updated_at": {
                     "description": "The datetime when the campaign was last updated by a user or the system",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "send_time": {
                     "description": "The datetime when the campaign will be / was sent or None if not yet scheduled by a send_job.",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   }
                 },
                 "required": [
@@ -29677,14 +29676,14 @@
                     "description": "The datetime when the message was created",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated_at": {
                     "description": "The datetime when the message was last updated",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -30008,14 +30007,14 @@
                     "description": "The date the template was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "The date the template was updated in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -30201,7 +30200,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -30226,7 +30225,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -30241,7 +30240,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -30380,7 +30379,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -30405,7 +30404,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -30420,7 +30419,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -30576,7 +30575,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -30601,7 +30600,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -30616,7 +30615,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -30755,7 +30754,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -30780,7 +30779,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -30795,7 +30794,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -31041,7 +31040,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -31066,7 +31065,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -31081,7 +31080,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -31237,7 +31236,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -31262,7 +31261,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -31277,7 +31276,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -31416,7 +31415,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -31441,7 +31440,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -31456,7 +31455,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -31595,7 +31594,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -31620,7 +31619,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -31635,7 +31634,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -31791,7 +31790,7 @@
                     "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "total_count": {
                     "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
@@ -31816,7 +31815,7 @@
                     "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "errors": {
@@ -31831,7 +31830,7 @@
                     "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -32419,6 +32418,7 @@
               "profiles": {
                 "description": "The profile(s) to create suppressions for.",
                 "type": "object",
+                "nullable": true,
                 "properties": {
                   "data": {
                     "type": "array",
@@ -32431,10 +32431,62 @@
                   "data"
                 ]
               }
-            },
-            "required": [
-              "profiles"
-            ]
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ListEnum"
+                      },
+                      "id": {
+                        "description": "Suppress all profiles in this list",
+                        "type": "string",
+                        "example": "Y6nRLr"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "segment": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SegmentEnum"
+                      },
+                      "id": {
+                        "description": "Suppress all profiles in this segment",
+                        "type": "string",
+                        "example": "Y6nRLr"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            }
           }
         },
         "required": [
@@ -32487,6 +32539,7 @@
               "profiles": {
                 "description": "The profile(s) to remove suppressions for.",
                 "type": "object",
+                "nullable": true,
                 "properties": {
                   "data": {
                     "type": "array",
@@ -32499,10 +32552,62 @@
                   "data"
                 ]
               }
-            },
-            "required": [
-              "profiles"
-            ]
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ListEnum"
+                      },
+                      "id": {
+                        "description": "The list to pull the profiles to remove suppressions from",
+                        "type": "string",
+                        "example": "Y6nRLr"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "segment": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SegmentEnum"
+                      },
+                      "id": {
+                        "description": "The segment to pull the profiles to remove suppressions from",
+                        "type": "string",
+                        "example": "Y6nRLr"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            }
           }
         },
         "required": [
@@ -32533,10 +32638,9 @@
             ]
           },
           "consented_at": {
-            "description": "The timestamp of when the profile's consent was gathered",
+            "description": "The timestamp of when the profile's consent was gathered. This is only supported for single opt-in.",
             "type": "string",
             "format": "date-time",
-            "example": "2023-08-23T14:00:00-0400",
             "nullable": true
           }
         },
@@ -32976,6 +33080,104 @@
           }
         }
       },
+      "PushProfileUpsertQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+            "nullable": true
+          },
+          "attributes": {
+            "properties": {
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                "nullable": true
+              },
+              "anonymous_id": {
+                "description": "Id that can be used to identify a profile when other identifiers are not available",
+                "type": "string",
+                "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+                "nullable": true
+              },
+              "_kx": {
+                "description": "Also known as the `exchange_id`, this is an encrypted identifier used for identifying a\nprofile by Klaviyo's web tracking.\n\nYou can use this field as a filter when retrieving profiles via the Get Profiles endpoint.",
+                "type": "string",
+                "example": "J8fjcn003Wy6b-3ILNlOyZXabW6dcFwTyeuxrowMers%3D.McN66",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              },
+              "meta": {
+                "$ref": "#/components/schemas/ProfileMeta",
+                "nullable": true
+              },
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
       "PushTokenCreateQueryResourceObject": {
         "type": "object",
         "properties": {
@@ -33043,7 +33245,7 @@
                 "type": "object",
                 "properties": {
                   "data": {
-                    "$ref": "#/components/schemas/ProfileUpsertQueryResourceObject"
+                    "$ref": "#/components/schemas/PushProfileUpsertQueryResourceObject"
                   }
                 },
                 "required": [
@@ -33157,7 +33359,7 @@
                   "updated_at": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   }
                 },
                 "required": [
@@ -33219,12 +33421,12 @@
           "start": {
             "type": "string",
             "format": "date-time",
-            "example": "2022-11-08T00:00:00"
+            "example": "2022-11-08T00:00:00+00:00"
           },
           "end": {
             "type": "string",
             "format": "date-time",
-            "example": "2022-11-08T00:00:00"
+            "example": "2022-11-08T00:00:00+00:00"
           }
         },
         "required": [
@@ -33299,7 +33501,7 @@
                 "example": "RESQ6t"
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are send_channel, campaign_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
+                "description": "API filter string used to filter the query.\nAllowed filters are send_channel, campaign_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms.",
                 "type": "string",
                 "example": "and(equals(campaign_id,\"abc123\"),contains-any(send_channel,[\"email\",\"sms\"]))",
                 "nullable": true
@@ -33507,7 +33709,7 @@
                 "example": "RESQ6t"
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are flow_id, send_channel, flow_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
+                "description": "API filter string used to filter the query.\nAllowed filters are flow_id, send_channel, flow_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms.",
                 "type": "string",
                 "example": "and(equals(flow_id,\"abc123\"),contains-any(send_channel,[\"email\",\"sms\"]))",
                 "nullable": true
@@ -33740,7 +33942,7 @@
                 "example": "RESQ6t"
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are flow_id, send_channel, flow_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
+                "description": "API filter string used to filter the query.\nAllowed filters are flow_id, send_channel, flow_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms.",
                 "type": "string",
                 "example": "and(equals(flow_id,\"abc123\"),contains-any(send_channel,[\"email\",\"sms\"]))",
                 "nullable": true
@@ -34093,6 +34295,103 @@
           "data"
         ]
       },
+      "OnsiteProfileCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "example": "63f64a2b-c6bf-40c7-b81f-bed08162edbe",
+                "nullable": true
+              },
+              "anonymous_id": {
+                "type": "string",
+                "nullable": true
+              },
+              "_kx": {
+                "description": "Also known as the `exchange_id`, this is an encrypted identifier used for identifying a\nprofile by Klaviyo's web tracking.\n\nYou can use this field as a filter when retrieving profiles via the Get Profiles endpoint.",
+                "type": "string",
+                "example": "J8fjcn003Wy6b-3ILNlOyZXabW6dcFwTyeuxrowMers%3D.McN66",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              }
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/OnsiteProfileMeta",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
       "OnsiteProfileCreateQuery": {
         "type": "object",
         "properties": {
@@ -34133,7 +34432,7 @@
                 "description": "When this event occurred. By default, the time the request was received will be used.\nThe time is truncated to the second. The time must be after the year 2000 and can only\nbe up to 1 year in the future.",
                 "type": "string",
                 "format": "date-time",
-                "example": "2022-11-08T00:00:00",
+                "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
               },
               "value": {
@@ -34811,14 +35110,14 @@
                     "description": "Date and time when the catalog item was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the catalog item was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 }
@@ -34995,14 +35294,14 @@
                     "description": "Date and time when the catalog item  variant was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the catalog item variant was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 }
@@ -35160,7 +35459,7 @@
                     "description": "Date and time when the catalog category was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 }
@@ -35284,14 +35583,14 @@
                     "description": "Date and time when the list was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the list was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "opt_in_process": {
@@ -35449,14 +35748,14 @@
                     "description": "Date and time when the segment was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the segment was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "is_active": {
@@ -35726,21 +36025,21 @@
                     "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "last_event_date": {
                     "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "location": {
@@ -35913,13 +36212,13 @@
                   "created": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "trigger_type": {
@@ -36151,25 +36450,25 @@
                     "description": "The datetime when the campaign was created",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "scheduled_at": {
                     "description": "The datetime when the campaign was scheduled for future sending",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "updated_at": {
                     "description": "The datetime when the campaign was last updated by a user or the system",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   },
                   "send_time": {
                     "description": "The datetime when the campaign will be / was sent or None if not yet scheduled by a send_job.",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   }
                 },
                 "required": [
@@ -36374,14 +36673,14 @@
                     "description": "The datetime when the message was created",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated_at": {
                     "description": "The datetime when the message was last updated",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -36595,14 +36894,14 @@
                     "description": "The date the template was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
                   "updated": {
                     "description": "The date the template was updated in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00",
+                    "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   }
                 },
@@ -36885,7 +37184,7 @@
                   "updated_at": {
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00"
+                    "example": "2022-11-08T00:00:00+00:00"
                   }
                 },
                 "required": [
