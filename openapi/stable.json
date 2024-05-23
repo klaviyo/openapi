@@ -7892,6 +7892,7 @@
                   "first_name",
                   "last_name",
                   "organization",
+                  "locale",
                   "title",
                   "image",
                   "created",
@@ -8123,6 +8124,7 @@
                   "first_name",
                   "last_name",
                   "organization",
+                  "locale",
                   "title",
                   "image",
                   "created",
@@ -8380,6 +8382,7 @@
                   "first_name",
                   "last_name",
                   "organization",
+                  "locale",
                   "title",
                   "image",
                   "created",
@@ -10722,6 +10725,24 @@
             }
           },
           {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-05-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created",
+                "id",
+                "-id",
+                "name",
+                "-name",
+                "updated",
+                "-updated"
+              ]
+            }
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -11461,6 +11482,7 @@
                   "first_name",
                   "last_name",
                   "organization",
+                  "locale",
                   "title",
                   "image",
                   "created",
@@ -11858,6 +11880,7 @@
                   "first_name",
                   "last_name",
                   "organization",
+                  "locale",
                   "title",
                   "image",
                   "created",
@@ -12127,6 +12150,7 @@
                   "first_name",
                   "last_name",
                   "organization",
+                  "locale",
                   "title",
                   "image",
                   "created",
@@ -12261,7 +12285,7 @@
       "patch": {
         "operationId": "update_profile",
         "summary": "Update Profile",
-        "description": "Update the profile with the given profile ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`",
+        "description": "Update the profile with the given profile ID.\n\nNote that setting a field to `null` will clear out the field, whereas not including a field in your request will leave it unchanged.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`",
         "parameters": [
           {
             "name": "id",
@@ -12620,7 +12644,7 @@
       "post": {
         "operationId": "create_or_update_profile",
         "summary": "Create or Update Profile",
-        "description": "Given a set of profile attributes and optionally an ID, create or update a profile.\n\nReturns 201 if a new profile was created, 200 if an existing profile was updated.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`",
+        "description": "Given a set of profile attributes and optionally an ID, create or update a profile.\n\nReturns 201 if a new profile was created, 200 if an existing profile was updated.\n\nNote that setting a field to `null` will clear out the field, whereas not including a field in your request will leave it unchanged.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`",
         "parameters": [
           {
             "name": "revision",
@@ -13464,6 +13488,7 @@
                   "first_name",
                   "last_name",
                   "organization",
+                  "locale",
                   "title",
                   "image",
                   "created",
@@ -14040,6 +14065,24 @@
             }
           },
           {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-05-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created",
+                "id",
+                "-id",
+                "name",
+                "-name",
+                "updated",
+                "-updated"
+              ]
+            }
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -14554,6 +14597,7 @@
                   "first_name",
                   "last_name",
                   "organization",
+                  "locale",
                   "title",
                   "image",
                   "created",
@@ -16920,7 +16964,7 @@
       "post": {
         "operationId": "create_client_subscription",
         "summary": "Create Client Subscription",
-        "description": "*Rate limits*:<br>Burst: `100/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
+        "description": "Creates a subscription and consent record for email and/or SMS channels based on the provided `email` and `phone_number` attributes, respectively. One of either `email` or `phone_number` must be provided.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nTo subscribe profiles from server-side applications, please use [POST /api/profile-subscription-bulk-create-jobs](https://developers.klaviyo.com/en/reference/subscribe_profiles).\n\nTo create a subscription and consent record for only 1 channel but still include the other channel as a profile property, the consent channel can be provided as a top-level attribute and the other channel can be included in the properties object.<br><br>*Rate limits*:<br>Burst: `100/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
         "parameters": [
           {
             "name": "company_id",
@@ -16945,7 +16989,6 @@
           }
         ],
         "requestBody": {
-          "description": "Creates a subscription and consent records for Email and or SMS channels based on the provided email and phone_number\nattributes respectively. One of either email or phone_number must be provided. To create a subscription and consent\nrecord for only one channel but still include the other channel as a profile property the consent channel can\nbe provided as a top level attribute and the other channel can be included in the properties object.",
           "required": true,
           "content": {
             "application/json": {
@@ -16978,7 +17021,7 @@
       "post": {
         "operationId": "create_client_push_token",
         "summary": "Create or Update Client Push Token",
-        "description": "Create or update a push token.\n\nThis endpoint is designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)).\nYou must have push notifications enabled to use this endpoint.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `150/m`",
+        "description": "Create or update a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.\n\nTo migrate push tokens from another platform to Klaviyo, please use our server-side [POST /api/push-tokens](https://developers.klaviyo.com/en/reference/create_push_token) endpoint instead.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `150/m`",
         "parameters": [
           {
             "name": "company_id",
@@ -17039,7 +17082,7 @@
       "post": {
         "operationId": "unregister_client_push_token",
         "summary": "Unregister Client Push Token",
-        "description": "Unregister a push token.\n\nThis endpoint is designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)).\nYou must have push notifications enabled to use this endpoint.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`",
+        "description": "Unregister a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`",
         "parameters": [
           {
             "name": "company_id",
@@ -17100,7 +17143,7 @@
       "post": {
         "operationId": "create_client_event",
         "summary": "Create Client Event",
-        "description": "Create a new event to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only. To create events from server-based applications, please use [POST /api/events](https://developers.klaviyo.com/en/reference/create_event)\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`",
+        "description": "Create a new event to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nTo create events from server-side applications, please use [POST /api/events](https://developers.klaviyo.com/en/reference/create_event).\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`",
         "parameters": [
           {
             "name": "company_id",
@@ -17163,7 +17206,7 @@
       "post": {
         "operationId": "create_client_profile",
         "summary": "Create or Update Client Profile",
-        "description": "Create and update properties about a profile without tracking an associated event.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only. To create profiles from server applications (e.g. custom server-side scripts / applications), please use [POST /api/profiles](https://developers.klaviyo.com/en/reference/create_profile)\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`profiles:write`",
+        "description": "Create or update properties about a profile without tracking an associated event.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nTo create or update profiles from server-side applications, please use [POST /api/profile-import](https://developers.klaviyo.com/en/reference/create_or_update_profile).\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`profiles:write`",
         "parameters": [
           {
             "name": "company_id",
@@ -17226,7 +17269,7 @@
       "post": {
         "operationId": "bulk_create_client_events",
         "summary": "Bulk Create Client Events",
-        "description": "Create new events to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only.\n\nAccepts a maximum of `1000` events per request.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:write`",
+        "description": "Create new events to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nTo create events from server-side applications, please use [POST /api/event-bulk-create-jobs](https://developers.klaviyo.com/en/reference/bulk_create_events).\n\nAccepts a maximum of `1000` events per request.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:write`",
         "parameters": [
           {
             "name": "company_id",
@@ -17289,7 +17332,7 @@
       "post": {
         "operationId": "create_client_back_in_stock_subscription",
         "summary": "Create Client Back In Stock Subscription",
-        "description": "Subscribe a profile to receive back in stock notifications. Check out [our Back in Stock API guide](https://developers.klaviyo.com/en/docs/how_to_set_up_custom_back_in_stock) for more details.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only. To create subscriptions from server-based applications, please use [POST /api/back-in-stock-subscriptions](https://developers.klaviyo.com/en/reference/create_back_in_stock_subscription).<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:write`\n`profiles:write`",
+        "description": "Subscribe a profile to receive back in stock notifications. Check out [our Back in Stock API guide](https://developers.klaviyo.com/en/docs/how_to_set_up_custom_back_in_stock) for more details.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nTo create back in stock subscriptions from server-side applications, please use [POST /api/back-in-stock-subscriptions](https://developers.klaviyo.com/en/reference/create_back_in_stock_subscription).<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:write`\n`profiles:write`",
         "parameters": [
           {
             "name": "company_id",
@@ -19291,6 +19334,12 @@
                 "example": "Example Corporation",
                 "nullable": true
               },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
               "title": {
                 "description": "Individual's job title",
                 "type": "string",
@@ -19943,6 +19992,12 @@
                 "example": "Example Corporation",
                 "nullable": true
               },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
               "title": {
                 "description": "Individual's job title",
                 "type": "string",
@@ -20443,6 +20498,12 @@
                 "description": "Name of the company or organization within the company for whom the individual works",
                 "type": "string",
                 "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
                 "nullable": true
               },
               "title": {
@@ -28690,6 +28751,12 @@
                     "example": "Example Corporation",
                     "nullable": true
                   },
+                  "locale": {
+                    "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                    "type": "string",
+                    "example": "en-US",
+                    "nullable": true
+                  },
                   "title": {
                     "description": "Individual's job title",
                     "type": "string",
@@ -35734,6 +35801,12 @@
                     "description": "Name of the company or organization within the company for whom the individual works",
                     "type": "string",
                     "example": "Example Corporation",
+                    "nullable": true
+                  },
+                  "locale": {
+                    "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                    "type": "string",
+                    "example": "en-US",
                     "nullable": true
                   },
                   "title": {
