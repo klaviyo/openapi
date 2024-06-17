@@ -20630,63 +20630,6 @@
           "value"
         ]
       },
-      "StringOperatorWithoutEqualsFilterWithDocOverride": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/StringEnum"
-          },
-          "operator": {
-            "description": "Operators for string filters.",
-            "type": "string",
-            "enum": [
-              "contains",
-              "ends-with",
-              "not-contains",
-              "not-ends-with",
-              "not-equals",
-              "not-starts-with",
-              "starts-with"
-            ]
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "value"
-        ]
-      },
-      "StringArrayOperatorFilterWithDocOverride": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/StringEnum"
-          },
-          "operator": {
-            "description": "Operators for string-in-array filters.",
-            "type": "string",
-            "enum": [
-              "in",
-              "not-in"
-            ]
-          },
-          "value": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "value"
-        ]
-      },
       "ListEnum": {
         "type": "string",
         "enum": [
@@ -20719,86 +20662,6 @@
           "value"
         ]
       },
-      "ListSetFilterWithDocOverride": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/ListEnum"
-          },
-          "operator": {
-            "description": "Operators for new list set filters.\n\nThese will be merged with ListSetOperator when ready to be released",
-            "type": "string",
-            "enum": [
-              "contains-all",
-              "not-contains-all",
-              "not-contains-any"
-            ]
-          },
-          "value": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "value"
-        ]
-      },
-      "ListLengthFilterWithDocOverride": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/ListEnum"
-          },
-          "operator": {
-            "description": "Operators for list length filters.",
-            "type": "string",
-            "enum": [
-              "length-equals",
-              "length-greater-than",
-              "length-greater-than-or-equal",
-              "length-less-than",
-              "length-less-than-or-equal"
-            ]
-          },
-          "value": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "value"
-        ]
-      },
-      "ListSubstringFilter": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/ListEnum"
-          },
-          "operator": {
-            "description": "Operators for list substring filters.",
-            "type": "string",
-            "enum": [
-              "contains-substring",
-              "not-contains-substring"
-            ]
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "value"
-        ]
-      },
       "ProfileMetricPropertyFilter": {
         "type": "object",
         "properties": {
@@ -20812,22 +20675,7 @@
                 "$ref": "#/components/schemas/EqualsStringFilter"
               },
               {
-                "$ref": "#/components/schemas/StringOperatorWithoutEqualsFilterWithDocOverride"
-              },
-              {
-                "$ref": "#/components/schemas/StringArrayOperatorFilterWithDocOverride"
-              },
-              {
                 "$ref": "#/components/schemas/ListSetFilter"
-              },
-              {
-                "$ref": "#/components/schemas/ListSetFilterWithDocOverride"
-              },
-              {
-                "$ref": "#/components/schemas/ListLengthFilterWithDocOverride"
-              },
-              {
-                "$ref": "#/components/schemas/ListSubstringFilter"
               }
             ]
           }
@@ -22837,162 +22685,6 @@
           "filter"
         ]
       },
-      "ProfileHasCustomObjectEnum": {
-        "type": "string",
-        "enum": [
-          "profile-has-custom-object"
-        ]
-      },
-      "IntegerFilter": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/NumericEnum"
-          },
-          "operator": {
-            "description": "Operators for numeric filters.",
-            "type": "string",
-            "enum": [
-              "equals",
-              "greater-than",
-              "greater-than-or-equal",
-              "less-than",
-              "less-than-or-equal",
-              "not-equals"
-            ]
-          },
-          "value": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "value"
-        ]
-      },
-      "NumericRangeFilter": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/NumericEnum"
-          },
-          "operator": {
-            "description": "Operators for numeric range filters.",
-            "type": "string",
-            "enum": [
-              "between"
-            ]
-          },
-          "start": {
-            "oneOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              }
-            ]
-          },
-          "end": {
-            "oneOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              }
-            ]
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "start",
-          "end"
-        ]
-      },
-      "ProfileHasCustomObjectFilter": {
-        "type": "object",
-        "properties": {
-          "field": {
-            "type": "string"
-          },
-          "filter": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/StringOperatorFilter"
-              },
-              {
-                "$ref": "#/components/schemas/StringArrayOperatorFilter"
-              },
-              {
-                "$ref": "#/components/schemas/NumericOperatorFilter"
-              },
-              {
-                "$ref": "#/components/schemas/NumericRangeFilter"
-              },
-              {
-                "$ref": "#/components/schemas/BooleanFilter"
-              },
-              {
-                "$ref": "#/components/schemas/StaticDateFilter"
-              },
-              {
-                "$ref": "#/components/schemas/StaticDateRangeFilter"
-              },
-              {
-                "$ref": "#/components/schemas/RelativeDateFilter"
-              },
-              {
-                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
-              },
-              {
-                "$ref": "#/components/schemas/RelativeDateRangeFilter"
-              },
-              {
-                "$ref": "#/components/schemas/CalendarDateFilter"
-              },
-              {
-                "$ref": "#/components/schemas/AnniversaryDateFilter"
-              },
-              {
-                "$ref": "#/components/schemas/ExistenceOperatorFilter"
-              }
-            ]
-          }
-        },
-        "required": [
-          "field",
-          "filter"
-        ]
-      },
-      "ProfileHasCustomObjectCondition": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/ProfileHasCustomObjectEnum"
-          },
-          "custom_object_label": {
-            "type": "string"
-          },
-          "filter": {
-            "$ref": "#/components/schemas/IntegerFilter"
-          },
-          "filters": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProfileHasCustomObjectFilter"
-            }
-          }
-        },
-        "required": [
-          "type",
-          "custom_object_label",
-          "filter",
-          "filters"
-        ]
-      },
       "ConditionGroup": {
         "type": "object",
         "properties": {
@@ -23026,9 +22718,6 @@
                 },
                 {
                   "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
-                },
-                {
-                  "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
                 }
               ]
             }
