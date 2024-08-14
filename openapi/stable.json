@@ -6977,7 +6977,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -7323,7 +7323,7 @@
       "post": {
         "operationId": "spawn_coupon_code_bulk_create_job",
         "summary": "Spawn Coupon Code Bulk Create Job",
-        "description": "Create a coupon-code-bulk-create-job to bulk create a list of coupon codes.\n\nMax number of jobs queued at once we allow for is 100.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`coupon-codes:write`",
+        "description": "Create a coupon-code-bulk-create-job to bulk create a list of coupon codes.\n\nMax number of coupon codes per job we allow for is 1000.\nMax number of jobs queued at once we allow for is 100.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`coupon-codes:write`",
         "parameters": [
           {
             "name": "revision",
@@ -8308,7 +8308,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetricResponse"
+                  "$ref": "#/components/schemas/GetMetricResponseCollection"
                 }
               }
             }
@@ -8421,6 +8421,11 @@
                   "subscriptions.sms.marketing.method",
                   "subscriptions.sms.marketing.method_detail",
                   "subscriptions.sms.marketing.last_updated",
+                  "subscriptions.mobile_push",
+                  "subscriptions.mobile_push.marketing",
+                  "subscriptions.mobile_push.marketing.can_receive_push_marketing",
+                  "subscriptions.mobile_push.marketing.consent",
+                  "subscriptions.mobile_push.marketing.consent_timestamp",
                   "predictive_analytics",
                   "predictive_analytics.historic_clv",
                   "predictive_analytics.predicted_clv",
@@ -8453,7 +8458,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetProfileResponse"
+                  "$ref": "#/components/schemas/GetProfileResponseCollection"
                 }
               }
             }
@@ -12194,6 +12199,11 @@
                   "subscriptions.sms.marketing.method",
                   "subscriptions.sms.marketing.method_detail",
                   "subscriptions.sms.marketing.last_updated",
+                  "subscriptions.mobile_push",
+                  "subscriptions.mobile_push.marketing",
+                  "subscriptions.mobile_push.marketing.can_receive_push_marketing",
+                  "subscriptions.mobile_push.marketing.consent",
+                  "subscriptions.mobile_push.marketing.consent_timestamp",
                   "predictive_analytics",
                   "predictive_analytics.historic_clv",
                   "predictive_analytics.predicted_clv",
@@ -12458,7 +12468,7 @@
       "post": {
         "operationId": "query_metric_aggregates",
         "summary": "Query Metric Aggregates",
-        "description": "Query and aggregate event data associated with a metric, including native Klaviyo metrics, integration-specific metrics, and custom events. Queries must be passed in the JSON body of your `POST` request.\n\nResults can be filtered and grouped by time, event, or profile dimensions.\n\nTo learn more about how to use this endpoint, check out our new [Using the Query Metric Aggregates Endpoint guide](https://developers.klaviyo.com/en/docs/using-the-query-metric-aggregates-endpoint).\n\n**Request body parameters** (nested under `attributes`):\n\n* `return_fields`: request specific fields using [sparse fieldsets](https://developers.klaviyo.com/en/reference/api_overview#sparse-fieldsets)\n* `sort`: sort results by a specified field, such as `\"-timestamp\"`\n* `page_cursor`: results can be paginated with [cursor-based pagination](https://developers.klaviyo.com/en/reference/api_overview#pagination)\n* `page_size`: limit the number of returned results per page\n* `by`: optional attributes used to group by the aggregation function\n    * When using `by` attributes, an empty `dimensions` response is expected when the counts for the events do not have the associated dimension requested by the set `by` attribute. For example, a query including `\"by\": [\"$flow\"]` will return an empty dimensions response for counts of metrics not associated with a `$flow`\n* `measurement`: the measurement key supports the following values:\n    * `\"sum_value\"`: perform a summation of the `_Event Value_`, optionally partitioned over any dimension provided in the `by` field\n    * `\"count\"`: counts the number of events associated to a metric, optionally partitioned over any dimension provided in the `by` field\n    * `\"unique\"` counts the number of unique customers associated to a metric, optionally partitioned over any dimension provided in the `by` field\n* `interval`: aggregation interval, such as `\"hour\"`,`\"day\"`,`\"week\"`, and `\"month\"`\n* `metric_id`: the metric ID used in the aggregation\n* `filter`: list of filters for specific fields, must include time range using ISO 8601 format (`\"YYYY-MM-DDTHH:MM:SS.mmmmmm\"`)\n    * The time range can be filtered by providing a `greater-or-equal` filter on the datetime field, such as `\"greater-or-equal(datetime,2021-07-01T00:00:00)\"` and a `less-than` filter on the same datetime field, such as `\"less-than(datetime,2022-07-01T00:00:00)\"`\n    * The time range may span a maximum of one year. Time range dates may be set to a maximum of 5 years prior to the current date\n    * Filter the list of supported aggregate dimensions using the common filter syntax, such as `\"equals(URL,\\\"https://www.klaviyo.com/\\\")\"`\n* `timezone`: the timezone used when processing the query. Case sensitive. This field is validated against a list of common timezones from the [IANA Time Zone Database](https://www.iana.org/time-zones)\n    * While the payload accepts a timezone, the response datetimes returned will be in UTC.\n\nFor a comprehensive list of native Klaviyo metrics and their associated attributes for grouping and filtering, please refer to the [metrics attributes guide](https://developers.klaviyo.com/en/docs/supported_metrics_and_attributes).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`metrics:read`",
+        "description": "Query and aggregate event data associated with a metric, including native Klaviyo metrics, integration-specific metrics, and custom events. Queries must be passed in the JSON body of your `POST` request.\n\nTo request campaign and flow performance data that matches the data shown in Klaviyo's UI, we recommend the [Reporting API](https://developers.klaviyo.com/en/reference/reporting_api_overview).\n\nResults can be filtered and grouped by time, event, or profile dimensions.\n\nTo learn more about how to use this endpoint, check out our new [Using the Query Metric Aggregates Endpoint guide](https://developers.klaviyo.com/en/docs/using-the-query-metric-aggregates-endpoint).\n\nFor a comprehensive list of request body parameters, native Klaviyo metrics, and their associated attributes for grouping and filtering, please refer to the [metrics attributes guide](https://developers.klaviyo.com/en/docs/supported_metrics_and_attributes).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`metrics:read`",
         "parameters": [
           {
             "name": "revision",
@@ -12591,6 +12601,11 @@
                   "subscriptions.sms.marketing.method",
                   "subscriptions.sms.marketing.method_detail",
                   "subscriptions.sms.marketing.last_updated",
+                  "subscriptions.mobile_push",
+                  "subscriptions.mobile_push.marketing",
+                  "subscriptions.mobile_push.marketing.can_receive_push_marketing",
+                  "subscriptions.mobile_push.marketing.consent",
+                  "subscriptions.mobile_push.marketing.consent_timestamp",
                   "predictive_analytics",
                   "predictive_analytics.historic_clv",
                   "predictive_analytics.predicted_clv",
@@ -12861,6 +12876,11 @@
                   "subscriptions.sms.marketing.method",
                   "subscriptions.sms.marketing.method_detail",
                   "subscriptions.sms.marketing.last_updated",
+                  "subscriptions.mobile_push",
+                  "subscriptions.mobile_push.marketing",
+                  "subscriptions.mobile_push.marketing.can_receive_push_marketing",
+                  "subscriptions.mobile_push.marketing.consent",
+                  "subscriptions.mobile_push.marketing.consent_timestamp",
                   "predictive_analytics",
                   "predictive_analytics.historic_clv",
                   "predictive_analytics.predicted_clv",
@@ -14203,6 +14223,11 @@
                   "subscriptions.sms.marketing.method",
                   "subscriptions.sms.marketing.method_detail",
                   "subscriptions.sms.marketing.last_updated",
+                  "subscriptions.mobile_push",
+                  "subscriptions.mobile_push.marketing",
+                  "subscriptions.mobile_push.marketing.can_receive_push_marketing",
+                  "subscriptions.mobile_push.marketing.consent",
+                  "subscriptions.mobile_push.marketing.consent_timestamp",
                   "predictive_analytics",
                   "predictive_analytics.historic_clv",
                   "predictive_analytics.predicted_clv",
@@ -15422,6 +15447,11 @@
                   "subscriptions.sms.marketing.method",
                   "subscriptions.sms.marketing.method_detail",
                   "subscriptions.sms.marketing.last_updated",
+                  "subscriptions.mobile_push",
+                  "subscriptions.mobile_push.marketing",
+                  "subscriptions.mobile_push.marketing.can_receive_push_marketing",
+                  "subscriptions.mobile_push.marketing.consent",
+                  "subscriptions.mobile_push.marketing.consent_timestamp",
                   "predictive_analytics",
                   "predictive_analytics.historic_clv",
                   "predictive_analytics.predicted_clv",
@@ -18691,8 +18721,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCouponResponse": {
@@ -18850,8 +18879,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCouponCodeResponseCompoundDocument": {
@@ -18959,8 +18987,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCouponRelationshipCouponCodesListResponseCollection": {
@@ -19158,8 +19185,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogItemResponseCompoundDocument": {
@@ -19384,8 +19410,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogVariantResponse": {
@@ -19501,8 +19526,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogCategoryResponse": {
@@ -19728,8 +19752,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCouponCodeCreateJobResponseCompoundDocument": {
@@ -20012,8 +20035,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetEventResponseCompoundDocument": {
@@ -20177,11 +20199,17 @@
           "links"
         ]
       },
-      "GetMetricResponse": {
+      "GetMetricResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/MetricResponseObjectResource"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetricResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
@@ -20221,10 +20249,10 @@
             "nullable": true,
             "oneOf": [
               {
-                "type": "string"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "string"
               }
             ]
           },
@@ -20234,10 +20262,10 @@
             "nullable": true,
             "oneOf": [
               {
-                "type": "string"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "string"
               }
             ]
           },
@@ -20412,12 +20440,14 @@
             "description": "The timestamp when consent was recorded or updated for SMS marketing, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
             "type": "string",
             "format": "date-time",
-            "example": "2023-02-21T20:07:38+00:00"
+            "example": "2023-02-21T20:07:38+00:00",
+            "nullable": true
           },
           "method": {
             "description": "The method by which the profile was subscribed to SMS marketing.",
             "type": "string",
-            "example": "TEXT"
+            "example": "TEXT",
+            "nullable": true
           },
           "method_detail": {
             "description": "Additional details about the method which the profile was subscribed to SMS marketing. This may be empty if no details were provided.",
@@ -20430,15 +20460,13 @@
             "description": "The timestamp when the SMS consent record was last modified, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
             "type": "string",
             "format": "date-time",
-            "example": "2023-02-21T20:07:38+00:00"
+            "example": "2023-02-21T20:07:38+00:00",
+            "nullable": true
           }
         },
         "required": [
           "can_receive_sms_marketing",
-          "consent",
-          "consent_timestamp",
-          "method",
-          "last_updated"
+          "consent"
         ]
       },
       "SMSChannel": {
@@ -20447,6 +20475,41 @@
           "marketing": {
             "description": "The SMS marketing subscription.",
             "$ref": "#/components/schemas/SMSMarketing",
+            "nullable": true
+          }
+        }
+      },
+      "PushMarketing": {
+        "type": "object",
+        "properties": {
+          "can_receive_push_marketing": {
+            "description": "Whether or not this profile is subscribed to receive mobile push.",
+            "type": "boolean"
+          },
+          "consent": {
+            "description": "The consent status for mobile push marketing.",
+            "type": "string",
+            "example": "SUBSCRIBED"
+          },
+          "consent_timestamp": {
+            "description": "The timestamp when the consent was last changed, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-02-21T20:07:38+00:00"
+          }
+        },
+        "required": [
+          "can_receive_push_marketing",
+          "consent",
+          "consent_timestamp"
+        ]
+      },
+      "PushChannel": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The mobile push marketing subscription.",
+            "$ref": "#/components/schemas/PushMarketing",
             "nullable": true
           }
         }
@@ -20462,6 +20525,11 @@
           "sms": {
             "description": "The SMS channel subscription.",
             "$ref": "#/components/schemas/SMSChannel",
+            "nullable": true
+          },
+          "mobile_push": {
+            "description": "The mobile push channel subscription.",
+            "$ref": "#/components/schemas/PushChannel",
             "nullable": true
           }
         }
@@ -20639,59 +20707,65 @@
           "links"
         ]
       },
-      "GetProfileResponse": {
+      "GetProfileResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ProfileResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "lists": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ProfileResponseObjectResource"
+                },
+                {
+                  "properties": {
+                    "relationships": {
+                      "type": "object",
+                      "properties": {
+                        "lists": {
+                          "type": "object",
+                          "properties": {
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
                           }
-                        }
-                      },
-                      "segments": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
+                        },
+                        "segments": {
+                          "type": "object",
+                          "properties": {
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
                           }
                         }
                       }
                     }
                   }
-                }
-              },
-              {
-                "properties": {
-                  "type": {
-                    "$ref": "#/components/schemas/ProfileEnum"
-                  },
-                  "attributes": {
-                    "properties": {
-                      "subscriptions": {
-                        "$ref": "#/components/schemas/Subscriptions",
-                        "nullable": true
-                      },
-                      "predictive_analytics": {
-                        "$ref": "#/components/schemas/PredictiveAnalytics",
-                        "nullable": true
+                },
+                {
+                  "properties": {
+                    "type": {
+                      "$ref": "#/components/schemas/ProfileEnum"
+                    },
+                    "attributes": {
+                      "properties": {
+                        "subscriptions": {
+                          "$ref": "#/components/schemas/Subscriptions",
+                          "nullable": true
+                        },
+                        "predictive_analytics": {
+                          "$ref": "#/components/schemas/PredictiveAnalytics",
+                          "nullable": true
+                        }
                       }
                     }
                   }
                 }
-              }
-            ]
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
@@ -20746,22 +20820,15 @@
           "data"
         ]
       },
-      "GetMetricResponseCollection": {
+      "GetMetricResponse": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetricResponseObjectResource"
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
+            "$ref": "#/components/schemas/MetricResponseObjectResource"
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "ListListResponseObjectResource": {
@@ -20868,6 +20935,14 @@
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
                           }
+                        },
+                        "flow-triggers": {
+                          "type": "object",
+                          "properties": {
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
                         }
                       }
                     }
@@ -20887,8 +20962,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "ListRetrieveResponseObjectResource": {
@@ -20989,6 +21063,14 @@
                               }
                             }
                           },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
+                      },
+                      "flow-triggers": {
+                        "type": "object",
+                        "properties": {
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -21154,8 +21236,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetListRelationshipsResponseCollection": {
@@ -21368,8 +21449,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "ProfileGroupMembershipEnum": {
@@ -23951,8 +24031,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "SegmentRetrieveResponseObjectResource": {
@@ -24333,8 +24412,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetProfileResponseCollectionCompoundDocument": {
@@ -24399,8 +24477,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetProfileResponseCompoundDocument": {
@@ -24597,6 +24674,14 @@
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
                           }
+                        },
+                        "flow-triggers": {
+                          "type": "object",
+                          "properties": {
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
                         }
                       }
                     }
@@ -24610,8 +24695,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetProfileListRelationshipsResponseCollection": {
@@ -24746,8 +24830,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetProfileSegmentRelationshipsResponseCollection": {
@@ -24934,8 +25017,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetProfileImportJobResponseCompoundDocument": {
@@ -25037,72 +25119,6 @@
           "data"
         ]
       },
-      "GetProfileResponseCollection": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/ProfileResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "lists": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "segments": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                {
-                  "properties": {
-                    "type": {
-                      "$ref": "#/components/schemas/ProfileEnum"
-                    },
-                    "attributes": {
-                      "properties": {
-                        "subscriptions": {
-                          "$ref": "#/components/schemas/Subscriptions",
-                          "nullable": true
-                        },
-                        "predictive_analytics": {
-                          "$ref": "#/components/schemas/PredictiveAnalytics",
-                          "nullable": true
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
-          }
-        },
-        "required": [
-          "data",
-          "links"
-        ]
-      },
       "GetProfileImportJobProfileRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
@@ -25199,8 +25215,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "FlowResponseObjectResource": {
@@ -25357,8 +25372,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetFlowResponseCompoundDocument": {
@@ -25658,8 +25672,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetFlowFlowActionRelationshipListResponseCollection": {
@@ -25913,6 +25926,50 @@
           "body"
         ]
       },
+      "MobilePushMessageContent": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "sound": {
+            "type": "boolean",
+            "default": false
+          },
+          "badge": {
+            "type": "boolean",
+            "default": false
+          },
+          "media_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "dynamic_image": {
+            "type": "string",
+            "nullable": true
+          },
+          "ios_link": {
+            "type": "string",
+            "nullable": true
+          },
+          "android_link": {
+            "type": "string",
+            "nullable": true
+          },
+          "on_open": {
+            "type": "string",
+            "example": "home",
+            "default": "home"
+          }
+        },
+        "required": [
+          "title",
+          "body"
+        ]
+      },
       "FlowMessageResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -25938,6 +25995,9 @@
                   },
                   {
                     "$ref": "#/components/schemas/SMSMessageContent"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MobilePushMessageContent"
                   }
                 ]
               },
@@ -26014,8 +26074,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetFlowActionFlowMessageRelationshipResponseCollection": {
@@ -26679,8 +26738,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCampaignResponseCompoundDocument": {
@@ -27271,8 +27329,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "CampaignSendJobResponseObjectResource": {
@@ -27434,8 +27491,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "CatalogItemCreateJobResponseObjectResource": {
@@ -27582,8 +27638,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogItemCreateJobResponseCompoundDocument": {
@@ -27788,8 +27843,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogItemUpdateJobResponseCompoundDocument": {
@@ -27974,8 +28028,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogItemDeleteJobResponse": {
@@ -28154,8 +28207,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogVariantCreateJobResponseCompoundDocument": {
@@ -28360,8 +28412,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogVariantUpdateJobResponseCompoundDocument": {
@@ -28546,8 +28597,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogVariantDeleteJobResponse": {
@@ -28726,8 +28776,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogCategoryCreateJobResponseCompoundDocument": {
@@ -28932,8 +28981,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogCategoryUpdateJobResponseCompoundDocument": {
@@ -29118,8 +29166,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetCatalogCategoryDeleteJobResponse": {
@@ -29242,8 +29289,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetTagResponseCompoundDocument": {
@@ -29411,8 +29457,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetTagGroupResponse": {
@@ -29738,8 +29783,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetWebhookResponseCompoundDocument": {
@@ -29835,8 +29879,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetWebhookTopicResponse": {
@@ -30004,8 +30047,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetAccountResponse": {
@@ -30088,8 +30130,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetImageResponse": {
@@ -30207,8 +30248,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "GetFormResponseCompoundDocument": {
@@ -32836,6 +32876,32 @@
                           "properties": {
                             "type": {
                               "$ref": "#/components/schemas/TagEnum"
+                            },
+                            "id": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "flow-triggers": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/FlowEnum"
                             },
                             "id": {
                               "type": "string"
@@ -40117,6 +40183,32 @@
                         "$ref": "#/components/schemas/RelationshipLinks"
                       }
                     }
+                  },
+                  "flow-triggers": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/FlowEnum"
+                            },
+                            "id": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
                   }
                 }
               },
@@ -42223,6 +42315,12 @@
           "webhook-topic"
         ]
       },
+      "ProfileSuppressionBulkCreateJobEnum": {
+        "type": "string",
+        "enum": [
+          "profile-suppression-bulk-create-job"
+        ]
+      },
       "AccountEnum": {
         "type": "string",
         "enum": [
@@ -42257,12 +42355,6 @@
         "type": "string",
         "enum": [
           "profile-merge"
-        ]
-      },
-      "ProfileSuppressionBulkCreateJobEnum": {
-        "type": "string",
-        "enum": [
-          "profile-suppression-bulk-create-job"
         ]
       },
       "ProfileSuppressionBulkDeleteJobEnum": {
@@ -42721,6 +42813,10 @@
     {
       "name": "Templates",
       "description": "templates"
+    },
+    {
+      "name": "Trackings",
+      "description": "trackings"
     },
     {
       "name": "Webhooks",
