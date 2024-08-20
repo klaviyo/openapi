@@ -12362,7 +12362,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetricResponseCollection"
+                  "$ref": "#/components/schemas/GetMetricResponseCollectionCompoundDocument"
                 }
               }
             }
@@ -12439,7 +12439,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetricResponse"
+                  "$ref": "#/components/schemas/GetMetricResponseCompoundDocument"
                 }
               }
             }
@@ -20205,7 +20205,28 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MetricResponseObjectResource"
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/MetricResponseObjectResource"
+                },
+                {
+                  "properties": {
+                    "relationships": {
+                      "type": "object",
+                      "properties": {
+                        "flow-triggers": {
+                          "type": "object",
+                          "properties": {
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
             }
           },
           "links": {
@@ -20301,7 +20322,14 @@
           "reason": {
             "description": "The reason the profile was suppressed.",
             "type": "string",
-            "example": "HARD_BOUNCE"
+            "example": "HARD_BOUNCE",
+            "enum": [
+              "HARD_BOUNCE",
+              "INVALID_EMAIL",
+              "SPAM_COMPLAINT",
+              "UNSUBSCRIBE",
+              "USER_SUPPRESSED"
+            ]
           },
           "timestamp": {
             "description": "The timestamp when the profile was suppressed, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
@@ -20820,11 +20848,70 @@
           "data"
         ]
       },
-      "GetMetricResponse": {
+      "GetMetricResponseCollectionCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/MetricResponseObjectResource"
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/MetricResponseObjectResource"
+                },
+                {
+                  "properties": {
+                    "relationships": {
+                      "type": "object",
+                      "properties": {
+                        "flow-triggers": {
+                          "type": "object",
+                          "properties": {
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetMetricResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MetricResponseObjectResource"
+              },
+              {
+                "properties": {
+                  "relationships": {
+                    "type": "object",
+                    "properties": {
+                      "flow-triggers": {
+                        "type": "object",
+                        "properties": {
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           }
         },
         "required": [
@@ -24012,6 +24099,14 @@
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
                           }
+                        },
+                        "flow-triggers": {
+                          "type": "object",
+                          "properties": {
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
                         }
                       }
                     }
@@ -24139,6 +24234,14 @@
                               }
                             }
                           },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
+                      },
+                      "flow-triggers": {
+                        "type": "object",
+                        "properties": {
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -24811,6 +24914,14 @@
                           }
                         },
                         "tags": {
+                          "type": "object",
+                          "properties": {
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
+                        },
+                        "flow-triggers": {
                           "type": "object",
                           "properties": {
                             "links": {
@@ -33110,6 +33221,32 @@
                         "$ref": "#/components/schemas/RelationshipLinks"
                       }
                     }
+                  },
+                  "flow-triggers": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/FlowEnum"
+                            },
+                            "id": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
                   }
                 }
               },
@@ -40381,6 +40518,32 @@
                         "$ref": "#/components/schemas/RelationshipLinks"
                       }
                     }
+                  },
+                  "flow-triggers": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/FlowEnum"
+                            },
+                            "id": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
                   }
                 }
               },
@@ -42321,6 +42484,12 @@
           "profile-suppression-bulk-create-job"
         ]
       },
+      "ProfileSuppressionBulkDeleteJobEnum": {
+        "type": "string",
+        "enum": [
+          "profile-suppression-bulk-delete-job"
+        ]
+      },
       "AccountEnum": {
         "type": "string",
         "enum": [
@@ -42355,12 +42524,6 @@
         "type": "string",
         "enum": [
           "profile-merge"
-        ]
-      },
-      "ProfileSuppressionBulkDeleteJobEnum": {
-        "type": "string",
-        "enum": [
-          "profile-suppression-bulk-delete-job"
         ]
       },
       "ProfileSubscriptionBulkCreateJobEnum": {
