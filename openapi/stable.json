@@ -195,6 +195,117 @@
         ]
       }
     },
+    "/api/profile-suppression-bulk-create-jobs/": {
+      "post": {
+        "operationId": "suppress_profiles",
+        "summary": "Suppress Profiles",
+        "description": "Manually suppress profiles using their email address, or by specifying a segment or list ID to suppress all current members.\n\nSuppressed profiles cannot receive email marketing, independent of their consent status. To learn more, see our [email suppressions guide](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1) and our [collecting consent guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nEmail addresses per request limit: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`subscriptions:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-07-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Suppresses one or more profiles from receiving marketing. Currently, supports email only. If a profile is not found with the given email, one will be created and immediately suppressed.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuppressionCreateJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_profile_suppression_bulk_create_job"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "profiles:write",
+          "subscriptions:write"
+        ]
+      }
+    },
+    "/api/profile-suppression-bulk-delete-jobs/": {
+      "post": {
+        "operationId": "unsuppress_profiles",
+        "summary": "Unsuppress Profiles",
+        "description": "Manually unsuppress profiles using their email address, or by specifying a segment or list ID to unsuppress all current members.\n\nThis only removes suppressions with reason `USER_SUPPRESSED`, leaving unsubscribed profiles and profiles suppressed with reason `INVALID_EMAIL` or `HARD_BOUNCE` unchanged. To learn more, see our [email suppressions guide](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1) and our [collecting consent guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nEmail addresses per request limit: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-07-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Unsuppresses one or more profiles from receiving marketing. Currently, supports email only. If a profile is not\nfound with the given email, no action will be taken.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuppressionDeleteJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_profile_suppression_bulk_delete_job"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "subscriptions:write"
+        ]
+      }
+    },
     "/api/campaigns/": {
       "get": {
         "operationId": "get_campaigns",
@@ -11582,7 +11693,7 @@
       "post": {
         "operationId": "create_list",
         "summary": "Create List",
-        "description": "Create a new list.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`<br>Daily: `100/d`\n\n**Scopes:**\n`lists:write`",
+        "description": "Create a new list.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`<br>Daily: `150/d`\n\n**Scopes:**\n`lists:write`",
         "parameters": [
           {
             "name": "revision",
@@ -11630,7 +11741,7 @@
         "x-klaviyo-ratelimit": {
           "burst": "10/s",
           "steady": "150/m",
-          "daily": "100/d"
+          "daily": "150/d"
         },
         "x-klaviyo-scopes": [
           "lists:write"
@@ -13601,117 +13712,6 @@
         },
         "x-klaviyo-scopes": [
           "profiles:write"
-        ]
-      }
-    },
-    "/api/profile-suppression-bulk-create-jobs/": {
-      "post": {
-        "operationId": "suppress_profiles",
-        "summary": "Suppress Profiles",
-        "description": "Manually suppress profiles using their email address, or by specifying a segment or list ID to suppress all current members.\n\nSuppressed profiles cannot receive email marketing, independent of their consent status. To learn more, see our [email suppressions guide](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1) and our [collecting consent guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nEmail addresses per request limit: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`subscriptions:write`",
-        "parameters": [
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-07-15"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Suppresses one or more profiles from receiving marketing. Currently, supports email only. If a profile is not found with the given email, one will be created and immediately suppressed.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SuppressionCreateJobCreateQuery"
-              }
-            }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "Success"
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Profiles"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "create_profile_suppression_bulk_create_job"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "profiles:write",
-          "subscriptions:write"
-        ]
-      }
-    },
-    "/api/profile-suppression-bulk-delete-jobs/": {
-      "post": {
-        "operationId": "unsuppress_profiles",
-        "summary": "Unsuppress Profiles",
-        "description": "Manually unsuppress profiles using their email address, or by specifying a segment or list ID to unsuppress all current members.\n\nThis only removes suppressions with reason `USER_SUPPRESSED`, leaving unsubscribed profiles and profiles suppressed with reason `INVALID_EMAIL` or `HARD_BOUNCE` unchanged. To learn more, see our [email suppressions guide](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1) and our [collecting consent guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nEmail addresses per request limit: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
-        "parameters": [
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-07-15"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Unsuppresses one or more profiles from receiving marketing. Currently, supports email only. If a profile is not\nfound with the given email, no action will be taken.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SuppressionDeleteJobCreateQuery"
-              }
-            }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "Success"
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Profiles"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "create_profile_suppression_bulk_delete_job"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "subscriptions:write"
         ]
       }
     },
@@ -20468,10 +20468,10 @@
             "nullable": true,
             "oneOf": [
               {
-                "type": "number"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "number"
               }
             ]
           },
@@ -20481,10 +20481,10 @@
             "nullable": true,
             "oneOf": [
               {
-                "type": "number"
+                "type": "string"
               },
               {
-                "type": "string"
+                "type": "number"
               }
             ]
           },
@@ -22256,6 +22256,35 @@
           "value"
         ]
       },
+      "BooleanEnum": {
+        "type": "string",
+        "enum": [
+          "boolean"
+        ]
+      },
+      "BooleanFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BooleanEnum"
+          },
+          "operator": {
+            "description": "Operators for boolean filters.",
+            "type": "string",
+            "enum": [
+              "equals"
+            ]
+          },
+          "value": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
       "ProfileMetricPropertyFilter": {
         "type": "object",
         "properties": {
@@ -22279,6 +22308,12 @@
               },
               {
                 "$ref": "#/components/schemas/ListSubstringFilter"
+              },
+              {
+                "$ref": "#/components/schemas/BooleanFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericOperatorFilter"
               }
             ]
           }
@@ -22384,35 +22419,6 @@
         "type": "string",
         "enum": [
           "is_double_opt_in"
-        ]
-      },
-      "BooleanEnum": {
-        "type": "string",
-        "enum": [
-          "boolean"
-        ]
-      },
-      "BooleanFilter": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/BooleanEnum"
-          },
-          "operator": {
-            "description": "Operators for boolean filters.",
-            "type": "string",
-            "enum": [
-              "equals"
-            ]
-          },
-          "value": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "value"
         ]
       },
       "DoubleOptinFilter": {
@@ -32403,6 +32409,12 @@
                 "example": "Example Corporation",
                 "nullable": true
               },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
               "title": {
                 "description": "Individual's job title",
                 "type": "string",
@@ -32591,6 +32603,12 @@
                 "description": "Name of the company or organization within the company for whom the individual works",
                 "type": "string",
                 "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
                 "nullable": true
               },
               "title": {
@@ -33538,6 +33556,12 @@
                 "example": "Example Corporation",
                 "nullable": true
               },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
               "title": {
                 "description": "Individual's job title",
                 "type": "string",
@@ -33840,6 +33864,12 @@
                 "description": "Name of the company or organization within the company for whom the individual works",
                 "type": "string",
                 "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
                 "nullable": true
               },
               "title": {
@@ -38156,6 +38186,7 @@
             "example": "swift",
             "enum": [
               "android",
+              "react_native",
               "swift"
             ],
             "nullable": true
@@ -38284,6 +38315,12 @@
                 "description": "Name of the company or organization within the company for whom the individual works",
                 "type": "string",
                 "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
                 "nullable": true
               },
               "title": {
@@ -40827,6 +40864,12 @@
                 "description": "Name of the company or organization within the company for whom the individual works",
                 "type": "string",
                 "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format (language-extlang-script-region-variant-extension-privateuse)",
+                "type": "string",
+                "example": "en-US",
                 "nullable": true
               },
               "title": {
