@@ -14626,6 +14626,7 @@
           "Profiles"
         ],
         "x-klaviyo-operation-aliases": [
+          "get_bulk_profile_import_job",
           "get_profile_bulk_import_job"
         ],
         "x-klaviyo-pre-release": "None",
@@ -14742,8 +14743,8 @@
         "x-klaviyo-subtag": "Profiles"
       },
       "post": {
-        "operationId": "suppress_profiles",
-        "summary": "Suppress Profiles",
+        "operationId": "bulk_suppress_profiles",
+        "summary": "Bulk Suppress Profiles",
         "description": "Manually suppress profiles by email address or specify a segment/list ID to suppress all current members of a segment/list.\n\nSuppressed profiles cannot receive email marketing, independent of their consent status. To learn more, see our guides on [email suppressions](https://help.klaviyo.com/hc/en-us/articles/115005246108#what-is-a-suppressed-profile-1) and [collecting consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nEmail address per request limit: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
@@ -14790,7 +14791,7 @@
           "Profiles"
         ],
         "x-klaviyo-operation-aliases": [
-          "bulk_suppress_profiles",
+          "suppress_profiles",
           "create_profile_suppression_bulk_create_job"
         ],
         "x-klaviyo-pre-release": "None",
@@ -14802,7 +14803,7 @@
           "profiles:write",
           "subscriptions:write"
         ],
-        "x-klaviyo-subtag": "Profiles"
+        "x-klaviyo-subtag": "Consent"
       }
     },
     "/api/profile-suppression-bulk-create-jobs/{job_id}": {
@@ -14991,8 +14992,8 @@
         "x-klaviyo-subtag": "Profiles"
       },
       "post": {
-        "operationId": "unsuppress_profiles",
-        "summary": "Unsuppress Profiles",
+        "operationId": "bulk_unsuppress_profiles",
+        "summary": "Bulk Unsuppress Profiles",
         "description": "Manually unsuppress profiles by email address or specify a segment/list ID to unsuppress all current members of a segment/list.\n\nThis only removes suppressions with reason USER_SUPPRESSED ; unsubscribed profiles and suppressed profiles with reason INVALID_EMAIL or HARD_BOUNCE remain unchanged. To learn more, see our guides on [email suppressions](https://help.klaviyo.com/hc/en-us/articles/115005246108#what-is-a-suppressed-profile-1) and [collecting consent](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nEmail address per request limit: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
         "parameters": [
           {
@@ -15039,7 +15040,7 @@
           "Profiles"
         ],
         "x-klaviyo-operation-aliases": [
-          "bulk_unsuppress_profiles",
+          "unsuppress_profiles",
           "create_profile_suppression_bulk_delete_job"
         ],
         "x-klaviyo-pre-release": "None",
@@ -15050,7 +15051,7 @@
         "x-klaviyo-scopes": [
           "subscriptions:write"
         ],
-        "x-klaviyo-subtag": "Profiles"
+        "x-klaviyo-subtag": "Consent"
       }
     },
     "/api/profile-suppression-bulk-delete-jobs/{job_id}": {
@@ -16835,7 +16836,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetReviewDTO20240715CollectionCompoundDocument"
+                  "$ref": "#/components/schemas/GetReviewResponseDTO20240715CollectionCompoundDocument"
                 }
               }
             }
@@ -16963,7 +16964,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetReviewDTO20240715CompoundDocument"
+                  "$ref": "#/components/schemas/GetReviewResponseDTO20240715CompoundDocument"
                 }
               }
             }
@@ -35362,7 +35363,7 @@
           "updated"
         ]
       },
-      "ReviewDTO20240715ObjectResource": {
+      "ReviewResponseDTO20240715ObjectResource": {
         "type": "object",
         "properties": {
           "type": {
@@ -35492,7 +35493,7 @@
           "links"
         ]
       },
-      "GetReviewDTO20240715CollectionCompoundDocument": {
+      "GetReviewResponseDTO20240715CollectionCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
@@ -35500,7 +35501,7 @@
             "items": {
               "allOf": [
                 {
-                  "$ref": "#/components/schemas/ReviewDTO20240715ObjectResource"
+                  "$ref": "#/components/schemas/ReviewResponseDTO20240715ObjectResource"
                 },
                 {
                   "properties": {
@@ -35563,13 +35564,13 @@
           "data"
         ]
       },
-      "GetReviewDTO20240715CompoundDocument": {
+      "GetReviewResponseDTO20240715CompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ReviewDTO20240715ObjectResource"
+                "$ref": "#/components/schemas/ReviewResponseDTO20240715ObjectResource"
               },
               {
                 "properties": {
