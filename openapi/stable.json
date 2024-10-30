@@ -14007,6 +14007,23 @@
         "description": "Create a new profile.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`",
         "parameters": [
           {
+            "name": "additional-fields[profile]",
+            "in": "query",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "subscriptions",
+                  "predictive_analytics"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -14062,7 +14079,7 @@
       "get": {
         "operationId": "get_profile",
         "summary": "Get Profile",
-        "description": "Get the profile with the given profile ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`",
+        "description": "Get the profile with the given profile ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`<br><br>Rate limits when using the `include=list` parameter in your API request:<br>Burst: `1/s`<br>Steady: `15/m`<br><br>Rate limits when using the `include=segment` parameter in your API request:<br>Burst: `1/s`<br>Steady: `15/m`<br><br>To learn more about how the `include` parameter impacts rate limits, check out our [Rate limits, status codes, and errors](https://developers.klaviyo.com/en/v2024-10-15/docs/rate_limits_and_error_handling) guide.\n\n**Scopes:**\n`profiles:read`",
         "parameters": [
           {
             "name": "id",
@@ -14286,6 +14303,23 @@
               "type": "string",
               "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
             }
+          },
+          {
+            "name": "additional-fields[profile]",
+            "in": "query",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "subscriptions",
+                  "predictive_analytics"
+                ]
+              }
+            },
+            "explode": false
           },
           {
             "name": "revision",
@@ -15144,6 +15178,23 @@
         "summary": "Create or Update Profile",
         "description": "Given a set of profile attributes and optionally an ID, create or update a profile.\n\nReturns 201 if a new profile was created, 200 if an existing profile was updated.\n\nNote that setting a field to `null` will clear out the field, whereas not including a field in your request will leave it unchanged.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`",
         "parameters": [
+          {
+            "name": "additional-fields[profile]",
+            "in": "query",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "subscriptions",
+                  "predictive_analytics"
+                ]
+              }
+            },
+            "explode": false
+          },
           {
             "name": "revision",
             "in": "header",
@@ -24319,6 +24370,24 @@
                         "flow-triggers": {
                           "type": "object",
                           "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/FlowEnum"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
@@ -24361,6 +24430,24 @@
                       "flow-triggers": {
                         "type": "object",
                         "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/FlowEnum"
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -24637,6 +24724,24 @@
                         "flow-triggers": {
                           "type": "object",
                           "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/FlowEnum"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
@@ -24776,6 +24881,24 @@
                       "flow-triggers": {
                         "type": "object",
                         "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/FlowEnum"
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -27806,6 +27929,24 @@
                         "flow-triggers": {
                           "type": "object",
                           "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/FlowEnum"
+                                  },
+                                  "id": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
@@ -27952,6 +28093,24 @@
                       "flow-triggers": {
                         "type": "object",
                         "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/FlowEnum"
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -45366,7 +45525,7 @@
                 ]
               },
               "group_by": {
-                "description": "List of attributes to group the data by.\nAllowed group-bys are form_version_id, form_id.\nIf not passed in, the data will be grouped by form_id.\nIf a group by has prerequisites, they must be passed in together. The prerequisites for form_version_id is form_id",
+                "description": "List of attributes to group the data by.\nAllowed group-bys are form_id, form_version_id.\nIf not passed in, the data will be grouped by form_id.\nIf a group by has prerequisites, they must be passed in together. The prerequisites for form_version_id is form_id",
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -45379,7 +45538,7 @@
                 "nullable": true
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are form_version_id, form_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
+                "description": "API filter string used to filter the query.\nAllowed filters are form_id, form_version_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
                 "type": "string",
                 "example": "and(equals(form_id,\"abc123\"),any(form_version_id,[\"xyz123\",\"ghi456\"]))",
                 "nullable": true
@@ -45530,7 +45689,7 @@
                 ]
               },
               "group_by": {
-                "description": "List of attributes to group the data by.\nAllowed group-bys are form_version_id, form_id.\nIf not passed in, the data will be grouped by form_id.\nIf a group by has prerequisites, they must be passed in together. The prerequisites for form_version_id is form_id",
+                "description": "List of attributes to group the data by.\nAllowed group-bys are form_id, form_version_id.\nIf not passed in, the data will be grouped by form_id.\nIf a group by has prerequisites, they must be passed in together. The prerequisites for form_version_id is form_id",
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -45543,7 +45702,7 @@
                 "nullable": true
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are form_version_id, form_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
+                "description": "API filter string used to filter the query.\nAllowed filters are form_id, form_version_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
                 "type": "string",
                 "example": "and(equals(form_id,\"abc123\"),any(form_version_id,[\"xyz123\",\"ghi456\"]))",
                 "nullable": true
