@@ -12827,7 +12827,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetListFlowTriggersRelationshipResponseCollection"
+                  "$ref": "#/components/schemas/GetListFlowTriggersRelationshipsResponseCollection"
                 }
               }
             }
@@ -13391,7 +13391,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetricFlowTriggersRelationshipResponseCollection"
+                  "$ref": "#/components/schemas/GetMetricFlowTriggersRelationshipsResponseCollection"
                 }
               }
             }
@@ -17998,7 +17998,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetSegmentFlowTriggersRelationshipResponseCollection"
+                  "$ref": "#/components/schemas/GetSegmentFlowTriggersRelationshipsResponseCollection"
                 }
               }
             }
@@ -21626,7 +21626,7 @@
       "post": {
         "operationId": "create_client_subscription",
         "summary": "Create Client Subscription",
-        "description": "Creates a subscription and consent record for email and/or SMS channels based on the provided `email` and `phone_number` attributes, respectively. One of either `email` or `phone_number` must be provided.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nTo subscribe profiles from server-side applications, please use [POST /api/profile-subscription-bulk-create-jobs](https://developers.klaviyo.com/en/reference/subscribe_profiles).\n\nTo create a subscription and consent record for only 1 channel but still include the other channel as a profile property, the consent channel can be provided as a top-level attribute and the other channel can be included in the properties object.<br><br>*Rate limits*:<br>Burst: `100/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
+        "description": "*Rate limits*:<br>Burst: `100/s`<br>Steady: `700/m`\n\n**Scopes:**\n`subscriptions:write`",
         "parameters": [
           {
             "name": "company_id",
@@ -21655,7 +21655,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/OnsiteSubscriptionCreateQuery"
+                "$ref": "#/components/schemas/OnsiteSubscriptionCreateQueryDeprecatedOct24"
               }
             }
           }
@@ -24470,7 +24470,7 @@
           "data"
         ]
       },
-      "GetMetricFlowTriggersRelationshipResponseCollection": {
+      "GetMetricFlowTriggersRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -25293,7 +25293,7 @@
           "data"
         ]
       },
-      "GetListFlowTriggersRelationshipResponseCollection": {
+      "GetListFlowTriggersRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -28399,7 +28399,7 @@
           "data"
         ]
       },
-      "GetSegmentFlowTriggersRelationshipResponseCollection": {
+      "GetSegmentFlowTriggersRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -43972,6 +43972,11 @@
             "description": "The parameters to subscribe to marketing on the \"SMS\" Channel.",
             "$ref": "#/components/schemas/SubscriptionParameters",
             "nullable": true
+          },
+          "transactional": {
+            "description": "The parameters to subscribe to transactional messaging on the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
           }
         }
       },
@@ -45526,7 +45531,7 @@
                 ]
               },
               "group_by": {
-                "description": "List of attributes to group the data by.\nAllowed group-bys are form_id, form_version_id.\nIf not passed in, the data will be grouped by form_id.\nIf a group by has prerequisites, they must be passed in together. The prerequisites for form_version_id is form_id",
+                "description": "List of attributes to group the data by.\nAllowed group-bys are form_version_id, form_id.\nIf not passed in, the data will be grouped by form_id.\nIf a group by has prerequisites, they must be passed in together. The prerequisites for form_version_id is form_id",
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -45539,7 +45544,7 @@
                 "nullable": true
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are form_id, form_version_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
+                "description": "API filter string used to filter the query.\nAllowed filters are form_version_id, form_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
                 "type": "string",
                 "example": "and(equals(form_id,\"abc123\"),any(form_version_id,[\"xyz123\",\"ghi456\"]))",
                 "nullable": true
@@ -45690,7 +45695,7 @@
                 ]
               },
               "group_by": {
-                "description": "List of attributes to group the data by.\nAllowed group-bys are form_id, form_version_id.\nIf not passed in, the data will be grouped by form_id.\nIf a group by has prerequisites, they must be passed in together. The prerequisites for form_version_id is form_id",
+                "description": "List of attributes to group the data by.\nAllowed group-bys are form_version_id, form_id.\nIf not passed in, the data will be grouped by form_id.\nIf a group by has prerequisites, they must be passed in together. The prerequisites for form_version_id is form_id",
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -45703,7 +45708,7 @@
                 "nullable": true
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are form_id, form_version_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
+                "description": "API filter string used to filter the query.\nAllowed filters are form_version_id, form_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.",
                 "type": "string",
                 "example": "and(equals(form_id,\"abc123\"),any(form_version_id,[\"xyz123\",\"ghi456\"]))",
                 "nullable": true
@@ -46292,7 +46297,7 @@
           "subscription"
         ]
       },
-      "OnsiteSubscriptionCreateQueryResourceObject": {
+      "OnsiteSubscriptionCreateQueryDeprecatedOct24ResourceObject": {
         "type": "object",
         "properties": {
           "type": {
@@ -46356,11 +46361,11 @@
           "attributes"
         ]
       },
-      "OnsiteSubscriptionCreateQuery": {
+      "OnsiteSubscriptionCreateQueryDeprecatedOct24": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/OnsiteSubscriptionCreateQueryResourceObject"
+            "$ref": "#/components/schemas/OnsiteSubscriptionCreateQueryDeprecatedOct24ResourceObject"
           }
         },
         "required": [
