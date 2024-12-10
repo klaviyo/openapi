@@ -1521,67 +1521,6 @@
         "x-klaviyo-subtag": "Jobs"
       }
     },
-    "/api/campaign-messages/{id}/relationships/campaign": {
-      "get": {
-        "operationId": "get_campaign_id_for_campaign_message",
-        "summary": "Get Campaign ID for Campaign Message",
-        "description": "Returns the ID of the related campaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetCampaignMessageCampaignRelationshipResponse"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Campaigns"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_campaign_message_relationships_campaign"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "10/s",
-          "steady": "150/m"
-        },
-        "x-klaviyo-scopes": [
-          "campaigns:read"
-        ],
-        "x-klaviyo-subtag": "Messages"
-      }
-    },
     "/api/campaign-messages/{id}/campaign": {
       "get": {
         "operationId": "get_campaign_for_campaign_message",
@@ -1686,11 +1625,11 @@
         "x-klaviyo-subtag": "Messages"
       }
     },
-    "/api/campaign-messages/{id}/relationships/template": {
+    "/api/campaign-messages/{id}/relationships/campaign": {
       "get": {
-        "operationId": "get_template_id_for_campaign_message",
-        "summary": "Get Template ID for Campaign Message",
-        "description": "Returns the ID of the related template<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`templates:read`",
+        "operationId": "get_campaign_id_for_campaign_message",
+        "summary": "Get Campaign ID for Campaign Message",
+        "description": "Returns the ID of the related campaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
         "parameters": [
           {
             "name": "id",
@@ -1718,7 +1657,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCampaignMessageTemplateRelationshipResponse"
+                  "$ref": "#/components/schemas/GetCampaignMessageCampaignRelationshipResponse"
                 }
               }
             }
@@ -1734,7 +1673,7 @@
           "Campaigns"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_campaign_message_relationships_template"
+          "get_campaign_message_relationships_campaign"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -1742,8 +1681,7 @@
           "steady": "150/m"
         },
         "x-klaviyo-scopes": [
-          "campaigns:read",
-          "templates:read"
+          "campaigns:read"
         ],
         "x-klaviyo-subtag": "Messages"
       }
@@ -1818,6 +1756,68 @@
         ],
         "x-klaviyo-operation-aliases": [
           "get_campaign_message_template"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "templates:read"
+        ],
+        "x-klaviyo-subtag": "Messages"
+      }
+    },
+    "/api/campaign-messages/{id}/relationships/template": {
+      "get": {
+        "operationId": "get_template_id_for_campaign_message",
+        "summary": "Get Template ID for Campaign Message",
+        "description": "Returns the ID of the related template<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`templates:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignMessageTemplateRelationshipResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_relationships_template"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -1967,68 +1967,6 @@
         "x-klaviyo-scopes": [
           "campaigns:read",
           "tags:read"
-        ],
-        "x-klaviyo-subtag": "Campaigns"
-      }
-    },
-    "/api/campaigns/{id}/relationships/campaign-messages": {
-      "get": {
-        "operationId": "get_message_ids_for_campaign",
-        "summary": "Get Message IDs for Campaign",
-        "description": "Returns the IDs of all messages associated with the given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetCampaignMessagesRelationshipsResponseCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Campaigns"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_campaign_relationships_campaign_messages",
-          "get_campaign_relationships_messages"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "10/s",
-          "steady": "150/m"
-        },
-        "x-klaviyo-scopes": [
-          "campaigns:read"
         ],
         "x-klaviyo-subtag": "Campaigns"
       }
@@ -2198,6 +2136,68 @@
         "x-klaviyo-operation-aliases": [
           "get_campaign_campaign_messages",
           "get_campaign_messages"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaigns/{id}/relationships/campaign-messages": {
+      "get": {
+        "operationId": "get_message_ids_for_campaign",
+        "summary": "Get Message IDs for Campaign",
+        "description": "Returns the IDs of all messages associated with the given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignMessagesRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_relationships_campaign_messages",
+          "get_campaign_relationships_messages"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -7849,12 +7849,12 @@
           {
             "name": "id",
             "in": "path",
-            "description": "The ID of the coupon code to look up the relationship of.",
+            "description": "The ID of the coupon to look up the relationship of.",
             "required": true,
             "schema": {
-              "description": "The ID of the coupon code to look up the relationship of.",
+              "description": "The ID of the coupon to look up the relationship of.",
               "type": "string",
-              "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+              "example": "10OFF"
             }
           },
           {
@@ -7874,7 +7874,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCouponCodeRelationshipCouponResponse"
+                  "$ref": "#/components/schemas/GetCouponCodeCouponRelationshipResponse"
                 }
               }
             }
@@ -8554,68 +8554,6 @@
         ]
       }
     },
-    "/api/events/{id}/relationships/metric": {
-      "get": {
-        "operationId": "get_metric_id_for_event",
-        "summary": "Get Metric ID for Event",
-        "description": "Get a list of related Metrics for an Event<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`metrics:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the event",
-            "required": true,
-            "schema": {
-              "description": "ID of the event",
-              "type": "string"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetEventMetricRelationshipResponse"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Events"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_event_relationships_metric"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "350/s",
-          "steady": "3500/m"
-        },
-        "x-klaviyo-scopes": [
-          "events:read",
-          "metrics:read"
-        ]
-      }
-    },
     "/api/events/{id}/metric": {
       "get": {
         "operationId": "get_metric_for_event",
@@ -8697,11 +8635,11 @@
         ]
       }
     },
-    "/api/events/{id}/relationships/profile": {
+    "/api/events/{id}/relationships/metric": {
       "get": {
-        "operationId": "get_profile_id_for_event",
-        "summary": "Get Profile ID for Event",
-        "description": "Get profile [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`profiles:read`",
+        "operationId": "get_metric_id_for_event",
+        "summary": "Get Metric ID for Event",
+        "description": "Get a list of related Metrics for an Event<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`metrics:read`",
         "parameters": [
           {
             "name": "id",
@@ -8730,7 +8668,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetEventProfileRelationshipResponse"
+                  "$ref": "#/components/schemas/GetEventMetricRelationshipResponse"
                 }
               }
             }
@@ -8746,7 +8684,7 @@
           "Events"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_event_relationships_profile"
+          "get_event_relationships_metric"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -8755,7 +8693,7 @@
         },
         "x-klaviyo-scopes": [
           "events:read",
-          "profiles:read"
+          "metrics:read"
         ]
       }
     },
@@ -8908,6 +8846,68 @@
         ],
         "x-klaviyo-operation-aliases": [
           "get_event_profile"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "events:read",
+          "profiles:read"
+        ]
+      }
+    },
+    "/api/events/{id}/relationships/profile": {
+      "get": {
+        "operationId": "get_profile_id_for_event",
+        "summary": "Get Profile ID for Event",
+        "description": "Get profile [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`profiles:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the event",
+            "required": true,
+            "schema": {
+              "description": "ID of the event",
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEventProfileRelationshipResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Events"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_event_relationships_profile"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -10577,7 +10577,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetFlowMessageFlowActionRelationshipResponse"
+                  "$ref": "#/components/schemas/GetFlowMessageActionRelationshipResponse"
                 }
               }
             }
@@ -12830,70 +12830,6 @@
         ]
       }
     },
-    "/api/lists/{id}/relationships/flow-triggers": {
-      "get": {
-        "operationId": "get_ids_for_flows_triggered_by_list",
-        "summary": "Get IDs for Flows Triggered by List",
-        "description": "Get the IDs of all flows where the given list is being used as the trigger.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`lists:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Primary key that uniquely identifies this list. Generated by Klaviyo.",
-            "required": true,
-            "schema": {
-              "description": "Primary key that uniquely identifies this list. Generated by Klaviyo.",
-              "type": "string",
-              "example": "Y6nRLr"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetListFlowTriggersRelationshipsResponseCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Lists"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_flow_trigger_ids_for_list",
-          "get_list_relationships_flow_triggers"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "flows:read",
-          "lists:read"
-        ]
-      }
-    },
     "/api/lists/{id}/flow-triggers": {
       "get": {
         "operationId": "get_flows_triggered_by_list",
@@ -12967,6 +12903,70 @@
         "x-klaviyo-operation-aliases": [
           "get_flow_triggers_for_list",
           "get_list_flow_triggers"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "flows:read",
+          "lists:read"
+        ]
+      }
+    },
+    "/api/lists/{id}/relationships/flow-triggers": {
+      "get": {
+        "operationId": "get_ids_for_flows_triggered_by_list",
+        "summary": "Get IDs for Flows Triggered by List",
+        "description": "Get the IDs of all flows where the given list is being used as the trigger.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`lists:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Primary key that uniquely identifies this list. Generated by Klaviyo.",
+            "required": true,
+            "schema": {
+              "description": "Primary key that uniquely identifies this list. Generated by Klaviyo.",
+              "type": "string",
+              "example": "Y6nRLr"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetListFlowTriggersRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Lists"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_flow_trigger_ids_for_list",
+          "get_list_relationships_flow_triggers"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -13403,68 +13403,6 @@
         ]
       }
     },
-    "/api/metrics/{id}/relationships/flow-triggers": {
-      "get": {
-        "operationId": "get_ids_for_flows_triggered_by_metric",
-        "summary": "Get IDs for Flows Triggered by Metric",
-        "description": "Get the IDs of all flows where the given metric is being used as the trigger.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`flows:read`\n`metrics:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetMetricFlowTriggersRelationshipsResponseCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Metrics"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_flow_trigger_ids_for_metric",
-          "get_metric_relationships_flow_triggers"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "10/s",
-          "steady": "150/m"
-        },
-        "x-klaviyo-scopes": [
-          "flows:read",
-          "metrics:read"
-        ]
-      }
-    },
     "/api/metrics/{id}/flow-triggers": {
       "get": {
         "operationId": "get_flows_triggered_by_metric",
@@ -13548,21 +13486,19 @@
         ]
       }
     },
-    "/api/metric-properties/{id}/relationships/metric": {
+    "/api/metrics/{id}/relationships/flow-triggers": {
       "get": {
-        "operationId": "get_metric_id_for_metric_property",
-        "summary": "Get Metric ID for Metric Property",
-        "description": "Get the ID of the metric for the given metric property.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`metrics:read`",
+        "operationId": "get_ids_for_flows_triggered_by_metric",
+        "summary": "Get IDs for Flows Triggered by Metric",
+        "description": "Get the IDs of all flows where the given metric is being used as the trigger.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`flows:read`\n`metrics:read`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "The ID of the metric property",
+            "description": "",
             "required": true,
             "schema": {
-              "description": "The ID of the metric property",
-              "type": "string",
-              "example": "925e385b52fb405715f3616c337cc65c"
+              "type": "string"
             }
           },
           {
@@ -13582,7 +13518,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetricPropertyRelationshipMetricResponse"
+                  "$ref": "#/components/schemas/GetMetricFlowTriggersRelationshipsResponseCollection"
                 }
               }
             }
@@ -13598,17 +13534,18 @@
           "Metrics"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_metric_property_relationships_metric"
+          "get_flow_trigger_ids_for_metric",
+          "get_metric_relationships_flow_triggers"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
-          "burst": "1/s",
-          "steady": "15/m"
+          "burst": "10/s",
+          "steady": "150/m"
         },
         "x-klaviyo-scopes": [
+          "flows:read",
           "metrics:read"
-        ],
-        "x-klaviyo-subtag": "Metrics"
+        ]
       }
     },
     "/api/metrics/{id}/metric-properties": {
@@ -13744,7 +13681,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMetricRelationshipMetricPropertyResponseCollection"
+                  "$ref": "#/components/schemas/GetMetricPropertiesRelationshipsResponseCollection"
                 }
               }
             }
@@ -13844,6 +13781,69 @@
         ],
         "x-klaviyo-operation-aliases": [
           "get_metric_property_metric"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "metrics:read"
+        ],
+        "x-klaviyo-subtag": "Metrics"
+      }
+    },
+    "/api/metric-properties/{id}/relationships/metric": {
+      "get": {
+        "operationId": "get_metric_id_for_metric_property",
+        "summary": "Get Metric ID for Metric Property",
+        "description": "Get the ID of the metric for the given metric property.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`metrics:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the metric property",
+            "required": true,
+            "schema": {
+              "description": "The ID of the metric property",
+              "type": "string",
+              "example": "925e385b52fb405715f3616c337cc65c"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMetricPropertyMetricRelationshipResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Metrics"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_metric_property_relationships_metric"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -15943,7 +15943,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetProfileImportJobListRelationshipsResponseCollection"
+                  "$ref": "#/components/schemas/GetProfileBulkImportJobListsRelationshipsResponseCollection"
                 }
               }
             }
@@ -18028,70 +18028,6 @@
         ]
       }
     },
-    "/api/segments/{id}/relationships/flow-triggers": {
-      "get": {
-        "operationId": "get_ids_for_flows_triggered_by_segment",
-        "summary": "Get IDs for Flows Triggered by Segment",
-        "description": "Get the IDs of all flows where the given segment is being used as the trigger.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`segments:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Primary key that uniquely identifies this segment. Generated by Klaviyo.",
-            "required": true,
-            "schema": {
-              "description": "Primary key that uniquely identifies this segment. Generated by Klaviyo.",
-              "type": "string",
-              "example": "Y6nRLr"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetSegmentFlowTriggersRelationshipsResponseCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Segments"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_flow_trigger_ids_for_segment",
-          "get_segment_relationships_flow_triggers"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "flows:read",
-          "segments:read"
-        ]
-      }
-    },
     "/api/segments/{id}/flow-triggers": {
       "get": {
         "operationId": "get_flows_triggered_by_segment",
@@ -18165,6 +18101,70 @@
         "x-klaviyo-operation-aliases": [
           "get_flow_triggers_for_segment",
           "get_segment_flow_triggers"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "flows:read",
+          "segments:read"
+        ]
+      }
+    },
+    "/api/segments/{id}/relationships/flow-triggers": {
+      "get": {
+        "operationId": "get_ids_for_flows_triggered_by_segment",
+        "summary": "Get IDs for Flows Triggered by Segment",
+        "description": "Get the IDs of all flows where the given segment is being used as the trigger.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`segments:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Primary key that uniquely identifies this segment. Generated by Klaviyo.",
+            "required": true,
+            "schema": {
+              "description": "Primary key that uniquely identifies this segment. Generated by Klaviyo.",
+              "type": "string",
+              "example": "Y6nRLr"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSegmentFlowTriggersRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Segments"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_flow_trigger_ids_for_segment",
+          "get_segment_relationships_flow_triggers"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -19725,70 +19725,6 @@
         ]
       }
     },
-    "/api/tags/{id}/relationships/tag-group": {
-      "get": {
-        "operationId": "get_tag_group_id_for_tag",
-        "summary": "Get Tag Group ID for Tag",
-        "description": "Returns the id of the tag group related to the given tag.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`tags:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The Tag ID",
-            "required": true,
-            "schema": {
-              "description": "The Tag ID",
-              "type": "string",
-              "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetTagTagGroupRelationshipsResponse"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Tags"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_tag_relationships_tag_group",
-          "get_group_id_for_tag",
-          "get_tag_relationships_group"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "tags:read"
-        ]
-      }
-    },
     "/api/tag-groups/{id}/relationships/tags": {
       "get": {
         "operationId": "get_tag_ids_for_tag_group",
@@ -19932,6 +19868,70 @@
           "tags:read"
         ],
         "x-klaviyo-subtag": "Tags"
+      }
+    },
+    "/api/tags/{id}/relationships/tag-group": {
+      "get": {
+        "operationId": "get_tag_group_id_for_tag",
+        "summary": "Get Tag Group ID for Tag",
+        "description": "Returns the id of the tag group related to the given tag.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`tags:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The Tag ID",
+            "required": true,
+            "schema": {
+              "description": "The Tag ID",
+              "type": "string",
+              "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTagGroupRelationshipResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Tags"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_tag_relationships_tag_group",
+          "get_group_id_for_tag",
+          "get_tag_relationships_group"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "tags:read"
+        ]
       }
     },
     "/api/tag-groups/{id}/tags": {
@@ -22226,7 +22226,7 @@
           "coupon-code"
         ]
       },
-      "GetCouponCodeRelationshipCouponResponse": {
+      "GetCouponCodeCouponRelationshipResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -22236,9 +22236,7 @@
                 "$ref": "#/components/schemas/CouponEnum"
               },
               "id": {
-                "description": "The parent coupon ID for the given coupon code.",
-                "type": "string",
-                "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
+                "type": "string"
               }
             },
             "required": [
@@ -23674,29 +23672,6 @@
           "data"
         ]
       },
-      "GetEventMetricRelationshipResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "$ref": "#/components/schemas/MetricEnum"
-              },
-              "id": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "type",
-              "id"
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "MetricEnum": {
         "type": "string",
         "enum": [
@@ -23774,6 +23749,29 @@
                   }
                 }
               }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetEventMetricRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/MetricEnum"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "id"
             ]
           }
         },
@@ -24233,29 +24231,6 @@
           }
         }
       },
-      "GetEventProfileRelationshipResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "$ref": "#/components/schemas/ProfileEnum"
-              },
-              "id": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "type",
-              "id"
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "ProfileEnum": {
         "type": "string",
         "enum": [
@@ -24434,6 +24409,29 @@
           "data"
         ]
       },
+      "GetEventProfileRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/ProfileEnum"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "GetMetricResponseCollectionCompoundDocument": {
         "type": "object",
         "properties": {
@@ -24552,32 +24550,6 @@
           "data"
         ]
       },
-      "GetMetricFlowTriggersRelationshipsResponseCollection": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "$ref": "#/components/schemas/FlowEnum"
-                },
-                "id": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "FlowEnum": {
         "type": "string",
         "enum": [
@@ -24686,6 +24658,32 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetMetricFlowTriggersRelationshipsResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/FlowEnum"
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "required": [
@@ -29199,7 +29197,7 @@
           "data"
         ]
       },
-      "GetProfileImportJobListRelationshipsResponseCollection": {
+      "GetProfileBulkImportJobListsRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -30349,7 +30347,7 @@
           "data"
         ]
       },
-      "GetFlowMessageFlowActionRelationshipResponse": {
+      "GetFlowMessageActionRelationshipResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -31311,29 +31309,6 @@
           "data"
         ]
       },
-      "GetCampaignMessageCampaignRelationshipResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "$ref": "#/components/schemas/CampaignEnum"
-              },
-              "id": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "type",
-              "id"
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "GetCampaignResponse": {
         "type": "object",
         "properties": {
@@ -31367,6 +31342,29 @@
                   }
                 }
               }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCampaignMessageCampaignRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CampaignEnum"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "id"
             ]
           }
         },
@@ -31411,32 +31409,6 @@
               "properties": {
                 "type": {
                   "$ref": "#/components/schemas/TagEnum"
-                },
-                "id": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "GetCampaignMessagesRelationshipsResponseCollection": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "$ref": "#/components/schemas/CampaignMessageEnum"
                 },
                 "id": {
                   "type": "string"
@@ -31533,6 +31505,32 @@
                   "$ref": "#/components/schemas/TemplateResponseObjectResource"
                 }
               ]
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCampaignMessagesRelationshipsResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/CampaignMessageEnum"
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
             }
           }
         },
@@ -33886,31 +33884,6 @@
           "data"
         ]
       },
-      "GetTagTagGroupRelationshipsResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "$ref": "#/components/schemas/TagGroupEnum"
-              },
-              "id": {
-                "description": "The ID of the Tag Group the Tag is associated with",
-                "type": "string",
-                "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321"
-              }
-            },
-            "required": [
-              "type",
-              "id"
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "GetTagGroupTagRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
@@ -33933,6 +33906,29 @@
                 }
               }
             }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTagGroupRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/TagGroupEnum"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ]
           }
         },
         "required": [
@@ -36153,30 +36149,6 @@
           "data"
         ]
       },
-      "GetMetricPropertyRelationshipMetricResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "$ref": "#/components/schemas/MetricEnum"
-              },
-              "id": {
-                "description": "Related Metric ID",
-                "type": "string"
-              }
-            },
-            "required": [
-              "type",
-              "id"
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "GetMetricPropertyResponseCollection": {
         "type": "object",
         "properties": {
@@ -36233,7 +36205,7 @@
           "data"
         ]
       },
-      "GetMetricRelationshipMetricPropertyResponseCollection": {
+      "GetMetricPropertiesRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -36249,11 +36221,33 @@
                   "$ref": "#/components/schemas/MetricPropertyEnum"
                 },
                 "id": {
-                  "description": "Related Metric Property ID",
                   "type": "string"
                 }
               }
             }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetMetricPropertyMetricRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/MetricEnum"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ]
           }
         },
         "required": [
@@ -44932,7 +44926,7 @@
                 "example": "RESQ6t"
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are send_channel, campaign_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms, unknown.",
+                "description": "API filter string used to filter the query.\nAllowed filters are send_channel, campaign_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms.",
                 "type": "string",
                 "example": "and(equals(campaign_id,\"abc123\"),contains-any(send_channel,[\"email\",\"sms\"]))",
                 "nullable": true
@@ -45139,7 +45133,7 @@
                 "example": "RESQ6t"
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are flow_id, send_channel, flow_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms, unknown.",
+                "description": "API filter string used to filter the query.\nAllowed filters are flow_id, send_channel, flow_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms.",
                 "type": "string",
                 "example": "and(equals(flow_id,\"abc123\"),contains-any(send_channel,[\"email\",\"sms\"]))",
                 "nullable": true
@@ -45368,7 +45362,7 @@
                 "example": "RESQ6t"
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are flow_id, send_channel, flow_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms, unknown.",
+                "description": "API filter string used to filter the query.\nAllowed filters are flow_id, send_channel, flow_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, push-notification, sms.",
                 "type": "string",
                 "example": "and(equals(flow_id,\"abc123\"),contains-any(send_channel,[\"email\",\"sms\"]))",
                 "nullable": true
@@ -48813,7 +48807,11 @@
               "action": {
                 "description": "The action you would like to take with this send job from among 'cancel' and 'revert'",
                 "type": "string",
-                "example": "cancel"
+                "example": "cancel",
+                "enum": [
+                  "cancel",
+                  "revert"
+                ]
               }
             },
             "required": [
