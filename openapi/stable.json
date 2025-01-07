@@ -1824,67 +1824,6 @@
         "x-klaviyo-subtag": "Messages"
       }
     },
-    "/api/campaigns/{id}/relationships/tags": {
-      "get": {
-        "operationId": "get_tag_ids_for_campaign",
-        "summary": "Get Tag IDs for Campaign",
-        "description": "Returns the IDs of all tags associated with the given campaign.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetCampaignTagRelationshipListResponseCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Campaigns"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_campaign_relationships_tags"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "campaigns:read",
-          "tags:read"
-        ]
-      }
-    },
     "/api/campaigns/{id}/tags": {
       "get": {
         "operationId": "get_tags_for_campaign",
@@ -1950,6 +1889,67 @@
         ],
         "x-klaviyo-operation-aliases": [
           "get_campaign_tags"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "tags:read"
+        ]
+      }
+    },
+    "/api/campaigns/{id}/relationships/tags": {
+      "get": {
+        "operationId": "get_tag_ids_for_campaign",
+        "summary": "Get Tag IDs for Campaign",
+        "description": "Returns the IDs of all tags associated with the given campaign.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignTagsRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Campaigns"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_relationships_tags"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -5996,6 +5996,292 @@
         "x-klaviyo-subtag": "Items"
       }
     },
+    "/api/catalog-categories/{id}/relationships/items": {
+      "get": {
+        "operationId": "get_item_ids_for_catalog_category",
+        "summary": "Get Item IDs for Catalog Category",
+        "description": "Get all items in the given category ID. Returns a maximum of 100 items per request.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+            "required": true,
+            "schema": {
+              "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+              "type": "string",
+              "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL",
+              "nullable": true
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`ids`: `any`<br>`category.id`: `equals`<br>`title`: `contains`<br>`published`: `equals`",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCatalogCategoryItemsRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Catalogs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_catalog_category_relationships_items"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "catalogs:read"
+        ],
+        "x-klaviyo-subtag": "Categories"
+      },
+      "post": {
+        "operationId": "add_items_to_catalog_category",
+        "summary": "Add Items to Catalog Category",
+        "description": "Create a new item relationship for the given category ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`catalogs:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+            "required": true,
+            "schema": {
+              "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+              "type": "string",
+              "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogCategoryItemOp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Catalogs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_catalog_category_relationships_item",
+          "create_catalog_category_relationships_items"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "catalogs:write"
+        ],
+        "x-klaviyo-subtag": "Categories"
+      },
+      "patch": {
+        "operationId": "update_items_for_catalog_category",
+        "summary": "Update Items for Catalog Category",
+        "description": "Update item relationships for the given category ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`catalogs:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+            "required": true,
+            "schema": {
+              "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+              "type": "string",
+              "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogCategoryItemOp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Catalogs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "update_catalog_category_relationships_items"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "catalogs:write"
+        ],
+        "x-klaviyo-subtag": "Categories"
+      },
+      "delete": {
+        "operationId": "remove_items_from_catalog_category",
+        "summary": "Remove Items from Catalog Category",
+        "description": "Delete item relationships for the given category ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`catalogs:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+            "required": true,
+            "schema": {
+              "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+              "type": "string",
+              "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogCategoryItemOp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Catalogs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "delete_catalog_category_relationships_items"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "catalogs:write"
+        ],
+        "x-klaviyo-subtag": "Categories"
+      }
+    },
     "/api/catalog-items/{id}/variants": {
       "get": {
         "operationId": "get_variants_for_catalog_item",
@@ -6608,271 +6894,6 @@
           "catalogs:write"
         ],
         "x-klaviyo-subtag": "Items"
-      }
-    },
-    "/api/catalog-categories/{id}/relationships/items": {
-      "get": {
-        "operationId": "get_item_ids_for_catalog_category",
-        "summary": "Get Item IDs for Catalog Category",
-        "description": "Get all items in the given category ID.\n\nReturns a maximum of 100 items per request.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
-            "required": true,
-            "schema": {
-              "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
-              "type": "string",
-              "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
-            }
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#pagination",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetCatalogCategoryItemListResponseCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Catalogs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_catalog_category_relationships_items"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "350/s",
-          "steady": "3500/m"
-        },
-        "x-klaviyo-scopes": [
-          "catalogs:read"
-        ],
-        "x-klaviyo-subtag": "Categories"
-      },
-      "post": {
-        "operationId": "add_items_to_catalog_category",
-        "summary": "Add Items to Catalog Category",
-        "description": "Create a new item relationship for the given category ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`catalogs:write`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
-            "required": true,
-            "schema": {
-              "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
-              "type": "string",
-              "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CatalogCategoryItemOp"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Success"
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Catalogs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "create_catalog_category_relationships_item",
-          "create_catalog_category_relationships_items"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "catalogs:write"
-        ],
-        "x-klaviyo-subtag": "Categories"
-      },
-      "patch": {
-        "operationId": "update_items_for_catalog_category",
-        "summary": "Update Items for Catalog Category",
-        "description": "Update item relationships for the given category ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`catalogs:write`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
-            "required": true,
-            "schema": {
-              "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
-              "type": "string",
-              "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CatalogCategoryItemOp"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Success"
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Catalogs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "update_catalog_category_relationships_items"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "catalogs:write"
-        ],
-        "x-klaviyo-subtag": "Categories"
-      },
-      "delete": {
-        "operationId": "remove_items_from_catalog_category",
-        "summary": "Remove Items from Catalog Category",
-        "description": "Delete item relationships for the given category ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`catalogs:write`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
-            "required": true,
-            "schema": {
-              "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
-              "type": "string",
-              "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CatalogCategoryItemOp"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Success"
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Catalogs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "delete_catalog_category_relationships_items"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "catalogs:write"
-        ],
-        "x-klaviyo-subtag": "Categories"
       }
     },
     "/api/coupons": {
@@ -10044,67 +10065,6 @@
         ]
       }
     },
-    "/api/flows/{id}/relationships/tags": {
-      "get": {
-        "operationId": "get_tag_ids_for_flow",
-        "summary": "Get Tag IDs for Flow",
-        "description": "Return the tag IDs of all tags associated with the given flow.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`tags:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetFlowTagRelationshipListResponseCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Flows"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_flow_relationships_tags"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "flows:read",
-          "tags:read"
-        ]
-      }
-    },
     "/api/flows/{id}/tags": {
       "get": {
         "operationId": "get_tags_for_flow",
@@ -10170,6 +10130,67 @@
         ],
         "x-klaviyo-operation-aliases": [
           "get_flow_tags"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "flows:read",
+          "tags:read"
+        ]
+      }
+    },
+    "/api/flows/{id}/relationships/tags": {
+      "get": {
+        "operationId": "get_tag_ids_for_flow",
+        "summary": "Get Tag IDs for Flow",
+        "description": "Return the tag IDs of all tags associated with the given flow.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`tags:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFlowTagsRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Flows"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_flow_relationships_tags"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -11306,7 +11327,51 @@
             "schema": {
               "description": "The ID of the form",
               "type": "string",
-              "example": "Y6nRLr"
+              "example": "Y6nRLr",
+              "nullable": true
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`form_type`: `any`, `equals`<br>`status`: `equals`<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created_at",
+                "-created_at",
+                "updated_at",
+                "-updated_at"
+              ]
             }
           },
           {
@@ -11326,7 +11391,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetFormFormVersionRelationshipsResponseCollection"
+                  "$ref": "#/components/schemas/GetFormVersionsRelationshipsResponseCollection"
                 }
               }
             }
@@ -15901,7 +15966,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetProfileSegmentRelationshipsResponseCollection"
+                  "$ref": "#/components/schemas/GetProfileSegmentsRelationshipsResponseCollection"
                 }
               }
             }
@@ -16311,7 +16376,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetProfileImportJobProfileRelationshipsResponseCollection"
+                  "$ref": "#/components/schemas/GetProfileBulkImportJobProfilesRelationshipsResponseCollection"
                 }
               }
             }
@@ -17825,11 +17890,11 @@
         ]
       }
     },
-    "/api/segments/{id}/relationships/profiles": {
+    "/api/segments/{id}/profiles": {
       "get": {
-        "operationId": "get_profile_ids_for_segment",
-        "summary": "Get Profile IDs for Segment",
-        "description": "Get all profile membership [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given segment ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`\n`segments:read`",
+        "operationId": "get_profiles_for_segment",
+        "summary": "Get Profiles for Segment",
+        "description": "Get all profiles within a segment with the given segment ID.\n\nFilter to request a subset of all profiles. Profiles can be filtered by `email`, `phone_number`, `push_token`, and `joined_group_at` fields. Profiles can be sorted by the following fields, in ascending and descending order: `joined_group_at`<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`\n`segments:read`",
         "parameters": [
           {
             "name": "id",
@@ -17840,108 +17905,6 @@
               "description": "Primary key that uniquely identifies this segment. Generated by Klaviyo.",
               "type": "string",
               "example": "Y6nRLr"
-            }
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`email`: `any`, `equals`<br>`phone_number`: `any`, `equals`<br>`push_token`: `any`, `equals`<br>`_kx`: `equals`<br>`joined_group_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#pagination",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 20. Min: 1. Max: 1000.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 20,
-              "maximum": 1000,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#sorting",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "joined_group_at",
-                "-joined_group_at"
-              ]
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2024-10-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetSegmentRelationshipsResponseCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Segments"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_segment_relationships_profiles"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "profiles:read",
-          "segments:read"
-        ]
-      }
-    },
-    "/api/segments/{id}/profiles": {
-      "get": {
-        "operationId": "get_profiles_for_segment",
-        "summary": "Get Profiles for Segment",
-        "description": "Get all profiles within a segment with the given segment ID.\n\nFilter to request a subset of all profiles. Profiles can be filtered by `email`, `phone_number`, `push_token`, and `joined_group_at` fields. Profiles can be sorted by the following fields, in ascending and descending order: `joined_group_at`<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`\n`segments:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           },
           {
@@ -18119,6 +18082,110 @@
         ],
         "x-klaviyo-operation-aliases": [
           "get_segment_profiles"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "profiles:read",
+          "segments:read"
+        ]
+      }
+    },
+    "/api/segments/{id}/relationships/profiles": {
+      "get": {
+        "operationId": "get_profile_ids_for_segment",
+        "summary": "Get Profile IDs for Segment",
+        "description": "Get all profile membership [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given segment ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`\n`segments:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Primary key that uniquely identifies this segment. Generated by Klaviyo.",
+            "required": true,
+            "schema": {
+              "description": "Primary key that uniquely identifies this segment. Generated by Klaviyo.",
+              "type": "string",
+              "example": "Y6nRLr"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`email`: `any`, `equals`<br>`phone_number`: `any`, `equals`<br>`push_token`: `any`, `equals`<br>`_kx`: `equals`<br>`joined_group_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2024-10-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "joined_group_at",
+                "-joined_group_at"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2024-10-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSegmentProfilesRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Segments"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_segment_relationships_profiles"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
@@ -22333,7 +22400,9 @@
                 "$ref": "#/components/schemas/CouponEnum"
               },
               "id": {
-                "type": "string"
+                "description": "The internal id of a Coupon is equivalent to its external id stored within an integration.",
+                "type": "string",
+                "example": "10OFF"
               }
             },
             "required": [
@@ -22592,7 +22661,9 @@
                   "$ref": "#/components/schemas/CouponCodeEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "The id of a coupon code is a combination of its unique code and the id of the coupon it is associated with.",
+                  "type": "string",
+                  "example": "10OFF-ASD325FHK324UJDOI2M3JNES99"
                 }
               }
             }
@@ -22840,6 +22911,34 @@
           "data"
         ]
       },
+      "GetCatalogCategoryItemsRelationshipsResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/CatalogItemEnum"
+                },
+                "id": {
+                  "description": "The catalog item ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+                  "type": "string",
+                  "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "CatalogVariantResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -23057,7 +23156,9 @@
                   "$ref": "#/components/schemas/CatalogVariantEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "The catalog variant ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+                  "type": "string",
+                  "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM"
                 }
               }
             }
@@ -23463,35 +23564,9 @@
                   "$ref": "#/components/schemas/CatalogCategoryEnum"
                 },
                 "id": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "GetCatalogCategoryItemListResponseCollection": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "$ref": "#/components/schemas/CatalogItemEnum"
-                },
-                "id": {
-                  "description": "A list of catalog item IDs that are in the given category.",
+                  "description": "The catalog category ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
                   "type": "string",
-                  "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1"
+                  "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
                 }
               }
             }
@@ -23897,6 +23972,7 @@
                 "$ref": "#/components/schemas/MetricEnum"
               },
               "id": {
+                "description": "The Metric ID",
                 "type": "string"
               }
             },
@@ -24308,7 +24384,7 @@
           },
           "historic_number_of_orders": {
             "description": "Number of already placed orders",
-            "type": "integer",
+            "type": "number",
             "example": 2,
             "nullable": true
           },
@@ -24527,7 +24603,9 @@
                 "$ref": "#/components/schemas/ProfileEnum"
               },
               "id": {
-                "type": "string"
+                "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+                "type": "string",
+                "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
               }
             },
             "required": [
@@ -25258,7 +25336,9 @@
                   "$ref": "#/components/schemas/TagEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "The Tag ID",
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
                 }
               }
             }
@@ -25471,7 +25551,9 @@
                   "$ref": "#/components/schemas/ProfileEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+                  "type": "string",
+                  "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
                 }
               }
             }
@@ -28364,33 +28446,9 @@
                   "$ref": "#/components/schemas/TagEnum"
                 },
                 "id": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "GetSegmentRelationshipsResponseCollection": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "$ref": "#/components/schemas/ProfileEnum"
-                },
-                "id": {
-                  "type": "string"
+                  "description": "The Tag ID",
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
                 }
               }
             }
@@ -28581,6 +28639,34 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetSegmentProfilesRelationshipsResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/ProfileEnum"
+                },
+                "id": {
+                  "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+                  "type": "string",
+                  "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
+                }
+              }
+            }
           }
         },
         "required": [
@@ -28912,7 +28998,9 @@
                   "$ref": "#/components/schemas/ListEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "Primary key that uniquely identifies this list. Generated by Klaviyo.",
+                  "type": "string",
+                  "example": "Y6nRLr"
                 }
               }
             }
@@ -29039,7 +29127,7 @@
           "data"
         ]
       },
-      "GetProfileSegmentRelationshipsResponseCollection": {
+      "GetProfileSegmentsRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -29321,7 +29409,9 @@
                   "$ref": "#/components/schemas/ListEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "Primary key that uniquely identifies this list. Generated by Klaviyo.",
+                  "type": "string",
+                  "example": "Y6nRLr"
                 }
               }
             }
@@ -29396,7 +29486,7 @@
           "data"
         ]
       },
-      "GetProfileImportJobProfileRelationshipsResponseCollection": {
+      "GetProfileBulkImportJobProfilesRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -29412,7 +29502,9 @@
                   "$ref": "#/components/schemas/ProfileEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+                  "type": "string",
+                  "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
                 }
               }
             }
@@ -29924,7 +30016,7 @@
           "data"
         ]
       },
-      "GetFlowTagRelationshipListResponseCollection": {
+      "GetFlowTagsRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -29940,7 +30032,9 @@
                   "$ref": "#/components/schemas/TagEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "The Tag ID",
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
                 }
               }
             }
@@ -30567,6 +30661,7 @@
                 "$ref": "#/components/schemas/TemplateEnum"
               },
               "id": {
+                "description": "The ID of template",
                 "type": "string"
               }
             },
@@ -31467,6 +31562,7 @@
                 "$ref": "#/components/schemas/CampaignEnum"
               },
               "id": {
+                "description": "The campaign ID",
                 "type": "string"
               }
             },
@@ -31490,6 +31586,7 @@
                 "$ref": "#/components/schemas/TemplateEnum"
               },
               "id": {
+                "description": "The ID of template",
                 "type": "string"
               }
             },
@@ -31503,7 +31600,7 @@
           "data"
         ]
       },
-      "GetCampaignTagRelationshipListResponseCollection": {
+      "GetCampaignTagsRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -31519,7 +31616,9 @@
                   "$ref": "#/components/schemas/TagEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "The Tag ID",
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
                 }
               }
             }
@@ -31636,6 +31735,7 @@
                   "$ref": "#/components/schemas/CampaignMessageEnum"
                 },
                 "id": {
+                  "description": "The message ID",
                   "type": "string"
                 }
               }
@@ -34002,7 +34102,9 @@
                 "$ref": "#/components/schemas/TagGroupEnum"
               },
               "id": {
-                "type": "string"
+                "description": "The Tag Group ID",
+                "type": "string",
+                "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321"
               }
             },
             "required": [
@@ -34031,7 +34133,9 @@
                   "$ref": "#/components/schemas/TagEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "The Tag ID",
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
                 }
               }
             }
@@ -36340,7 +36444,9 @@
                   "$ref": "#/components/schemas/MetricPropertyEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "The ID of the metric property",
+                  "type": "string",
+                  "example": "925e385b52fb405715f3616c337cc65c"
                 }
               }
             }
@@ -36360,6 +36466,7 @@
                 "$ref": "#/components/schemas/MetricEnum"
               },
               "id": {
+                "description": "The Metric ID",
                 "type": "string"
               }
             },
@@ -36470,7 +36577,7 @@
           "data"
         ]
       },
-      "GetFormFormVersionRelationshipsResponseCollection": {
+      "GetFormVersionsRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -36486,7 +36593,9 @@
                   "$ref": "#/components/schemas/FormVersionEnum"
                 },
                 "id": {
-                  "type": "string"
+                  "description": "ID of the form version. Generated by Klaviyo.",
+                  "type": "string",
+                  "example": "1234567"
                 }
               }
             }
@@ -36538,7 +36647,9 @@
                 "$ref": "#/components/schemas/FormEnum"
               },
               "id": {
-                "type": "string"
+                "description": "ID of the form. Generated by Klaviyo.",
+                "type": "string",
+                "example": "Y6nRLr"
               }
             },
             "required": [
@@ -37387,6 +37498,34 @@
           "data"
         ]
       },
+      "CatalogCategoryItemOp": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/CatalogItemEnum"
+                },
+                "id": {
+                  "description": "A list of catalog item IDs that are in the given category.",
+                  "type": "string",
+                  "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "CatalogVariantCreateQueryResourceObject": {
         "type": "object",
         "properties": {
@@ -38089,34 +38228,6 @@
                   "description": "A list of catalog category IDs representing the categories the item is in",
                   "type": "string",
                   "example": "$custom:::$default:::SAMPLE-DATA-CATEGORY-APPAREL"
-                }
-              }
-            }
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "CatalogCategoryItemOp": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type",
-                "id"
-              ],
-              "properties": {
-                "type": {
-                  "$ref": "#/components/schemas/CatalogItemEnum"
-                },
-                "id": {
-                  "description": "A list of catalog item IDs that are in the given category.",
-                  "type": "string",
-                  "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1"
                 }
               }
             }
