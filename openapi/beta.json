@@ -1,0 +1,521 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2025-01-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/client/reviews": {
+      "post": {
+        "operationId": "create_client_review_beta",
+        "summary": "Create Client Review",
+        "description": "\n        > 🚧 This endpoint is in beta and subject to change.\n        >\n        > A beta revision header (2025-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n        \n\nCreate a review with the given ID. This endpoint is for client-side environments only.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2025-01-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [],
+        "x-klaviyo-subtag": "Reviews"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ReviewEnum": {
+        "type": "string",
+        "enum": [
+          "review"
+        ]
+      },
+      "ReviewProductExternalId": {
+        "type": "object",
+        "properties": {
+          "external_id": {
+            "description": "The external ID of the product",
+            "type": "string",
+            "example": "7549950034135"
+          },
+          "integration_key": {
+            "description": "The integration key of the product in lowercase",
+            "type": "string",
+            "example": "shopify",
+            "enum": [
+              "shopify",
+              "woocommerce"
+            ]
+          }
+        },
+        "required": [
+          "external_id",
+          "integration_key"
+        ]
+      },
+      "CustomQuestionDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the custom question",
+            "type": "string",
+            "example": "9ff0d32e-0edb-4513-a6a5-12814a6cb755"
+          },
+          "answers": {
+            "description": "The answers to the custom question",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "M",
+              "L"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "answers"
+        ]
+      },
+      "OrderEnum": {
+        "type": "string",
+        "enum": [
+          "order"
+        ]
+      },
+      "ReviewCreateDTOResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ReviewEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "review_type": {
+                "description": "The type of this review -- either a review or a question",
+                "type": "string",
+                "example": "review",
+                "enum": [
+                  "question",
+                  "rating",
+                  "review",
+                  "store"
+                ]
+              },
+              "email": {
+                "description": "The email of the author of this review",
+                "type": "string",
+                "example": "random.123@gmail.com"
+              },
+              "author": {
+                "description": "The author of this review",
+                "type": "string",
+                "example": "firstName lastName"
+              },
+              "content": {
+                "description": "The content of this review",
+                "example": "This was an absolutely amazing t-shirt. I loved the color and the fit.",
+                "type": "string"
+              },
+              "incentive_type": {
+                "description": "The incentive type for the review",
+                "type": "string",
+                "enum": [
+                  "coupon_or_discount",
+                  "employee_review",
+                  "free_product",
+                  "loyalty_points",
+                  "other",
+                  "paid_promotion",
+                  "sweepstakes_entry"
+                ],
+                "nullable": true
+              },
+              "product": {
+                "description": "The product associated with this review",
+                "$ref": "#/components/schemas/ReviewProductExternalId",
+                "nullable": true
+              },
+              "rating": {
+                "description": "The rating of this review on a scale from 1-5. If the review type is \"question\", this field will be null.",
+                "type": "integer",
+                "example": 2,
+                "enum": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "nullable": true
+              },
+              "title": {
+                "description": "The title of this review",
+                "type": "string",
+                "example": "Great product!",
+                "nullable": true
+              },
+              "custom_questions": {
+                "description": "Custom question and answers for the review",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CustomQuestionDTO"
+                },
+                "example": [
+                  {
+                    "id": "9ff0d32e-0edb-4513-a6a5-12814a6cb755",
+                    "answers": [
+                      "M",
+                      "L"
+                    ]
+                  }
+                ],
+                "nullable": true
+              },
+              "images": {
+                "description": "The list of images submitted with this review (represented as a list of urls or base-64 encoded data-uri). If there are no images, this field will be an empty list.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "https://example.com/image1.jpg",
+                  "https://example.com/image2.jpg"
+                ],
+                "nullable": true
+              }
+            },
+            "required": [
+              "review_type",
+              "email",
+              "author",
+              "content"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "order": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/OrderEnum"
+                      },
+                      "id": {
+                        "description": "The Order ID related to the review",
+                        "type": "string",
+                        "example": "42439497119686"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "ReviewCreateDTO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReviewCreateDTOResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      }
+    },
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Accounts",
+      "description": "accounts"
+    },
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    },
+    {
+      "name": "Campaigns",
+      "description": "campaigns"
+    },
+    {
+      "name": "Catalogs",
+      "description": "catalogs"
+    },
+    {
+      "name": "Conversations",
+      "description": "conversations"
+    },
+    {
+      "name": "Coupons",
+      "description": "coupons"
+    },
+    {
+      "name": "Data Privacy",
+      "description": "data privacy"
+    },
+    {
+      "name": "Events",
+      "description": "events"
+    },
+    {
+      "name": "Flows",
+      "description": "flows"
+    },
+    {
+      "name": "Forms",
+      "description": "forms"
+    },
+    {
+      "name": "Images",
+      "description": "images"
+    },
+    {
+      "name": "Lists",
+      "description": "lists"
+    },
+    {
+      "name": "Metrics",
+      "description": "metrics"
+    },
+    {
+      "name": "Profiles",
+      "description": "profiles"
+    },
+    {
+      "name": "Reporting",
+      "description": "reporting"
+    },
+    {
+      "name": "Reviews",
+      "description": "reviews"
+    },
+    {
+      "name": "Segments",
+      "description": "segments"
+    },
+    {
+      "name": "Tags",
+      "description": "tags"
+    },
+    {
+      "name": "Templates",
+      "description": "templates"
+    },
+    {
+      "name": "Tracking Settings",
+      "description": "tracking settings"
+    },
+    {
+      "name": "Webhooks",
+      "description": "webhooks"
+    },
+    {
+      "name": "Client",
+      "description": "client"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "x-readme": {
+    "explorer-enabled": false,
+    "proxy-enabled": true,
+    "samples-enabled": true
+  }
+}
