@@ -32577,19 +32577,6 @@
             "type": "string",
             "nullable": true
           },
-          "push_type": {
-            "description": "The type of push notification to send.",
-            "type": "string",
-            "enum": [
-              "silent",
-              "standard"
-            ],
-            "nullable": true
-          },
-          "kv_pairs": {
-            "type": "object",
-            "nullable": true
-          },
           "conversion_metric_id": {
             "type": "string",
             "nullable": true
@@ -32994,6 +32981,107 @@
           },
           "data": {
             "$ref": "#/components/schemas/SendInternalAlertActionData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SendWhatsappEnum": {
+        "type": "string",
+        "enum": [
+          "send-whatsapp"
+        ]
+      },
+      "FlowWhatsApp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "vendor_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "smart_sending_enabled": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "transactional": {
+            "type": "boolean",
+            "default": false
+          },
+          "add_tracking_params": {
+            "type": "boolean",
+            "default": false
+          },
+          "custom_tracking_params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UtmParam"
+            },
+            "nullable": true
+          },
+          "additional_filters": {
+            "$ref": "#/components/schemas/UnionFilter",
+            "nullable": true
+          }
+        }
+      },
+      "SendWhatsAppActionData": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/FlowWhatsApp"
+          },
+          "status": {
+            "description": "Flow action status.",
+            "type": "string",
+            "example": "draft",
+            "default": "draft",
+            "enum": [
+              "draft",
+              "live",
+              "manual"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "SendWhatsAppAction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The real ID of an action.",
+            "type": "string",
+            "example": "123",
+            "nullable": true
+          },
+          "temporary_id": {
+            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
+            "type": "string",
+            "example": "action-1",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/SendWhatsappEnum"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Link",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SendWhatsAppActionData",
             "nullable": true
           }
         },
@@ -35234,6 +35322,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/SendInternalAlertAction"
+                },
+                {
+                  "$ref": "#/components/schemas/SendWhatsAppAction"
                 },
                 {
                   "$ref": "#/components/schemas/TimeDelayAction"
