@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API (Beta)",
-    "version": "2025-01-15.pre",
+    "version": "2025-04-15.pre",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -22,67 +22,34 @@
     }
   ],
   "paths": {
-    "/client/review-values-reports": {
+    "/api/data-sources": {
       "get": {
-        "operationId": "get_client_review_values_reports_beta",
-        "summary": "Get Client Review Values Reports",
-        "description": "\n        > 🚧 This endpoint is in beta and subject to change.\n        >\n        > A beta revision header (2025-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n        \n\nGet all reviews values reports in an account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "operationId": "get_data_sources_beta",
+        "summary": "Get Data Sources",
+        "description": "\n        > 🚧 This endpoint is in beta and subject to change.\n        >\n        > A beta revision header (2025-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n        \n\nGet all data sources in an account.\n\nCustom objects is a paid feature in Klaviyo, only available to customers with a paid email plan. To request access to custom objects, submit [this form](https://docs.google.com/forms/d/e/1FAIpQLScg1yZbkCpWnJCLTuaAJ_NkvecjSjVTBW55AWZst1yhobkbRg/viewform).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`",
         "parameters": [
           {
-            "name": "company_id",
+            "name": "fields[data-source]",
             "in": "query",
-            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
-            "required": true,
-            "schema": {
-              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
-              "type": "string",
-              "example": "PUBLIC_API_KEY"
-            }
-          },
-          {
-            "name": "fields[review-values-report]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string",
                 "enum": [
-                  "results"
+                  "title",
+                  "visibility",
+                  "description"
                 ]
               }
             },
             "explode": false
           },
           {
-            "name": "filter",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`product_external_ids`: `any`, `equals`",
-            "schema": {
-              "type": "string",
-              "example": "equals(product_external_ids,'example')"
-            }
-          },
-          {
-            "name": "group_by",
-            "in": "query",
-            "description": "group by value for this report",
-            "required": true,
-            "schema": {
-              "description": "group by value for this report",
-              "type": "string",
-              "example": "product_id",
-              "enum": [
-                "company_id",
-                "product_id"
-              ]
-            }
-          },
-          {
             "name": "page[cursor]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#pagination",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15.pre/reference/api-overview#pagination",
             "required": false,
             "schema": {
               "type": "string"
@@ -101,41 +68,13 @@
             }
           },
           {
-            "name": "statistics",
-            "in": "query",
-            "description": "list of statistics to calculate for this report",
-            "required": true,
-            "schema": {
-              "description": "list of statistics to calculate for this report",
-              "type": "string",
-              "example": "average_rating,total_reviews"
-            }
-          },
-          {
-            "name": "timeframe",
-            "in": "query",
-            "description": "timeframe window for value report",
-            "required": true,
-            "schema": {
-              "description": "timeframe window for value report",
-              "type": "string",
-              "example": "all_time",
-              "enum": [
-                "all_time",
-                "last_30_days",
-                "last_365_days",
-                "last_90_days"
-              ]
-            }
-          },
-          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2025-01-15.pre"
+              "default": "2025-04-15.pre"
             }
           }
         ],
@@ -145,7 +84,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetReviewValuesReportResponseCollection"
+                  "$ref": "#/components/schemas/GetDataSourceResponseCollection"
                 }
               }
             }
@@ -157,178 +96,26 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "security": [],
         "tags": [
           "Beta APIs"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
-          "burst": "10/s",
-          "steady": "150/m"
+          "burst": "3/s",
+          "steady": "60/m"
         },
-        "x-klaviyo-scopes": [],
-        "x-klaviyo-subtag": "Reviews"
+        "x-klaviyo-scopes": [
+          "custom-objects:read"
+        ],
+        "x-klaviyo-subtag": "Custom Objects"
       }
     },
-    "/client/reviews": {
-      "get": {
-        "operationId": "get_client_reviews_beta",
-        "summary": "Get Client Reviews",
-        "description": "\n        > 🚧 This endpoint is in beta and subject to change.\n        >\n        > A beta revision header (2025-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n        \n\nGet all reviews. This endpoint is for client-side environments only, for server-side use, refer to https://developers.klaviyo.com/en/reference/get_reviews<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
-        "parameters": [
-          {
-            "name": "company_id",
-            "in": "query",
-            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
-            "required": true,
-            "schema": {
-              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
-              "type": "string",
-              "example": "PUBLIC_API_KEY"
-            }
-          },
-          {
-            "name": "fields[review]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "status",
-                  "status.value",
-                  "status.rejection_reason",
-                  "status.rejection_reason.reason",
-                  "status.rejection_reason.status_explanation",
-                  "verified",
-                  "review_type",
-                  "created",
-                  "updated",
-                  "images",
-                  "product",
-                  "product.url",
-                  "product.name",
-                  "product.image_url",
-                  "product.external_id",
-                  "rating",
-                  "author",
-                  "content",
-                  "title",
-                  "smart_quote",
-                  "public_reply",
-                  "public_reply.content",
-                  "public_reply.author",
-                  "public_reply.updated"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`status`: `equals`<br>`review_type`: `equals`<br>`rating`: `any`, `equals`, `greater-or-equal`, `less-or-equal`<br>`id`: `any`, `equals`<br>`content`: `contains`<br>`smart_quote`: `has`<br>`public_reply`: `has`<br>`verified`: `equals`<br>`incentivized`: `equals`<br>`edited`: `equals`<br>`media`: `has`<br>`created`: `greater-or-equal`, `less-or-equal`<br>`updated`: `greater-or-equal`, `less-or-equal`",
-            "schema": {
-              "type": "string",
-              "example": "equals(status,'published')"
-            }
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#pagination",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 20. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 20,
-              "maximum": 100,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#sorting",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "created",
-                "-created",
-                "rating",
-                "-rating",
-                "updated",
-                "-updated"
-              ]
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2025-01-15.pre"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetClientReviewResponseDTOCollection"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "security": [],
-        "tags": [
-          "Beta APIs"
-        ],
-        "x-klaviyo-pre-release": "BETA",
-        "x-klaviyo-ratelimit": {
-          "burst": "10/s",
-          "steady": "150/m"
-        },
-        "x-klaviyo-scopes": [],
-        "x-klaviyo-subtag": "Reviews"
-      },
+    "/api/data-source-record-bulk-create-jobs": {
       "post": {
-        "operationId": "create_client_review_beta",
-        "summary": "Create Client Review",
-        "description": "\n        > 🚧 This endpoint is in beta and subject to change.\n        >\n        > A beta revision header (2025-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n        \n\nCreate a review with the given ID. This endpoint is for client-side environments only.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "operationId": "bulk_create_data_source_records_beta",
+        "summary": "Bulk Create Data Source Records",
+        "description": "\n        > 🚧 This endpoint is in beta and subject to change.\n        >\n        > A beta revision header (2025-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n        \n\nCreate a data source record job.\n\nCustom objects is a paid feature in Klaviyo, only available to customers with a paid email plan. To request access to custom objects, submit [this form](https://docs.google.com/forms/d/e/1FAIpQLScg1yZbkCpWnJCLTuaAJ_NkvecjSjVTBW55AWZst1yhobkbRg/viewform).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
         "parameters": [
-          {
-            "name": "company_id",
-            "in": "query",
-            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
-            "required": true,
-            "schema": {
-              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
-              "type": "string",
-              "example": "PUBLIC_API_KEY"
-            }
-          },
           {
             "name": "revision",
             "in": "header",
@@ -336,16 +123,17 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2025-01-15.pre"
+              "default": "2025-04-15.pre"
             }
           }
         ],
         "requestBody": {
+          "description": "Create a data source record job",
           "required": true,
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/ReviewCreateDTO"
+                "$ref": "#/components/schemas/DataSourceRecordBulkCreateJobCreateQuery"
               }
             }
           }
@@ -361,451 +149,69 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "security": [],
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-operation-aliases": [
+          "create_data_source_record_bulk_create_job"
+        ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
-          "burst": "10/s",
-          "steady": "150/m"
+          "burst": "3/s",
+          "steady": "60/m"
         },
-        "x-klaviyo-scopes": [],
-        "x-klaviyo-subtag": "Reviews"
+        "x-klaviyo-scopes": [
+          "custom-objects:write"
+        ],
+        "x-klaviyo-subtag": "Custom Objects"
       }
     }
   },
   "components": {
     "schemas": {
-      "ReviewEnum": {
+      "DataSourceEnum": {
         "type": "string",
         "enum": [
-          "review"
+          "data-source"
         ]
       },
-      "RejectedEnum": {
-        "type": "string",
-        "enum": [
-          "rejected"
-        ]
-      },
-      "OtherEnum": {
-        "type": "string",
-        "enum": [
-          "other"
-        ]
-      },
-      "RejectReasonOther": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "description": "reject reason is other",
-            "$ref": "#/components/schemas/OtherEnum"
-          },
-          "status_explanation": {
-            "description": "If review reject reason is other, we can provide further explanation",
-            "type": "string",
-            "example": "This review is just really poorly detailed and there is another with the same content",
-            "nullable": true
-          }
-        },
-        "required": [
-          "reason"
-        ]
-      },
-      "FakeEnum": {
-        "type": "string",
-        "enum": [
-          "fake"
-        ]
-      },
-      "RejectReasonFake": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "description": "rejected due to fake content",
-            "$ref": "#/components/schemas/FakeEnum"
-          }
-        },
-        "required": [
-          "reason"
-        ]
-      },
-      "False_or_misleadingEnum": {
-        "type": "string",
-        "enum": [
-          "false_or_misleading"
-        ]
-      },
-      "RejectReasonMisleading": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "description": "rejected due to false or misleading content",
-            "$ref": "#/components/schemas/False_or_misleadingEnum"
-          }
-        },
-        "required": [
-          "reason"
-        ]
-      },
-      "Private_informationEnum": {
-        "type": "string",
-        "enum": [
-          "private_information"
-        ]
-      },
-      "RejectReasonPrivateInformation": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "description": "rejected due to private information",
-            "$ref": "#/components/schemas/Private_informationEnum"
-          }
-        },
-        "required": [
-          "reason"
-        ]
-      },
-      "Profanity_or_inappropriateEnum": {
-        "type": "string",
-        "enum": [
-          "profanity_or_inappropriate"
-        ]
-      },
-      "RejectReasonProfanity": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "description": "rejected due to profanity or inappropriate content",
-            "$ref": "#/components/schemas/Profanity_or_inappropriateEnum"
-          }
-        },
-        "required": [
-          "reason"
-        ]
-      },
-      "UnrelatedEnum": {
-        "type": "string",
-        "enum": [
-          "unrelated"
-        ]
-      },
-      "RejectReasonUnrelated": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "description": "rejected due to unrelated content",
-            "$ref": "#/components/schemas/UnrelatedEnum"
-          }
-        },
-        "required": [
-          "reason"
-        ]
-      },
-      "ReviewStatusRejected": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "description": "Rejected review status",
-            "$ref": "#/components/schemas/RejectedEnum"
-          },
-          "rejection_reason": {
-            "description": "The updated status intended for the review with this ID",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/RejectReasonOther"
-              },
-              {
-                "$ref": "#/components/schemas/RejectReasonFake"
-              },
-              {
-                "$ref": "#/components/schemas/RejectReasonMisleading"
-              },
-              {
-                "$ref": "#/components/schemas/RejectReasonPrivateInformation"
-              },
-              {
-                "$ref": "#/components/schemas/RejectReasonProfanity"
-              },
-              {
-                "$ref": "#/components/schemas/RejectReasonUnrelated"
-              }
-            ]
-          }
-        },
-        "required": [
-          "value",
-          "rejection_reason"
-        ]
-      },
-      "FeaturedEnum": {
-        "type": "string",
-        "enum": [
-          "featured"
-        ]
-      },
-      "ReviewStatusFeatured": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "description": "Featured review status",
-            "$ref": "#/components/schemas/FeaturedEnum"
-          }
-        },
-        "required": [
-          "value"
-        ]
-      },
-      "PublishedEnum": {
-        "type": "string",
-        "enum": [
-          "published"
-        ]
-      },
-      "ReviewStatusPublished": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "description": "Published review status",
-            "$ref": "#/components/schemas/PublishedEnum"
-          }
-        },
-        "required": [
-          "value"
-        ]
-      },
-      "UnpublishedEnum": {
-        "type": "string",
-        "enum": [
-          "unpublished"
-        ]
-      },
-      "ReviewStatusUnpublished": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "description": "Unpublished review status",
-            "$ref": "#/components/schemas/UnpublishedEnum"
-          }
-        },
-        "required": [
-          "value"
-        ]
-      },
-      "PendingEnum": {
-        "type": "string",
-        "enum": [
-          "pending"
-        ]
-      },
-      "ReviewStatusPending": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "description": "Pending review status",
-            "$ref": "#/components/schemas/PendingEnum"
-          }
-        },
-        "required": [
-          "value"
-        ]
-      },
-      "ReviewProductDTO": {
-        "type": "object",
-        "properties": {
-          "url": {
-            "description": "The URL of the product",
-            "type": "string",
-            "example": "https://example.com/product/123"
-          },
-          "name": {
-            "description": "The name of the product",
-            "type": "string"
-          },
-          "image_url": {
-            "description": "The URL of the product image",
-            "type": "string",
-            "example": "https://example.com/image.jpg",
-            "nullable": true
-          },
-          "external_id": {
-            "description": "The external ID of the product",
-            "type": "string",
-            "example": "123456789",
-            "nullable": true
-          }
-        },
-        "required": [
-          "url",
-          "name"
-        ]
-      },
-      "ReviewPublicReply": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "description": "The content of the public reply",
-            "example": "Thanks for the review!",
-            "type": "string"
-          },
-          "author": {
-            "description": "The author of the public reply",
-            "type": "string",
-            "example": "Company X"
-          },
-          "updated": {
-            "description": "The datetime when this public reply was updated",
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-11-08T00:00:00+00:00"
-          }
-        },
-        "required": [
-          "content",
-          "author",
-          "updated"
-        ]
-      },
-      "ReviewValuesReportEnum": {
-        "type": "string",
-        "enum": [
-          "review-values-report"
-        ]
-      },
-      "GroupingProduct": {
-        "type": "object",
-        "properties": {
-          "product_id": {
-            "description": "The ID of the product",
-            "type": "string",
-            "example": "12345"
-          }
-        },
-        "required": [
-          "product_id"
-        ]
-      },
-      "GroupingCompany": {
-        "type": "object"
-      },
-      "StatisticsDTO": {
-        "type": "object",
-        "properties": {
-          "average_rating": {
-            "description": "The average rating",
-            "type": "number",
-            "example": 4.5,
-            "nullable": true
-          },
-          "total_reviews": {
-            "description": "The total number of reviews",
-            "type": "integer",
-            "example": 100,
-            "nullable": true
-          },
-          "total_questions": {
-            "description": "The total number of questions",
-            "type": "integer",
-            "example": 50,
-            "nullable": true
-          },
-          "total_ratings": {
-            "description": "The total number of ratings",
-            "type": "integer",
-            "example": 200,
-            "nullable": true
-          },
-          "total_store_reviews": {
-            "description": "The total number of store reviews",
-            "type": "integer",
-            "example": 5000,
-            "nullable": true
-          },
-          "average_store_rating": {
-            "description": "The average rating of store reviews",
-            "type": "number",
-            "example": 2,
-            "nullable": true
-          }
-        }
-      },
-      "ReviewValueReportGrouping": {
-        "type": "object",
-        "properties": {
-          "groupings": {
-            "description": "Grouping details, either by product or company",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/GroupingProduct"
-              },
-              {
-                "$ref": "#/components/schemas/GroupingCompany"
-              }
-            ]
-          },
-          "statistics": {
-            "description": "Statistics related to the grouping",
-            "example": {
-              "average_rating": 4.5,
-              "total_reviews": 100,
-              "total_questions": 50,
-              "total_ratings": 200,
-              "total_store_reviews": 5000,
-              "average_store_rating": 2
-            },
-            "$ref": "#/components/schemas/StatisticsDTO"
-          }
-        },
-        "required": [
-          "groupings",
-          "statistics"
-        ]
-      },
-      "ReviewValuesReportResponseObjectResource": {
+      "DataSourceResponseObjectResource": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/ReviewValuesReportEnum"
+            "$ref": "#/components/schemas/DataSourceEnum"
           },
           "id": {
-            "description": "The unique identifier for the reviews values report",
+            "description": "The ID of the data source",
             "type": "string",
             "example": "925e385b52fb405715f3616c337cc65c"
           },
           "attributes": {
             "type": "object",
             "properties": {
-              "results": {
-                "description": "The list of groupings and their corresponding statistics in the reviews values report",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ReviewValueReportGrouping"
-                },
-                "example": [
-                  {
-                    "groupings": {
-                      "product_id": "id1"
-                    },
-                    "statistics": {
-                      "total_ratings": 459,
-                      "average_rating": 4.5
-                    }
-                  },
-                  {
-                    "groupings": {
-                      "product_id": "id2"
-                    },
-                    "statistics": {
-                      "total_ratings": 459,
-                      "average_rating": 2.5
-                    }
-                  }
+              "title": {
+                "description": "The title of the data source",
+                "type": "string",
+                "example": "My Data Source"
+              },
+              "visibility": {
+                "description": "The status of this data source",
+                "type": "string",
+                "enum": [
+                  "private",
+                  "shared"
                 ]
+              },
+              "description": {
+                "description": "The description of the data source",
+                "type": "string",
+                "example": "This is a data source"
               }
             },
             "required": [
-              "results"
+              "title",
+              "visibility",
+              "description"
             ]
           },
           "links": {
@@ -819,13 +225,13 @@
           "links"
         ]
       },
-      "GetReviewValuesReportResponseCollection": {
+      "GetDataSourceResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ReviewValuesReportResponseObjectResource"
+              "$ref": "#/components/schemas/DataSourceResponseObjectResource"
             }
           },
           "links": {
@@ -836,337 +242,97 @@
           "data"
         ]
       },
-      "ClientReviewResponseDTOObjectResource": {
+      "DataSourceRecordEnum": {
+        "type": "string",
+        "enum": [
+          "data-source-record"
+        ]
+      },
+      "DataSourceRecordResourceObject": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/ReviewEnum"
-          },
-          "id": {
-            "description": "The ID of the review",
-            "type": "string",
-            "example": "925e385b52fb405715f3616c337cc65c"
+            "$ref": "#/components/schemas/DataSourceRecordEnum"
           },
           "attributes": {
             "type": "object",
             "properties": {
-              "status": {
-                "description": "The status of this review",
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ReviewStatusRejected"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ReviewStatusFeatured"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ReviewStatusPublished"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ReviewStatusUnpublished"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ReviewStatusPending"
-                  }
-                ]
-              },
-              "verified": {
-                "description": "The verification status of this review (aka whether or not we have confirmation that the customer bought the product)",
-                "type": "boolean",
-                "example": true
-              },
-              "review_type": {
-                "description": "The type of this review — either a review, question, or rating",
-                "type": "string",
-                "example": "review",
-                "enum": [
-                  "question",
-                  "rating",
-                  "review",
-                  "store"
-                ]
-              },
-              "created": {
-                "description": "The datetime when this review was created",
-                "type": "string",
-                "format": "date-time",
-                "example": "2022-11-08T00:00:00+00:00"
-              },
-              "updated": {
-                "description": "The datetime when this review was updated",
-                "type": "string",
-                "format": "date-time",
-                "example": "2022-11-08T00:00:00+00:00"
-              },
-              "images": {
-                "description": "The list of images submitted with this review (represented as a list of urls). If there are no images, this field will be an empty list.",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "example": [
-                  "https://example.com/image1.jpg",
-                  "https://example.com/image2.jpg"
-                ]
-              },
-              "product": {
-                "description": "The product associated with this review",
-                "$ref": "#/components/schemas/ReviewProductDTO",
-                "nullable": true
-              },
-              "rating": {
-                "description": "The rating of this review on a scale from 1-5. If the review type is \"question\", this field will be null.",
-                "type": "integer",
-                "example": 2,
-                "nullable": true
-              },
-              "author": {
-                "description": "The author of this review",
-                "type": "string",
-                "example": "John D",
-                "nullable": true
-              },
-              "content": {
-                "description": "The content of this review",
-                "example": "Great product! I love the smell. I will be buying again.",
-                "nullable": true,
-                "type": "string"
-              },
-              "title": {
-                "description": "The title of this review",
-                "type": "string",
-                "example": "Smells great, would recommend",
-                "nullable": true
-              },
-              "smart_quote": {
-                "description": "A quote from this review that summarizes the content",
-                "type": "string",
-                "example": "I love the smell",
-                "nullable": true
-              },
-              "public_reply": {
-                "description": "The public reply to this review (if one exists)",
-                "$ref": "#/components/schemas/ReviewPublicReply",
-                "nullable": true
+              "record": {
+                "type": "object"
               }
             },
             "required": [
-              "verified",
-              "review_type",
-              "created",
-              "updated",
-              "images"
+              "record"
             ]
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
           "type",
-          "id",
-          "attributes",
-          "links"
+          "attributes"
         ]
       },
-      "GetClientReviewResponseDTOCollection": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClientReviewResponseDTOObjectResource"
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "ReviewProductExternalId": {
-        "type": "object",
-        "properties": {
-          "external_id": {
-            "description": "The external ID of the product",
-            "type": "string",
-            "example": "7549950034135"
-          },
-          "integration_key": {
-            "description": "The integration key of the product in lowercase",
-            "type": "string",
-            "example": "shopify",
-            "enum": [
-              "shopify",
-              "woocommerce"
-            ]
-          }
-        },
-        "required": [
-          "external_id",
-          "integration_key"
-        ]
-      },
-      "CustomQuestionDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "The ID of the custom question",
-            "type": "string",
-            "example": "9ff0d32e-0edb-4513-a6a5-12814a6cb755"
-          },
-          "answers": {
-            "description": "The answers to the custom question",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "M",
-              "L"
-            ]
-          }
-        },
-        "required": [
-          "id",
-          "answers"
-        ]
-      },
-      "OrderEnum": {
+      "DataSourceRecordBulkCreateJobEnum": {
         "type": "string",
         "enum": [
-          "order"
+          "data-source-record-bulk-create-job"
         ]
       },
-      "ReviewCreateDTOResourceObject": {
+      "DataSourceRecordBulkCreateJobCreateQueryResourceObject": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/ReviewEnum"
+            "$ref": "#/components/schemas/DataSourceRecordBulkCreateJobEnum"
           },
           "attributes": {
             "type": "object",
             "properties": {
-              "review_type": {
-                "description": "The type of this review -- either a review or a question",
-                "type": "string",
-                "example": "review",
-                "enum": [
-                  "question",
-                  "rating",
-                  "review",
-                  "store"
-                ]
-              },
-              "email": {
-                "description": "The email of the author of this review",
-                "type": "string",
-                "example": "random.123@gmail.com"
-              },
-              "author": {
-                "description": "The author of this review",
-                "type": "string",
-                "example": "firstName lastName"
-              },
-              "content": {
-                "description": "The content of this review",
-                "example": "This was an absolutely amazing t-shirt. I loved the color and the fit.",
-                "type": "string"
-              },
-              "incentive_type": {
-                "description": "The incentive type for the review",
-                "type": "string",
-                "enum": [
-                  "coupon_or_discount",
-                  "employee_review",
-                  "free_product",
-                  "loyalty_points",
-                  "other",
-                  "paid_promotion",
-                  "sweepstakes_entry"
-                ],
-                "nullable": true
-              },
-              "product": {
-                "description": "The product associated with this review",
-                "$ref": "#/components/schemas/ReviewProductExternalId",
-                "nullable": true
-              },
-              "rating": {
-                "description": "The rating of this review on a scale from 1-5. If the review type is \"question\", this field will be null.",
-                "type": "integer",
-                "example": 2,
-                "enum": [
-                  1,
-                  2,
-                  3,
-                  4,
-                  5
-                ],
-                "nullable": true
-              },
-              "title": {
-                "description": "The title of this review",
-                "type": "string",
-                "example": "Great product!",
-                "nullable": true
-              },
-              "custom_questions": {
-                "description": "Custom question and answers for the review",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/CustomQuestionDTO"
+              "data-source-records": {
+                "description": "The records to ingest.",
+                "type": "object",
+                "example": {
+                  "data": [
+                    {
+                      "type": "data-source-record",
+                      "attributes": {
+                        "record": {
+                          "key1": "value1",
+                          "key2": "value2"
+                        }
+                      }
+                    }
+                  ]
                 },
-                "example": [
-                  {
-                    "id": "9ff0d32e-0edb-4513-a6a5-12814a6cb755",
-                    "answers": [
-                      "M",
-                      "L"
-                    ]
+                "nullable": true,
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/DataSourceRecordResourceObject"
+                    }
                   }
-                ],
-                "nullable": true
-              },
-              "images": {
-                "description": "The list of images submitted with this review (represented as a list of urls or base-64 encoded data-uri). If there are no images, this field will be an empty list.",
-                "type": "array",
-                "items": {
-                  "type": "string"
                 },
-                "example": [
-                  "https://example.com/image1.jpg",
-                  "https://example.com/image2.jpg"
-                ],
-                "nullable": true
+                "required": [
+                  "data"
+                ]
               }
-            },
-            "required": [
-              "review_type",
-              "email",
-              "author",
-              "content"
-            ]
+            }
           },
           "relationships": {
             "type": "object",
             "properties": {
-              "order": {
+              "data-source": {
                 "type": "object",
                 "properties": {
                   "data": {
                     "type": "object",
                     "properties": {
                       "type": {
-                        "$ref": "#/components/schemas/OrderEnum"
+                        "$ref": "#/components/schemas/DataSourceEnum"
                       },
                       "id": {
-                        "description": "The Order ID related to the review",
+                        "description": "The data source to which the records belong.",
                         "type": "string",
-                        "example": "42439497119686"
+                        "example": "01J7C23V8XWMRG13FMD7VZN6GW"
                       }
                     },
                     "required": [
@@ -1184,11 +350,11 @@
           "attributes"
         ]
       },
-      "ReviewCreateDTO": {
+      "DataSourceRecordBulkCreateJobCreateQuery": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ReviewCreateDTOResourceObject"
+            "$ref": "#/components/schemas/DataSourceRecordBulkCreateJobCreateQueryResourceObject"
           }
         },
         "required": [
@@ -1347,7 +513,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2025-01-15.pre/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2025-04-15.pre/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }
@@ -1410,10 +576,6 @@
       "description": "profiles"
     },
     {
-      "name": "Push Tokens",
-      "description": "push tokens"
-    },
-    {
       "name": "Reporting",
       "description": "reporting"
     },
@@ -1436,6 +598,10 @@
     {
       "name": "Tracking Settings",
       "description": "tracking settings"
+    },
+    {
+      "name": "Web Feeds",
+      "description": "web feeds"
     },
     {
       "name": "Webhooks",
