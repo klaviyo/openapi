@@ -16519,6 +16519,426 @@
         "x-klaviyo-subtag": "Consent"
       }
     },
+    "/api/push-tokens": {
+      "get": {
+        "operationId": "get_push_tokens",
+        "summary": "Get Push Tokens",
+        "description": "Return push tokens associated with company.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
+        "parameters": [
+          {
+            "name": "fields[profile]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "email",
+                  "phone_number",
+                  "external_id",
+                  "first_name",
+                  "last_name",
+                  "organization",
+                  "locale",
+                  "title",
+                  "image",
+                  "created",
+                  "updated",
+                  "last_event_date",
+                  "location",
+                  "location.address1",
+                  "location.address2",
+                  "location.city",
+                  "location.country",
+                  "location.latitude",
+                  "location.longitude",
+                  "location.region",
+                  "location.zip",
+                  "location.timezone",
+                  "location.ip",
+                  "properties"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[push-token]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "token",
+                  "enablement_status",
+                  "platform",
+                  "vendor",
+                  "background",
+                  "recorded_date",
+                  "metadata",
+                  "metadata.device_id",
+                  "metadata.klaviyo_sdk",
+                  "metadata.sdk_version",
+                  "metadata.device_model",
+                  "metadata.os_name",
+                  "metadata.os_version",
+                  "metadata.manufacturer",
+                  "metadata.app_name",
+                  "metadata.app_version",
+                  "metadata.app_build",
+                  "metadata.app_id",
+                  "metadata.environment"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `equals`<br>`profile.id`: `equals`<br>`enablement_status`: `equals`<br>`platform`: `equals`",
+            "schema": {
+              "type": "string",
+              "example": "equals(id,'example')"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "profile"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2025-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPushTokenResponseCollectionCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "profiles:read",
+          "push-tokens:read"
+        ],
+        "x-klaviyo-subtag": "Push Tokens"
+      },
+      "post": {
+        "operationId": "create_push_token",
+        "summary": "Create or Update Push Token",
+        "description": "Create or update a push token.\n\nThis endpoint can be used to migrate push tokens from another platform to Klaviyo. Please use our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) to create push tokens from users' devices.\n\nThe maximum allowed payload size is 100KB.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`push-tokens:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2025-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushTokenCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "profiles:write",
+          "push-tokens:write"
+        ],
+        "x-klaviyo-subtag": "Push Tokens"
+      }
+    },
+    "/api/push-tokens/{id}": {
+      "get": {
+        "operationId": "get_push_token",
+        "summary": "Get Push Token",
+        "description": "Return a specific push token based on its ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The value of the push token",
+            "required": true,
+            "schema": {
+              "description": "The value of the push token",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[profile]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "email",
+                  "phone_number",
+                  "external_id",
+                  "first_name",
+                  "last_name",
+                  "organization",
+                  "locale",
+                  "title",
+                  "image",
+                  "created",
+                  "updated",
+                  "last_event_date",
+                  "location",
+                  "location.address1",
+                  "location.address2",
+                  "location.city",
+                  "location.country",
+                  "location.latitude",
+                  "location.longitude",
+                  "location.region",
+                  "location.zip",
+                  "location.timezone",
+                  "location.ip",
+                  "properties"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[push-token]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "token",
+                  "enablement_status",
+                  "platform",
+                  "vendor",
+                  "background",
+                  "recorded_date",
+                  "metadata",
+                  "metadata.device_id",
+                  "metadata.klaviyo_sdk",
+                  "metadata.sdk_version",
+                  "metadata.device_model",
+                  "metadata.os_name",
+                  "metadata.os_version",
+                  "metadata.manufacturer",
+                  "metadata.app_name",
+                  "metadata.app_version",
+                  "metadata.app_build",
+                  "metadata.app_id",
+                  "metadata.environment"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "profile"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2025-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPushTokenResponseCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "profiles:read",
+          "push-tokens:read"
+        ],
+        "x-klaviyo-subtag": "Push Tokens"
+      },
+      "delete": {
+        "operationId": "delete_push_token",
+        "summary": "Delete Push Token",
+        "description": "Delete a specific push token based on its ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`push-tokens:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The value of the push token to delete",
+            "required": true,
+            "schema": {
+              "description": "The value of the push token to delete",
+              "type": "string",
+              "example": "925e385b52fb405715f3616c337cc65c"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2025-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "push-tokens:write"
+        ],
+        "x-klaviyo-subtag": "Push Tokens"
+      }
+    },
     "/api/profile-import": {
       "post": {
         "operationId": "create_or_update_profile",
@@ -16790,7 +17210,7 @@
       "get": {
         "operationId": "get_push_tokens_for_profile",
         "summary": "Get Push Tokens for Profile",
-        "description": "Return all push tokens that belong to the given profile.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`",
+        "description": "Return all push tokens that belong to the given profile.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`profiles:read`",
         "parameters": [
           {
             "name": "id",
@@ -16873,8 +17293,8 @@
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
+          "burst": "10/s",
+          "steady": "150/m"
         },
         "x-klaviyo-scopes": [
           "profiles:read"
@@ -16885,7 +17305,7 @@
       "get": {
         "operationId": "get_push_token_ids_for_profile",
         "summary": "Get Push Token IDs for Profile",
-        "description": "Return the IDs of all push tokens associated with the given profile.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`",
+        "description": "Return the IDs of all push tokens associated with the given profile.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`profiles:read`",
         "parameters": [
           {
             "name": "id",
@@ -16933,8 +17353,8 @@
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
+          "burst": "10/s",
+          "steady": "150/m"
         },
         "x-klaviyo-scopes": [
           "profiles:read"
@@ -17744,427 +18164,11 @@
         "x-klaviyo-subtag": "Bulk Import Profiles"
       }
     },
-    "/api/push-tokens": {
-      "get": {
-        "operationId": "get_push_tokens",
-        "summary": "Get Push Tokens",
-        "description": "Return push tokens associated with company.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
-        "parameters": [
-          {
-            "name": "fields[profile]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "email",
-                  "phone_number",
-                  "external_id",
-                  "first_name",
-                  "last_name",
-                  "organization",
-                  "locale",
-                  "title",
-                  "image",
-                  "created",
-                  "updated",
-                  "last_event_date",
-                  "location",
-                  "location.address1",
-                  "location.address2",
-                  "location.city",
-                  "location.country",
-                  "location.latitude",
-                  "location.longitude",
-                  "location.region",
-                  "location.zip",
-                  "location.timezone",
-                  "location.ip",
-                  "properties"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "fields[push-token]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "created",
-                  "token",
-                  "enablement_status",
-                  "platform",
-                  "vendor",
-                  "background",
-                  "recorded_date",
-                  "metadata",
-                  "metadata.device_id",
-                  "metadata.klaviyo_sdk",
-                  "metadata.sdk_version",
-                  "metadata.device_model",
-                  "metadata.os_name",
-                  "metadata.os_version",
-                  "metadata.manufacturer",
-                  "metadata.app_name",
-                  "metadata.app_version",
-                  "metadata.app_build",
-                  "metadata.app_id",
-                  "metadata.environment"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `equals`<br>`profile.id`: `equals`<br>`enablement_status`: `equals`<br>`platform`: `equals`",
-            "schema": {
-              "type": "string",
-              "example": "equals(id,'example')"
-            }
-          },
-          {
-            "name": "include",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#relationships",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "profile"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#pagination",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 20. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 20,
-              "maximum": 100,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2025-04-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetPushTokenResponseCollectionCompoundDocument"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Push Tokens"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "profiles:read",
-          "push-tokens:read"
-        ]
-      },
-      "post": {
-        "operationId": "create_push_token",
-        "summary": "Create or Update Push Token",
-        "description": "Create or update a push token.\n\nThis endpoint can be used to migrate push tokens from another platform to Klaviyo. Please use our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) to create push tokens from users' devices.\n\nThe maximum allowed payload size is 100KB.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:write`\n`push-tokens:write`",
-        "parameters": [
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2025-04-15"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PushTokenCreateQuery"
-              }
-            }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "Success"
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Push Tokens"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "profiles:write",
-          "push-tokens:write"
-        ]
-      }
-    },
-    "/api/push-tokens/{id}": {
-      "get": {
-        "operationId": "get_push_token",
-        "summary": "Get Push Token",
-        "description": "Return a specific push token based on its ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The value of the push token",
-            "required": true,
-            "schema": {
-              "description": "The value of the push token",
-              "type": "string"
-            }
-          },
-          {
-            "name": "fields[profile]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "email",
-                  "phone_number",
-                  "external_id",
-                  "first_name",
-                  "last_name",
-                  "organization",
-                  "locale",
-                  "title",
-                  "image",
-                  "created",
-                  "updated",
-                  "last_event_date",
-                  "location",
-                  "location.address1",
-                  "location.address2",
-                  "location.city",
-                  "location.country",
-                  "location.latitude",
-                  "location.longitude",
-                  "location.region",
-                  "location.zip",
-                  "location.timezone",
-                  "location.ip",
-                  "properties"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "fields[push-token]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "created",
-                  "token",
-                  "enablement_status",
-                  "platform",
-                  "vendor",
-                  "background",
-                  "recorded_date",
-                  "metadata",
-                  "metadata.device_id",
-                  "metadata.klaviyo_sdk",
-                  "metadata.sdk_version",
-                  "metadata.device_model",
-                  "metadata.os_name",
-                  "metadata.os_version",
-                  "metadata.manufacturer",
-                  "metadata.app_name",
-                  "metadata.app_version",
-                  "metadata.app_build",
-                  "metadata.app_id",
-                  "metadata.environment"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "include",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#relationships",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "profile"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2025-04-15"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetPushTokenResponseCompoundDocument"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Push Tokens"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "profiles:read",
-          "push-tokens:read"
-        ]
-      },
-      "delete": {
-        "operationId": "delete_push_token",
-        "summary": "Delete Push Token",
-        "description": "Delete a specific push token based on its ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`push-tokens:write`",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The value of the push token to delete",
-            "required": true,
-            "schema": {
-              "description": "The value of the push token to delete",
-              "type": "string",
-              "example": "925e385b52fb405715f3616c337cc65c"
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2025-04-15"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Success"
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Push Tokens"
-        ],
-        "x-klaviyo-pre-release": "None",
-        "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
-        },
-        "x-klaviyo-scopes": [
-          "push-tokens:write"
-        ]
-      }
-    },
     "/api/push-tokens/{id}/profile": {
       "get": {
         "operationId": "get_profile_for_push_token",
         "summary": "Get Profile for Push Token",
-        "description": "Return the profile associated with the given push token.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
+        "description": "Return the profile associated with the given push token.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
         "parameters": [
           {
             "name": "id",
@@ -18241,27 +18245,28 @@
           }
         },
         "tags": [
-          "Push Tokens"
+          "Profiles"
         ],
         "x-klaviyo-operation-aliases": [
           "get_push_token_profile"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
+          "burst": "10/s",
+          "steady": "150/m"
         },
         "x-klaviyo-scopes": [
           "profiles:read",
           "push-tokens:read"
-        ]
+        ],
+        "x-klaviyo-subtag": "Push Tokens"
       }
     },
     "/api/push-tokens/{id}/relationships/profile": {
       "get": {
         "operationId": "get_profile_id_for_push_token",
         "summary": "Get Profile ID for Push Token",
-        "description": "Return the ID of the profile associated with the given push token.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
+        "description": "Return the ID of the profile associated with the given push token.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
         "parameters": [
           {
             "name": "id",
@@ -18303,20 +18308,21 @@
           }
         },
         "tags": [
-          "Push Tokens"
+          "Profiles"
         ],
         "x-klaviyo-operation-aliases": [
           "get_push_token_relationships_profile"
         ],
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
-          "burst": "75/s",
-          "steady": "700/m"
+          "burst": "10/s",
+          "steady": "150/m"
         },
         "x-klaviyo-scopes": [
           "profiles:read",
           "push-tokens:read"
-        ]
+        ],
+        "x-klaviyo-subtag": "Push Tokens"
       }
     },
     "/api/campaign-values-reports": {
@@ -62251,10 +62257,6 @@
     {
       "name": "Profiles",
       "description": "profiles"
-    },
-    {
-      "name": "Push Tokens",
-      "description": "push tokens"
     },
     {
       "name": "Reporting",
