@@ -1,0 +1,625 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2025-04-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/api/data-sources": {
+      "get": {
+        "operationId": "get_data_sources_beta",
+        "summary": "Get Data Sources",
+        "description": "\n        > 🚧 This endpoint is in beta and subject to change.\n        >\n        > A beta revision header (2025-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n        \n\nGet all data sources in an account.\n\nCustom objects is a paid feature in Klaviyo, only available to customers with a paid email plan. To request access to custom objects, submit [this form](https://docs.google.com/forms/d/e/1FAIpQLScg1yZbkCpWnJCLTuaAJ_NkvecjSjVTBW55AWZst1yhobkbRg/viewform).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`",
+        "parameters": [
+          {
+            "name": "fields[data-source]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "title",
+                  "visibility",
+                  "description"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2025-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDataSourceResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "custom-objects:read"
+        ],
+        "x-klaviyo-subtag": "Custom Objects"
+      }
+    },
+    "/api/data-source-record-bulk-create-jobs": {
+      "post": {
+        "operationId": "bulk_create_data_source_records_beta",
+        "summary": "Bulk Create Data Source Records",
+        "description": "\n        > 🚧 This endpoint is in beta and subject to change.\n        >\n        > A beta revision header (2025-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n        \n\nCreate a data source record job.\n\nCustom objects is a paid feature in Klaviyo, only available to customers with a paid email plan. To request access to custom objects, submit [this form](https://docs.google.com/forms/d/e/1FAIpQLScg1yZbkCpWnJCLTuaAJ_NkvecjSjVTBW55AWZst1yhobkbRg/viewform).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2025-04-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a data source record job",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataSourceRecordBulkCreateJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_data_source_record_bulk_create_job"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "custom-objects:write"
+        ],
+        "x-klaviyo-subtag": "Custom Objects"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DataSourceEnum": {
+        "type": "string",
+        "enum": [
+          "data-source"
+        ]
+      },
+      "DataSourceResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/DataSourceEnum"
+          },
+          "id": {
+            "description": "The ID of the data source",
+            "type": "string",
+            "example": "925e385b52fb405715f3616c337cc65c"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "description": "The title of the data source",
+                "type": "string",
+                "example": "My Data Source"
+              },
+              "visibility": {
+                "description": "The status of this data source",
+                "type": "string",
+                "enum": [
+                  "private",
+                  "shared"
+                ]
+              },
+              "description": {
+                "description": "The description of the data source",
+                "type": "string",
+                "example": "This is a data source"
+              }
+            },
+            "required": [
+              "title",
+              "visibility",
+              "description"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetDataSourceResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSourceResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "DataSourceRecordEnum": {
+        "type": "string",
+        "enum": [
+          "data-source-record"
+        ]
+      },
+      "DataSourceRecordResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/DataSourceRecordEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "record": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "record"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "DataSourceRecordBulkCreateJobEnum": {
+        "type": "string",
+        "enum": [
+          "data-source-record-bulk-create-job"
+        ]
+      },
+      "DataSourceRecordBulkCreateJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/DataSourceRecordBulkCreateJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "data-source-records": {
+                "description": "The records to ingest.",
+                "type": "object",
+                "example": {
+                  "data": [
+                    {
+                      "type": "data-source-record",
+                      "attributes": {
+                        "record": {
+                          "key1": "value1",
+                          "key2": "value2"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "nullable": true,
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/DataSourceRecordResourceObject"
+                    }
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "data-source": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/DataSourceEnum"
+                      },
+                      "id": {
+                        "description": "The data source to which the records belong.",
+                        "type": "string",
+                        "example": "01J7C23V8XWMRG13FMD7VZN6GW"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "DataSourceRecordBulkCreateJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/DataSourceRecordBulkCreateJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      }
+    },
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2025-04-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Accounts",
+      "description": "accounts"
+    },
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    },
+    {
+      "name": "Campaigns",
+      "description": "campaigns"
+    },
+    {
+      "name": "Catalogs",
+      "description": "catalogs"
+    },
+    {
+      "name": "Conversations",
+      "description": "conversations"
+    },
+    {
+      "name": "Coupons",
+      "description": "coupons"
+    },
+    {
+      "name": "Data Privacy",
+      "description": "data privacy"
+    },
+    {
+      "name": "Events",
+      "description": "events"
+    },
+    {
+      "name": "Flows",
+      "description": "flows"
+    },
+    {
+      "name": "Forms",
+      "description": "forms"
+    },
+    {
+      "name": "Images",
+      "description": "images"
+    },
+    {
+      "name": "Lists",
+      "description": "lists"
+    },
+    {
+      "name": "Metrics",
+      "description": "metrics"
+    },
+    {
+      "name": "Profiles",
+      "description": "profiles"
+    },
+    {
+      "name": "Reporting",
+      "description": "reporting"
+    },
+    {
+      "name": "Reviews",
+      "description": "reviews"
+    },
+    {
+      "name": "Segments",
+      "description": "segments"
+    },
+    {
+      "name": "Tags",
+      "description": "tags"
+    },
+    {
+      "name": "Templates",
+      "description": "templates"
+    },
+    {
+      "name": "Tracking Settings",
+      "description": "tracking settings"
+    },
+    {
+      "name": "Web Feeds",
+      "description": "web feeds"
+    },
+    {
+      "name": "Webhooks",
+      "description": "webhooks"
+    },
+    {
+      "name": "Client",
+      "description": "client"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "x-readme": {
+    "explorer-enabled": false,
+    "proxy-enabled": true,
+    "samples-enabled": true
+  }
+}
