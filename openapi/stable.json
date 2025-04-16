@@ -18181,7 +18181,24 @@
             }
           },
           {
-            "name": "fields[push-token]",
+            "name": "additional-fields[profile]",
+            "in": "query",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "subscriptions",
+                  "predictive_analytics"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[profile]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2025-04-15/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -18190,26 +18207,73 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "email",
+                  "phone_number",
+                  "external_id",
+                  "first_name",
+                  "last_name",
+                  "organization",
+                  "locale",
+                  "title",
+                  "image",
                   "created",
-                  "token",
-                  "enablement_status",
-                  "platform",
-                  "vendor",
-                  "background",
-                  "recorded_date",
-                  "metadata",
-                  "metadata.device_id",
-                  "metadata.klaviyo_sdk",
-                  "metadata.sdk_version",
-                  "metadata.device_model",
-                  "metadata.os_name",
-                  "metadata.os_version",
-                  "metadata.manufacturer",
-                  "metadata.app_name",
-                  "metadata.app_version",
-                  "metadata.app_build",
-                  "metadata.app_id",
-                  "metadata.environment"
+                  "updated",
+                  "last_event_date",
+                  "location",
+                  "location.address1",
+                  "location.address2",
+                  "location.city",
+                  "location.country",
+                  "location.latitude",
+                  "location.longitude",
+                  "location.region",
+                  "location.zip",
+                  "location.timezone",
+                  "location.ip",
+                  "properties",
+                  "subscriptions",
+                  "subscriptions.email",
+                  "subscriptions.email.marketing",
+                  "subscriptions.email.marketing.can_receive_email_marketing",
+                  "subscriptions.email.marketing.consent",
+                  "subscriptions.email.marketing.consent_timestamp",
+                  "subscriptions.email.marketing.last_updated",
+                  "subscriptions.email.marketing.method",
+                  "subscriptions.email.marketing.method_detail",
+                  "subscriptions.email.marketing.custom_method_detail",
+                  "subscriptions.email.marketing.double_optin",
+                  "subscriptions.email.marketing.suppression",
+                  "subscriptions.email.marketing.list_suppressions",
+                  "subscriptions.sms",
+                  "subscriptions.sms.marketing",
+                  "subscriptions.sms.marketing.can_receive_sms_marketing",
+                  "subscriptions.sms.marketing.consent",
+                  "subscriptions.sms.marketing.consent_timestamp",
+                  "subscriptions.sms.marketing.method",
+                  "subscriptions.sms.marketing.method_detail",
+                  "subscriptions.sms.marketing.last_updated",
+                  "subscriptions.sms.transactional",
+                  "subscriptions.sms.transactional.can_receive_sms_transactional",
+                  "subscriptions.sms.transactional.consent",
+                  "subscriptions.sms.transactional.consent_timestamp",
+                  "subscriptions.sms.transactional.method",
+                  "subscriptions.sms.transactional.method_detail",
+                  "subscriptions.sms.transactional.last_updated",
+                  "subscriptions.mobile_push",
+                  "subscriptions.mobile_push.marketing",
+                  "subscriptions.mobile_push.marketing.can_receive_push_marketing",
+                  "subscriptions.mobile_push.marketing.consent",
+                  "subscriptions.mobile_push.marketing.consent_timestamp",
+                  "predictive_analytics",
+                  "predictive_analytics.historic_clv",
+                  "predictive_analytics.predicted_clv",
+                  "predictive_analytics.total_clv",
+                  "predictive_analytics.historic_number_of_orders",
+                  "predictive_analytics.predicted_number_of_orders",
+                  "predictive_analytics.average_days_between_orders",
+                  "predictive_analytics.average_order_value",
+                  "predictive_analytics.churn_probability",
+                  "predictive_analytics.expected_date_of_next_order"
                 ]
               }
             },
@@ -18232,7 +18296,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetPushTokenResponse"
+                  "$ref": "#/components/schemas/GetProfileResponse"
                 }
               }
             }
@@ -43634,38 +43698,6 @@
           "data"
         ]
       },
-      "GetPushTokenResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PushTokenResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "profile": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "GetPushTokenProfileRelationshipResponse": {
         "type": "object",
         "properties": {
@@ -43673,11 +43705,12 @@
             "type": "object",
             "properties": {
               "type": {
-                "$ref": "#/components/schemas/PushTokenEnum"
+                "$ref": "#/components/schemas/ProfileEnum"
               },
               "id": {
-                "description": "ID of push token",
-                "type": "string"
+                "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+                "type": "string",
+                "example": "01GDDKASAP8TKDDA2GRZDSVP4H"
               }
             },
             "required": [
