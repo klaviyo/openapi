@@ -9426,6 +9426,10 @@
                   "send_options",
                   "send_options.use_smart_sending",
                   "send_options.is_transactional",
+                  "badge_options",
+                  "badge_options.badge_config",
+                  "badge_options.value",
+                  "badge_options.set_from_property",
                   "render_options",
                   "render_options.shorten_links",
                   "render_options.add_org_prefix",
@@ -9711,6 +9715,10 @@
                   "send_options",
                   "send_options.use_smart_sending",
                   "send_options.is_transactional",
+                  "badge_options",
+                  "badge_options.badge_config",
+                  "badge_options.value",
+                  "badge_options.set_from_property",
                   "render_options",
                   "render_options.shorten_links",
                   "render_options.add_org_prefix",
@@ -9975,6 +9983,10 @@
                   "send_options",
                   "send_options.use_smart_sending",
                   "send_options.is_transactional",
+                  "badge_options",
+                  "badge_options.badge_config",
+                  "badge_options.value",
+                  "badge_options.set_from_property",
                   "render_options",
                   "render_options.shorten_links",
                   "render_options.add_org_prefix",
@@ -10138,6 +10150,10 @@
                   "send_options",
                   "send_options.use_smart_sending",
                   "send_options.is_transactional",
+                  "badge_options",
+                  "badge_options.badge_config",
+                  "badge_options.value",
+                  "badge_options.set_from_property",
                   "render_options",
                   "render_options.shorten_links",
                   "render_options.add_org_prefix",
@@ -10302,6 +10318,10 @@
                   "send_options",
                   "send_options.use_smart_sending",
                   "send_options.is_transactional",
+                  "badge_options",
+                  "badge_options.badge_config",
+                  "badge_options.value",
+                  "badge_options.set_from_property",
                   "render_options",
                   "render_options.shorten_links",
                   "render_options.add_org_prefix",
@@ -10795,8 +10815,7 @@
         },
         "x-klaviyo-scopes": [
           "flows:read"
-        ],
-        "x-klaviyo-subtag": "Relationships"
+        ]
       }
     },
     "/api/flow-actions/{id}/flow-messages": {
@@ -11089,6 +11108,10 @@
                   "send_options",
                   "send_options.use_smart_sending",
                   "send_options.is_transactional",
+                  "badge_options",
+                  "badge_options.badge_config",
+                  "badge_options.value",
+                  "badge_options.set_from_property",
                   "render_options",
                   "render_options.shorten_links",
                   "render_options.add_org_prefix",
@@ -20435,7 +20458,7 @@
       "post": {
         "operationId": "create_tag",
         "summary": "Create Tag",
-        "description": "Create a tag. An account cannot have more than **500** unique tags.\n\nA tag belongs to a single tag group. If the `tag_group_id` is not specified,\nthe tag is added to the account's default tag group.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`tags:read`\n`tags:write`",
+        "description": "Create a tag. An account cannot have more than **500** unique tags.\n\nA tag belongs to a single tag group. If `relationships.tag-group.data.id` is not specified,\nthe tag is added to the account's default tag group.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`tags:read`\n`tags:write`",
         "parameters": [
           {
             "name": "revision",
@@ -22652,7 +22675,7 @@
       "post": {
         "operationId": "create_universal_content",
         "summary": "Create Universal Content",
-        "description": "Create universal content. Only text blocks, which can include text or HTML, are supported at this time.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:write`",
+        "description": "Create universal content. Currently supported block types are: `button`, `drop_shadow`, `horizontal_rule`, `html`, `image`, `spacer`, and `text`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:write`",
         "parameters": [
           {
             "name": "revision",
@@ -22830,7 +22853,7 @@
       "patch": {
         "operationId": "update_universal_content",
         "summary": "Update Universal Content",
-        "description": "Update universal content. The `definition` field can only be updated for text blocks at this time.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:write`",
+        "description": "Update universal content. The `definition` field can only be updated on the following block types at this time: `button`, `drop_shadow`, `horizontal_rule`, `html`, `image`, `spacer`, and `text`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:write`",
         "parameters": [
           {
             "name": "id",
@@ -32922,6 +32945,53 @@
           "is_transactional"
         ]
       },
+      "CampaignMessageIncrement": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "enum": [
+              "increment_one"
+            ]
+          }
+        },
+        "required": [
+          "badge_config"
+        ]
+      },
+      "CampaignMessageStaticCount": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "enum": [
+              "set_count"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "badge_config",
+          "value"
+        ]
+      },
+      "CampaignMessageProperty": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "enum": [
+              "set_property"
+            ]
+          },
+          "set_from_property": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "badge_config",
+          "set_from_property"
+        ]
+      },
       "SMSRenderOptions": {
         "type": "object",
         "properties": {
@@ -32995,6 +33065,20 @@
               "send_options": {
                 "$ref": "#/components/schemas/SendOptions",
                 "nullable": true
+              },
+              "badge_options": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CampaignMessageIncrement"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CampaignMessageStaticCount"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CampaignMessageProperty"
+                  }
+                ]
               },
               "render_options": {
                 "$ref": "#/components/schemas/SMSRenderOptions",
@@ -34711,6 +34795,65 @@
           "send-mobile-push"
         ]
       },
+      "Increment_oneEnum": {
+        "type": "string",
+        "enum": [
+          "increment_one"
+        ]
+      },
+      "Increment": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "$ref": "#/components/schemas/Increment_oneEnum"
+          }
+        },
+        "required": [
+          "badge_config"
+        ]
+      },
+      "Set_countEnum": {
+        "type": "string",
+        "enum": [
+          "set_count"
+        ]
+      },
+      "StaticCount": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "$ref": "#/components/schemas/Set_countEnum"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "badge_config",
+          "value"
+        ]
+      },
+      "Set_propertyEnum": {
+        "type": "string",
+        "enum": [
+          "set_property"
+        ]
+      },
+      "Property": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "$ref": "#/components/schemas/Set_propertyEnum"
+          },
+          "set_from_property": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "badge_config",
+          "set_from_property"
+        ]
+      },
       "ProfileNotSentPushEnum": {
         "type": "string",
         "enum": [
@@ -34756,6 +34899,19 @@
           "badge": {
             "type": "boolean",
             "default": false
+          },
+          "badge_options": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Increment"
+              },
+              {
+                "$ref": "#/components/schemas/StaticCount"
+              },
+              {
+                "$ref": "#/components/schemas/Property"
+              }
+            ]
           },
           "image_id": {
             "description": "The id of an ImageAsset. If provided, this will take precedence over a dynamic_image.",
@@ -38998,53 +39154,6 @@
           "type"
         ]
       },
-      "Increment": {
-        "type": "object",
-        "properties": {
-          "badge_config": {
-            "enum": [
-              "increment_one"
-            ]
-          }
-        },
-        "required": [
-          "badge_config"
-        ]
-      },
-      "StaticCount": {
-        "type": "object",
-        "properties": {
-          "badge_config": {
-            "enum": [
-              "set_count"
-            ]
-          },
-          "value": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "badge_config",
-          "value"
-        ]
-      },
-      "Property": {
-        "type": "object",
-        "properties": {
-          "badge_config": {
-            "enum": [
-              "set_property"
-            ]
-          },
-          "set_from_property": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "badge_config",
-          "set_from_property"
-        ]
-      },
       "MobilePushBadge": {
         "type": "object",
         "properties": {
@@ -39059,13 +39168,13 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Increment"
+                "$ref": "#/components/schemas/CampaignMessageIncrement"
               },
               {
-                "$ref": "#/components/schemas/StaticCount"
+                "$ref": "#/components/schemas/CampaignMessageStaticCount"
               },
               {
-                "$ref": "#/components/schemas/Property"
+                "$ref": "#/components/schemas/CampaignMessageProperty"
               }
             ]
           }
@@ -56931,7 +57040,22 @@
               "definition": {
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/ButtonBlock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DropShadowBlock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/HorizontalRuleBlock"
+                  },
+                  {
                     "$ref": "#/components/schemas/HTMLBlock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ImageBlock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SpacerBlock"
                   },
                   {
                     "$ref": "#/components/schemas/TextBlock"
@@ -60968,7 +61092,22 @@
                 "nullable": true,
                 "oneOf": [
                   {
+                    "$ref": "#/components/schemas/ButtonBlock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DropShadowBlock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/HorizontalRuleBlock"
+                  },
+                  {
                     "$ref": "#/components/schemas/HTMLBlock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ImageBlock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SpacerBlock"
                   },
                   {
                     "$ref": "#/components/schemas/TextBlock"
