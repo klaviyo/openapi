@@ -31004,6 +31004,143 @@
           "filter"
         ]
       },
+      "PriorityEnum": {
+        "type": "string",
+        "enum": [
+          "priority"
+        ]
+      },
+      "ProfilePredictiveAnalyticsChannelAffinityPriorityFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/NumericEnum"
+          },
+          "operator": {
+            "$ref": "#/components/schemas/EqualsEnum"
+          },
+          "value": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ProfilePredictiveAnalyticsChannelAffinityPriorityCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsEnum"
+          },
+          "dimension": {
+            "description": "Possible dimension for channel affinity criterion.",
+            "type": "string",
+            "enum": [
+              "channel_affinity"
+            ]
+          },
+          "measurement": {
+            "$ref": "#/components/schemas/PriorityEnum"
+          },
+          "predicted_channel": {
+            "description": "Possible channels in a channel affinity definition.",
+            "type": "string",
+            "enum": [
+              "email",
+              "push",
+              "sms"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityPriorityFilter"
+          }
+        },
+        "required": [
+          "type",
+          "dimension",
+          "measurement",
+          "predicted_channel",
+          "filter"
+        ]
+      },
+      "RankEnum": {
+        "type": "string",
+        "enum": [
+          "rank"
+        ]
+      },
+      "ProfilePredictiveAnalyticsChannelAffinityRankFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/StringEnum"
+          },
+          "operator": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EqualsEnum"
+              },
+              {
+                "$ref": "#/components/schemas/NotEqualsEnum"
+              }
+            ]
+          },
+          "value": {
+            "description": "Possible rank values in a channel affinity definition.",
+            "type": "string",
+            "enum": [
+              "high",
+              "low",
+              "medium"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ProfilePredictiveAnalyticsChannelAffinityRankCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsEnum"
+          },
+          "dimension": {
+            "description": "Possible dimension for channel affinity criterion.",
+            "type": "string",
+            "enum": [
+              "channel_affinity"
+            ]
+          },
+          "measurement": {
+            "$ref": "#/components/schemas/RankEnum"
+          },
+          "predicted_channel": {
+            "description": "Possible channels in a channel affinity definition.",
+            "type": "string",
+            "enum": [
+              "email",
+              "push",
+              "sms"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityRankFilter"
+          }
+        },
+        "required": [
+          "type",
+          "dimension",
+          "measurement",
+          "predicted_channel",
+          "filter"
+        ]
+      },
       "ConditionGroup": {
         "type": "object",
         "properties": {
@@ -31037,6 +31174,12 @@
                 },
                 {
                   "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityPriorityCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityRankCondition"
                 }
               ]
             }
