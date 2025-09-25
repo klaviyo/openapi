@@ -36024,6 +36024,148 @@
           "timeframe_filter"
         ]
       },
+      "ActionOutputSplitEnum": {
+        "type": "string",
+        "enum": [
+          "action-output-split"
+        ]
+      },
+      "BooleanBranchLinks": {
+        "type": "object",
+        "properties": {
+          "next_if_true": {
+            "type": "string",
+            "nullable": true
+          },
+          "next_if_false": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "next_if_true",
+          "next_if_false"
+        ]
+      },
+      "ActionOutputEnum": {
+        "type": "string",
+        "enum": [
+          "action-output"
+        ]
+      },
+      "ActionOutputCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ActionOutputEnum"
+          },
+          "output_config_id": {
+            "type": "integer"
+          },
+          "field": {
+            "type": "string"
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StringOperatorFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StringArrayOperatorFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericOperatorFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/BooleanFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ExistenceOperatorFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "output_config_id",
+          "field",
+          "filter"
+        ]
+      },
+      "ActionOutputConditionGroup": {
+        "type": "object",
+        "properties": {
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionOutputCondition"
+            }
+          }
+        },
+        "required": [
+          "conditions"
+        ]
+      },
+      "ActionOutputConditionFilter": {
+        "type": "object",
+        "properties": {
+          "condition_groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActionOutputConditionGroup"
+            }
+          }
+        },
+        "required": [
+          "condition_groups"
+        ]
+      },
+      "ActionOutputSplitActionData": {
+        "type": "object",
+        "properties": {
+          "action_output_filter": {
+            "$ref": "#/components/schemas/ActionOutputConditionFilter",
+            "nullable": true
+          }
+        },
+        "required": [
+          "action_output_filter"
+        ]
+      },
+      "ActionOutputSplitAction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The real ID of an action.",
+            "type": "string",
+            "example": "123",
+            "nullable": true
+          },
+          "temporary_id": {
+            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
+            "type": "string",
+            "example": "action-1",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/ActionOutputSplitEnum"
+          },
+          "links": {
+            "$ref": "#/components/schemas/BooleanBranchLinks",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ActionOutputSplitActionData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
       "BackInStockDelayEnum": {
         "type": "string",
         "enum": [
@@ -36073,23 +36215,6 @@
         "type": "string",
         "enum": [
           "conditional-split"
-        ]
-      },
-      "BooleanBranchLinks": {
-        "type": "object",
-        "properties": {
-          "next_if_true": {
-            "type": "string",
-            "nullable": true
-          },
-          "next_if_false": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "next_if_true",
-          "next_if_false"
         ]
       },
       "ConditionalBranchActionData": {
@@ -39553,6 +39678,9 @@
             "type": "array",
             "items": {
               "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ActionOutputSplitAction"
+                },
                 {
                   "$ref": "#/components/schemas/BackInStockDelayAction"
                 },
