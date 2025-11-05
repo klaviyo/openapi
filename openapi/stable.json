@@ -33733,6 +33733,82 @@
           "channel"
         ]
       },
+      "ProfileMetricFunnelEnum": {
+        "type": "string",
+        "enum": [
+          "profile-metric-funnel"
+        ]
+      },
+      "ProfileMetricFunnelSteps": {
+        "type": "object",
+        "properties": {
+          "metric_exists": {
+            "type": "boolean"
+          },
+          "metric_id": {
+            "type": "string"
+          },
+          "metric_filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileMetricPropertyFilter"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "metric_exists",
+          "metric_id"
+        ]
+      },
+      "SegmentsProfileMetricFunnelCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileMetricFunnelEnum"
+          },
+          "timeframe_filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseFilter"
+              }
+            ]
+          },
+          "completion_window_seconds": {
+            "description": "Allowed completion window durations for funnel conditions (in\nseconds).",
+            "type": "string",
+            "enum": [
+              "DAYS_1",
+              "DAYS_180",
+              "DAYS_3",
+              "DAYS_30",
+              "DAYS_5",
+              "DAYS_90",
+              "HOURS_1",
+              "WEEKS_1",
+              "YEARS_1"
+            ],
+            "nullable": true
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileMetricFunnelSteps"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "timeframe_filter",
+          "steps"
+        ]
+      },
       "ConditionGroup": {
         "type": "object",
         "properties": {
@@ -33778,6 +33854,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ProfilePermissionsCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/SegmentsProfileMetricFunnelCondition"
                 }
               ]
             }
