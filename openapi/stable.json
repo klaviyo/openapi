@@ -50251,11 +50251,9 @@
       "ImageAssetProperties": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer"
-          },
           "src": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "alt_text": {
             "type": "string",
@@ -50265,14 +50263,15 @@
             "type": "string",
             "nullable": true
           },
+          "id": {
+            "type": "integer",
+            "nullable": true
+          },
           "asset_id": {
             "type": "integer",
             "nullable": true
           }
-        },
-        "required": [
-          "id"
-        ]
+        }
       },
       "ImageProperties": {
         "type": "object",
@@ -65183,6 +65182,20 @@
                 "description": "ID of the metric to be used for conversion statistics",
                 "type": "string",
                 "example": "RESQ6t"
+              },
+              "group_by": {
+                "description": "List of attributes to group the data by.\nAllowed group-bys are campaign_id, campaign_message_id, send_channel.\nIf not passed in, the data will be grouped by campaign_id, campaign_message_id, send_channel.\nThe following group by attributes are required: campaign_id, campaign_message_id",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "campaign_id",
+                    "campaign_message_id",
+                    "send_channel"
+                  ],
+                  "description": "Attributes to represent what is being grouped by / filtered on for Campaigns"
+                },
+                "nullable": true
               },
               "filter": {
                 "description": "API filter string used to filter the query.\nAllowed filters are send_channel, campaign_id, campaign_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, sms, push-notification.",
