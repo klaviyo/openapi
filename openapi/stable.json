@@ -49246,6 +49246,42 @@
           "type"
         ]
       },
+      "Skip_to_successEnum": {
+        "type": "string",
+        "enum": [
+          "skip_to_success"
+        ]
+      },
+      "SkipToSuccessProperties": {
+        "type": "object",
+        "maxProperties": 0
+      },
+      "SkipToSuccess": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/Skip_to_successEnum"
+          },
+          "submit": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SkipToSuccessProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
       "Button": {
         "type": "object",
         "properties": {
@@ -49296,6 +49332,9 @@
               },
               {
                 "$ref": "#/components/schemas/SubmitBackInStock"
+              },
+              {
+                "$ref": "#/components/schemas/SkipToSuccess"
               }
             ]
           }
@@ -50687,6 +50726,9 @@
               },
               {
                 "$ref": "#/components/schemas/SubmitBackInStock"
+              },
+              {
+                "$ref": "#/components/schemas/SkipToSuccess"
               }
             ]
           }
@@ -65667,21 +65709,26 @@
                 "example": "RESQ6t"
               },
               "group_by": {
-                "description": "List of attributes to group the data by.\nAllowed group-bys are campaign_id, campaign_message_id, send_channel.\nIf not passed in, the data will be grouped by campaign_id, campaign_message_id, send_channel.\nThe following group by attributes are required: campaign_id, campaign_message_id",
+                "description": "List of attributes to group the data by.\nAllowed group-bys are campaign_id, campaign_message_id, group, send_channel, tag_id, tag_name, text_message_format, variation.\nIf not passed in, the data will be grouped by campaign_id, campaign_message_id, send_channel.\nThe following group by attributes are required: campaign_id, campaign_message_id",
                 "type": "array",
                 "items": {
                   "type": "string",
                   "enum": [
                     "campaign_id",
                     "campaign_message_id",
-                    "send_channel"
+                    "group",
+                    "send_channel",
+                    "tag_id",
+                    "tag_name",
+                    "text_message_format",
+                    "variation"
                   ],
                   "description": "Attributes to represent what is being grouped by / filtered on for Campaigns"
                 },
                 "nullable": true
               },
               "filter": {
-                "description": "API filter string used to filter the query.\nAllowed filters are send_channel, campaign_id, campaign_message_id.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, sms, push-notification, whatsapp.",
+                "description": "API filter string used to filter the query.\nAllowed filters are send_channel, campaign_id, campaign_message_id, variation, text_message_format.\nAllowed operators are equals, contains-any.\nOnly one filter can be used per attribute, only AND can be used as a combination operator.\nMax of 100 messages per ANY filter.\nWhen filtering on send_channel, allowed values are email, sms, push-notification, whatsapp.",
                 "type": "string",
                 "example": "and(equals(campaign_id,\"abc123\"),contains-any(send_channel,[\"email\",\"sms\"]))",
                 "nullable": true
