@@ -10361,7 +10361,10 @@
                   "definition.profile_filter",
                   "definition.profile_filter.condition_groups",
                   "definition.actions",
-                  "definition.entry_action_id"
+                  "definition.entry_action_id",
+                  "definition.reentry_criteria",
+                  "definition.reentry_criteria.duration",
+                  "definition.reentry_criteria.unit"
                 ]
               }
             },
@@ -40980,6 +40983,38 @@
           "timeframe_filter"
         ]
       },
+      "ReentryCriteria": {
+        "type": "object",
+        "properties": {
+          "duration": {
+            "type": "integer"
+          },
+          "unit": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "day",
+                  "hour",
+                  "week"
+                ],
+                "description": "Units for relative date filters."
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "alltime"
+                ],
+                "description": "Operators for alltime date filters."
+              }
+            ]
+          }
+        },
+        "required": [
+          "duration",
+          "unit"
+        ]
+      },
       "FlowDefinition": {
         "type": "object",
         "properties": {
@@ -41151,6 +41186,11 @@
             "description": "The ID of the action that is the entry point of the flow.",
             "type": "string",
             "example": "123",
+            "nullable": true
+          },
+          "reentry_criteria": {
+            "description": "Controls when a customer can re-enter the flow. If unit is 'alltime', a duration of 1 means no re-entry, while a duration of 0 means re-entry is allowed.",
+            "$ref": "#/components/schemas/ReentryCriteria",
             "nullable": true
           }
         },
