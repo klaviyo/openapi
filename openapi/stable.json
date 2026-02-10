@@ -12603,7 +12603,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetFormResponseCollectionCompoundDocument"
+                  "$ref": "#/components/schemas/GetFormResponseCollection"
                 }
               }
             }
@@ -12741,7 +12741,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetEncodedFormResponseCompoundDocument"
+                  "$ref": "#/components/schemas/GetEncodedFormResponse"
                 }
               }
             }
@@ -17123,6 +17123,41 @@
             "explode": false
           },
           {
+            "name": "fields[push-token]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "token",
+                  "enablement_status",
+                  "platform",
+                  "vendor",
+                  "background",
+                  "recorded_date",
+                  "metadata",
+                  "metadata.device_id",
+                  "metadata.klaviyo_sdk",
+                  "metadata.sdk_version",
+                  "metadata.device_model",
+                  "metadata.os_name",
+                  "metadata.os_version",
+                  "metadata.manufacturer",
+                  "metadata.app_name",
+                  "metadata.app_version",
+                  "metadata.app_build",
+                  "metadata.app_id",
+                  "metadata.environment"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "filter",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals`<br>`email`: `any`, `equals`<br>`phone_number`: `any`, `equals`<br>`external_id`: `any`, `equals`<br>`_kx`: `equals`<br>`created`: `greater-than`, `less-than`<br>`updated`: `greater-than`, `less-than`<br>`subscriptions.email.marketing.list_suppressions.reason`: `equals`<br>`subscriptions.email.marketing.list_suppressions.timestamp`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`subscriptions.email.marketing.list_suppressions.list_id`: `equals`<br>`subscriptions.email.marketing.suppression.reason`: `equals`<br>`subscriptions.email.marketing.suppression.timestamp`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
@@ -17140,9 +17175,7 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "lists",
-                  "push-tokens",
-                  "segments"
+                  "push-tokens"
                 ]
               }
             },
@@ -27421,16 +27454,16 @@
           "data"
         ]
       },
-      "CatalogVariantEnum": {
-        "type": "string",
-        "enum": [
-          "catalog-variant"
-        ]
-      },
       "CatalogItemEnum": {
         "type": "string",
         "enum": [
           "catalog-item"
+        ]
+      },
+      "CatalogVariantEnum": {
+        "type": "string",
+        "enum": [
+          "catalog-variant"
         ]
       },
       "CatalogVariantResponseObjectResource": {
@@ -28346,10 +28379,28 @@
           "data"
         ]
       },
+      "EventEnum": {
+        "type": "string",
+        "enum": [
+          "event"
+        ]
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
+        ]
+      },
       "MetricEnum": {
         "type": "string",
         "enum": [
           "metric"
+        ]
+      },
+      "AttributionEnum": {
+        "type": "string",
+        "enum": [
+          "attribution"
         ]
       },
       "FlowEnum": {
@@ -29051,12 +29102,6 @@
           }
         }
       },
-      "ProfileEnum": {
-        "type": "string",
-        "enum": [
-          "profile"
-        ]
-      },
       "ListEnum": {
         "type": "string",
         "enum": [
@@ -29186,18 +29231,6 @@
           "type",
           "attributes",
           "links"
-        ]
-      },
-      "AttributionEnum": {
-        "type": "string",
-        "enum": [
-          "attribution"
-        ]
-      },
-      "EventEnum": {
-        "type": "string",
-        "enum": [
-          "event"
         ]
       },
       "CampaignEnum": {
@@ -29544,13 +29577,13 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/AttributionResponseObjectResource"
-                },
-                {
                   "$ref": "#/components/schemas/MetricResponseObjectResource"
                 },
                 {
                   "$ref": "#/components/schemas/ProfileResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/AttributionResponseObjectResource"
                 }
               ]
             }
@@ -29659,13 +29692,13 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/AttributionResponseObjectResource"
-                },
-                {
                   "$ref": "#/components/schemas/MetricResponseObjectResource"
                 },
                 {
                   "$ref": "#/components/schemas/ProfileResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/AttributionResponseObjectResource"
                 }
               ]
             }
@@ -30296,10 +30329,10 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/FlowResponseObjectResource"
+                  "$ref": "#/components/schemas/TagResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/TagResponseObjectResource"
+                  "$ref": "#/components/schemas/FlowResponseObjectResource"
                 }
               ]
             }
@@ -30465,10 +30498,10 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/FlowResponseObjectResource"
+                  "$ref": "#/components/schemas/TagResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/TagResponseObjectResource"
+                  "$ref": "#/components/schemas/FlowResponseObjectResource"
                 }
               ]
             }
@@ -34059,6 +34092,7 @@
                 "nullable": true
               },
               "is_active": {
+                "description": "Whether the segment is active. Inactive segments are not processed and their membership does not update.",
                 "type": "boolean"
               },
               "is_processing": {
@@ -34175,10 +34209,10 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/FlowResponseObjectResource"
+                  "$ref": "#/components/schemas/TagResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/TagResponseObjectResource"
+                  "$ref": "#/components/schemas/FlowResponseObjectResource"
                 }
               ]
             }
@@ -34225,6 +34259,7 @@
                 "nullable": true
               },
               "is_active": {
+                "description": "Whether the segment is active. Inactive segments are not processed and their membership does not update.",
                 "type": "boolean"
               },
               "is_processing": {
@@ -34350,10 +34385,10 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/FlowResponseObjectResource"
+                  "$ref": "#/components/schemas/TagResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/TagResponseObjectResource"
+                  "$ref": "#/components/schemas/FlowResponseObjectResource"
                 }
               ]
             }
@@ -34652,126 +34687,6 @@
           "data"
         ]
       },
-      "ListResponseObjectResource": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/ListEnum"
-          },
-          "id": {
-            "description": "Primary key that uniquely identifies this list. Generated by Klaviyo.",
-            "type": "string",
-            "example": "Y6nRLr"
-          },
-          "attributes": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "description": "A helpful name to label the list",
-                "type": "string",
-                "example": "Newsletter",
-                "nullable": true
-              },
-              "created": {
-                "description": "Date and time when the list was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
-                "type": "string",
-                "format": "date-time",
-                "example": "2022-11-08T00:00:00+00:00",
-                "nullable": true
-              },
-              "updated": {
-                "description": "Date and time when the list was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
-                "type": "string",
-                "format": "date-time",
-                "example": "2022-11-08T00:00:00+00:00",
-                "nullable": true
-              },
-              "opt_in_process": {
-                "description": "The opt-in process for this list. Valid values: 'double_opt_in', 'single_opt_in'.",
-                "type": "string",
-                "example": "double_opt_in",
-                "enum": [
-                  "double_opt_in",
-                  "single_opt_in"
-                ],
-                "nullable": true
-              }
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "attributes",
-          "links"
-        ]
-      },
-      "SegmentResponseObjectResource": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/SegmentEnum"
-          },
-          "id": {
-            "type": "string"
-          },
-          "attributes": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "description": "A helpful name to label the segment",
-                "type": "string",
-                "example": "Repeat Purchasers",
-                "nullable": true
-              },
-              "definition": {
-                "$ref": "#/components/schemas/SegmentDefinition",
-                "nullable": true
-              },
-              "created": {
-                "description": "Date and time when the segment was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
-                "type": "string",
-                "format": "date-time",
-                "example": "2022-11-08T00:00:00+00:00",
-                "nullable": true
-              },
-              "updated": {
-                "description": "Date and time when the segment was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
-                "type": "string",
-                "format": "date-time",
-                "example": "2022-11-08T00:00:00+00:00",
-                "nullable": true
-              },
-              "is_active": {
-                "type": "boolean"
-              },
-              "is_processing": {
-                "type": "boolean"
-              },
-              "is_starred": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "is_active",
-              "is_processing",
-              "is_starred"
-            ]
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "attributes",
-          "links"
-        ]
-      },
       "DeviceMetadata": {
         "type": "object",
         "properties": {
@@ -35032,10 +34947,137 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushTokenResponseObjectResource"
+            }
           }
         },
         "required": [
           "data"
+        ]
+      },
+      "ListResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ListEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this list. Generated by Klaviyo.",
+            "type": "string",
+            "example": "Y6nRLr"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "A helpful name to label the list",
+                "type": "string",
+                "example": "Newsletter",
+                "nullable": true
+              },
+              "created": {
+                "description": "Date and time when the list was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "Date and time when the list was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "opt_in_process": {
+                "description": "The opt-in process for this list. Valid values: 'double_opt_in', 'single_opt_in'.",
+                "type": "string",
+                "example": "double_opt_in",
+                "enum": [
+                  "double_opt_in",
+                  "single_opt_in"
+                ],
+                "nullable": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "SegmentResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SegmentEnum"
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "A helpful name to label the segment",
+                "type": "string",
+                "example": "Repeat Purchasers",
+                "nullable": true
+              },
+              "definition": {
+                "$ref": "#/components/schemas/SegmentDefinition",
+                "nullable": true
+              },
+              "created": {
+                "description": "Date and time when the segment was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "Date and time when the segment was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "is_active": {
+                "description": "Whether the segment is active. Inactive segments are not processed and their membership does not update.",
+                "type": "boolean"
+              },
+              "is_processing": {
+                "type": "boolean"
+              },
+              "is_starred": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "is_active",
+              "is_processing",
+              "is_starred"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
       },
       "GetProfileResponseCompoundDocument": {
@@ -35162,10 +35204,10 @@
                   "$ref": "#/components/schemas/ListResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/PushTokenResponseObjectResource"
+                  "$ref": "#/components/schemas/SegmentResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/SegmentResponseObjectResource"
+                  "$ref": "#/components/schemas/PushTokenResponseObjectResource"
                 }
               ]
             }
@@ -42043,6 +42085,381 @@
           "data"
         ]
       },
+      "Audiences": {
+        "type": "object",
+        "properties": {
+          "included": {
+            "description": "A list of included audiences",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Y6nRLr"
+            ]
+          },
+          "excluded": {
+            "description": "An optional list of excluded audiences",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "UTd5ui"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "included"
+        ]
+      },
+      "EmailSendOptions": {
+        "type": "object",
+        "properties": {
+          "use_smart_sending": {
+            "description": "Use smart sending.",
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "nullable": true
+          }
+        }
+      },
+      "SMSSendOptions": {
+        "type": "object",
+        "properties": {
+          "use_smart_sending": {
+            "description": "Use smart sending.",
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "nullable": true
+          }
+        }
+      },
+      "PushSendOptions": {
+        "type": "object",
+        "properties": {
+          "use_smart_sending": {
+            "description": "Use smart sending.",
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "nullable": true
+          }
+        }
+      },
+      "DynamicEnum": {
+        "type": "string",
+        "enum": [
+          "dynamic"
+        ]
+      },
+      "DynamicTrackingParam": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of the tracking parameter",
+            "$ref": "#/components/schemas/DynamicEnum"
+          },
+          "value": {
+            "description": "The value of the tracking parameter",
+            "type": "string",
+            "enum": [
+              "campaign_id",
+              "campaign_name",
+              "campaign_name_id",
+              "campaign_name_send_day",
+              "email_subject",
+              "group_id",
+              "group_name",
+              "group_name_id",
+              "link_alt_text",
+              "message_type",
+              "profile_external_id",
+              "profile_id"
+            ]
+          },
+          "name": {
+            "description": "Name of the tracking param",
+            "type": "string",
+            "example": "utm_medium"
+          }
+        },
+        "required": [
+          "type",
+          "value",
+          "name"
+        ]
+      },
+      "StaticEnum": {
+        "type": "string",
+        "enum": [
+          "static"
+        ]
+      },
+      "StaticTrackingParam": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of the tracking parameter",
+            "$ref": "#/components/schemas/StaticEnum"
+          },
+          "value": {
+            "description": "The value of the tracking parameter",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the tracking param",
+            "type": "string",
+            "example": "utm_medium"
+          }
+        },
+        "required": [
+          "type",
+          "value",
+          "name"
+        ]
+      },
+      "CampaignsEmailTrackingOptions": {
+        "type": "object",
+        "properties": {
+          "add_tracking_params": {
+            "description": "Whether the campaign needs custom tracking parameters. If set to False, tracking params will not be used.",
+            "type": "boolean",
+            "nullable": true
+          },
+          "custom_tracking_params": {
+            "description": "A list of custom tracking parameters. If an empty list is given and add_tracking_params is True, uses company defaults.",
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DynamicTrackingParam"
+                },
+                {
+                  "$ref": "#/components/schemas/StaticTrackingParam"
+                }
+              ]
+            },
+            "nullable": true
+          },
+          "is_tracking_clicks": {
+            "description": "Whether the campaign is tracking click events. If not specified, uses company defaults.",
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_tracking_opens": {
+            "description": "Whether the campaign is tracking open events. If not specified, uses company defaults.",
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "CampaignsSMSTrackingOptions": {
+        "type": "object",
+        "properties": {
+          "add_tracking_params": {
+            "description": "Whether the campaign needs custom tracking parameters. If set to False, tracking params will not be used.",
+            "type": "boolean",
+            "nullable": true
+          },
+          "custom_tracking_params": {
+            "description": "A list of custom tracking parameters. If an empty list is given and add_tracking_params is True, uses company defaults.",
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DynamicTrackingParam"
+                },
+                {
+                  "$ref": "#/components/schemas/StaticTrackingParam"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        }
+      },
+      "LocalStaticSend": {
+        "type": "object",
+        "properties": {
+          "is_local": {
+            "description": "Whether the campaign should be sent with local recipient timezone send (requires UTC time) or statically sent at the given time.",
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "send_past_recipients_immediately": {
+            "description": "Determines if we should send to local recipient timezone if the given time has passed. Only applicable to local sends.",
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "is_local"
+        ]
+      },
+      "NonLocalStaticSend": {
+        "type": "object",
+        "properties": {
+          "is_local": {
+            "description": "Whether the campaign should be sent with local recipient timezone send (requires UTC time) or statically sent at the given time.",
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          }
+        },
+        "required": [
+          "is_local"
+        ]
+      },
+      "StaticSendStrategy": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/StaticEnum"
+          },
+          "datetime": {
+            "description": "The time to send at",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          },
+          "options": {
+            "description": "If the campaign should be sent with local recipient timezone send (requires UTC time) or statically sent at the given time.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LocalStaticSend"
+              },
+              {
+                "$ref": "#/components/schemas/NonLocalStaticSend"
+              }
+            ]
+          }
+        },
+        "required": [
+          "method",
+          "datetime"
+        ]
+      },
+      "Smart_send_timeEnum": {
+        "type": "string",
+        "enum": [
+          "smart_send_time"
+        ]
+      },
+      "SmartSendTimeStrategy": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/Smart_send_timeEnum"
+          },
+          "date": {
+            "description": "The day to send on",
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "method",
+          "date"
+        ]
+      },
+      "ThrottledEnum": {
+        "type": "string",
+        "enum": [
+          "throttled"
+        ]
+      },
+      "ThrottledSendStrategy": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/ThrottledEnum"
+          },
+          "datetime": {
+            "description": "The time to send at",
+            "type": "string",
+            "format": "date-time"
+          },
+          "throttle_percentage": {
+            "description": "The percentage of recipients per hour to send to.",
+            "type": "integer",
+            "enum": [
+              10,
+              11,
+              13,
+              14,
+              17,
+              20,
+              25,
+              33,
+              50
+            ]
+          }
+        },
+        "required": [
+          "method",
+          "datetime",
+          "throttle_percentage"
+        ]
+      },
+      "ImmediateEnum": {
+        "type": "string",
+        "enum": [
+          "immediate"
+        ]
+      },
+      "ImmediateSendStrategy": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/ImmediateEnum"
+          }
+        },
+        "required": [
+          "method"
+        ]
+      },
+      "Ab_test_campaignEnum": {
+        "type": "string",
+        "enum": [
+          "ab_test_campaign"
+        ]
+      },
+      "ABTestSendStrategy": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/Ab_test_campaignEnum"
+          }
+        },
+        "required": [
+          "method"
+        ]
+      },
+      "UnsupportedEnum": {
+        "type": "string",
+        "enum": [
+          "unsupported"
+        ]
+      },
+      "UnsupportedSendStrategy": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/UnsupportedEnum"
+          }
+        },
+        "required": [
+          "method"
+        ]
+      },
       "EmailContent": {
         "type": "object",
         "properties": {
@@ -42527,381 +42944,6 @@
           "links"
         ]
       },
-      "Audiences": {
-        "type": "object",
-        "properties": {
-          "included": {
-            "description": "A list of included audiences",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "Y6nRLr"
-            ]
-          },
-          "excluded": {
-            "description": "An optional list of excluded audiences",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "UTd5ui"
-            ],
-            "nullable": true
-          }
-        },
-        "required": [
-          "included"
-        ]
-      },
-      "EmailSendOptions": {
-        "type": "object",
-        "properties": {
-          "use_smart_sending": {
-            "description": "Use smart sending.",
-            "type": "boolean",
-            "example": true,
-            "default": true,
-            "nullable": true
-          }
-        }
-      },
-      "SMSSendOptions": {
-        "type": "object",
-        "properties": {
-          "use_smart_sending": {
-            "description": "Use smart sending.",
-            "type": "boolean",
-            "example": true,
-            "default": true,
-            "nullable": true
-          }
-        }
-      },
-      "PushSendOptions": {
-        "type": "object",
-        "properties": {
-          "use_smart_sending": {
-            "description": "Use smart sending.",
-            "type": "boolean",
-            "example": true,
-            "default": true,
-            "nullable": true
-          }
-        }
-      },
-      "DynamicEnum": {
-        "type": "string",
-        "enum": [
-          "dynamic"
-        ]
-      },
-      "DynamicTrackingParam": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "description": "The type of the tracking parameter",
-            "$ref": "#/components/schemas/DynamicEnum"
-          },
-          "value": {
-            "description": "The value of the tracking parameter",
-            "type": "string",
-            "enum": [
-              "campaign_id",
-              "campaign_name",
-              "campaign_name_id",
-              "campaign_name_send_day",
-              "email_subject",
-              "group_id",
-              "group_name",
-              "group_name_id",
-              "link_alt_text",
-              "message_type",
-              "profile_external_id",
-              "profile_id"
-            ]
-          },
-          "name": {
-            "description": "Name of the tracking param",
-            "type": "string",
-            "example": "utm_medium"
-          }
-        },
-        "required": [
-          "type",
-          "value",
-          "name"
-        ]
-      },
-      "StaticEnum": {
-        "type": "string",
-        "enum": [
-          "static"
-        ]
-      },
-      "StaticTrackingParam": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "description": "The type of the tracking parameter",
-            "$ref": "#/components/schemas/StaticEnum"
-          },
-          "value": {
-            "description": "The value of the tracking parameter",
-            "type": "string"
-          },
-          "name": {
-            "description": "Name of the tracking param",
-            "type": "string",
-            "example": "utm_medium"
-          }
-        },
-        "required": [
-          "type",
-          "value",
-          "name"
-        ]
-      },
-      "CampaignsEmailTrackingOptions": {
-        "type": "object",
-        "properties": {
-          "add_tracking_params": {
-            "description": "Whether the campaign needs custom tracking parameters. If set to False, tracking params will not be used.",
-            "type": "boolean",
-            "nullable": true
-          },
-          "custom_tracking_params": {
-            "description": "A list of custom tracking parameters. If an empty list is given and add_tracking_params is True, uses company defaults.",
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/DynamicTrackingParam"
-                },
-                {
-                  "$ref": "#/components/schemas/StaticTrackingParam"
-                }
-              ]
-            },
-            "nullable": true
-          },
-          "is_tracking_clicks": {
-            "description": "Whether the campaign is tracking click events. If not specified, uses company defaults.",
-            "type": "boolean",
-            "nullable": true
-          },
-          "is_tracking_opens": {
-            "description": "Whether the campaign is tracking open events. If not specified, uses company defaults.",
-            "type": "boolean",
-            "nullable": true
-          }
-        }
-      },
-      "CampaignsSMSTrackingOptions": {
-        "type": "object",
-        "properties": {
-          "add_tracking_params": {
-            "description": "Whether the campaign needs custom tracking parameters. If set to False, tracking params will not be used.",
-            "type": "boolean",
-            "nullable": true
-          },
-          "custom_tracking_params": {
-            "description": "A list of custom tracking parameters. If an empty list is given and add_tracking_params is True, uses company defaults.",
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/DynamicTrackingParam"
-                },
-                {
-                  "$ref": "#/components/schemas/StaticTrackingParam"
-                }
-              ]
-            },
-            "nullable": true
-          }
-        }
-      },
-      "LocalStaticSend": {
-        "type": "object",
-        "properties": {
-          "is_local": {
-            "description": "Whether the campaign should be sent with local recipient timezone send (requires UTC time) or statically sent at the given time.",
-            "type": "boolean",
-            "enum": [
-              true
-            ]
-          },
-          "send_past_recipients_immediately": {
-            "description": "Determines if we should send to local recipient timezone if the given time has passed. Only applicable to local sends.",
-            "type": "boolean",
-            "default": false
-          }
-        },
-        "required": [
-          "is_local"
-        ]
-      },
-      "NonLocalStaticSend": {
-        "type": "object",
-        "properties": {
-          "is_local": {
-            "description": "Whether the campaign should be sent with local recipient timezone send (requires UTC time) or statically sent at the given time.",
-            "type": "boolean",
-            "enum": [
-              false
-            ]
-          }
-        },
-        "required": [
-          "is_local"
-        ]
-      },
-      "StaticSendStrategy": {
-        "type": "object",
-        "properties": {
-          "method": {
-            "$ref": "#/components/schemas/StaticEnum"
-          },
-          "datetime": {
-            "description": "The time to send at",
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-11-08T00:00:00+00:00"
-          },
-          "options": {
-            "description": "If the campaign should be sent with local recipient timezone send (requires UTC time) or statically sent at the given time.",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/LocalStaticSend"
-              },
-              {
-                "$ref": "#/components/schemas/NonLocalStaticSend"
-              }
-            ]
-          }
-        },
-        "required": [
-          "method",
-          "datetime"
-        ]
-      },
-      "Smart_send_timeEnum": {
-        "type": "string",
-        "enum": [
-          "smart_send_time"
-        ]
-      },
-      "SmartSendTimeStrategy": {
-        "type": "object",
-        "properties": {
-          "method": {
-            "$ref": "#/components/schemas/Smart_send_timeEnum"
-          },
-          "date": {
-            "description": "The day to send on",
-            "type": "string",
-            "format": "date"
-          }
-        },
-        "required": [
-          "method",
-          "date"
-        ]
-      },
-      "ThrottledEnum": {
-        "type": "string",
-        "enum": [
-          "throttled"
-        ]
-      },
-      "ThrottledSendStrategy": {
-        "type": "object",
-        "properties": {
-          "method": {
-            "$ref": "#/components/schemas/ThrottledEnum"
-          },
-          "datetime": {
-            "description": "The time to send at",
-            "type": "string",
-            "format": "date-time"
-          },
-          "throttle_percentage": {
-            "description": "The percentage of recipients per hour to send to.",
-            "type": "integer",
-            "enum": [
-              10,
-              11,
-              13,
-              14,
-              17,
-              20,
-              25,
-              33,
-              50
-            ]
-          }
-        },
-        "required": [
-          "method",
-          "datetime",
-          "throttle_percentage"
-        ]
-      },
-      "ImmediateEnum": {
-        "type": "string",
-        "enum": [
-          "immediate"
-        ]
-      },
-      "ImmediateSendStrategy": {
-        "type": "object",
-        "properties": {
-          "method": {
-            "$ref": "#/components/schemas/ImmediateEnum"
-          }
-        },
-        "required": [
-          "method"
-        ]
-      },
-      "Ab_test_campaignEnum": {
-        "type": "string",
-        "enum": [
-          "ab_test_campaign"
-        ]
-      },
-      "ABTestSendStrategy": {
-        "type": "object",
-        "properties": {
-          "method": {
-            "$ref": "#/components/schemas/Ab_test_campaignEnum"
-          }
-        },
-        "required": [
-          "method"
-        ]
-      },
-      "UnsupportedEnum": {
-        "type": "string",
-        "enum": [
-          "unsupported"
-        ]
-      },
-      "UnsupportedSendStrategy": {
-        "type": "object",
-        "properties": {
-          "method": {
-            "$ref": "#/components/schemas/UnsupportedEnum"
-          }
-        },
-        "required": [
-          "method"
-        ]
-      },
       "CampaignResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -43130,10 +43172,10 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/CampaignMessageResponseObjectResource"
+                  "$ref": "#/components/schemas/TagResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/TagResponseObjectResource"
+                  "$ref": "#/components/schemas/CampaignMessageResponseObjectResource"
                 }
               ]
             }
@@ -43220,10 +43262,10 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/CampaignMessageResponseObjectResource"
+                  "$ref": "#/components/schemas/TagResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/TagResponseObjectResource"
+                  "$ref": "#/components/schemas/CampaignMessageResponseObjectResource"
                 }
               ]
             }
@@ -43387,13 +43429,13 @@
             "items": {
               "oneOf": [
                 {
+                  "$ref": "#/components/schemas/TemplateResponseObjectResource"
+                },
+                {
                   "$ref": "#/components/schemas/CampaignResponseObjectResource"
                 },
                 {
                   "$ref": "#/components/schemas/ImageResponseObjectResource"
-                },
-                {
-                  "$ref": "#/components/schemas/TemplateResponseObjectResource"
                 }
               ]
             }
@@ -43678,13 +43720,13 @@
             "items": {
               "oneOf": [
                 {
+                  "$ref": "#/components/schemas/TemplateResponseObjectResource"
+                },
+                {
                   "$ref": "#/components/schemas/CampaignResponseObjectResource"
                 },
                 {
                   "$ref": "#/components/schemas/ImageResponseObjectResource"
-                },
-                {
-                  "$ref": "#/components/schemas/TemplateResponseObjectResource"
                 }
               ]
             }
@@ -46177,6 +46219,12 @@
           "data"
         ]
       },
+      "WebhookEnum": {
+        "type": "string",
+        "enum": [
+          "webhook"
+        ]
+      },
       "WebhookTopicEnum": {
         "type": "string",
         "enum": [
@@ -46202,12 +46250,6 @@
           "type",
           "id",
           "links"
-        ]
-      },
-      "WebhookEnum": {
-        "type": "string",
-        "enum": [
-          "webhook"
         ]
       },
       "WebhookResponseObjectResource": {
@@ -48453,97 +48495,6 @@
           "data"
         ]
       },
-      "FormVersionABTest": {
-        "type": "object",
-        "properties": {
-          "variation_name": {
-            "description": "This is the name of the AB test variation.",
-            "type": "string"
-          }
-        },
-        "required": [
-          "variation_name"
-        ]
-      },
-      "FormVersionEnum": {
-        "type": "string",
-        "enum": [
-          "form-version"
-        ]
-      },
-      "FormVersionResponseObjectResource": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/FormVersionEnum"
-          },
-          "id": {
-            "description": "ID of the form version. Generated by Klaviyo.",
-            "type": "string",
-            "example": "1234567"
-          },
-          "attributes": {
-            "type": "object",
-            "properties": {
-              "form_type": {
-                "description": "The type of form.",
-                "type": "string",
-                "enum": [
-                  "banner",
-                  "embed",
-                  "flyout",
-                  "full_page",
-                  "popup"
-                ]
-              },
-              "variation_name": {
-                "description": "The name of the form version.",
-                "type": "string"
-              },
-              "ab_test": {
-                "$ref": "#/components/schemas/FormVersionABTest",
-                "nullable": true
-              },
-              "status": {
-                "description": "Status of the form version. \"live\" means it's live on site.",
-                "type": "string",
-                "enum": [
-                  "draft",
-                  "live"
-                ]
-              },
-              "created_at": {
-                "description": "ISO8601 timestamp when the form version was created.",
-                "type": "string",
-                "format": "date-time",
-                "example": "2024-03-04T00:00:00Z"
-              },
-              "updated_at": {
-                "description": "ISO8601 timestamp when the form version was last updated.",
-                "type": "string",
-                "format": "date-time",
-                "example": "2024-03-04T00:00:00Z"
-              }
-            },
-            "required": [
-              "form_type",
-              "variation_name",
-              "status",
-              "created_at",
-              "updated_at"
-            ]
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "attributes",
-          "links"
-        ]
-      },
       "FormResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -48607,7 +48558,7 @@
           "links"
         ]
       },
-      "GetFormResponseCollectionCompoundDocument": {
+      "GetFormResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
@@ -54781,7 +54732,7 @@
           "links"
         ]
       },
-      "GetEncodedFormResponseCompoundDocument": {
+      "GetEncodedFormResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -55029,6 +54980,97 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "FormVersionEnum": {
+        "type": "string",
+        "enum": [
+          "form-version"
+        ]
+      },
+      "FormVersionABTest": {
+        "type": "object",
+        "properties": {
+          "variation_name": {
+            "description": "This is the name of the AB test variation.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "variation_name"
+        ]
+      },
+      "FormVersionResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FormVersionEnum"
+          },
+          "id": {
+            "description": "ID of the form version. Generated by Klaviyo.",
+            "type": "string",
+            "example": "1234567"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "form_type": {
+                "description": "The type of form.",
+                "type": "string",
+                "enum": [
+                  "banner",
+                  "embed",
+                  "flyout",
+                  "full_page",
+                  "popup"
+                ]
+              },
+              "variation_name": {
+                "description": "The name of the form version.",
+                "type": "string"
+              },
+              "ab_test": {
+                "$ref": "#/components/schemas/FormVersionABTest",
+                "nullable": true
+              },
+              "status": {
+                "description": "Status of the form version. \"live\" means it's live on site.",
+                "type": "string",
+                "enum": [
+                  "draft",
+                  "live"
+                ]
+              },
+              "created_at": {
+                "description": "ISO8601 timestamp when the form version was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-03-04T00:00:00Z"
+              },
+              "updated_at": {
+                "description": "ISO8601 timestamp when the form version was last updated.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-03-04T00:00:00Z"
+              }
+            },
+            "required": [
+              "form_type",
+              "variation_name",
+              "status",
+              "created_at",
+              "updated_at"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
       },
       "GetFormVersionResponseCollection": {
@@ -56202,10 +56244,10 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/CustomMetricResponseObjectResource"
+                  "$ref": "#/components/schemas/MetricResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/MetricResponseObjectResource"
+                  "$ref": "#/components/schemas/CustomMetricResponseObjectResource"
                 }
               ]
             }
@@ -56287,10 +56329,10 @@
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/CustomMetricResponseObjectResource"
+                  "$ref": "#/components/schemas/MetricResponseObjectResource"
                 },
                 {
-                  "$ref": "#/components/schemas/MetricResponseObjectResource"
+                  "$ref": "#/components/schemas/CustomMetricResponseObjectResource"
                 }
               ]
             }
@@ -59381,6 +59423,7 @@
                     "nullable": true
                   },
                   "is_active": {
+                    "description": "Whether the segment is active. Inactive segments are not processed and their membership does not update.",
                     "type": "boolean"
                   },
                   "is_processing": {
@@ -69722,6 +69765,11 @@
               "is_starred": {
                 "type": "boolean",
                 "nullable": true
+              },
+              "is_active": {
+                "description": "Set to false to deactivate the segment. When deactivating, this must be the only attribute in the request body. Deactivation cannot be combined with other updates. Marking a segment inactive will impact campaigns, flows, ad syncs, forms, helpdesk routing, and other features that reference this segment. Set to true to reactivate a deactivated segment.",
+                "type": "boolean",
+                "nullable": true
               }
             }
           }
@@ -69783,6 +69831,7 @@
                     "nullable": true
                   },
                   "is_active": {
+                    "description": "Whether the segment is active. Inactive segments are not processed and their membership does not update.",
                     "type": "boolean"
                   },
                   "is_processing": {
