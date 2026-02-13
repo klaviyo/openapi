@@ -8571,7 +8571,8 @@
                 "enum": [
                   "title",
                   "visibility",
-                  "description"
+                  "description",
+                  "namespace"
                 ]
               }
             },
@@ -8725,7 +8726,8 @@
                 "enum": [
                   "title",
                   "visibility",
-                  "description"
+                  "description",
+                  "namespace"
                 ]
               }
             },
@@ -9873,6 +9875,8 @@
                   "definition.data.message.on_open",
                   "definition.data.message.ios_link",
                   "definition.data.message.android_link",
+                  "definition.data.message.push_type",
+                  "definition.data.message.kv_pairs",
                   "definition.data.message.conversion_metric_id",
                   "definition.data.message.shorten_links",
                   "definition.data.message.include_contact_card",
@@ -10261,6 +10265,8 @@
                   "definition.data.message.on_open",
                   "definition.data.message.ios_link",
                   "definition.data.message.android_link",
+                  "definition.data.message.push_type",
+                  "definition.data.message.kv_pairs",
                   "definition.data.message.conversion_metric_id",
                   "definition.data.message.shorten_links",
                   "definition.data.message.include_contact_card",
@@ -10631,6 +10637,8 @@
                   "definition.data.message.on_open",
                   "definition.data.message.ios_link",
                   "definition.data.message.android_link",
+                  "definition.data.message.push_type",
+                  "definition.data.message.kv_pairs",
                   "definition.data.message.conversion_metric_id",
                   "definition.data.message.shorten_links",
                   "definition.data.message.include_contact_card",
@@ -10755,6 +10763,8 @@
                   "definition.on_open",
                   "definition.ios_link",
                   "definition.android_link",
+                  "definition.push_type",
+                  "definition.kv_pairs",
                   "definition.conversion_metric_id",
                   "definition.shorten_links",
                   "definition.include_contact_card",
@@ -10986,6 +10996,8 @@
                   "definition.data.message.on_open",
                   "definition.data.message.ios_link",
                   "definition.data.message.android_link",
+                  "definition.data.message.push_type",
+                  "definition.data.message.kv_pairs",
                   "definition.data.message.conversion_metric_id",
                   "definition.data.message.shorten_links",
                   "definition.data.message.include_contact_card",
@@ -11110,6 +11122,8 @@
                   "definition.on_open",
                   "definition.ios_link",
                   "definition.android_link",
+                  "definition.push_type",
+                  "definition.kv_pairs",
                   "definition.conversion_metric_id",
                   "definition.shorten_links",
                   "definition.include_contact_card",
@@ -11277,6 +11291,8 @@
                   "definition.data.message.on_open",
                   "definition.data.message.ios_link",
                   "definition.data.message.android_link",
+                  "definition.data.message.push_type",
+                  "definition.data.message.kv_pairs",
                   "definition.data.message.conversion_metric_id",
                   "definition.data.message.shorten_links",
                   "definition.data.message.include_contact_card",
@@ -11902,6 +11918,8 @@
                   "definition.on_open",
                   "definition.ios_link",
                   "definition.android_link",
+                  "definition.push_type",
+                  "definition.kv_pairs",
                   "definition.conversion_metric_id",
                   "definition.shorten_links",
                   "definition.include_contact_card",
@@ -12190,6 +12208,8 @@
                   "definition.data.message.on_open",
                   "definition.data.message.ios_link",
                   "definition.data.message.android_link",
+                  "definition.data.message.push_type",
+                  "definition.data.message.kv_pairs",
                   "definition.data.message.conversion_metric_id",
                   "definition.data.message.shorten_links",
                   "definition.data.message.include_contact_card",
@@ -36818,6 +36838,19 @@
             "type": "string",
             "nullable": true
           },
+          "push_type": {
+            "description": "The type of push notification to send.",
+            "type": "string",
+            "enum": [
+              "silent",
+              "standard"
+            ],
+            "nullable": true
+          },
+          "kv_pairs": {
+            "type": "object",
+            "nullable": true
+          },
           "conversion_metric_id": {
             "type": "string",
             "nullable": true
@@ -55474,7 +55507,7 @@
           "id": {
             "description": "The ID of the data source",
             "type": "string",
-            "example": "925e385b52fb405715f3616c337cc65c"
+            "example": "01KH1D6P9Y8TJ7Q6MHXWZMPDN3"
           },
           "attributes": {
             "type": "object",
@@ -55485,7 +55518,7 @@
                 "example": "My Data Source"
               },
               "visibility": {
-                "description": "The status of this data source",
+                "description": "The status of the data source",
                 "type": "string",
                 "enum": [
                   "private",
@@ -55496,12 +55529,18 @@
                 "description": "The description of the data source",
                 "type": "string",
                 "example": "This is a data source"
+              },
+              "namespace": {
+                "description": "The namespace of the data source",
+                "type": "string",
+                "example": "custom-objects"
               }
             },
             "required": [
               "title",
               "visibility",
-              "description"
+              "description",
+              "namespace"
             ]
           },
           "links": {
@@ -67732,6 +67771,7 @@
             "type": "object",
             "properties": {
               "title": {
+                "description": "The title of the data source. Must be between 1 and 255 characters and unique within the namespace.",
                 "type": "string"
               },
               "visibility": {
@@ -67745,6 +67785,13 @@
               "description": {
                 "type": "string",
                 "default": "",
+                "nullable": true
+              },
+              "namespace": {
+                "description": "The namespace of the data source.",
+                "type": "string",
+                "example": "custom-objects",
+                "default": "custom-objects",
                 "nullable": true
               }
             },
@@ -67782,7 +67829,7 @@
               "id": {
                 "description": "The ID of the data source",
                 "type": "string",
-                "example": "925e385b52fb405715f3616c337cc65c"
+                "example": "01KH1D6P9Y8TJ7Q6MHXWZMPDN3"
               },
               "attributes": {
                 "type": "object",
@@ -67793,7 +67840,7 @@
                     "example": "My Data Source"
                   },
                   "visibility": {
-                    "description": "The status of this data source",
+                    "description": "The status of the data source",
                     "type": "string",
                     "enum": [
                       "private",
@@ -67804,12 +67851,18 @@
                     "description": "The description of the data source",
                     "type": "string",
                     "example": "This is a data source"
+                  },
+                  "namespace": {
+                    "description": "The namespace of the data source",
+                    "type": "string",
+                    "example": "custom-objects"
                   }
                 },
                 "required": [
                   "title",
                   "visibility",
-                  "description"
+                  "description",
+                  "namespace"
                 ]
               },
               "links": {
