@@ -27176,12 +27176,6 @@
           "data"
         ]
       },
-      "CouponCodeEnum": {
-        "type": "string",
-        "enum": [
-          "coupon-code"
-        ]
-      },
       "GetCouponCodeCouponRelationshipResponse": {
         "type": "object",
         "properties": {
@@ -27208,6 +27202,12 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "CouponCodeEnum": {
+        "type": "string",
+        "enum": [
+          "coupon-code"
         ]
       },
       "CouponCodeResponseObjectResource": {
@@ -28106,12 +28106,6 @@
           "data"
         ]
       },
-      "CouponCodeBulkCreateJobEnum": {
-        "type": "string",
-        "enum": [
-          "coupon-code-bulk-create-job"
-        ]
-      },
       "ErrorSource": {
         "type": "object",
         "properties": {
@@ -28158,6 +28152,12 @@
           "title",
           "detail",
           "source"
+        ]
+      },
+      "CouponCodeBulkCreateJobEnum": {
+        "type": "string",
+        "enum": [
+          "coupon-code-bulk-create-job"
         ]
       },
       "CouponCodeCreateJobResponseObjectResource": {
@@ -33576,6 +33576,160 @@
           "filter"
         ]
       },
+      "ProfileHasCustomObjectEnum": {
+        "type": "string",
+        "enum": [
+          "profile-has-custom-object"
+        ]
+      },
+      "IntegerFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/NumericEnum"
+          },
+          "operator": {
+            "description": "Operators for numeric filters.",
+            "type": "string",
+            "enum": [
+              "equals",
+              "greater-than",
+              "greater-than-or-equal",
+              "less-than",
+              "less-than-or-equal",
+              "not-equals"
+            ]
+          },
+          "value": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "NumericRangeFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/NumericEnum"
+          },
+          "operator": {
+            "description": "Operators for numeric range filters.",
+            "type": "string",
+            "enum": [
+              "between"
+            ]
+          },
+          "start": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "end": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "start",
+          "end"
+        ]
+      },
+      "ProfileHasCustomObjectFilter": {
+        "type": "object",
+        "properties": {
+          "property_id": {
+            "type": "integer"
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StringOperatorFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StringArrayOperatorFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericOperatorFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/BooleanFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ExistenceOperatorFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "property_id",
+          "filter"
+        ]
+      },
+      "ProfileHasCustomObjectCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileHasCustomObjectEnum"
+          },
+          "object_type_id": {
+            "type": "string"
+          },
+          "object_type_relationship_id": {
+            "type": "string"
+          },
+          "filter": {
+            "$ref": "#/components/schemas/IntegerFilter"
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileHasCustomObjectFilter"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "object_type_id",
+          "object_type_relationship_id",
+          "filter",
+          "filters"
+        ]
+      },
       "ProfilePermissionsEnum": {
         "type": "string",
         "enum": [
@@ -34046,6 +34200,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityRankCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
                 },
                 {
                   "$ref": "#/components/schemas/ProfilePermissionsCondition"
@@ -35958,47 +36115,6 @@
           "action-output"
         ]
       },
-      "NumericRangeFilter": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/NumericEnum"
-          },
-          "operator": {
-            "description": "Operators for numeric range filters.",
-            "type": "string",
-            "enum": [
-              "between"
-            ]
-          },
-          "start": {
-            "oneOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              }
-            ]
-          },
-          "end": {
-            "oneOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              }
-            ]
-          }
-        },
-        "required": [
-          "type",
-          "operator",
-          "start",
-          "end"
-        ]
-      },
       "ActionOutputCondition": {
         "type": "object",
         "properties": {
@@ -36314,6 +36430,9 @@
                             "$ref": "#/components/schemas/ProfileRandomSampleCondition"
                           },
                           {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
                             "$ref": "#/components/schemas/ProfilePermissionsCondition"
                           }
                         ]
@@ -36586,6 +36705,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
                           },
                           {
                             "$ref": "#/components/schemas/ProfilePermissionsCondition"
@@ -36907,6 +37029,9 @@
                             "$ref": "#/components/schemas/ProfileRandomSampleCondition"
                           },
                           {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
                             "$ref": "#/components/schemas/ProfilePermissionsCondition"
                           },
                           {
@@ -37136,6 +37261,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
                           },
                           {
                             "$ref": "#/components/schemas/ProfilePermissionsCondition"
@@ -37489,6 +37617,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
                           },
                           {
                             "$ref": "#/components/schemas/ProfilePermissionsCondition"
@@ -41165,6 +41296,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
                           },
                           {
                             "$ref": "#/components/schemas/ProfilePermissionsCondition"
@@ -46845,12 +46979,6 @@
           "data"
         ]
       },
-      "AccountEnum": {
-        "type": "string",
-        "enum": [
-          "account"
-        ]
-      },
       "StreetAddress": {
         "type": "object",
         "properties": {
@@ -46922,6 +47050,12 @@
           "default_sender_email",
           "organization_name",
           "street_address"
+        ]
+      },
+      "AccountEnum": {
+        "type": "string",
+        "enum": [
+          "account"
         ]
       },
       "AccountResponseObjectResource": {
@@ -47182,12 +47316,6 @@
         },
         "required": [
           "data"
-        ]
-      },
-      "TemplateUniversalContentEnum": {
-        "type": "string",
-        "enum": [
-          "template-universal-content"
         ]
       },
       "BlockEnum": {
@@ -47811,6 +47939,12 @@
           "content_type",
           "type",
           "data"
+        ]
+      },
+      "TemplateUniversalContentEnum": {
+        "type": "string",
+        "enum": [
+          "template-universal-content"
         ]
       },
       "UniversalContentResponseObjectResource": {
@@ -55015,12 +55149,6 @@
           "data"
         ]
       },
-      "FormVersionEnum": {
-        "type": "string",
-        "enum": [
-          "form-version"
-        ]
-      },
       "FormVersionABTest": {
         "type": "object",
         "properties": {
@@ -55031,6 +55159,12 @@
         },
         "required": [
           "variation_name"
+        ]
+      },
+      "FormVersionEnum": {
+        "type": "string",
+        "enum": [
+          "form-version"
         ]
       },
       "FormVersionResponseObjectResource": {
@@ -55231,12 +55365,6 @@
           "data"
         ]
       },
-      "TrackingSettingEnum": {
-        "type": "string",
-        "enum": [
-          "tracking-setting"
-        ]
-      },
       "FlowTrackingSettingDynamicParam": {
         "type": "object",
         "properties": {
@@ -55393,6 +55521,12 @@
         },
         "required": [
           "name"
+        ]
+      },
+      "TrackingSettingEnum": {
+        "type": "string",
+        "enum": [
+          "tracking-setting"
         ]
       },
       "TrackingSettingResponseObjectResource": {
@@ -55710,12 +55844,6 @@
           "data"
         ]
       },
-      "CustomMetricEnum": {
-        "type": "string",
-        "enum": [
-          "custom-metric"
-        ]
-      },
       "StringInArrayFilter": {
         "type": "object",
         "properties": {
@@ -55858,6 +55986,12 @@
         "required": [
           "aggregation_method",
           "metric_groups"
+        ]
+      },
+      "CustomMetricEnum": {
+        "type": "string",
+        "enum": [
+          "custom-metric"
         ]
       },
       "CustomMetricResponseObjectResource": {
@@ -56474,12 +56608,6 @@
           "data"
         ]
       },
-      "ReviewValuesReportEnum": {
-        "type": "string",
-        "enum": [
-          "review-values-report"
-        ]
-      },
       "GroupingProduct": {
         "type": "object",
         "properties": {
@@ -56577,6 +56705,12 @@
         "required": [
           "groupings",
           "statistics"
+        ]
+      },
+      "ReviewValuesReportEnum": {
+        "type": "string",
+        "enum": [
+          "review-values-report"
         ]
       },
       "ReviewValuesReportResponseObjectResource": {
