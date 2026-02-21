@@ -9954,6 +9954,7 @@
                   "definition.data.service_configuration.event_key",
                   "definition.data.service_configuration.event_payload",
                   "definition.data.service_configuration.tracking_company_id",
+                  "definition.data.branches",
                   "definition.data.name",
                   "definition.data.on_execution",
                   "definition.data.list_id"
@@ -10350,6 +10351,7 @@
                   "definition.data.service_configuration.event_key",
                   "definition.data.service_configuration.event_payload",
                   "definition.data.service_configuration.tracking_company_id",
+                  "definition.data.branches",
                   "definition.data.name",
                   "definition.data.on_execution",
                   "definition.data.list_id"
@@ -10728,6 +10730,7 @@
                   "definition.data.service_configuration.event_key",
                   "definition.data.service_configuration.event_payload",
                   "definition.data.service_configuration.tracking_company_id",
+                  "definition.data.branches",
                   "definition.data.name",
                   "definition.data.on_execution",
                   "definition.data.list_id"
@@ -11093,6 +11096,7 @@
                   "definition.data.service_configuration.event_key",
                   "definition.data.service_configuration.event_payload",
                   "definition.data.service_configuration.tracking_company_id",
+                  "definition.data.branches",
                   "definition.data.name",
                   "definition.data.on_execution",
                   "definition.data.list_id"
@@ -11394,6 +11398,7 @@
                   "definition.data.service_configuration.event_key",
                   "definition.data.service_configuration.event_payload",
                   "definition.data.service_configuration.tracking_company_id",
+                  "definition.data.branches",
                   "definition.data.name",
                   "definition.data.on_execution",
                   "definition.data.list_id"
@@ -12317,6 +12322,7 @@
                   "definition.data.service_configuration.event_key",
                   "definition.data.service_configuration.event_payload",
                   "definition.data.service_configuration.tracking_company_id",
+                  "definition.data.branches",
                   "definition.data.name",
                   "definition.data.on_execution",
                   "definition.data.list_id"
@@ -40073,82 +40079,141 @@
           "type"
         ]
       },
-      "SplitEnum": {
+      "MultiBranchSplitEnum": {
         "type": "string",
         "enum": [
-          "split"
+          "multi-branch-split"
         ]
       },
-      "SplitLinks": {
+      "MultiBranchSplitBranch": {
         "type": "object",
         "properties": {
-          "next": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "next"
-        ]
-      },
-      "SplitAction": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "The real ID of an action.",
-            "type": "string",
-            "example": "123",
+          "branch_id": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer",
             "nullable": true
           },
-          "temporary_id": {
-            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
-            "type": "string",
-            "example": "action-1",
-            "nullable": true
+          "is_else": {
+            "type": "boolean",
+            "default": false
           },
-          "type": {
-            "$ref": "#/components/schemas/SplitEnum"
-          },
-          "links": {
-            "$ref": "#/components/schemas/SplitLinks",
-            "nullable": true
-          }
-        },
-        "required": [
-          "type"
-        ]
-      },
-      "BranchEnum": {
-        "type": "string",
-        "enum": [
-          "branch"
-        ]
-      },
-      "BranchAction": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "The real ID of an action.",
-            "type": "string",
-            "example": "123",
-            "nullable": true
-          },
-          "temporary_id": {
-            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
-            "type": "string",
-            "example": "action-1",
-            "nullable": true
-          },
-          "type": {
-            "$ref": "#/components/schemas/BranchEnum"
+          "branch_filter": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ProfilePropertyCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileNoGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRegionCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePostalCodeDistanceCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsDateCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsNumericCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileMarketingConsentCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/FlowsProfileMetricCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePermissionsCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/MetricPropertyCondition"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           },
           "links": {
             "$ref": "#/components/schemas/Link",
             "nullable": true
+          }
+        },
+        "required": [
+          "branch_id"
+        ]
+      },
+      "MultiBranchSplitActionData": {
+        "type": "object",
+        "properties": {
+          "branches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MultiBranchSplitBranch"
+            }
+          }
+        },
+        "required": [
+          "branches"
+        ]
+      },
+      "MultiBranchSplitAction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The real ID of an action.",
+            "type": "string",
+            "example": "123",
+            "nullable": true
+          },
+          "temporary_id": {
+            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
+            "type": "string",
+            "example": "action-1",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/MultiBranchSplitEnum"
+          },
+          "links": {
+            "nullable": true
           },
           "data": {
+            "$ref": "#/components/schemas/MultiBranchSplitActionData",
             "nullable": true
           }
         },
@@ -40314,10 +40379,7 @@
                     "$ref": "#/components/schemas/CodeAction"
                   },
                   {
-                    "$ref": "#/components/schemas/SplitAction"
-                  },
-                  {
-                    "$ref": "#/components/schemas/BranchAction"
+                    "$ref": "#/components/schemas/MultiBranchSplitAction"
                   },
                   {
                     "$ref": "#/components/schemas/ListUpdateAction"
@@ -41539,10 +41601,7 @@
                   "$ref": "#/components/schemas/CodeAction"
                 },
                 {
-                  "$ref": "#/components/schemas/SplitAction"
-                },
-                {
-                  "$ref": "#/components/schemas/BranchAction"
+                  "$ref": "#/components/schemas/MultiBranchSplitAction"
                 },
                 {
                   "$ref": "#/components/schemas/ListUpdateAction"
@@ -47802,6 +47861,12 @@
           "content_type",
           "type",
           "data"
+        ]
+      },
+      "SplitEnum": {
+        "type": "string",
+        "enum": [
+          "split"
         ]
       },
       "SplitBlock": {
@@ -70853,10 +70918,7 @@
                     "$ref": "#/components/schemas/CodeAction"
                   },
                   {
-                    "$ref": "#/components/schemas/SplitAction"
-                  },
-                  {
-                    "$ref": "#/components/schemas/BranchAction"
+                    "$ref": "#/components/schemas/MultiBranchSplitAction"
                   },
                   {
                     "$ref": "#/components/schemas/ListUpdateAction"
@@ -70972,10 +71034,7 @@
                         "$ref": "#/components/schemas/CodeAction"
                       },
                       {
-                        "$ref": "#/components/schemas/SplitAction"
-                      },
-                      {
-                        "$ref": "#/components/schemas/BranchAction"
+                        "$ref": "#/components/schemas/MultiBranchSplitAction"
                       },
                       {
                         "$ref": "#/components/schemas/ListUpdateAction"
