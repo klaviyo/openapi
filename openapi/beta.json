@@ -175,6 +175,28 @@
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object types in an account.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`",
         "parameters": [
           {
+            "name": "fields[object-schema]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "title",
+                  "description",
+                  "status",
+                  "properties",
+                  "required",
+                  "published_at",
+                  "visibility"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "fields[object-type]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#sparse-fieldsets",
@@ -214,8 +236,7 @@
                 "type": "string",
                 "enum": [
                   "current-schema",
-                  "draft-schema",
-                  "schema-versions"
+                  "draft-schema"
                 ]
               }
             },
@@ -1514,7 +1535,7 @@
       "post": {
         "operationId": "add_schemas_to_object_schema_beta",
         "summary": "Add Schemas to Object Schema",
-        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a relationship between object schemas<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a relationship between object schemas.\n\nNote that flow filtering and segmentation are currently not supported for object-to-object relationships.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
         "parameters": [
           {
             "name": "id",
@@ -2067,18 +2088,6 @@
   },
   "components": {
     "schemas": {
-      "ProfileEnum": {
-        "type": "string",
-        "enum": [
-          "profile"
-        ]
-      },
-      "SourceMappingEnum": {
-        "type": "string",
-        "enum": [
-          "source-mapping"
-        ]
-      },
       "ConstantEnum": {
         "type": "string",
         "enum": [
@@ -2099,8 +2108,21 @@
           },
           "value": {
             "description": "Constant value assigned to every record",
-            "type": "string",
-            "example": "some_value"
+            "example": "some_value",
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
           }
         },
         "required": [
@@ -2166,6 +2188,12 @@
           "id",
           "type",
           "source"
+        ]
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
         ]
       },
       "RelatedIdPath": {
@@ -2266,6 +2294,12 @@
           "source"
         ]
       },
+      "SourceMappingEnum": {
+        "type": "string",
+        "enum": [
+          "source-mapping"
+        ]
+      },
       "SourceMappingResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -2323,10 +2357,25 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/SourceMappingResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
           "data"
+        ]
+      },
+      "ObjectTypeEnum": {
+        "type": "string",
+        "enum": [
+          "object-type"
+        ]
+      },
+      "ObjectSchemaEnum": {
+        "type": "string",
+        "enum": [
+          "object-schema"
         ]
       },
       "APISchemaProperty": {
@@ -2448,12 +2497,6 @@
           "links"
         ]
       },
-      "ObjectTypeEnum": {
-        "type": "string",
-        "enum": [
-          "object-type"
-        ]
-      },
       "ObjectTypeResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -2542,6 +2585,22 @@
                         "current-schema": {
                           "type": "object",
                           "properties": {
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                },
+                                "id": {
+                                  "description": "The current active schema for this object type",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "id"
+                              ]
+                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
@@ -2550,6 +2609,22 @@
                         "draft-schema": {
                           "type": "object",
                           "properties": {
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                },
+                                "id": {
+                                  "description": "The draft schema for this object type, if one exists",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "id"
+                              ]
+                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
@@ -2558,6 +2633,25 @@
                         "schema-versions": {
                           "type": "object",
                           "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                  },
+                                  "id": {
+                                    "description": "All schema versions for this object type",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
                             "links": {
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
@@ -2572,6 +2666,12 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
+            }
           }
         },
         "required": [
@@ -2594,6 +2694,22 @@
                       "current-schema": {
                         "type": "object",
                         "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "$ref": "#/components/schemas/ObjectSchemaEnum"
+                              },
+                              "id": {
+                                "description": "The current active schema for this object type",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id"
+                            ]
+                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -2602,6 +2718,22 @@
                       "draft-schema": {
                         "type": "object",
                         "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "$ref": "#/components/schemas/ObjectSchemaEnum"
+                              },
+                              "id": {
+                                "description": "The draft schema for this object type, if one exists",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id"
+                            ]
+                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -2610,6 +2742,25 @@
                       "schema-versions": {
                         "type": "object",
                         "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                },
+                                "id": {
+                                  "description": "All schema versions for this object type",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -2624,28 +2775,15 @@
           "included": {
             "type": "array",
             "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
-                },
-                {
-                  "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
-                },
-                {
-                  "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
-                }
-              ]
+              "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
             }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
           "data"
-        ]
-      },
-      "ObjectSchemaEnum": {
-        "type": "string",
-        "enum": [
-          "object-schema"
         ]
       },
       "GetObjectSchemaResponse": {
@@ -2674,6 +2812,9 @@
                 }
               }
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -2699,6 +2840,9 @@
               "type",
               "id"
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -2724,6 +2868,9 @@
               "type",
               "id"
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -2790,6 +2937,9 @@
                 }
               }
             }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
@@ -2818,6 +2968,9 @@
                 }
               }
             }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
@@ -2846,6 +2999,9 @@
                 }
               }
             }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
@@ -2868,6 +3024,22 @@
                       "source-mapping": {
                         "type": "object",
                         "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "$ref": "#/components/schemas/SourceMappingEnum"
+                              },
+                              "id": {
+                                "description": "The source mapping for this object schema",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id"
+                            ]
+                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -2884,6 +3056,9 @@
             "items": {
               "$ref": "#/components/schemas/SourceMappingResponseObjectResource"
             }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -2909,6 +3084,9 @@
               "type",
               "id"
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -2960,6 +3138,9 @@
                 }
               }
             }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
@@ -2988,6 +3169,9 @@
                 }
               }
             }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
@@ -3386,6 +3570,9 @@
               "attributes",
               "links"
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -3613,6 +3800,9 @@
               "attributes",
               "links"
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -3651,6 +3841,23 @@
           "data"
         ]
       },
+      "ObjectSchemaRelationshipCreateMeta": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the relationship",
+            "type": "string",
+            "example": "related_items",
+            "nullable": true
+          },
+          "description": {
+            "description": "The description of the relationship",
+            "type": "string",
+            "example": "Items related to this schema",
+            "nullable": true
+          }
+        }
+      },
       "ProfileObjectSchemaRelationshipCreateQuery": {
         "type": "object",
         "properties": {
@@ -3672,7 +3879,7 @@
                   "example": "profile-related_profile"
                 },
                 "meta": {
-                  "$ref": "#/components/schemas/ObjectSchemaRelationshipMeta",
+                  "$ref": "#/components/schemas/ObjectSchemaRelationshipCreateMeta",
                   "nullable": true
                 }
               }
@@ -3794,6 +4001,9 @@
               "attributes",
               "links"
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -3982,6 +4192,9 @@
               "attributes",
               "links"
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -4286,100 +4499,16 @@
   },
   "tags": [
     {
-      "name": "Accounts",
-      "description": "accounts"
-    },
-    {
       "name": "Beta APIs",
       "description": "beta apis"
-    },
-    {
-      "name": "Campaigns",
-      "description": "campaigns"
-    },
-    {
-      "name": "Catalogs",
-      "description": "catalogs"
     },
     {
       "name": "Conversations",
       "description": "conversations"
     },
     {
-      "name": "Coupons",
-      "description": "coupons"
-    },
-    {
-      "name": "Custom Objects",
-      "description": "custom objects"
-    },
-    {
-      "name": "Data Privacy",
-      "description": "data privacy"
-    },
-    {
-      "name": "Events",
-      "description": "events"
-    },
-    {
-      "name": "Flows",
-      "description": "flows"
-    },
-    {
-      "name": "Forms",
-      "description": "forms"
-    },
-    {
-      "name": "Images",
-      "description": "images"
-    },
-    {
-      "name": "Lists",
-      "description": "lists"
-    },
-    {
-      "name": "Metrics",
-      "description": "metrics"
-    },
-    {
       "name": "Profiles",
       "description": "profiles"
-    },
-    {
-      "name": "Reporting",
-      "description": "reporting"
-    },
-    {
-      "name": "Reviews",
-      "description": "reviews"
-    },
-    {
-      "name": "Segments",
-      "description": "segments"
-    },
-    {
-      "name": "Tags",
-      "description": "tags"
-    },
-    {
-      "name": "Templates",
-      "description": "templates"
-    },
-    {
-      "name": "Tracking Settings",
-      "description": "tracking settings"
-    },
-    {
-      "name": "Web Feeds",
-      "description": "web feeds"
-    },
-    {
-      "name": "Webhooks",
-      "description": "webhooks"
-    },
-    {
-      "name": "Client",
-      "description": "client"
     }
   ],
   "security": [
