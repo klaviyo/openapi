@@ -22,6 +22,344 @@
     }
   ],
   "paths": {
+    "/api/templates": {
+      "get": {
+        "operationId": "get_templates_beta",
+        "summary": "Get Templates",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all templates in an account.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`templates:read`",
+        "parameters": [
+          {
+            "name": "fields[template]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "name",
+                  "editor_type",
+                  "html",
+                  "text",
+                  "amp",
+                  "created",
+                  "updated",
+                  "definition",
+                  "definition.id",
+                  "definition.template_id",
+                  "definition.body",
+                  "definition.body.id",
+                  "definition.body.properties",
+                  "definition.body.properties.id",
+                  "definition.body.properties.css_class",
+                  "definition.body.styles",
+                  "definition.body.styles.background_color",
+                  "definition.body.styles.width",
+                  "definition.body.sections",
+                  "definition.styles"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals`<br>`name`: `any`, `contains`, `equals`<br>`created`: `equals`, `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`updated`: `equals`, `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "schema": {
+              "type": "string",
+              "example": "equals(id,['example'])"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created",
+                "id",
+                "-id",
+                "name",
+                "-name",
+                "updated",
+                "-updated"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-01-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTemplateDndResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "templates:read"
+        ],
+        "x-klaviyo-subtag": "Templates"
+      },
+      "post": {
+        "operationId": "create_template_beta",
+        "summary": "Create Template",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new HTML or drag-and-drop template.\n\nIf there are 1,000 or more templates in an account, creation will fail as there is a limit of 1,000 templates\nthat can be created via the API.\n\nRequest specific fields using [sparse fieldsets](https://developers.klaviyo.com/en/reference/api_overview#sparse-fieldsets).<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`templates:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-01-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateCreateHtmlOrDndQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostTemplateDndResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "templates:write"
+        ],
+        "x-klaviyo-subtag": "Templates"
+      }
+    },
+    "/api/templates/{id}": {
+      "get": {
+        "operationId": "get_template_beta",
+        "summary": "Get Template",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet a template with the given template ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`templates:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of template",
+            "required": true,
+            "schema": {
+              "description": "The ID of template",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[template]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "name",
+                  "editor_type",
+                  "html",
+                  "text",
+                  "amp",
+                  "created",
+                  "updated",
+                  "definition",
+                  "definition.id",
+                  "definition.template_id",
+                  "definition.body",
+                  "definition.body.id",
+                  "definition.body.properties",
+                  "definition.body.properties.id",
+                  "definition.body.properties.css_class",
+                  "definition.body.styles",
+                  "definition.body.styles.background_color",
+                  "definition.body.styles.width",
+                  "definition.body.sections",
+                  "definition.styles"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-01-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTemplateDndResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "templates:read"
+        ],
+        "x-klaviyo-subtag": "Templates"
+      },
+      "patch": {
+        "operationId": "update_template_beta",
+        "summary": "Update Template",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a template with the given template ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`templates:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of template",
+            "required": true,
+            "schema": {
+              "description": "The ID of template",
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-01-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateUpdateHtmlOrDndQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchTemplateDndResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "700/m"
+        },
+        "x-klaviyo-scopes": [
+          "templates:write"
+        ],
+        "x-klaviyo-subtag": "Templates"
+      }
+    },
     "/api/source-mappings/{id}": {
       "get": {
         "operationId": "get_source_mapping_beta",
@@ -2088,6 +2426,1459 @@
   },
   "components": {
     "schemas": {
+      "BodyProperties": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "css_class": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "BodyStyles": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "SectionEnum": {
+        "type": "string",
+        "enum": [
+          "section"
+        ]
+      },
+      "SectionProperties": {
+        "type": "object",
+        "properties": {
+          "is_ai_generated": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_prebuilt_content": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "ContentRepeat": {
+        "type": "object",
+        "properties": {
+          "repeat_for": {
+            "type": "string"
+          },
+          "item_alias": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "repeat_for",
+          "item_alias"
+        ]
+      },
+      "Visibility": {
+        "type": "object",
+        "properties": {
+          "check": {
+            "type": "string",
+            "nullable": true
+          },
+          "definition": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_code_only": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "DisplayOptions": {
+        "type": "object",
+        "properties": {
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "content_repeat": {
+            "$ref": "#/components/schemas/ContentRepeat",
+            "nullable": true
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility",
+            "nullable": true
+          }
+        }
+      },
+      "SectionStyles": {
+        "type": "object",
+        "properties": {
+          "background_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "background_format": {
+            "description": "Background format.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "contain",
+              "cover",
+              "initial",
+              "repeat"
+            ],
+            "nullable": true
+          },
+          "background_image_full_width": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "background_position": {
+            "description": "Background position.",
+            "type": "string",
+            "enum": [
+              "center-bottom",
+              "center-center",
+              "center-top",
+              "left-bottom",
+              "left-center",
+              "left-top",
+              "right-bottom",
+              "right-center",
+              "right-top"
+            ],
+            "nullable": true
+          },
+          "background_repeat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "background_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "column_align": {
+            "description": "Vertical alignment.",
+            "type": "string",
+            "enum": [
+              "baseline",
+              "bottom",
+              "middle",
+              "top"
+            ],
+            "nullable": true
+          },
+          "column_direction": {
+            "description": "Stacking direction.",
+            "type": "string",
+            "enum": [
+              "ltr",
+              "no-stack",
+              "rtl"
+            ],
+            "nullable": true
+          },
+          "content_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_color_type": {
+            "description": "Content color type.",
+            "type": "string",
+            "enum": [
+              "none",
+              "section",
+              "template"
+            ],
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "stack_on_mobile": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "SectionData": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "$ref": "#/components/schemas/SectionProperties"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SectionStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "RowStyles": {
+        "type": "object",
+        "properties": {
+          "column_layout": {
+            "description": "Column layout.",
+            "type": "string",
+            "enum": [
+              "1-column-full-width",
+              "2-columns-25%-75%",
+              "2-columns-33%-67%",
+              "2-columns-67%-33%",
+              "2-columns-75%-25%",
+              "2-columns-equal-width",
+              "3-columns-25%-25%-50%",
+              "3-columns-25%-50%-25%",
+              "3-columns-50%-25%-25%",
+              "3-columns-equal-width",
+              "4-columns-equal-width"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "RowData": {
+        "type": "object",
+        "properties": {
+          "styles": {
+            "$ref": "#/components/schemas/RowStyles"
+          }
+        },
+        "required": [
+          "styles"
+        ]
+      },
+      "ColumnData": {
+        "type": "object",
+        "maxProperties": 0
+      },
+      "BlockEnum": {
+        "type": "string",
+        "enum": [
+          "block"
+        ]
+      },
+      "ButtonEnum": {
+        "type": "string",
+        "enum": [
+          "button"
+        ]
+      },
+      "ButtonBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ButtonEnum"
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "CouponEnum": {
+        "type": "string",
+        "enum": [
+          "coupon"
+        ]
+      },
+      "CouponBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/CouponEnum"
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "Drop_shadowEnum": {
+        "type": "string",
+        "enum": [
+          "drop_shadow"
+        ]
+      },
+      "DropShadowBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/Drop_shadowEnum"
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "HeaderEnum": {
+        "type": "string",
+        "enum": [
+          "header"
+        ]
+      },
+      "HeaderBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/HeaderEnum"
+          },
+          "data": {
+            "nullable": true
+          },
+          "subblocks": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "Horizontal_ruleEnum": {
+        "type": "string",
+        "enum": [
+          "horizontal_rule"
+        ]
+      },
+      "HorizontalRuleBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/Horizontal_ruleEnum"
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "HtmlEnum": {
+        "type": "string",
+        "enum": [
+          "html"
+        ]
+      },
+      "HTMLBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/HtmlEnum"
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ImageEnum": {
+        "type": "string",
+        "enum": [
+          "image"
+        ]
+      },
+      "ImageBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ImageEnum"
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ProductEnum": {
+        "type": "string",
+        "enum": [
+          "product"
+        ]
+      },
+      "ProductBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ProductEnum"
+          },
+          "data": {
+            "nullable": true
+          },
+          "subblocks": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ReviewEnum": {
+        "type": "string",
+        "enum": [
+          "review"
+        ]
+      },
+      "ReviewBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ReviewEnum"
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SocialEnum": {
+        "type": "string",
+        "enum": [
+          "social"
+        ]
+      },
+      "SocialBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/SocialEnum"
+          },
+          "data": {
+            "nullable": true
+          },
+          "subblocks": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SpacerEnum": {
+        "type": "string",
+        "enum": [
+          "spacer"
+        ]
+      },
+      "SpacerBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/SpacerEnum"
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SplitEnum": {
+        "type": "string",
+        "enum": [
+          "split"
+        ]
+      },
+      "SplitBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/SplitEnum"
+          },
+          "data": {
+            "nullable": true
+          },
+          "subblocks": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "TableEnum": {
+        "type": "string",
+        "enum": [
+          "table"
+        ]
+      },
+      "TableBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TableEnum"
+          },
+          "data": {
+            "nullable": true
+          },
+          "subblocks": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "TextEnum": {
+        "type": "string",
+        "enum": [
+          "text"
+        ]
+      },
+      "TextBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TextEnum"
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "UnsupportedEnum": {
+        "type": "string",
+        "enum": [
+          "unsupported"
+        ]
+      },
+      "UnsupportedBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/UnsupportedEnum"
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "VideoEnum": {
+        "type": "string",
+        "enum": [
+          "video"
+        ]
+      },
+      "VideoBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/BlockEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/VideoEnum"
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "Column": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ColumnData",
+            "nullable": true
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ButtonBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/CouponBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/DropShadowBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/HeaderBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/HorizontalRuleBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/HTMLBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/ImageBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/ProductBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/ReviewBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/SocialBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/SpacerBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/SplitBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TextBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/UnsupportedBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/VideoBlock"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        }
+      },
+      "Row": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/RowData"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Column"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "Section": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/SectionEnum"
+          },
+          "type": {
+            "$ref": "#/components/schemas/SectionEnum"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SectionData"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Row"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "Body": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "properties": {
+            "$ref": "#/components/schemas/BodyProperties"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/BodyStyles"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Section"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "properties",
+          "styles"
+        ]
+      },
+      "StyleProperties": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "currency_set_on_template": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "disable_websafe_fonts": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_user_draggable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "mobile_optimizations": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "mobile_padding_override": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "StyleStyles": {
+        "type": "object",
+        "properties": {
+          "background_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "background_format": {
+            "description": "Background format.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "contain",
+              "cover",
+              "initial",
+              "repeat"
+            ],
+            "nullable": true
+          },
+          "background_position": {
+            "description": "Background position.",
+            "type": "string",
+            "enum": [
+              "center-bottom",
+              "center-center",
+              "center-top",
+              "left-bottom",
+              "left-center",
+              "left-top",
+              "right-bottom",
+              "right-center",
+              "right-top"
+            ],
+            "nullable": true
+          },
+          "background_repeat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "background_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_radius": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "margin_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "margin_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobile_block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "mobile_margin": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_padding_top": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "Style": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "style_type": {
+            "description": "Style type.",
+            "type": "string",
+            "enum": [
+              "base-styles",
+              "heading-1-styles",
+              "heading-2-styles",
+              "heading-3-styles",
+              "heading-4-styles",
+              "link-styles",
+              "mobile-styles",
+              "text-styles"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/StyleProperties"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/StyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "properties",
+          "styles"
+        ]
+      },
+      "TemplateDefinition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "template_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "$ref": "#/components/schemas/Body"
+          },
+          "styles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Style"
+            }
+          }
+        },
+        "required": [
+          "body",
+          "styles"
+        ]
+      },
+      "TemplateEnum": {
+        "type": "string",
+        "enum": [
+          "template"
+        ]
+      },
+      "TemplateDndResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TemplateEnum"
+          },
+          "id": {
+            "description": "The ID of template",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name of the template",
+                "type": "string"
+              },
+              "editor_type": {
+                "description": "`editor_type` has a fixed set of values:\n* SYSTEM_DRAGGABLE: indicates a drag-and-drop editor template\n* SIMPLE: A rich text editor template\n* CODE: A custom HTML template\n* USER_DRAGGABLE: A hybrid template, using custom HTML in the drag-and-drop editor",
+                "type": "string"
+              },
+              "html": {
+                "description": "The rendered HTML of the template",
+                "type": "string"
+              },
+              "text": {
+                "description": "The template plain_text",
+                "type": "string",
+                "nullable": true
+              },
+              "amp": {
+                "description": "The AMP version of the template. Requires AMP Email to be enabled to access in-app. Refer to the AMP Email setup guide at https://developers.klaviyo.com/en/docs/send_amp_emails_in_klaviyo",
+                "type": "string",
+                "nullable": true
+              },
+              "created": {
+                "description": "The date the template was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "The date the template was updated in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "definition": {
+                "description": "Template definition for SYSTEM_DRAGGABLE templates. Omitted for CODE/USER_DRAGGABLE.",
+                "$ref": "#/components/schemas/TemplateDefinition",
+                "nullable": true
+              }
+            },
+            "required": [
+              "name",
+              "editor_type",
+              "html"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetTemplateDndResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateDndResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTemplateDndResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateDndResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "ConstantEnum": {
         "type": "string",
         "enum": [
@@ -3248,6 +5039,151 @@
           "data"
         ]
       },
+      "TemplateCreateHtmlOrDndQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TemplateEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name of the template",
+                "type": "string",
+                "example": "Monthly Newsletter Template"
+              },
+              "editor_type": {
+                "description": "Restricted to CODE, USER_DRAGGABLE, or SYSTEM_DRAGGABLE",
+                "type": "string"
+              },
+              "html": {
+                "description": "The HTML contents of the template. Required for CODE/USER_DRAGGABLE; not allowed for SYSTEM_DRAGGABLE.",
+                "type": "string",
+                "nullable": true
+              },
+              "definition": {
+                "description": "The template definition. Required for SYSTEM_DRAGGABLE; ignored for CODE/USER_DRAGGABLE.",
+                "$ref": "#/components/schemas/TemplateDefinition",
+                "nullable": true
+              },
+              "text": {
+                "description": "The plaintext version of the template",
+                "type": "string",
+                "example": "hello world",
+                "nullable": true
+              },
+              "amp": {
+                "description": "The AMP version of the template. Requires AMP Email to be enabled to access in-app. Refer to the AMP Email setup guide at https://developers.klaviyo.com/en/docs/send_amp_emails_in_klaviyo Not allowed for SYSTEM_DRAGGABLE.",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "name",
+              "editor_type"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "TemplateCreateHtmlOrDndQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateCreateHtmlOrDndQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostTemplateDndResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/TemplateEnum"
+              },
+              "id": {
+                "description": "The ID of template",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "The name of the template",
+                    "type": "string"
+                  },
+                  "editor_type": {
+                    "description": "`editor_type` has a fixed set of values:\n* SYSTEM_DRAGGABLE: indicates a drag-and-drop editor template\n* SIMPLE: A rich text editor template\n* CODE: A custom HTML template\n* USER_DRAGGABLE: A hybrid template, using custom HTML in the drag-and-drop editor",
+                    "type": "string"
+                  },
+                  "html": {
+                    "description": "The rendered HTML of the template",
+                    "type": "string"
+                  },
+                  "text": {
+                    "description": "The template plain_text",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "amp": {
+                    "description": "The AMP version of the template. Requires AMP Email to be enabled to access in-app. Refer to the AMP Email setup guide at https://developers.klaviyo.com/en/docs/send_amp_emails_in_klaviyo",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "created": {
+                    "description": "The date the template was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "updated": {
+                    "description": "The date the template was updated in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "definition": {
+                    "description": "Template definition for SYSTEM_DRAGGABLE templates. Omitted for CODE/USER_DRAGGABLE.",
+                    "$ref": "#/components/schemas/TemplateDefinition",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "name",
+                  "editor_type",
+                  "html"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "SourceMappingCreateQueryResourceObject": {
         "type": "object",
         "properties": {
@@ -3847,16 +5783,19 @@
           "name": {
             "description": "The name of the relationship",
             "type": "string",
-            "example": "related_items",
-            "nullable": true
+            "example": "related_items"
           },
           "description": {
             "description": "The description of the relationship",
             "type": "string",
             "example": "Items related to this schema",
+            "default": "",
             "nullable": true
           }
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "ProfileObjectSchemaRelationshipCreateQuery": {
         "type": "object",
@@ -3884,6 +5823,150 @@
                 }
               }
             }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TemplateUpdateHtmlOrDndQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TemplateEnum"
+          },
+          "id": {
+            "description": "The ID of template",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name of the template",
+                "type": "string",
+                "example": "Monthly Newsletter Template",
+                "nullable": true
+              },
+              "html": {
+                "description": "The HTML contents of the template. Not allowed for SYSTEM_DRAGGABLE templates.",
+                "type": "string",
+                "example": "\n              <html>\n                  <body>\n                      hello world\n                  </body>\n              </html>\n          ",
+                "nullable": true
+              },
+              "definition": {
+                "description": "The template definition for SYSTEM_DRAGGABLE templates. Entirely replaces the existing definition. Not allowed for CODE/USER_DRAGGABLE.",
+                "$ref": "#/components/schemas/TemplateDefinition",
+                "nullable": true
+              },
+              "text": {
+                "description": "The plaintext of the template",
+                "type": "string",
+                "example": "hello world",
+                "nullable": true
+              },
+              "amp": {
+                "description": "The AMP version of the template. Requires AMP Email to be enabled to access in-app. Refer to the AMP Email setup guide at https://developers.klaviyo.com/en/docs/send_amp_emails_in_klaviyo Not allowed for SYSTEM_DRAGGABLE.",
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "TemplateUpdateHtmlOrDndQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TemplateUpdateHtmlOrDndQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PatchTemplateDndResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/TemplateEnum"
+              },
+              "id": {
+                "description": "The ID of template",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "The name of the template",
+                    "type": "string"
+                  },
+                  "editor_type": {
+                    "description": "`editor_type` has a fixed set of values:\n* SYSTEM_DRAGGABLE: indicates a drag-and-drop editor template\n* SIMPLE: A rich text editor template\n* CODE: A custom HTML template\n* USER_DRAGGABLE: A hybrid template, using custom HTML in the drag-and-drop editor",
+                    "type": "string"
+                  },
+                  "html": {
+                    "description": "The rendered HTML of the template",
+                    "type": "string"
+                  },
+                  "text": {
+                    "description": "The template plain_text",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "amp": {
+                    "description": "The AMP version of the template. Requires AMP Email to be enabled to access in-app. Refer to the AMP Email setup guide at https://developers.klaviyo.com/en/docs/send_amp_emails_in_klaviyo",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "created": {
+                    "description": "The date the template was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "updated": {
+                    "description": "The date the template was updated in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "definition": {
+                    "description": "Template definition for SYSTEM_DRAGGABLE templates. Omitted for CODE/USER_DRAGGABLE.",
+                    "$ref": "#/components/schemas/TemplateDefinition",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "name",
+                  "editor_type",
+                  "html"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
