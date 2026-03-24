@@ -735,7 +735,30 @@
                   "status",
                   "namespace",
                   "created_at",
-                  "updated_at"
+                  "updated_at",
+                  "meta",
+                  "meta.relationship_id",
+                  "meta.name",
+                  "meta.description"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[profile-object-type]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "meta",
+                  "meta.relationship_id",
+                  "meta.name",
+                  "meta.description"
                 ]
               }
             },
@@ -752,6 +775,8 @@
                 "enum": [
                   "current-schema",
                   "draft-schema",
+                  "object-types",
+                  "profile-object-types",
                   "schema-versions"
                 ]
               }
@@ -885,7 +910,30 @@
                   "properties",
                   "required",
                   "published_at",
-                  "visibility"
+                  "visibility",
+                  "meta",
+                  "meta.relationship_id",
+                  "meta.name",
+                  "meta.description"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[profile-object-schema]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-01-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "meta",
+                  "meta.relationship_id",
+                  "meta.name",
+                  "meta.description"
                 ]
               }
             },
@@ -917,6 +965,8 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "object-schemas",
+                  "profile-object-schemas",
                   "source-mapping"
                 ]
               }
@@ -1541,8 +1591,8 @@
     },
     "/api/object-types/{id}/relationships/object-types": {
       "get": {
-        "operationId": "get_type_ids_for_object_type_beta",
-        "summary": "Get Type IDs for Object Type",
+        "operationId": "get_object_type_relationships_beta",
+        "summary": "Get Object Type Relationships",
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related object types for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`",
         "parameters": [
           {
@@ -1589,7 +1639,8 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_object_type_relationships_types"
+          "get_object_type_relationships_types",
+          "get_type_ids_for_object_type"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -1604,8 +1655,8 @@
     },
     "/api/object-types/{id}/relationships/profile-object-types": {
       "get": {
-        "operationId": "get_profile_object_type_ids_for_object_type_beta",
-        "summary": "Get Profile Object Type IDs for Object Type",
+        "operationId": "get_profile_type_relationships_beta",
+        "summary": "Get Profile Type Relationships",
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related profile object types for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`",
         "parameters": [
           {
@@ -1652,7 +1703,8 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_object_type_relationships_profile_object_types"
+          "get_object_type_relationships_profile_object_types",
+          "get_profile_object_type_ids_for_object_type"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -1810,8 +1862,8 @@
     },
     "/api/object-schemas/{id}/relationships/object-schemas": {
       "get": {
-        "operationId": "get_schema_ids_for_object_schema_beta",
-        "summary": "Get Schema IDs for Object Schema",
+        "operationId": "get_object_schema_relationships_beta",
+        "summary": "Get Object Schema Relationships",
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related object schemas for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`",
         "parameters": [
           {
@@ -1858,7 +1910,8 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_object_schema_relationships_schemas"
+          "get_object_schema_relationships_schemas",
+          "get_schema_ids_for_object_schema"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -1871,8 +1924,8 @@
         "x-klaviyo-subtag": "Custom Objects"
       },
       "post": {
-        "operationId": "add_schemas_to_object_schema_beta",
-        "summary": "Add Schemas to Object Schema",
+        "operationId": "create_object_schema_relationship_beta",
+        "summary": "Create Object Schema Relationship",
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a relationship between object schemas.\n\nNote that flow filtering and segmentation are currently not supported for object-to-object relationships.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
         "parameters": [
           {
@@ -1921,6 +1974,7 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
+          "add_schemas_to_object_schema",
           "create_object_schema_relationships_schemas"
         ],
         "x-klaviyo-pre-release": "BETA",
@@ -1934,8 +1988,8 @@
         "x-klaviyo-subtag": "Custom Objects"
       },
       "patch": {
-        "operationId": "update_schemas_for_object_schema_beta",
-        "summary": "Update Schemas for Object Schema",
+        "operationId": "update_object_schema_relationship_beta",
+        "summary": "Update Object Schema Relationship",
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a relationship between object schemas<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
         "parameters": [
           {
@@ -1984,7 +2038,8 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "update_object_schema_relationships_schemas"
+          "update_object_schema_relationships_schemas",
+          "update_schemas_for_object_schema"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -1997,8 +2052,8 @@
         "x-klaviyo-subtag": "Custom Objects"
       },
       "delete": {
-        "operationId": "remove_schemas_from_object_schema_beta",
-        "summary": "Remove Schemas from Object Schema",
+        "operationId": "delete_object_schema_relationship_beta",
+        "summary": "Delete Object Schema Relationship",
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete a relationship between object schemas<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
         "parameters": [
           {
@@ -2047,7 +2102,8 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "delete_object_schema_relationships_schemas"
+          "delete_object_schema_relationships_schemas",
+          "remove_schemas_from_object_schema"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -2062,8 +2118,8 @@
     },
     "/api/object-schemas/{id}/relationships/profile-object-schemas": {
       "get": {
-        "operationId": "get_profile_object_schema_ids_for_object_schema_beta",
-        "summary": "Get Profile Object Schema IDs for Object Schema",
+        "operationId": "get_profile_schema_relationships_beta",
+        "summary": "Get Profile Schema Relationships",
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related profile object schemas for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`",
         "parameters": [
           {
@@ -2110,7 +2166,8 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_object_schema_relationships_profile_object_schemas"
+          "get_object_schema_relationships_profile_object_schemas",
+          "get_profile_object_schema_ids_for_object_schema"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -2123,8 +2180,8 @@
         "x-klaviyo-subtag": "Custom Objects"
       },
       "post": {
-        "operationId": "create_profile_schema_relationships_beta",
-        "summary": "Create Profile Schema Relationships",
+        "operationId": "create_profile_schema_relationship_beta",
+        "summary": "Create Profile Schema Relationship",
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a relationship between an object schema and a profile<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
         "parameters": [
           {
@@ -8197,6 +8254,60 @@
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
                           }
+                        },
+                        "object-types": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/ObjectTypeEnum"
+                                  },
+                                  "id": {
+                                    "description": "The object type relationships for this object type",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
+                        },
+                        "profile-object-types": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/ObjectTypeEnum"
+                                  },
+                                  "id": {
+                                    "description": "The profile object type relationships for this object type",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
                         }
                       }
                     }
@@ -8217,6 +8328,99 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "ObjectTypeRelationshipMeta": {
+        "type": "object",
+        "properties": {
+          "relationship_id": {
+            "description": "The ULID ID of the relationship",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+          },
+          "name": {
+            "description": "The name of the relationship",
+            "type": "string",
+            "example": "related_items"
+          },
+          "description": {
+            "description": "The description of the relationship",
+            "type": "string",
+            "example": "Items related to this object",
+            "nullable": true
+          }
+        },
+        "required": [
+          "relationship_id",
+          "name"
+        ]
+      },
+      "ObjectTypeRelationshipResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ObjectTypeEnum"
+          },
+          "id": {
+            "description": "A compound ID uniquely identifying this relationship, in the format '{related_object_type_id}:::{relationship_name}'.",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "meta": {
+                "$ref": "#/components/schemas/ObjectTypeRelationshipMeta",
+                "nullable": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ProfileObjectTypeEnum": {
+        "type": "string",
+        "enum": [
+          "profile-object-type"
+        ]
+      },
+      "ProfileTypeRelationshipResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileObjectTypeEnum"
+          },
+          "id": {
+            "description": "A compound ID uniquely identifying this relationship, in the format 'profile:::{relationship_name}'.",
+            "type": "string",
+            "example": "profile:::related_items"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "meta": {
+                "$ref": "#/components/schemas/ObjectTypeRelationshipMeta",
+                "nullable": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
       },
       "GetObjectTypeResponseCompoundDocument": {
@@ -8306,6 +8510,60 @@
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
                         }
+                      },
+                      "object-types": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectTypeEnum"
+                                },
+                                "id": {
+                                  "description": "The object type relationships for this object type",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
+                      },
+                      "profile-object-types": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectTypeEnum"
+                                },
+                                "id": {
+                                  "description": "The profile object type relationships for this object type",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
                       }
                     }
                   }
@@ -8316,7 +8574,17 @@
           "included": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ObjectTypeRelationshipResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/ProfileTypeRelationshipResponseObjectResource"
+                }
+              ]
             }
           },
           "links": {
@@ -8343,6 +8611,60 @@
                       "source-mapping": {
                         "type": "object",
                         "properties": {
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
+                      },
+                      "object-schemas": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                },
+                                "id": {
+                                  "description": "The object schema relationships for this object schema",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
+                      },
+                      "profile-object-schemas": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                },
+                                "id": {
+                                  "description": "The profile object schema relationships for this object schema",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
                           "links": {
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
@@ -8440,6 +8762,60 @@
                               "$ref": "#/components/schemas/RelationshipLinks"
                             }
                           }
+                        },
+                        "object-schemas": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                  },
+                                  "id": {
+                                    "description": "The object schema relationships for this object schema",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
+                        },
+                        "profile-object-schemas": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "id"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                  },
+                                  "id": {
+                                    "description": "The profile object schema relationships for this object schema",
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "links": {
+                              "$ref": "#/components/schemas/RelationshipLinks"
+                            }
+                          }
                         }
                       }
                     }
@@ -8503,9 +8879,9 @@
                   "$ref": "#/components/schemas/ObjectTypeEnum"
                 },
                 "id": {
-                  "description": "The ULID ID of the related object type.",
+                  "description": "A compound ID uniquely identifying this relationship, in the format '{related_object_type_id}:::{relationship_name}'.",
                   "type": "string",
-                  "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+                  "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
                 }
               }
             }
@@ -8534,9 +8910,9 @@
                   "$ref": "#/components/schemas/ObjectTypeEnum"
                 },
                 "id": {
-                  "description": "The ID of the related profile type",
+                  "description": "A compound ID uniquely identifying this relationship, in the format 'profile:::{relationship_name}'.",
                   "type": "string",
-                  "example": "profile-related_profiles"
+                  "example": "profile:::related_items"
                 }
               }
             }
@@ -8547,6 +8923,98 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "ObjectSchemaRelationshipMeta": {
+        "type": "object",
+        "properties": {
+          "relationship_id": {
+            "description": "The ULID ID of the relationship.",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+          },
+          "name": {
+            "description": "The name of the relationship",
+            "type": "string",
+            "example": "related_items"
+          },
+          "description": {
+            "description": "The description of the relationship",
+            "type": "string",
+            "example": "Items related to this schema",
+            "nullable": true
+          }
+        },
+        "required": [
+          "relationship_id",
+          "name"
+        ]
+      },
+      "ObjectSchemaRelationshipResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ObjectSchemaEnum"
+          },
+          "id": {
+            "description": "A compound ID uniquely identifying this relationship, in the format '{related_schema_id}:::{relationship_name}'.",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "meta": {
+                "$ref": "#/components/schemas/ObjectSchemaRelationshipMeta",
+                "nullable": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ProfileObjectSchemaEnum": {
+        "type": "string",
+        "enum": [
+          "profile-object-schema"
+        ]
+      },
+      "ProfileObjectSchemaRelationshipResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
+          },
+          "id": {
+            "description": "The ID of the related profile schema.",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "meta": {
+                "$ref": "#/components/schemas/ObjectSchemaRelationshipMeta",
+                "nullable": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
       },
       "GetObjectSchemaResponseCompoundDocument": {
@@ -8585,6 +9053,60 @@
                             "$ref": "#/components/schemas/RelationshipLinks"
                           }
                         }
+                      },
+                      "object-schemas": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                },
+                                "id": {
+                                  "description": "The object schema relationships for this object schema",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
+                      },
+                      "profile-object-schemas": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "type",
+                                "id"
+                              ],
+                              "properties": {
+                                "type": {
+                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                                },
+                                "id": {
+                                  "description": "The profile object schema relationships for this object schema",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "links": {
+                            "$ref": "#/components/schemas/RelationshipLinks"
+                          }
+                        }
                       }
                     }
                   }
@@ -8595,7 +9117,17 @@
           "included": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SourceMappingResponseObjectResource"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ObjectSchemaRelationshipResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/SourceMappingResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/ProfileObjectSchemaRelationshipResponseObjectResource"
+                }
+              ]
             }
           },
           "links": {
@@ -8634,29 +9166,6 @@
           "data"
         ]
       },
-      "ObjectSchemaRelationshipMeta": {
-        "type": "object",
-        "properties": {
-          "relationship_id": {
-            "description": "The ULID ID of the relationship.",
-            "type": "string",
-            "example": "01K5YKKQKM819VVGCPZZKGE6D4",
-            "nullable": true
-          },
-          "name": {
-            "description": "The name of the relationship",
-            "type": "string",
-            "example": "related_items",
-            "nullable": true
-          },
-          "description": {
-            "description": "The description of the relationship",
-            "type": "string",
-            "example": "Items related to this schema",
-            "nullable": true
-          }
-        }
-      },
       "GetObjectSchemaSchemasRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
@@ -8673,9 +9182,9 @@
                   "$ref": "#/components/schemas/ObjectSchemaEnum"
                 },
                 "id": {
-                  "description": "The ULID ID of the related object schema.",
+                  "description": "A compound ID uniquely identifying this relationship, in the format '{related_schema_id}:::{relationship_name}'.",
                   "type": "string",
-                  "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+                  "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
                 }
               }
             }
@@ -8704,9 +9213,8 @@
                   "$ref": "#/components/schemas/ObjectSchemaEnum"
                 },
                 "id": {
-                  "description": "The ID of the related profile schema",
-                  "type": "string",
-                  "example": "profile-related_profile"
+                  "description": "The ID of the related profile schema.",
+                  "type": "string"
                 }
               }
             }
@@ -9243,6 +9751,60 @@
                         "$ref": "#/components/schemas/RelationshipLinks"
                       }
                     }
+                  },
+                  "object-types": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/ObjectTypeEnum"
+                            },
+                            "id": {
+                              "description": "The object type relationships for this object type",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "profile-object-types": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/ObjectTypeEnum"
+                            },
+                            "id": {
+                              "description": "The profile object type relationships for this object type",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
                   }
                 }
               },
@@ -9473,6 +10035,60 @@
                         "$ref": "#/components/schemas/RelationshipLinks"
                       }
                     }
+                  },
+                  "object-schemas": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/ObjectSchemaEnum"
+                            },
+                            "id": {
+                              "description": "The object schema relationships for this object schema",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "profile-object-schemas": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/ObjectSchemaEnum"
+                            },
+                            "id": {
+                              "description": "The profile object schema relationships for this object schema",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
                   }
                 }
               },
@@ -9493,6 +10109,25 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "ObjectSchemaRelationshipCreateMeta": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the relationship",
+            "type": "string",
+            "example": "related_items"
+          },
+          "description": {
+            "description": "The description of the relationship",
+            "type": "string",
+            "example": "Items related to this schema",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name"
         ]
       },
       "ObjectSchemaRelationshipCreateQuery": {
@@ -9516,7 +10151,7 @@
                   "example": "01K5YKKQKM819VVGCPZZKGE6D4"
                 },
                 "meta": {
-                  "$ref": "#/components/schemas/ObjectSchemaRelationshipMeta",
+                  "$ref": "#/components/schemas/ObjectSchemaRelationshipCreateMeta",
                   "nullable": true
                 }
               }
@@ -9525,26 +10160,6 @@
         },
         "required": [
           "data"
-        ]
-      },
-      "ObjectSchemaRelationshipCreateMeta": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the relationship",
-            "type": "string",
-            "example": "related_items"
-          },
-          "description": {
-            "description": "The description of the relationship",
-            "type": "string",
-            "example": "Items related to this schema",
-            "default": "",
-            "nullable": true
-          }
-        },
-        "required": [
-          "name"
         ]
       },
       "ProfileObjectSchemaRelationshipCreateQuery": {
@@ -9563,9 +10178,9 @@
                   "$ref": "#/components/schemas/ObjectSchemaEnum"
                 },
                 "id": {
-                  "description": "The ID of the related profile schema",
+                  "description": "The ID of the profile schema. The profile schema does not exist as a persisted resource, so this value is always \"profile\".",
                   "type": "string",
-                  "example": "profile-related_profile"
+                  "example": "profile"
                 },
                 "meta": {
                   "$ref": "#/components/schemas/ObjectSchemaRelationshipCreateMeta",
@@ -10012,6 +10627,60 @@
                         "$ref": "#/components/schemas/RelationshipLinks"
                       }
                     }
+                  },
+                  "object-schemas": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/ObjectSchemaEnum"
+                            },
+                            "id": {
+                              "description": "The object schema relationships for this object schema",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "profile-object-schemas": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/ObjectSchemaEnum"
+                            },
+                            "id": {
+                              "description": "The profile object schema relationships for this object schema",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
                   }
                 }
               },
@@ -10034,6 +10703,31 @@
           "data"
         ]
       },
+      "ObjectSchemaRelationshipUpdateMeta": {
+        "type": "object",
+        "properties": {
+          "relationship_id": {
+            "description": "The ULID ID of the relationship.",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+          },
+          "name": {
+            "description": "The name of the relationship",
+            "type": "string",
+            "example": "related_items",
+            "nullable": true
+          },
+          "description": {
+            "description": "The description of the relationship",
+            "type": "string",
+            "example": "Items related to this schema",
+            "nullable": true
+          }
+        },
+        "required": [
+          "relationship_id"
+        ]
+      },
       "ObjectSchemaRelationshipPartialUpdateQuery": {
         "type": "object",
         "properties": {
@@ -10049,7 +10743,7 @@
                 "example": "01K5YKKQKM819VVGCPZZKGE6D4"
               },
               "meta": {
-                "$ref": "#/components/schemas/ObjectSchemaRelationshipMeta",
+                "$ref": "#/components/schemas/ObjectSchemaRelationshipUpdateMeta",
                 "nullable": true
               }
             },
@@ -10073,12 +10767,12 @@
                 "$ref": "#/components/schemas/ObjectSchemaEnum"
               },
               "id": {
-                "description": "The ID of the related profile schema",
+                "description": "The ID of the profile schema. The profile schema does not exist as a persisted resource, so this value is always \"profile\".",
                 "type": "string",
-                "example": "profile-related_profile"
+                "example": "profile"
               },
               "meta": {
-                "$ref": "#/components/schemas/ObjectSchemaRelationshipMeta",
+                "$ref": "#/components/schemas/ObjectSchemaRelationshipUpdateMeta",
                 "nullable": true
               }
             },
@@ -10090,6 +10784,19 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "ObjectSchemaRelationshipDeleteMeta": {
+        "type": "object",
+        "properties": {
+          "relationship_id": {
+            "description": "The ULID ID of the relationship.",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+          }
+        },
+        "required": [
+          "relationship_id"
         ]
       },
       "ObjectSchemaRelationshipDeleteQuery": {
@@ -10113,7 +10820,7 @@
                   "example": "01K5YKKQKM819VVGCPZZKGE6D4"
                 },
                 "meta": {
-                  "$ref": "#/components/schemas/ObjectSchemaRelationshipMeta",
+                  "$ref": "#/components/schemas/ObjectSchemaRelationshipDeleteMeta",
                   "nullable": true
                 }
               }
@@ -10140,12 +10847,12 @@
                   "$ref": "#/components/schemas/ObjectSchemaEnum"
                 },
                 "id": {
-                  "description": "The ID of the related profile schema",
+                  "description": "The ID of the profile schema. The profile schema does not exist as a persisted resource, so this value is always \"profile\".",
                   "type": "string",
-                  "example": "profile-related_profile"
+                  "example": "profile"
                 },
                 "meta": {
-                  "$ref": "#/components/schemas/ObjectSchemaRelationshipMeta",
+                  "$ref": "#/components/schemas/ObjectSchemaRelationshipDeleteMeta",
                   "nullable": true
                 }
               }
