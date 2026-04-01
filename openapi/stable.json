@@ -19223,7 +19223,7 @@
       "post": {
         "operationId": "bulk_subscribe_profiles",
         "summary": "Bulk Subscribe Profiles",
-        "description": "Subscribe one or more profiles to email marketing, SMS marketing, or both. If the provided list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message.\nLearn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nIf a list is not provided, the opt-in process used will be determined by the [account-level default opt-in setting](https://www.klaviyo.com/settings/account/api-keys).\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profiles can be submitted for subscription: 1000\n\nThis endpoint now supports a `historical_import` flag. If this flag is set `true`, profiles being subscribed will bypass double opt-in emails and be subscribed immediately. They will also bypass any associated \"Added to list\" flows. This is useful for importing historical data where you have already collected consent. If `historical_import` is set to true, the `consented_at` field is required and must be in the past.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
+        "description": "Subscribe one or more profiles to email marketing, SMS marketing, WhatsApp, or push. If the provided list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message.\nLearn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nIf a list is not provided, the opt-in process used will be determined by the [account-level default opt-in setting](https://www.klaviyo.com/settings/account/api-keys).\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profiles can be submitted for subscription: 1000\n\nThis endpoint now supports a `historical_import` flag. If this flag is set `true`, profiles being subscribed will bypass double opt-in emails and be subscribed immediately. They will also bypass any associated \"Added to list\" flows. This is useful for importing historical data where you have already collected consent. If `historical_import` is set to true, the `consented_at` field is required and must be in the past.\n\nPush tokens provided in `push_tokens` will be registered for each profile as long as push subscriptions are consented to.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `700/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -19237,7 +19237,7 @@
           }
         ],
         "requestBody": {
-          "description": "Subscribes one or more profiles to marketing. Currently, supports email and SMS only. All profiles will be added to the provided list. Either email or phone number is required. Both may be specified to subscribe to both channels.\nIf a profile cannot be found matching the given identifier(s), a new profile will be created and then subscribed.",
+          "description": "Subscribes one or more profiles to marketing, with support for push channel and push tokens.\nAll profiles will be added to the provided list. Either email or phone number is required.\nBoth may be specified to subscribe to both channels. If a profile cannot be found matching\nthe given identifier(s), a new profile will be created and then subscribed.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -36421,7 +36421,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -36430,7 +36430,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/ActionOutputSplitEnum"
@@ -36470,7 +36471,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -36479,7 +36480,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/BackInStockDelayEnum"
@@ -36678,7 +36680,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -36687,7 +36689,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/ConditionalSplitEnum"
@@ -37002,6 +37005,7 @@
             "nullable": true
           },
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           }
@@ -37035,7 +37039,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -37044,7 +37048,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/SendMobilePushEnum"
@@ -37066,6 +37071,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -37087,7 +37093,8 @@
             "type": "string",
             "format": "date-time",
             "example": "2022-11-08T00:00:00+00:00",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "winner_metric": {
             "description": "The metric to use to determine the winner of the content experiment\n    action.",
@@ -37118,7 +37125,7 @@
             ]
           },
           "experiment_status": {
-            "description": "The status of the content experiment action experiment.",
+            "description": "Not allowed on create.",
             "type": "string",
             "enum": [
               "completed",
@@ -37143,7 +37150,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -37152,7 +37159,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/ContentExperimentEnum"
@@ -37348,6 +37356,7 @@
             "nullable": true
           },
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           }
@@ -37387,7 +37396,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -37396,7 +37405,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/SendEmailEnum"
@@ -37592,6 +37602,7 @@
             "nullable": true
           },
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           }
@@ -37625,7 +37636,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -37634,7 +37645,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/SendSmsEnum"
@@ -37677,6 +37689,7 @@
             "nullable": true
           },
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           }
@@ -37712,7 +37725,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -37721,7 +37734,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/SendWebhookEnum"
@@ -37775,6 +37789,7 @@
             "nullable": true
           },
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           }
@@ -37813,7 +37828,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -37822,7 +37837,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/SendInternalAlertEnum"
@@ -37850,6 +37866,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -37967,7 +37984,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -37976,7 +37993,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/SendWhatsappEnum"
@@ -38493,7 +38511,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -38502,7 +38520,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/TimeDelayEnum"
@@ -38674,7 +38693,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -38683,7 +38702,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/TriggerSplitEnum"
@@ -38941,7 +38961,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -38950,7 +38970,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/UpdateProfileEnum"
@@ -39446,7 +39467,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -39455,7 +39476,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/TargetDateEnum"
@@ -39966,7 +39988,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -39975,7 +39997,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/CountdownDelayEnum"
@@ -40024,7 +40047,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -40033,7 +40056,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/AbTestEnum"
@@ -40058,7 +40082,7 @@
                 ]
               },
               "experiment_status": {
-                "description": "The status of the A/B test action experiment.",
+                "description": "Not allowed on create.",
                 "type": "string",
                 "example": "draft",
                 "default": "draft",
@@ -40083,6 +40107,7 @@
                 "nullable": true,
                 "properties": {
                   "id": {
+                    "description": "Not allowed on create.",
                     "type": "string",
                     "nullable": true
                   },
@@ -40111,7 +40136,8 @@
                     "type": "string",
                     "format": "date-time",
                     "example": "2022-11-08T00:00:00+00:00",
-                    "nullable": true
+                    "nullable": true,
+                    "readOnly": true
                   },
                   "winner_metric": {
                     "description": "The metric to use to determine the winner of the A/B test action.\n\nNote that this is different from the metrics used as a flow trigger.",
@@ -40276,7 +40302,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -40285,7 +40311,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/InternalServiceEnum"
@@ -40313,7 +40340,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -40322,7 +40349,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/CodeEnum"
@@ -40463,7 +40491,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -40472,7 +40500,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "type": {
             "$ref": "#/components/schemas/MultiBranchSplitEnum"
@@ -40537,7 +40566,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The real ID of an action.",
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
             "example": "123",
             "nullable": true
@@ -40546,7 +40575,8 @@
             "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
             "type": "string",
             "example": "action-1",
-            "nullable": true
+            "nullable": true,
+            "writeOnly": true
           },
           "data": {
             "$ref": "#/components/schemas/ListUpdateActionData"
@@ -43621,7 +43651,9 @@
                   "Adding Recipients",
                   "Cancelled",
                   "Cancelled: Account Disabled",
+                  "Cancelled: Billing Limit",
                   "Cancelled: Internal Error",
+                  "Cancelled: Misconfigured",
                   "Cancelled: No Recipients",
                   "Cancelled: Smart Sending",
                   "Draft",
@@ -49646,6 +49678,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -49684,6 +49717,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -49729,6 +49763,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -49762,6 +49797,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -49815,6 +49851,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -49844,6 +49881,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -49877,6 +49915,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -49932,6 +49971,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -49986,6 +50026,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50019,6 +50060,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50062,6 +50104,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50099,6 +50142,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50125,6 +50169,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50296,6 +50341,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50447,6 +50493,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50530,6 +50577,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50613,6 +50661,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50674,6 +50723,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50759,6 +50809,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -50885,6 +50936,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -51005,6 +51057,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -51083,6 +51136,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -51210,6 +51264,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -51322,6 +51377,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -51413,6 +51469,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -51548,6 +51605,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -52365,6 +52423,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -52443,6 +52502,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -52581,6 +52641,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -52783,6 +52844,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -52891,6 +52953,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53138,6 +53201,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53160,6 +53224,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53312,6 +53377,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53331,6 +53397,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53376,6 +53443,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53419,6 +53487,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53463,6 +53532,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53506,6 +53576,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53546,6 +53617,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53575,6 +53647,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53609,6 +53682,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53649,6 +53723,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53673,6 +53748,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53697,6 +53773,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -53740,6 +53817,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54312,6 +54390,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54347,6 +54426,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54371,6 +54451,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54406,6 +54487,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54441,6 +54523,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54465,6 +54548,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54508,6 +54592,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54543,6 +54628,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54663,6 +54749,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -54960,6 +55047,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "string",
             "nullable": true
           },
@@ -55411,6 +55499,7 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Not allowed on create.",
             "type": "integer",
             "nullable": true
           },
@@ -61751,7 +61840,9 @@
                       "Adding Recipients",
                       "Cancelled",
                       "Cancelled: Account Disabled",
+                      "Cancelled: Billing Limit",
                       "Cancelled: Internal Error",
+                      "Cancelled: Misconfigured",
                       "Cancelled: No Recipients",
                       "Cancelled: Smart Sending",
                       "Draft",
@@ -65869,6 +65960,187 @@
           }
         }
       },
+      "PushTokenDeviceMetadata": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "description": "Relatively stable ID for the device. Will update on app uninstall and reinstall",
+            "type": "string",
+            "example": "1234567890",
+            "nullable": true
+          },
+          "klaviyo_sdk": {
+            "description": "The name of the SDK used to create the push token.",
+            "type": "string",
+            "example": "swift",
+            "enum": [
+              "android",
+              "flutter",
+              "flutter_community",
+              "react_native",
+              "swift"
+            ],
+            "nullable": true
+          },
+          "sdk_version": {
+            "description": "The version of the SDK used to create the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "device_model": {
+            "description": "The model of the device",
+            "type": "string",
+            "example": "iPhone12,1",
+            "nullable": true
+          },
+          "os_name": {
+            "description": "The name of the operating system on the device.",
+            "type": "string",
+            "example": "ios",
+            "enum": [
+              "android",
+              "ios",
+              "ipados",
+              "macos",
+              "tvos"
+            ],
+            "nullable": true
+          },
+          "os_version": {
+            "description": "The version of the operating system on the device",
+            "type": "string",
+            "example": "14.0",
+            "nullable": true
+          },
+          "manufacturer": {
+            "description": "The manufacturer of the device",
+            "type": "string",
+            "example": "Apple",
+            "nullable": true
+          },
+          "app_name": {
+            "description": "The name of the app that created the push token",
+            "type": "string",
+            "example": "Klaviyo",
+            "nullable": true
+          },
+          "app_version": {
+            "description": "The version of the app that created the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "app_build": {
+            "description": "The build of the app that created the push token",
+            "type": "string",
+            "example": "1",
+            "nullable": true
+          },
+          "app_id": {
+            "description": "The ID of the app that created the push token",
+            "type": "string",
+            "example": "com.klaviyo.app",
+            "nullable": true
+          },
+          "environment": {
+            "description": "The environment in which the push token was created",
+            "type": "string",
+            "example": "release",
+            "enum": [
+              "debug",
+              "release"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "PushTokenEntry": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "description": "A push token from APNS or FCM.",
+            "type": "string",
+            "example": "1234567890abcdef"
+          },
+          "platform": {
+            "description": "The platform on which the push token was created. Either \"ios\" or \"android\".",
+            "type": "string",
+            "enum": [
+              "android",
+              "ios"
+            ]
+          },
+          "vendor": {
+            "description": "The vendor of the push token. Either \"apns\" or \"fcm\".",
+            "type": "string",
+            "example": "apns",
+            "enum": [
+              "apns",
+              "fcm"
+            ]
+          },
+          "enablement_status": {
+            "description": "The enablement status for the push token.",
+            "type": "string",
+            "example": "AUTHORIZED",
+            "enum": [
+              "AUTHORIZED",
+              "DENIED",
+              "NOT_DETERMINED",
+              "PROVISIONAL",
+              "UNAUTHORIZED"
+            ],
+            "nullable": true
+          },
+          "background": {
+            "description": "The background state of the push token.",
+            "type": "string",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "DENIED",
+              "RESTRICTED"
+            ],
+            "nullable": true
+          },
+          "device_metadata": {
+            "description": "Metadata about the device that created the push token.",
+            "$ref": "#/components/schemas/PushTokenDeviceMetadata",
+            "nullable": true
+          }
+        },
+        "required": [
+          "token",
+          "platform",
+          "vendor"
+        ]
+      },
+      "PushSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to marketing on the \"Push\" channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters"
+          },
+          "tokens": {
+            "description": "A list of push tokens to register for this profile.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushTokenEntry"
+            },
+            "nullable": true
+          },
+          "anonymous_id": {
+            "description": "An anonymous identifier for push-only profiles with no email/phone.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "marketing"
+        ]
+      },
       "SubscriptionChannels": {
         "type": "object",
         "properties": {
@@ -65885,6 +66157,11 @@
           "whatsapp": {
             "description": "The subscription parameters to subscribe to on the \"WhatsApp\" Channel.",
             "$ref": "#/components/schemas/WhatsAppSubscriptionParameters",
+            "nullable": true
+          },
+          "push": {
+            "description": "The subscription parameters to subscribe to on the \"Push\" Channel.",
+            "$ref": "#/components/schemas/PushSubscriptionParameters",
             "nullable": true
           }
         }
@@ -71808,7 +72085,9 @@
                       "Adding Recipients",
                       "Cancelled",
                       "Cancelled: Account Disabled",
+                      "Cancelled: Billing Limit",
                       "Cancelled: Internal Error",
+                      "Cancelled: Misconfigured",
                       "Cancelled: No Recipients",
                       "Cancelled: Smart Sending",
                       "Draft",
