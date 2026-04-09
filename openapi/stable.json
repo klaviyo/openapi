@@ -19294,7 +19294,7 @@
       "post": {
         "operationId": "bulk_unsubscribe_profiles",
         "summary": "Bulk Unsubscribe Profiles",
-        "description": "> 🚧\n>\n> Profiles not in the specified list will be globally unsubscribed. Always verify profile list membership before calling this endpoint to avoid unintended global unsubscribes.\n\nUnsubscribe one or more profiles to email marketing, SMS marketing, or both. Learn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nTo remove someone from a list without changing their subscription status, use [Remove Profiles from List](https://developers.klaviyo.com/en/reference/remove_profiles_from_list).\n\nMaximum number of profiles per call: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
+        "description": "> 🚧\n>\n> Profiles not in the specified list will be globally unsubscribed. Always verify profile list membership before calling this endpoint to avoid unintended global unsubscribes.\n\nUnsubscribe one or more profiles from email marketing, SMS marketing, push marketing, or a combination. Learn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nPush tokens provided in `subscriptions.push.tokens` will be removed for the specified profiles.\n\nTo remove someone from a list without changing their subscription status, use [Remove Profiles from List](https://developers.klaviyo.com/en/reference/remove_profiles_from_list).\n\nMaximum number of profiles per call: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
         "parameters": [
           {
             "name": "revision",
@@ -19308,7 +19308,7 @@
           }
         ],
         "requestBody": {
-          "description": "Unsubscribes one or more profiles from marketing. Currently, supports email and SMS only. All profiles will be removed from the provided list.\nEither email or phone number is required. If a profile cannot be found matching the given identifier(s), a new profile will be created and then unsubscribed.",
+          "description": "Unsubscribes one or more profiles from marketing. Supports email, SMS, WhatsApp, and push channels. All profiles will be removed from the provided list.\nEither email or phone number is required for email/SMS/WhatsApp channels. Push tokens can be removed by providing token strings directly.\nIf a profile cannot be found matching the given identifier(s), a new profile will be created and then unsubscribed.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -37690,7 +37690,8 @@
             "nullable": true
           },
           "headers": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           },
           "body": {
             "type": "string",
@@ -55327,18 +55328,21 @@
         "type": "object",
         "properties": {
           "left": {
+            "type": "integer",
             "default": 0,
             "enum": [
               0
             ]
           },
           "right": {
+            "type": "integer",
             "default": 0,
             "enum": [
               0
             ]
           },
           "top": {
+            "type": "integer",
             "default": 0,
             "enum": [
               0
@@ -66579,6 +66583,26 @@
           }
         }
       },
+      "PushUnsubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to unsubscribe from marketing on the \"Push\" channel.",
+            "$ref": "#/components/schemas/UnsubscriptionParameters"
+          },
+          "tokens": {
+            "description": "A list of push tokens to unsubscribe/remove.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushTokenEntry"
+            }
+          }
+        },
+        "required": [
+          "marketing",
+          "tokens"
+        ]
+      },
       "UnsubscriptionChannels": {
         "type": "object",
         "properties": {
@@ -66595,6 +66619,11 @@
           "whatsapp": {
             "description": "The subscription parameters to unsubscribe from the \"WhatsApp\" Channel.",
             "$ref": "#/components/schemas/WhatsAppUnsubscriptionParameters",
+            "nullable": true
+          },
+          "push": {
+            "description": "The subscription parameters to unsubscribe from the \"Push\" Channel.",
+            "$ref": "#/components/schemas/PushUnsubscriptionParameters",
             "nullable": true
           }
         }
