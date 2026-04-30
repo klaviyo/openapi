@@ -1,0 +1,3287 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-04-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/campaign-messages": {
+      "get": {
+        "operationId": "get_campaign_messages_beta",
+        "summary": "Get Campaign Messages",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nReturns campaign messages based on filters.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "fields[campaign-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.name",
+                  "definition.send_options",
+                  "definition.send_options.is_ignoring_unsubscribes",
+                  "definition.send_options.recipient_percentage",
+                  "definition.send_options.send_strategy",
+                  "definition.send_options.send_time",
+                  "definition.send_options.send_times",
+                  "definition.send_options.throttling_type",
+                  "definition.status",
+                  "definition.tracking_options",
+                  "definition.tracking_options.is_add_utm",
+                  "definition.tracking_options.is_tracking_clicks",
+                  "definition.tracking_options.is_tracking_opens",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign-variation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.details",
+                  "definition.details.action_buttons",
+                  "definition.details.add_info_link",
+                  "definition.details.add_opt_out_language",
+                  "definition.details.add_org_prefix",
+                  "definition.details.android_deep_link",
+                  "definition.details.badge",
+                  "definition.details.badge_config",
+                  "definition.details.badge_value",
+                  "definition.details.bcc_email",
+                  "definition.details.body",
+                  "definition.details.cc_email",
+                  "definition.details.channel",
+                  "definition.details.content_available",
+                  "definition.details.cost",
+                  "definition.details.dynamic_media_template",
+                  "definition.details.from_email",
+                  "definition.details.from_label",
+                  "definition.details.include_contact_card",
+                  "definition.details.ios_deep_link",
+                  "definition.details.kv_pairs",
+                  "definition.details.message_hierarchy",
+                  "definition.details.mms_dynamic_image_template",
+                  "definition.details.mms_static_image_asset_id",
+                  "definition.details.mutable_content",
+                  "definition.details.open_action",
+                  "definition.details.preview_text",
+                  "definition.details.push_type",
+                  "definition.details.reply_to_email",
+                  "definition.details.shorten_links",
+                  "definition.details.sound",
+                  "definition.details.sound_file_name",
+                  "definition.details.static_asset_id",
+                  "definition.details.subject",
+                  "definition.details.template_id",
+                  "definition.details.text_message_type",
+                  "definition.details.title",
+                  "definition.details.video_asset_id",
+                  "definition.name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "definition",
+                  "definition.archived",
+                  "definition.builder",
+                  "definition.color",
+                  "definition.description",
+                  "definition.name",
+                  "definition.send_settings",
+                  "definition.send_settings.exit_condition_conversion_metric_id",
+                  "definition.send_settings.exit_condition_enabled",
+                  "definition.send_settings.send_passed_rltz_immediately",
+                  "definition.send_settings.send_strategy",
+                  "definition.send_settings.send_timezone",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals`<br>`campaign_id`: `equals`<br>`name`: `contains`<br>`status`: `equals`<br>`created`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`updated`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "schema": {
+              "type": "string",
+              "example": "equals(id,'example')"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "campaign",
+                  "campaign-variations"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created",
+                "id",
+                "-id",
+                "name",
+                "-name",
+                "status",
+                "-status",
+                "updated",
+                "-updated"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMessageResponseCollectionCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      },
+      "post": {
+        "operationId": "create_campaign_message_beta",
+        "summary": "Create Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nCreate a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostMessageResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:write"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}": {
+      "get": {
+        "operationId": "get_campaign_message_beta",
+        "summary": "Get Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet a campaign message by ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[campaign-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.name",
+                  "definition.send_options",
+                  "definition.send_options.is_ignoring_unsubscribes",
+                  "definition.send_options.recipient_percentage",
+                  "definition.send_options.send_strategy",
+                  "definition.send_options.send_time",
+                  "definition.send_options.send_times",
+                  "definition.send_options.throttling_type",
+                  "definition.status",
+                  "definition.tracking_options",
+                  "definition.tracking_options.is_add_utm",
+                  "definition.tracking_options.is_tracking_clicks",
+                  "definition.tracking_options.is_tracking_opens",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign-variation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.details",
+                  "definition.details.action_buttons",
+                  "definition.details.add_info_link",
+                  "definition.details.add_opt_out_language",
+                  "definition.details.add_org_prefix",
+                  "definition.details.android_deep_link",
+                  "definition.details.badge",
+                  "definition.details.badge_config",
+                  "definition.details.badge_value",
+                  "definition.details.bcc_email",
+                  "definition.details.body",
+                  "definition.details.cc_email",
+                  "definition.details.channel",
+                  "definition.details.content_available",
+                  "definition.details.cost",
+                  "definition.details.dynamic_media_template",
+                  "definition.details.from_email",
+                  "definition.details.from_label",
+                  "definition.details.include_contact_card",
+                  "definition.details.ios_deep_link",
+                  "definition.details.kv_pairs",
+                  "definition.details.message_hierarchy",
+                  "definition.details.mms_dynamic_image_template",
+                  "definition.details.mms_static_image_asset_id",
+                  "definition.details.mutable_content",
+                  "definition.details.open_action",
+                  "definition.details.preview_text",
+                  "definition.details.push_type",
+                  "definition.details.reply_to_email",
+                  "definition.details.shorten_links",
+                  "definition.details.sound",
+                  "definition.details.sound_file_name",
+                  "definition.details.static_asset_id",
+                  "definition.details.subject",
+                  "definition.details.template_id",
+                  "definition.details.text_message_type",
+                  "definition.details.title",
+                  "definition.details.video_asset_id",
+                  "definition.name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "definition",
+                  "definition.archived",
+                  "definition.builder",
+                  "definition.color",
+                  "definition.description",
+                  "definition.name",
+                  "definition.send_settings",
+                  "definition.send_settings.exit_condition_conversion_metric_id",
+                  "definition.send_settings.exit_condition_enabled",
+                  "definition.send_settings.send_passed_rltz_immediately",
+                  "definition.send_settings.send_strategy",
+                  "definition.send_settings.send_timezone",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "campaign",
+                  "campaign-variations"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMessageResponseCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      },
+      "patch": {
+        "operationId": "update_campaign_message_beta",
+        "summary": "Update Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nUpdate a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessagePartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchMessageResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:write"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      },
+      "delete": {
+        "operationId": "delete_campaign_message_beta",
+        "summary": "Delete Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nDelete a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:write"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}/campaign": {
+      "get": {
+        "operationId": "get_campaign_for_campaign_message_beta",
+        "summary": "Get Campaign for Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nReturn the related omnicampaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[campaign]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "definition",
+                  "definition.archived",
+                  "definition.builder",
+                  "definition.color",
+                  "definition.description",
+                  "definition.name",
+                  "definition.send_settings",
+                  "definition.send_settings.exit_condition_conversion_metric_id",
+                  "definition.send_settings.exit_condition_enabled",
+                  "definition.send_settings.send_passed_rltz_immediately",
+                  "definition.send_settings.send_strategy",
+                  "definition.send_settings.send_timezone",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_campaign"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}/relationships/campaign": {
+      "get": {
+        "operationId": "get_campaign_id_for_campaign_message_beta",
+        "summary": "Get Campaign ID for Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nReturns the ID of the related omnicampaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignMessageCampaignRelationshipResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_relationships_campaign"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}/campaign-audience": {
+      "get": {
+        "operationId": "get_audience_for_campaign_message_beta",
+        "summary": "Get Audience for Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign audience for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[campaign-audience]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.excluded",
+                  "definition.included",
+                  "definition.name",
+                  "definition.priority",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAudienceResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_audience"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}/relationships/campaign-audience": {
+      "get": {
+        "operationId": "get_audience_id_for_campaign_message_beta",
+        "summary": "Get Audience ID for Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign audience [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignMessageAudienceRelationshipResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_relationships_audience"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}/tags": {
+      "get": {
+        "operationId": "get_tags_for_campaign_message_beta",
+        "summary": "Get Tags for Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all tags for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[tag]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTagResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_tags"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "tags:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}/relationships/tags": {
+      "get": {
+        "operationId": "get_tag_ids_for_campaign_message_beta",
+        "summary": "Get Tag IDs for Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all tag [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignMessageTagsRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_relationships_tags"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "tags:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}/campaign-variations": {
+      "get": {
+        "operationId": "get_variations_for_campaign_message_beta",
+        "summary": "Get Variations for Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign variations for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[campaign-variation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.details",
+                  "definition.details.action_buttons",
+                  "definition.details.add_info_link",
+                  "definition.details.add_opt_out_language",
+                  "definition.details.add_org_prefix",
+                  "definition.details.android_deep_link",
+                  "definition.details.badge",
+                  "definition.details.badge_config",
+                  "definition.details.badge_value",
+                  "definition.details.bcc_email",
+                  "definition.details.body",
+                  "definition.details.cc_email",
+                  "definition.details.channel",
+                  "definition.details.content_available",
+                  "definition.details.cost",
+                  "definition.details.dynamic_media_template",
+                  "definition.details.from_email",
+                  "definition.details.from_label",
+                  "definition.details.include_contact_card",
+                  "definition.details.ios_deep_link",
+                  "definition.details.kv_pairs",
+                  "definition.details.message_hierarchy",
+                  "definition.details.mms_dynamic_image_template",
+                  "definition.details.mms_static_image_asset_id",
+                  "definition.details.mutable_content",
+                  "definition.details.open_action",
+                  "definition.details.preview_text",
+                  "definition.details.push_type",
+                  "definition.details.reply_to_email",
+                  "definition.details.shorten_links",
+                  "definition.details.sound",
+                  "definition.details.sound_file_name",
+                  "definition.details.static_asset_id",
+                  "definition.details.subject",
+                  "definition.details.template_id",
+                  "definition.details.text_message_type",
+                  "definition.details.title",
+                  "definition.details.video_asset_id",
+                  "definition.name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetVariationResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_variations"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-messages/{id}/relationships/campaign-variations": {
+      "get": {
+        "operationId": "get_variation_ids_for_campaign_message_beta",
+        "summary": "Get Variation IDs for Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign variation [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": {
+              "description": "The ID of the message",
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCampaignMessageVariationsRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_campaign_message_relationships_variations"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AudienceDefinition": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the audience",
+            "type": "string",
+            "example": "My Audience",
+            "nullable": true
+          },
+          "included": {
+            "description": "The list of included group IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "abc123"
+            ],
+            "nullable": true
+          },
+          "excluded": {
+            "description": "The list of excluded group IDs",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "abc123"
+            ],
+            "nullable": true
+          },
+          "priority": {
+            "description": "The priority of the audience",
+            "type": "integer",
+            "example": 1,
+            "nullable": true
+          }
+        }
+      },
+      "AudienceResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CampaignAudienceEnum"
+          },
+          "id": {
+            "description": "The ID of the audience",
+            "type": "string",
+            "example": "925e385b52fb405715f3616c337cc65c"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "created": {
+                "description": "The datetime when this audience was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "updated": {
+                "description": "The datetime when this audience was last updated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "definition": {
+                "description": "The definition of this audience",
+                "$ref": "#/components/schemas/AudienceDefinition"
+              }
+            },
+            "required": [
+              "created",
+              "updated",
+              "definition"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignEnum"
+                      },
+                      "id": {
+                        "description": "Related Campaign",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaign-messages": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignMessageEnum"
+                        },
+                        "id": {
+                          "description": "Related Campaign Messages",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "CampaignAudienceEnum": {
+        "type": "string",
+        "enum": [
+          "campaign-audience"
+        ]
+      },
+      "CampaignDefinition": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The campaign name",
+            "type": "string",
+            "nullable": true
+          },
+          "builder": {
+            "description": "Builder type: canvas or wizard",
+            "type": "string",
+            "example": "canvas",
+            "nullable": true
+          },
+          "archived": {
+            "description": "Whether the campaign has been archived",
+            "type": "boolean",
+            "nullable": true
+          },
+          "color": {
+            "description": "Campaign display color as a hex string (e.g. 'ff5733')",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "description": "A short description of the campaign",
+            "type": "string",
+            "nullable": true
+          },
+          "send_settings": {
+            "description": "Campaign-level send configuration",
+            "$ref": "#/components/schemas/SendSettings",
+            "nullable": true
+          }
+        }
+      },
+      "CampaignEnum": {
+        "type": "string",
+        "enum": [
+          "campaign"
+        ]
+      },
+      "CampaignMessageEnum": {
+        "type": "string",
+        "enum": [
+          "campaign-message"
+        ]
+      },
+      "CampaignResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CampaignEnum"
+          },
+          "id": {
+            "description": "The campaign ID",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "created_at": {
+                "description": "The datetime when the campaign was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated_at": {
+                "description": "The datetime when the campaign was last updated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "definition": {
+                "description": "The campaign definition",
+                "$ref": "#/components/schemas/CampaignDefinition"
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign-audiences": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignAudienceEnum"
+                        },
+                        "id": {
+                          "description": "The audiences associated with the campaign",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaign-messages": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignMessageEnum"
+                        },
+                        "id": {
+                          "description": "The messages associated with the campaign",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "tags": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/TagEnum"
+                        },
+                        "id": {
+                          "description": "The tags associated with the campaign",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "CampaignVariationEnum": {
+        "type": "string",
+        "enum": [
+          "campaign-variation"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "EmailChannelDetails": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "example": "email",
+            "default": "email",
+            "enum": [
+              "email"
+            ]
+          },
+          "template_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "from_label": {
+            "type": "string",
+            "default": ""
+          },
+          "from_email": {
+            "type": "string",
+            "default": ""
+          },
+          "reply_to_email": {
+            "type": "string",
+            "default": ""
+          },
+          "cc_email": {
+            "type": "string",
+            "default": ""
+          },
+          "bcc_email": {
+            "type": "string",
+            "default": ""
+          },
+          "subject": {
+            "type": "string",
+            "default": ""
+          },
+          "preview_text": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "FlowEnum": {
+        "type": "string",
+        "enum": [
+          "flow"
+        ]
+      },
+      "GetAudienceResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AudienceResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCampaignMessageAudienceRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CampaignAudienceEnum"
+              },
+              "id": {
+                "description": "The ID of the audience",
+                "type": "string",
+                "example": "925e385b52fb405715f3616c337cc65c"
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCampaignMessageCampaignRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CampaignEnum"
+              },
+              "id": {
+                "description": "The campaign ID",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCampaignMessageTagsRelationshipsResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/TagEnum"
+                },
+                "id": {
+                  "description": "The Tag ID",
+                  "type": "string",
+                  "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCampaignMessageVariationsRelationshipsResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/CampaignVariationEnum"
+                },
+                "id": {
+                  "description": "The ID of the variation",
+                  "type": "string",
+                  "example": "925e385b52fb405715f3616c337cc65c"
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCampaignResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CampaignResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetMessageResponseCollectionCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CampaignResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/VariationResponseObjectResource"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetMessageResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MessageResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CampaignResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/VariationResponseObjectResource"
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTagResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetVariationResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VariationResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ListEnum": {
+        "type": "string",
+        "enum": [
+          "list"
+        ]
+      },
+      "MessageCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MessageCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "MessageCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CampaignMessageEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "definition": {
+                "description": "The definition of this message",
+                "$ref": "#/components/schemas/MessageDefinition"
+              },
+              "variations": {
+                "description": "The variations for this message",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/VariationInlineCreate"
+                },
+                "nullable": true
+              }
+            },
+            "required": [
+              "definition"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignEnum"
+                      },
+                      "id": {
+                        "description": "The parent campaign",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "campaign-audience": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignAudienceEnum"
+                      },
+                      "id": {
+                        "description": "The audience this message targets",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "campaign",
+              "campaign-audience"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "MessageDefinition": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the message",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "description": "The status of the message",
+            "type": "string",
+            "enum": [
+              "cancelled",
+              "draft",
+              "scheduled",
+              "sending",
+              "sent"
+            ],
+            "nullable": true
+          },
+          "tracking_options": {
+            "description": "The tracking options for this message",
+            "$ref": "#/components/schemas/MessageTrackingOptions",
+            "nullable": true
+          },
+          "send_options": {
+            "description": "The send options for this message",
+            "$ref": "#/components/schemas/MessageSendOptions",
+            "nullable": true
+          }
+        }
+      },
+      "MessagePartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MessagePartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "MessagePartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CampaignMessageEnum"
+          },
+          "id": {
+            "description": "The ID of the message",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "definition": {
+                "description": "The definition of this message",
+                "$ref": "#/components/schemas/MessageDefinition",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "MessageResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CampaignMessageEnum"
+          },
+          "id": {
+            "description": "The ID of the message",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "created": {
+                "description": "The datetime when this message was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "updated": {
+                "description": "The datetime when this message was updated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "definition": {
+                "description": "The definition of this message",
+                "$ref": "#/components/schemas/MessageDefinition"
+              }
+            },
+            "required": [
+              "created",
+              "updated",
+              "definition"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignEnum"
+                      },
+                      "id": {
+                        "description": "The parent campaign",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaign-audience": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignAudienceEnum"
+                      },
+                      "id": {
+                        "description": "The audience this message targets",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaign-variations": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignVariationEnum"
+                        },
+                        "id": {
+                          "description": "The content variations for this message",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "MessageSendOptions": {
+        "type": "object",
+        "properties": {
+          "send_time": {
+            "description": "The UTC send time for this message",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          },
+          "send_times": {
+            "description": "Per-variation send times, keyed by variation ID. Populated for send-time optimization and AB send time test strategies.",
+            "type": "object",
+            "nullable": true
+          },
+          "send_strategy": {
+            "description": "The scheduling strategy for this message.",
+            "type": "string",
+            "enum": [
+              "ab_send_time_test",
+              "content_variation",
+              "content_variation_local_timezone",
+              "local_timezone",
+              "personalized_send_time_optimization",
+              "send_time_optimization",
+              "static",
+              "throttled",
+              "variation_per_second_throttled"
+            ],
+            "nullable": true
+          },
+          "recipient_percentage": {
+            "description": "The percentage of recipients to send this message to",
+            "type": "integer",
+            "nullable": true
+          },
+          "throttling_type": {
+            "description": "The throttling type for this message",
+            "type": "string",
+            "enum": [
+              "none",
+              "throttle-for-campaigns",
+              "throttle-for-campaigns-and-flows",
+              "throttle-for-flows"
+            ],
+            "nullable": true
+          },
+          "is_ignoring_unsubscribes": {
+            "description": "Whether to ignore unsubscribes for this message",
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "MessageTrackingOptions": {
+        "type": "object",
+        "properties": {
+          "is_add_utm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_tracking_clicks": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_tracking_opens": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PatchMessageResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CampaignMessageEnum"
+              },
+              "id": {
+                "description": "The ID of the message",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "created": {
+                    "description": "The datetime when this message was created",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
+                  "updated": {
+                    "description": "The datetime when this message was updated",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
+                  "definition": {
+                    "description": "The definition of this message",
+                    "$ref": "#/components/schemas/MessageDefinition"
+                  }
+                },
+                "required": [
+                  "created",
+                  "updated",
+                  "definition"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "campaign": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/CampaignEnum"
+                          },
+                          "id": {
+                            "description": "The parent campaign",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "campaign-audience": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/CampaignAudienceEnum"
+                          },
+                          "id": {
+                            "description": "The audience this message targets",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "campaign-variations": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/CampaignVariationEnum"
+                            },
+                            "id": {
+                              "description": "The content variations for this message",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostMessageResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CampaignMessageEnum"
+              },
+              "id": {
+                "description": "The ID of the message",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "created": {
+                    "description": "The datetime when this message was created",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
+                  "updated": {
+                    "description": "The datetime when this message was updated",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
+                  "definition": {
+                    "description": "The definition of this message",
+                    "$ref": "#/components/schemas/MessageDefinition"
+                  }
+                },
+                "required": [
+                  "created",
+                  "updated",
+                  "definition"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "campaign": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/CampaignEnum"
+                          },
+                          "id": {
+                            "description": "The parent campaign",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "campaign-audience": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/CampaignAudienceEnum"
+                          },
+                          "id": {
+                            "description": "The audience this message targets",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "campaign-variations": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/CampaignVariationEnum"
+                            },
+                            "id": {
+                              "description": "The content variations for this message",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PushActionButton": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "action_type": {
+            "description": "The action type for a push notification action button.",
+            "type": "string",
+            "enum": [
+              "deep_link",
+              "dismiss",
+              "open_app",
+              "open_url"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_action_id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "label",
+          "action_type"
+        ]
+      },
+      "PushChannelDetails": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "example": "push",
+            "default": "push",
+            "enum": [
+              "push"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "default": ""
+          },
+          "body": {
+            "type": "string",
+            "default": ""
+          },
+          "badge": {
+            "type": "boolean",
+            "default": false
+          },
+          "badge_config": {
+            "description": "A push message variation's badge config.",
+            "type": "string",
+            "example": "increment-one",
+            "default": "increment-one",
+            "enum": [
+              "increment-one",
+              "set-count",
+              "set-property"
+            ]
+          },
+          "badge_value": {
+            "type": "string",
+            "example": "1",
+            "default": "1"
+          },
+          "sound_file_name": {
+            "type": "string",
+            "default": ""
+          },
+          "static_asset_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "sound": {
+            "type": "boolean",
+            "default": false
+          },
+          "open_action": {
+            "type": "integer",
+            "default": 0
+          },
+          "dynamic_media_template": {
+            "type": "string",
+            "default": ""
+          },
+          "kv_pairs": {
+            "type": "object",
+            "nullable": true
+          },
+          "push_type": {
+            "description": "A push message variation's push type.",
+            "type": "string",
+            "example": "standard",
+            "default": "standard",
+            "enum": [
+              "silent",
+              "standard"
+            ]
+          },
+          "ios_deep_link": {
+            "type": "string",
+            "nullable": true
+          },
+          "android_deep_link": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_available": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "mutable_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "video_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "action_buttons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushActionButton"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SMSChannelDetails": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "example": "sms",
+            "default": "sms",
+            "enum": [
+              "sms"
+            ]
+          },
+          "template_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "cost": {
+            "description": "Not allowed on create.",
+            "type": "number",
+            "nullable": true
+          },
+          "mms_static_image_asset_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "shorten_links": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "include_contact_card": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "default": ""
+          },
+          "add_org_prefix": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "add_info_link": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "add_opt_out_language": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "mms_dynamic_image_template": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_message_type": {
+            "description": "A sms message variation's text message type.\n\nValues match the Django OmniSMSTextMessageType (MESSAGE_FORMAT_*)\n    constants.",
+            "type": "string",
+            "example": "SMS",
+            "default": "SMS",
+            "enum": [
+              "MMS",
+              "RCS",
+              "SMS"
+            ]
+          },
+          "message_hierarchy": {
+            "nullable": true
+          }
+        }
+      },
+      "SegmentEnum": {
+        "type": "string",
+        "enum": [
+          "segment"
+        ]
+      },
+      "SendSettings": {
+        "type": "object",
+        "properties": {
+          "send_timezone": {
+            "description": "Timezone for send scheduling (IANA format)",
+            "type": "string",
+            "nullable": true
+          },
+          "send_strategy": {
+            "description": "Send strategy type",
+            "type": "string",
+            "nullable": true
+          },
+          "send_passed_rltz_immediately": {
+            "description": "Send to past-timezone recipients immediately",
+            "type": "boolean",
+            "nullable": true
+          },
+          "exit_condition_enabled": {
+            "description": "Whether exit conditions are enabled for this campaign",
+            "type": "boolean",
+            "nullable": true
+          },
+          "exit_condition_conversion_metric_id": {
+            "description": "The conversion metric ID used for exit conditions",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TagEnum": {
+        "type": "string",
+        "enum": [
+          "tag"
+        ]
+      },
+      "TagGroupEnum": {
+        "type": "string",
+        "enum": [
+          "tag-group"
+        ]
+      },
+      "TagResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TagEnum"
+          },
+          "id": {
+            "description": "The Tag ID",
+            "type": "string",
+            "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The Tag name",
+                "type": "string",
+                "example": "My Tag"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "tag-group": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TagGroupEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "lists": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ListEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "segments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/SegmentEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaigns": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "flows": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/FlowEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "TranslationEnum": {
+        "type": "string",
+        "enum": [
+          "translation"
+        ]
+      },
+      "VariationDefinition": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the variation",
+            "type": "string",
+            "nullable": true
+          },
+          "details": {
+            "description": "The channel-specific content details for this variation",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EmailChannelDetails"
+              },
+              {
+                "$ref": "#/components/schemas/SMSChannelDetails"
+              },
+              {
+                "$ref": "#/components/schemas/PushChannelDetails"
+              },
+              {
+                "$ref": "#/components/schemas/WhatsappChannelDetails"
+              }
+            ]
+          }
+        }
+      },
+      "VariationInlineCreate": {
+        "type": "object",
+        "properties": {
+          "definition": {
+            "description": "The definition of this variation",
+            "$ref": "#/components/schemas/VariationDefinition"
+          }
+        },
+        "required": [
+          "definition"
+        ]
+      },
+      "VariationResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CampaignVariationEnum"
+          },
+          "id": {
+            "description": "The ID of the variation",
+            "type": "string",
+            "example": "925e385b52fb405715f3616c337cc65c"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "created": {
+                "description": "The datetime when this variation was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "updated": {
+                "description": "The datetime when this variation was updated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "definition": {
+                "description": "The definition of this variation",
+                "$ref": "#/components/schemas/VariationDefinition"
+              }
+            },
+            "required": [
+              "created",
+              "updated",
+              "definition"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign-message": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignMessageEnum"
+                      },
+                      "id": {
+                        "description": "Related Campaign Message",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "translation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TranslationEnum"
+                      },
+                      "id": {
+                        "description": "Related Translation",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "WhatsappChannelDetails": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "example": "whatsapp",
+            "default": "whatsapp",
+            "enum": [
+              "whatsapp"
+            ]
+          },
+          "template_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "shorten_links": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

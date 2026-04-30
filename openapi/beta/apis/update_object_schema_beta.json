@@ -1,0 +1,556 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-04-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/object-schemas/{id}": {
+      "patch": {
+        "operationId": "update_object_schema_beta",
+        "summary": "Update Object Schema",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the object schema with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ULID ID of the object schema.",
+            "required": true,
+            "schema": {
+              "description": "The ULID ID of the object schema.",
+              "type": "string",
+              "example": "01K61DKJ7EKJ0ES9VE456XF5JG"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-01-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update a object schema by ID",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectSchemaPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchObjectSchemaResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "custom-objects:write"
+        ],
+        "x-klaviyo-subtag": "Custom Objects"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "APISchemaProperty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the schema property. Must be a postive integer.",
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "description": "The name of the schema property",
+            "type": "string",
+            "example": "age"
+          },
+          "type": {
+            "description": "The type of the schema property",
+            "type": "string",
+            "enum": [
+              "BOOLEAN",
+              "FLOAT",
+              "INT",
+              "STRING",
+              "TIMESTAMP"
+            ]
+          },
+          "description": {
+            "description": "The description of the schema property",
+            "type": "string",
+            "default": "",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ObjectSchemaEnum": {
+        "type": "string",
+        "enum": [
+          "object-schema"
+        ]
+      },
+      "ObjectSchemaPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ObjectSchemaPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectSchemaPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ObjectSchemaEnum"
+          },
+          "id": {
+            "description": "The ULID ID of the object schema.",
+            "type": "string",
+            "example": "01K61DKJ7EKJ0ES9VE456XF5JG"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "description": "The title for this object schema",
+                "type": "string",
+                "nullable": true
+              },
+              "properties": {
+                "description": "Properties of the object schema",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/APISchemaProperty"
+                },
+                "nullable": true
+              },
+              "description": {
+                "description": "The description of this object schema",
+                "type": "string",
+                "nullable": true
+              },
+              "status": {
+                "description": "The status of this object schema",
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "DRAFT"
+                ],
+                "nullable": true
+              },
+              "required": {
+                "description": "Properties that are required on the object schema",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "PatchObjectSchemaResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/ObjectSchemaEnum"
+              },
+              "id": {
+                "description": "The ULID ID of the object schema",
+                "type": "string",
+                "example": "01K61DKJ7EKJ0ES9VE456XF5JG"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "The title for this object schema",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "The description of this object schema",
+                    "type": "string"
+                  },
+                  "status": {
+                    "description": "The status of this object schema",
+                    "type": "string",
+                    "enum": [
+                      "ACTIVE",
+                      "DRAFT",
+                      "PUBLISHING",
+                      "UNDEFINED"
+                    ]
+                  },
+                  "properties": {
+                    "description": "Properties of the object schema",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/APISchemaProperty"
+                    }
+                  },
+                  "required": {
+                    "description": "Properties that are required on the object schema",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "published_at": {
+                    "description": "The datetime when this object schema was activated",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "visibility": {
+                    "description": "The datetime when this object schema was updated",
+                    "type": "string",
+                    "enum": [
+                      "PRIVATE",
+                      "SHARED"
+                    ]
+                  }
+                },
+                "required": [
+                  "title",
+                  "description",
+                  "status",
+                  "properties",
+                  "required",
+                  "visibility"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "source-mapping": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/SourceMappingEnum"
+                          },
+                          "id": {
+                            "description": "The source mapping for this object schema",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "object-schemas": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/ObjectSchemaEnum"
+                            },
+                            "id": {
+                              "description": "The object schema relationships for this object schema",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "profile-object-schemas": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
+                            },
+                            "id": {
+                              "description": "The profile object schema relationships for this object schema",
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ProfileObjectSchemaEnum": {
+        "type": "string",
+        "enum": [
+          "profile-object-schema"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SourceMappingEnum": {
+        "type": "string",
+        "enum": [
+          "source-mapping"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

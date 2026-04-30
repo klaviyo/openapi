@@ -1,0 +1,578 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-04-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/campaign-message-schedule": {
+      "post": {
+        "operationId": "schedule_campaign_message_beta",
+        "summary": "Schedule Campaign Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nSchedule a single campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Submit a campaign messages scheduling job",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignMessageScheduleQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostCampaignMessageScheduleResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_campaign_message_schedule"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:write"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    },
+    "/api/campaign-message-schedule/{id}": {
+      "patch": {
+        "operationId": "update_campaign_message_schedule_beta",
+        "summary": "Update Campaign Message Schedule",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nCancel or revert a scheduled campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignMessageScheduleUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:write"
+        ],
+        "x-klaviyo-subtag": "Campaigns"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CampaignMessageEnum": {
+        "type": "string",
+        "enum": [
+          "campaign-message"
+        ]
+      },
+      "CampaignMessageScheduleEnum": {
+        "type": "string",
+        "enum": [
+          "campaign-message-schedule"
+        ]
+      },
+      "CampaignMessageScheduleQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CampaignMessageScheduleQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CampaignMessageScheduleQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CampaignMessageScheduleEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "send_time": {
+                "description": "The datetime at which the message should be sent (must be in the future). Required when strategy is not 'smart_send_time'.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-08-01T14:30:00+00:00",
+                "nullable": true
+              },
+              "send_date": {
+                "description": "The date on which the message should be sent. Required when strategy is 'smart_send_time'. Must not be in the past.",
+                "type": "string",
+                "format": "date",
+                "example": "2026-08-01",
+                "nullable": true
+              },
+              "strategy": {
+                "description": "The send strategy to use: static, local_timezone, throttled, or smart_send_time",
+                "type": "string",
+                "example": "static",
+                "enum": [
+                  "local_timezone",
+                  "smart_send_time",
+                  "static",
+                  "throttled"
+                ]
+              },
+              "throttled_options": {
+                "description": "Required when strategy is 'throttled'. Configuration for throttled sending.",
+                "$ref": "#/components/schemas/ThrottledOptions",
+                "nullable": true
+              },
+              "timezone_options": {
+                "description": "Optional when strategy is 'local_timezone'. Configuration for timezone-based sending.",
+                "$ref": "#/components/schemas/TimezoneOptions",
+                "nullable": true
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign-message": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignMessageEnum"
+                      },
+                      "id": {
+                        "description": "The campaign message to schedule",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "campaign-message"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "CampaignMessageScheduleUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CampaignMessageScheduleUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CampaignMessageScheduleUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CampaignMessageScheduleEnum"
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "description": "The action to take: 'cancel' or 'revert'",
+                "type": "string",
+                "example": "cancel",
+                "enum": [
+                  "cancel",
+                  "revert"
+                ]
+              }
+            },
+            "required": [
+              "action"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostCampaignMessageScheduleResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CampaignMessageScheduleEnum"
+              },
+              "id": {
+                "description": "The ID of the scheduled campaign message",
+                "type": "string",
+                "example": "925e385b52fb405715f3616c337cc65c"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "send_time": {
+                    "description": "The datetime at which the message is scheduled to send. Null for smart_send_time strategy.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "send_date": {
+                    "description": "The date on which the message is scheduled to send (present for smart_send_time strategy)",
+                    "type": "string",
+                    "format": "date",
+                    "nullable": true
+                  },
+                  "strategy": {
+                    "description": "The send strategy used for scheduling",
+                    "type": "string",
+                    "enum": [
+                      "local_timezone",
+                      "smart_send_time",
+                      "static",
+                      "throttled"
+                    ]
+                  }
+                },
+                "required": [
+                  "strategy"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "campaign-message": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/CampaignMessageEnum"
+                          },
+                          "id": {
+                            "description": "Related Campaign Message",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "ThrottledOptions": {
+        "type": "object",
+        "properties": {
+          "throttling_percentage": {
+            "description": "Percentage of recipients to send to per hour (10, 11, 13, 14, 17, 20, 25, 33, or 50)",
+            "type": "integer",
+            "example": 20
+          }
+        },
+        "required": [
+          "throttling_percentage"
+        ]
+      },
+      "TimezoneOptions": {
+        "type": "object",
+        "properties": {
+          "send_past_timezones_tomorrow": {
+            "description": "If true, recipients in timezones where the send time has already passed will receive the message the following day. If false, they receive it immediately.",
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

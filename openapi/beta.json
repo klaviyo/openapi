@@ -2379,22 +2379,6 @@
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all translations in an account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:read`",
         "parameters": [
           {
-            "name": "additional-fields[translation]",
-            "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'values'",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "values"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
             "name": "fields[campaign-variation]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
@@ -2582,8 +2566,7 @@
                   "metadata",
                   "source_locale",
                   "target_locales",
-                  "updated",
-                  "values"
+                  "updated"
                 ]
               }
             },
@@ -2666,7 +2649,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTranslationResponseCollectionCompoundDocument"
+                  "$ref": "#/components/schemas/GetTranslationListResponseCollectionCompoundDocument"
                 }
               }
             }
@@ -2740,7 +2723,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostTranslationResponse"
+                  "$ref": "#/components/schemas/PostTranslationRetrieveResponse"
                 }
               }
             }
@@ -3029,7 +3012,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTranslationResponseCompoundDocument"
+                  "$ref": "#/components/schemas/GetTranslationRetrieveResponseCompoundDocument"
                 }
               }
             }
@@ -3114,7 +3097,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PatchTranslationResponse"
+                  "$ref": "#/components/schemas/PatchTranslationRetrieveResponse"
                 }
               }
             }
@@ -3705,7 +3688,7 @@
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/CampaignMessageSchedulePartialUpdateQuery"
+                "$ref": "#/components/schemas/CampaignMessageScheduleUpdateQuery"
               }
             }
           }
@@ -6413,22 +6396,6 @@
             }
           },
           {
-            "name": "additional-fields[translation]",
-            "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'values'",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "values"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
             "name": "fields[translation]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
@@ -6444,8 +6411,7 @@
                   "metadata",
                   "source_locale",
                   "target_locales",
-                  "updated",
-                  "values"
+                  "updated"
                 ]
               }
             },
@@ -7512,6 +7478,12 @@
           "campaign-message"
         ]
       },
+      "TagEnum": {
+        "type": "string",
+        "enum": [
+          "tag"
+        ]
+      },
       "MessageTrackingOptions": {
         "type": "object",
         "properties": {
@@ -7657,6 +7629,86 @@
               "definition"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignEnum"
+                      },
+                      "id": {
+                        "description": "The parent campaign",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaign-audience": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignAudienceEnum"
+                      },
+                      "id": {
+                        "description": "The audience this message targets",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaign-variations": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignVariationEnum"
+                        },
+                        "id": {
+                          "description": "The content variations for this message",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -7744,6 +7796,62 @@
               "definition"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignEnum"
+                      },
+                      "id": {
+                        "description": "Related Campaign",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaign-messages": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignMessageEnum"
+                        },
+                        "id": {
+                          "description": "Related Campaign Messages",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -7791,6 +7899,92 @@
               "definition"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign-audiences": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignAudienceEnum"
+                        },
+                        "id": {
+                          "description": "The audiences associated with the campaign",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaign-messages": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignMessageEnum"
+                        },
+                        "id": {
+                          "description": "The messages associated with the campaign",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "tags": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/TagEnum"
+                        },
+                        "id": {
+                          "description": "The tags associated with the campaign",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -7808,82 +8002,7 @@
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/CampaignResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "campaign-audiences": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CampaignAudienceEnum"
-                                  },
-                                  "id": {
-                                    "description": "The audiences associated with the campaign",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "campaign-messages": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CampaignMessageEnum"
-                                  },
-                                  "id": {
-                                    "description": "The messages associated with the campaign",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "tags": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/CampaignResponseObjectResource"
             }
           },
           "links": {
@@ -7911,82 +8030,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CampaignResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign-audiences": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CampaignAudienceEnum"
-                                },
-                                "id": {
-                                  "description": "The audiences associated with the campaign",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "campaign-messages": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CampaignMessageEnum"
-                                },
-                                "id": {
-                                  "description": "The messages associated with the campaign",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "tags": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/CampaignResponseObjectResource"
           },
           "included": {
             "type": "array",
@@ -8138,9 +8182,6 @@
               "open_url"
             ]
           },
-          "position": {
-            "type": "integer"
-          },
           "url": {
             "type": "string",
             "nullable": true
@@ -8156,8 +8197,7 @@
         },
         "required": [
           "label",
-          "action_type",
-          "position"
+          "action_type"
         ]
       },
       "PushChannelDetails": {
@@ -8355,6 +8395,59 @@
               "definition"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign-message": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignMessageEnum"
+                      },
+                      "id": {
+                        "description": "Related Campaign Message",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "translation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TranslationEnum"
+                      },
+                      "id": {
+                        "description": "Related Translation",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -8372,79 +8465,7 @@
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/MessageResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "campaign": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CampaignEnum"
-                                },
-                                "id": {
-                                  "description": "The parent campaign",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "campaign-audience": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "campaign-variations": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/CampaignVariationEnum"
-                                  },
-                                  "id": {
-                                    "description": "The content variations for this message",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/MessageResponseObjectResource"
             }
           },
           "links": {
@@ -8472,79 +8493,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MessageResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/CampaignEnum"
-                              },
-                              "id": {
-                                "description": "The parent campaign",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "campaign-audience": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "campaign-variations": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CampaignVariationEnum"
-                                },
-                                "id": {
-                                  "description": "The content variations for this message",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/MessageResponseObjectResource"
           },
           "included": {
             "type": "array",
@@ -8571,44 +8520,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CampaignResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign-audiences": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "campaign-messages": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "tags": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/CampaignResponseObjectResource"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -8649,36 +8561,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AudienceResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "campaign-messages": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/AudienceResponseObjectResource"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -8716,10 +8599,28 @@
           "data"
         ]
       },
-      "TagEnum": {
+      "TagGroupEnum": {
         "type": "string",
         "enum": [
-          "tag"
+          "tag-group"
+        ]
+      },
+      "ListEnum": {
+        "type": "string",
+        "enum": [
+          "list"
+        ]
+      },
+      "SegmentEnum": {
+        "type": "string",
+        "enum": [
+          "segment"
+        ]
+      },
+      "FlowEnum": {
+        "type": "string",
+        "enum": [
+          "flow"
         ]
       },
       "TagResponseObjectResource": {
@@ -8746,6 +8647,138 @@
               "name"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "tag-group": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TagGroupEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "lists": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ListEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "segments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/SegmentEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaigns": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "flows": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/FlowEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -8763,60 +8796,7 @@
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/TagResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "tag-group": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "lists": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "segments": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "campaigns": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "flows": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/TagResponseObjectResource"
             }
           },
           "links": {
@@ -8864,44 +8844,7 @@
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/MessageResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "campaign": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "campaign-audience": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "campaign-variations": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/MessageResponseObjectResource"
             }
           },
           "links": {
@@ -8948,36 +8891,7 @@
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/AudienceResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "campaign": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "campaign-messages": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/AudienceResponseObjectResource"
             }
           },
           "links": {
@@ -9348,6 +9262,18 @@
           "object-type"
         ]
       },
+      "ObjectSchemaEnum": {
+        "type": "string",
+        "enum": [
+          "object-schema"
+        ]
+      },
+      "ProfileObjectTypeEnum": {
+        "type": "string",
+        "enum": [
+          "profile-object-type"
+        ]
+      },
       "ObjectTypeResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -9407,6 +9333,140 @@
               "updated_at"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "current-schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ObjectSchemaEnum"
+                      },
+                      "id": {
+                        "description": "The current active schema for this object type",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "draft-schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ObjectSchemaEnum"
+                      },
+                      "id": {
+                        "description": "The draft schema for this object type, if one exists",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "schema-versions": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ObjectSchemaEnum"
+                        },
+                        "id": {
+                          "description": "All schema versions for this object type",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "object-types": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ObjectTypeEnum"
+                        },
+                        "id": {
+                          "description": "The object type relationships for this object type",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "profile-object-types": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ProfileObjectTypeEnum"
+                        },
+                        "id": {
+                          "description": "The profile object type relationships for this object type",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -9424,98 +9484,7 @@
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/ObjectTypeResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "current-schema": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "draft-schema": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "schema-versions": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "object-types": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ObjectTypeEnum"
-                                  },
-                                  "id": {
-                                    "description": "The object type relationships for this object type",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "profile-object-types": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ObjectTypeEnum"
-                                  },
-                                  "id": {
-                                    "description": "The profile object type relationships for this object type",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/ObjectTypeResponseObjectResource"
             }
           },
           "links": {
@@ -9530,98 +9499,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectTypeResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "current-schema": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "draft-schema": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "schema-versions": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "object-types": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ObjectTypeEnum"
-                                },
-                                "id": {
-                                  "description": "The object type relationships for this object type",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "profile-object-types": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ObjectTypeEnum"
-                                },
-                                "id": {
-                                  "description": "The profile object type relationships for this object type",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/ObjectTypeResponseObjectResource"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -9756,10 +9634,10 @@
           "type"
         ]
       },
-      "ObjectSchemaEnum": {
+      "ProfileObjectSchemaEnum": {
         "type": "string",
         "enum": [
-          "object-schema"
+          "profile-object-schema"
         ]
       },
       "ObjectSchemaResponseObjectResource": {
@@ -9833,6 +9711,89 @@
               "visibility"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "source-mapping": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SourceMappingEnum"
+                      },
+                      "id": {
+                        "description": "The source mapping for this object schema",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "object-schemas": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ObjectSchemaEnum"
+                        },
+                        "id": {
+                          "description": "The object schema relationships for this object schema",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "profile-object-schemas": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
+                        },
+                        "id": {
+                          "description": "The profile object schema relationships for this object schema",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -9848,82 +9809,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "source-mapping": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "object-schemas": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
-                                },
-                                "id": {
-                                  "description": "The object schema relationships for this object schema",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "profile-object-schemas": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/ObjectSchemaEnum"
-                                },
-                                "id": {
-                                  "description": "The profile object schema relationships for this object schema",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -9995,82 +9881,7 @@
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "source-mapping": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "object-schemas": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ObjectSchemaEnum"
-                                  },
-                                  "id": {
-                                    "description": "The object schema relationships for this object schema",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "profile-object-schemas": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "type",
-                                  "id"
-                                ],
-                                "properties": {
-                                  "type": {
-                                    "$ref": "#/components/schemas/ObjectSchemaEnum"
-                                  },
-                                  "id": {
-                                    "description": "The profile object schema relationships for this object schema",
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
             }
           },
           "links": {
@@ -10156,7 +9967,7 @@
               ],
               "properties": {
                 "type": {
-                  "$ref": "#/components/schemas/ObjectTypeEnum"
+                  "$ref": "#/components/schemas/ProfileObjectTypeEnum"
                 },
                 "id": {
                   "description": "A compound ID uniquely identifying this relationship, in the format 'profile:::{relationship_name}'.",
@@ -10246,7 +10057,7 @@
               ],
               "properties": {
                 "type": {
-                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                  "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
                 },
                 "id": {
                   "description": "The ID of the related profile schema.",
@@ -10267,71 +10078,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AudienceResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/CampaignEnum"
-                              },
-                              "id": {
-                                "description": "Related Campaign",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "campaign-messages": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "type",
-                                "id"
-                              ],
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CampaignMessageEnum"
-                                },
-                                "id": {
-                                  "description": "Related Campaign Messages",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/AudienceResponseObjectResource"
           },
           "included": {
             "type": "array",
@@ -10497,6 +10244,107 @@
               "channel"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign-variation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignVariationEnum"
+                      },
+                      "id": {
+                        "description": "Related Campaign Variation",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "flow-message": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/FlowMessageEnum"
+                      },
+                      "id": {
+                        "description": "Related Flow Message",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "template": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TemplateEnum"
+                      },
+                      "id": {
+                        "description": "Related Template",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "template-universal-content": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TemplateUniversalContentEnum"
+                      },
+                      "id": {
+                        "description": "Related Template Universal Content",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -10512,68 +10360,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VariationResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign-message": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/CampaignMessageEnum"
-                              },
-                              "id": {
-                                "description": "Related Campaign Message",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "translation": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/TranslationEnum"
-                              },
-                              "id": {
-                                "description": "Related Translation",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/VariationResponseObjectResource"
           },
           "included": {
             "type": "array",
@@ -10600,44 +10387,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MessageResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "campaign-audience": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "campaign-variations": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/MessageResponseObjectResource"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -10678,71 +10428,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TranslationResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign-variation": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "flow-message": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "template": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "template-universal-content": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "properties": {
-                  "type": {
-                    "$ref": "#/components/schemas/TranslationEnum"
-                  },
-                  "attributes": {
-                    "properties": {
-                      "values": {
-                        "description": "The translation values (source and localized). Only returned when requested via additional-fields[translation]=values.",
-                        "type": "array",
-                        "items": {
-                          "type": "object"
-                        },
-                        "nullable": true
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/TranslationResponseObjectResource"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -10786,36 +10472,7 @@
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/VariationResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "campaign-message": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "translation": {
-                          "type": "object",
-                          "properties": {
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/VariationResponseObjectResource"
             }
           },
           "links": {
@@ -10965,6 +10622,12 @@
           "body"
         ]
       },
+      "FlowActionEnum": {
+        "type": "string",
+        "enum": [
+          "flow-action"
+        ]
+      },
       "FlowMessageResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -11014,6 +10677,57 @@
               "channel",
               "content"
             ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "flow-action": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/FlowActionEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "template": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TemplateEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -11985,141 +11699,193 @@
           "links"
         ]
       },
-      "GetTranslationResponseCollectionCompoundDocument": {
+      "TranslationListResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TranslationEnum"
+          },
+          "id": {
+            "description": "The composite ID of the translation in format {resource_type}::{qualifier}::{collection_id}",
+            "type": "string",
+            "example": "campaign-variation::email::01KH00000000000000000000AB"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "source_locale": {
+                "description": "The source locale for this translation",
+                "type": "string",
+                "example": "en"
+              },
+              "target_locales": {
+                "description": "The target locales for this translation",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "fallback_locale": {
+                "description": "The fallback locale for this translation",
+                "type": "string",
+                "example": "en",
+                "nullable": true
+              },
+              "channel": {
+                "description": "The channel for this translation",
+                "type": "string",
+                "enum": [
+                  "email",
+                  "mobile_push",
+                  "sms",
+                  "whatsapp"
+                ]
+              },
+              "metadata": {
+                "description": "Additional metadata for this translation",
+                "type": "object",
+                "nullable": true
+              },
+              "created": {
+                "description": "The datetime when this translation was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "The datetime when this translation was updated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              }
+            },
+            "required": [
+              "source_locale",
+              "target_locales",
+              "channel"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign-variation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignVariationEnum"
+                      },
+                      "id": {
+                        "description": "Related Campaign Variation",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "flow-message": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/FlowMessageEnum"
+                      },
+                      "id": {
+                        "description": "Related Flow Message",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "template": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TemplateEnum"
+                      },
+                      "id": {
+                        "description": "Related Template",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "template-universal-content": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TemplateUniversalContentEnum"
+                      },
+                      "id": {
+                        "description": "Related Template Universal Content",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetTranslationListResponseCollectionCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/TranslationResponseObjectResource"
-                },
-                {
-                  "properties": {
-                    "relationships": {
-                      "type": "object",
-                      "properties": {
-                        "campaign-variation": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/CampaignVariationEnum"
-                                },
-                                "id": {
-                                  "description": "Related Campaign Variation",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "flow-message": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/FlowMessageEnum"
-                                },
-                                "id": {
-                                  "description": "Related Flow Message",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "template": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/TemplateEnum"
-                                },
-                                "id": {
-                                  "description": "Related Template",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        },
-                        "template-universal-content": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "$ref": "#/components/schemas/TemplateUniversalContentEnum"
-                                },
-                                "id": {
-                                  "description": "Related Template Universal Content",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "type",
-                                "id"
-                              ]
-                            },
-                            "links": {
-                              "$ref": "#/components/schemas/RelationshipLinks"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                {
-                  "properties": {
-                    "type": {
-                      "$ref": "#/components/schemas/TranslationEnum"
-                    },
-                    "attributes": {
-                      "properties": {
-                        "values": {
-                          "description": "The translation values (source and localized). Only returned when requested via additional-fields[translation]=values.",
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          },
-                          "nullable": true
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/TranslationListResponseObjectResource"
             }
           },
           "links": {
@@ -12149,119 +11915,191 @@
           "data"
         ]
       },
-      "GetTranslationResponseCompoundDocument": {
+      "TranslationRetrieveResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TranslationEnum"
+          },
+          "id": {
+            "description": "The composite ID of the translation in format {resource_type}::{qualifier}::{collection_id}",
+            "type": "string",
+            "example": "campaign-variation::email::01KH00000000000000000000AB"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "source_locale": {
+                "description": "The source locale for this translation",
+                "type": "string",
+                "example": "en"
+              },
+              "target_locales": {
+                "description": "The target locales for this translation",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "fallback_locale": {
+                "description": "The fallback locale for this translation",
+                "type": "string",
+                "example": "en",
+                "nullable": true
+              },
+              "channel": {
+                "description": "The channel for this translation",
+                "type": "string",
+                "enum": [
+                  "email",
+                  "mobile_push",
+                  "sms",
+                  "whatsapp"
+                ]
+              },
+              "metadata": {
+                "description": "Additional metadata for this translation",
+                "type": "object",
+                "nullable": true
+              },
+              "created": {
+                "description": "The datetime when this translation was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "The datetime when this translation was updated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              }
+            },
+            "required": [
+              "source_locale",
+              "target_locales",
+              "channel"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "campaign-variation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CampaignVariationEnum"
+                      },
+                      "id": {
+                        "description": "Related Campaign Variation",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "flow-message": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/FlowMessageEnum"
+                      },
+                      "id": {
+                        "description": "Related Flow Message",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "template": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TemplateEnum"
+                      },
+                      "id": {
+                        "description": "Related Template",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "template-universal-content": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TemplateUniversalContentEnum"
+                      },
+                      "id": {
+                        "description": "Related Template Universal Content",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetTranslationRetrieveResponseCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
             "allOf": [
-              {
-                "$ref": "#/components/schemas/TranslationResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign-variation": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/CampaignVariationEnum"
-                              },
-                              "id": {
-                                "description": "Related Campaign Variation",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "flow-message": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/FlowMessageEnum"
-                              },
-                              "id": {
-                                "description": "Related Flow Message",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "template": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/TemplateEnum"
-                              },
-                              "id": {
-                                "description": "Related Template",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "template-universal-content": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "$ref": "#/components/schemas/TemplateUniversalContentEnum"
-                              },
-                              "id": {
-                                "description": "Related Template Universal Content",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "type",
-                              "id"
-                            ]
-                          },
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
               {
                 "properties": {
                   "type": {
@@ -12270,7 +12108,7 @@
                   "attributes": {
                     "properties": {
                       "values": {
-                        "description": "The translation values (source and localized). Only returned when requested via additional-fields[translation]=values.",
+                        "description": "The translation values for this resource. Each entry contains the value block ID, its source text, and a map of target locale codes to translated strings. Only returned when requested via additional-fields[translation]=values.",
                         "type": "array",
                         "items": {
                           "type": "object"
@@ -12280,6 +12118,9 @@
                     }
                   }
                 }
+              },
+              {
+                "$ref": "#/components/schemas/TranslationRetrieveResponseObjectResource"
               }
             ]
           },
@@ -12314,36 +12155,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VariationResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "campaign-message": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "translation": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/VariationResponseObjectResource"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -12385,36 +12197,7 @@
         "type": "object",
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FlowMessageResponseObjectResource"
-              },
-              {
-                "properties": {
-                  "relationships": {
-                    "type": "object",
-                    "properties": {
-                      "flow-action": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      },
-                      "template": {
-                        "type": "object",
-                        "properties": {
-                          "links": {
-                            "$ref": "#/components/schemas/RelationshipLinks"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            ]
+            "$ref": "#/components/schemas/FlowMessageResponseObjectResource"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -13520,7 +13303,7 @@
                           ],
                           "properties": {
                             "type": {
-                              "$ref": "#/components/schemas/ObjectTypeEnum"
+                              "$ref": "#/components/schemas/ProfileObjectTypeEnum"
                             },
                             "id": {
                               "description": "The profile object type relationships for this object type",
@@ -13804,7 +13587,7 @@
                           ],
                           "properties": {
                             "type": {
-                              "$ref": "#/components/schemas/ObjectSchemaEnum"
+                              "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
                             },
                             "id": {
                               "description": "The profile object schema relationships for this object schema",
@@ -13904,7 +13687,7 @@
               ],
               "properties": {
                 "type": {
-                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                  "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
                 },
                 "id": {
                   "description": "The ID of the profile schema. The profile schema does not exist as a persisted resource, so this value is always \"profile\".",
@@ -14499,17 +14282,26 @@
             "type": "object",
             "properties": {
               "send_time": {
-                "description": "The datetime at which the message should be sent (must be in the future)",
+                "description": "The datetime at which the message should be sent (must be in the future). Required when strategy is not 'smart_send_time'.",
                 "type": "string",
                 "format": "date-time",
-                "example": "2026-08-01T14:30:00+00:00"
+                "example": "2026-08-01T14:30:00+00:00",
+                "nullable": true
+              },
+              "send_date": {
+                "description": "The date on which the message should be sent. Required when strategy is 'smart_send_time'. Must not be in the past.",
+                "type": "string",
+                "format": "date",
+                "example": "2026-08-01",
+                "nullable": true
               },
               "strategy": {
-                "description": "The send strategy to use: static, local_timezone, or throttled",
+                "description": "The send strategy to use: static, local_timezone, throttled, or smart_send_time",
                 "type": "string",
                 "example": "static",
                 "enum": [
                   "local_timezone",
+                  "smart_send_time",
                   "static",
                   "throttled"
                 ]
@@ -14526,7 +14318,6 @@
               }
             },
             "required": [
-              "send_time",
               "strategy"
             ]
           },
@@ -14595,23 +14386,30 @@
                 "type": "object",
                 "properties": {
                   "send_time": {
-                    "description": "The datetime at which the message is scheduled to send",
+                    "description": "The datetime at which the message is scheduled to send. Null for smart_send_time strategy.",
                     "type": "string",
                     "format": "date-time",
-                    "example": "2022-11-08T00:00:00+00:00"
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "send_date": {
+                    "description": "The date on which the message is scheduled to send (present for smart_send_time strategy)",
+                    "type": "string",
+                    "format": "date",
+                    "nullable": true
                   },
                   "strategy": {
                     "description": "The send strategy used for scheduling",
                     "type": "string",
                     "enum": [
                       "local_timezone",
+                      "smart_send_time",
                       "static",
                       "throttled"
                     ]
                   }
                 },
                 "required": [
-                  "send_time",
                   "strategy"
                 ]
               },
@@ -14874,7 +14672,7 @@
           "data"
         ]
       },
-      "PostTranslationResponse": {
+      "PostTranslationRetrieveResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -14939,7 +14737,7 @@
                     "nullable": true
                   },
                   "values": {
-                    "description": "The translation values (source and localized). Only returned when requested via additional-fields[translation]=values.",
+                    "description": "The translation values for this resource. Each entry contains the value block ID, its source text, and a map of target locale codes to translated strings. Only returned when requested via additional-fields[translation]=values.",
                     "type": "array",
                     "items": {
                       "type": "object"
@@ -15763,7 +15561,7 @@
                           ],
                           "properties": {
                             "type": {
-                              "$ref": "#/components/schemas/ObjectSchemaEnum"
+                              "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
                             },
                             "id": {
                               "description": "The profile object schema relationships for this object schema",
@@ -15859,7 +15657,7 @@
             "type": "object",
             "properties": {
               "type": {
-                "$ref": "#/components/schemas/ObjectSchemaEnum"
+                "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
               },
               "id": {
                 "description": "The ID of the profile schema. The profile schema does not exist as a persisted resource, so this value is always \"profile\".",
@@ -16188,7 +15986,7 @@
           "data"
         ]
       },
-      "CampaignMessageSchedulePartialUpdateQueryResourceObject": {
+      "CampaignMessageScheduleUpdateQueryResourceObject": {
         "type": "object",
         "properties": {
           "type": {
@@ -16221,11 +16019,11 @@
           "attributes"
         ]
       },
-      "CampaignMessageSchedulePartialUpdateQuery": {
+      "CampaignMessageScheduleUpdateQuery": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/CampaignMessageSchedulePartialUpdateQueryResourceObject"
+            "$ref": "#/components/schemas/CampaignMessageScheduleUpdateQueryResourceObject"
           }
         },
         "required": [
@@ -16267,7 +16065,7 @@
                 "nullable": true
               },
               "values": {
-                "description": "Translation values to import",
+                "description": "Translation values to import. Each object requires an ``id`` (the value block identifier from GET with additional-fields[translation]=values) and a ``translations`` map of target locale codes to translated strings.",
                 "type": "array",
                 "items": {
                   "type": "object"
@@ -16294,7 +16092,7 @@
           "data"
         ]
       },
-      "PatchTranslationResponse": {
+      "PatchTranslationRetrieveResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -16359,7 +16157,7 @@
                     "nullable": true
                   },
                   "values": {
-                    "description": "The translation values (source and localized). Only returned when requested via additional-fields[translation]=values.",
+                    "description": "The translation values for this resource. Each entry contains the value block ID, its source text, and a map of target locale codes to translated strings. Only returned when requested via additional-fields[translation]=values.",
                     "type": "array",
                     "items": {
                       "type": "object"
@@ -16551,7 +16349,7 @@
               ],
               "properties": {
                 "type": {
-                  "$ref": "#/components/schemas/ObjectSchemaEnum"
+                  "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
                 },
                 "id": {
                   "description": "The ID of the profile schema. The profile schema does not exist as a persisted resource, so this value is always \"profile\".",

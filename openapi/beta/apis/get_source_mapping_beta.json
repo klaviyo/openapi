@@ -1,0 +1,568 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-04-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/source-mappings/{id}": {
+      "get": {
+        "operationId": "get_source_mapping_beta",
+        "summary": "Get Source Mapping",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the source mapping with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the source mapping",
+            "required": true,
+            "schema": {
+              "description": "The ID of the source mapping",
+              "type": "string",
+              "example": "01K5HQC66PGHV35SYJC5ZV3DZA"
+            }
+          },
+          {
+            "name": "fields[source-mapping]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "property_mappings",
+                  "relationship_mappings"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-01-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSourceMappingResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "custom-objects:read"
+        ],
+        "x-klaviyo-subtag": "Custom Objects"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ConstantPropertyMapping": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Property ID. Must be a positive integer.",
+            "type": "integer",
+            "example": 1
+          },
+          "type": {
+            "description": "String literal for serialization",
+            "type": "string",
+            "enum": [
+              "constant"
+            ]
+          },
+          "value": {
+            "description": "Constant value assigned to every record",
+            "example": "some_value",
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "value"
+        ]
+      },
+      "CustomObjectRelationshipSource": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "description": "Data source ULID ID",
+            "type": "string",
+            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+          },
+          "type": {
+            "description": "String literal for serialization",
+            "type": "string",
+            "enum": [
+              "custom-object"
+            ]
+          },
+          "id_path": {
+            "description": "JSONPath data selector to owning ID",
+            "type": "string",
+            "example": "$['id']"
+          },
+          "related_id_path": {
+            "description": "JSONPath data selector to related ID",
+            "type": "string",
+            "example": "$['related_id']"
+          },
+          "update_strategy": {
+            "description": "Strategy for updating relationships with each new RawDataRecord ingestion",
+            "type": "string",
+            "example": "replace",
+            "default": "replace",
+            "enum": [
+              "additive",
+              "replace"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_id",
+          "type",
+          "id_path",
+          "related_id_path"
+        ]
+      },
+      "GetSourceMappingResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SourceMappingResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ProfileRelationshipSource": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "description": "Data source ULID ID",
+            "type": "string",
+            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+          },
+          "type": {
+            "description": "String literal for serialization",
+            "type": "string",
+            "enum": [
+              "profile"
+            ]
+          },
+          "id_path": {
+            "description": "JSONPath data selector to owning ID",
+            "type": "string",
+            "example": "$['id']"
+          },
+          "related_id_paths": {
+            "description": "List of profile identifier mappings to JSONPath data selectors",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RelatedIdPath"
+            },
+            "example": [
+              {
+                "identifier_type": "email",
+                "path": "$['email']"
+              }
+            ]
+          },
+          "update_strategy": {
+            "description": "Strategy for updating relationships with each new RawDataRecord ingestion",
+            "type": "string",
+            "example": "replace",
+            "default": "replace",
+            "enum": [
+              "additive",
+              "replace"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_id",
+          "type",
+          "id_path",
+          "related_id_paths"
+        ]
+      },
+      "PropertySource": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "description": "Data source ULID ID",
+            "type": "string",
+            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+          },
+          "id_path": {
+            "description": "JSONPath ID selector",
+            "type": "string",
+            "example": "$['id']"
+          },
+          "data_path": {
+            "description": "JSONPath data selector",
+            "type": "string",
+            "example": "$['full_name']"
+          }
+        },
+        "required": [
+          "source_id",
+          "id_path",
+          "data_path"
+        ]
+      },
+      "RelatedIdPath": {
+        "type": "object",
+        "properties": {
+          "identifier_type": {
+            "description": "Profile identifier type",
+            "type": "string",
+            "enum": [
+              "anonymous",
+              "email",
+              "external-id",
+              "klaviyo-id",
+              "phone"
+            ]
+          },
+          "path": {
+            "description": "JSONPath data selector to related ID",
+            "type": "string",
+            "example": "$['email']"
+          }
+        },
+        "required": [
+          "identifier_type",
+          "path"
+        ]
+      },
+      "SimplePropertyMapping": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Property ID",
+            "type": "integer",
+            "example": 1
+          },
+          "type": {
+            "description": "String literal for serialization",
+            "type": "string",
+            "enum": [
+              "simple"
+            ]
+          },
+          "source": {
+            "description": "Data source mapping",
+            "example": {
+              "source_id": "01JT8ZFT0RD24A0XPXQVNBBB04",
+              "id_path": "$['id']",
+              "data_path": "$['full_name']"
+            },
+            "$ref": "#/components/schemas/PropertySource"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "source"
+        ]
+      },
+      "SimpleRelationshipMapping": {
+        "type": "object",
+        "properties": {
+          "relationship_id": {
+            "description": "Object schema relationship ULID ID",
+            "type": "string",
+            "example": "01K97SE7GH4TE57FVNQY310QAK"
+          },
+          "type": {
+            "description": "String literal for serialization",
+            "type": "string",
+            "example": "simple",
+            "enum": [
+              "simple"
+            ]
+          },
+          "source": {
+            "description": "Data source mapping",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CustomObjectRelationshipSource"
+              },
+              {
+                "$ref": "#/components/schemas/ProfileRelationshipSource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "relationship_id",
+          "type",
+          "source"
+        ]
+      },
+      "SourceMappingEnum": {
+        "type": "string",
+        "enum": [
+          "source-mapping"
+        ]
+      },
+      "SourceMappingResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SourceMappingEnum"
+          },
+          "id": {
+            "description": "The ULID ID of the source mapping",
+            "type": "string",
+            "example": "01K5HQC66PGHV35SYJC5ZV3DZA"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "property_mappings": {
+                "description": "A mapping of source property IDs to source mappings",
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ConstantPropertyMapping"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SimplePropertyMapping"
+                    }
+                  ]
+                }
+              },
+              "relationship_mappings": {
+                "description": "A mapping of source relationship IDs to source mappings",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SimpleRelationshipMapping"
+                }
+              }
+            },
+            "required": [
+              "property_mappings",
+              "relationship_mappings"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}
