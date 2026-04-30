@@ -1,0 +1,1201 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/template-universal-content": {
+      "post": {
+        "operationId": "create_universal_content",
+        "summary": "Create Universal Content",
+        "description": "Create universal content. Currently supported block types are: `button`, `drop_shadow`, `horizontal_rule`, `html`, `image`, `spacer`, and `text`.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`templates:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a template universal content",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UniversalContentCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostUniversalContentResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Templates"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_template_universal_content"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "750/m"
+        },
+        "x-klaviyo-scopes": [
+          "templates:write"
+        ],
+        "x-klaviyo-subtag": "Universal Content"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "BlockDisplayOptions": {
+        "type": "object",
+        "properties": {
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "visible_check": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_repeat": {
+            "$ref": "#/components/schemas/ContentRepeatV0",
+            "nullable": true
+          }
+        }
+      },
+      "ButtonBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "button"
+            ]
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ContentRepeatV0": {
+        "type": "object",
+        "properties": {
+          "repeat_for": {
+            "type": "string"
+          },
+          "item_alias": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "repeat_for",
+          "item_alias"
+        ]
+      },
+      "CouponBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "coupon"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "DropShadowBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "drop_shadow"
+            ]
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "HTMLBlockDataV0": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/BlockDisplayOptions"
+          }
+        },
+        "required": [
+          "content",
+          "display_options"
+        ]
+      },
+      "HTMLBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "html"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/HTMLBlockDataV0"
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "HeaderBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "header"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "HorizontalRuleBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "horizontal_rule"
+            ]
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ImageBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "image"
+            ]
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostUniversalContentResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/TemplateUniversalContentEnum"
+              },
+              "id": {
+                "description": "The ID of the universal content",
+                "type": "string",
+                "example": "01HWWWKAW4RHXQJCMW4R2KRYR4"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "The name for this universal content",
+                    "type": "string"
+                  },
+                  "definition": {
+                    "nullable": true,
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/ButtonBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CouponBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/DropShadowBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/HeaderBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/HorizontalRuleBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/HTMLBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ImageBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ProductBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ReviewBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/SocialBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/SpacerBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/SplitBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/TableBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/TextBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/UnsupportedBlock"
+                      },
+                      {
+                        "$ref": "#/components/schemas/VideoBlockV0"
+                      },
+                      {
+                        "$ref": "#/components/schemas/SectionV0"
+                      }
+                    ]
+                  },
+                  "created": {
+                    "description": "The datetime when this universal content was created",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
+                  "updated": {
+                    "description": "The datetime when this universal content was updated",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
+                  "screenshot_status": {
+                    "description": "The status of a universal content screenshot.",
+                    "type": "string",
+                    "enum": [
+                      "completed",
+                      "failed",
+                      "generating",
+                      "never_generated",
+                      "not_renderable",
+                      "stale"
+                    ]
+                  },
+                  "screenshot_url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "created",
+                  "updated",
+                  "screenshot_status",
+                  "screenshot_url"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ProductBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "product"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ReviewBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "review"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SectionV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "section"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "section"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SocialBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "social"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SpacerBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "spacer"
+            ]
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SplitBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "split"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "TableBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "TemplateUniversalContentEnum": {
+        "type": "string",
+        "enum": [
+          "template-universal-content"
+        ]
+      },
+      "TextBlockDataV0": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/BlockDisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/TextBlockStylesV0"
+          }
+        },
+        "required": [
+          "content",
+          "display_options",
+          "styles"
+        ]
+      },
+      "TextBlockStylesV0": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "block_border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "extra_css_class": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "mobile_stretch_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_table_layout": {
+            "description": "Text table layout.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "fixed",
+              "inherit",
+              "initial"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "TextBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/TextBlockDataV0"
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "UniversalContentCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/UniversalContentCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UniversalContentCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TemplateUniversalContentEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name for this universal content",
+                "type": "string"
+              },
+              "definition": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ButtonBlockV0"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DropShadowBlockV0"
+                  },
+                  {
+                    "$ref": "#/components/schemas/HorizontalRuleBlockV0"
+                  },
+                  {
+                    "$ref": "#/components/schemas/HTMLBlockV0"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ImageBlockV0"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SpacerBlockV0"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TextBlockV0"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "definition"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "UnsupportedBlock": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "unsupported"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "VideoBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "video"
+            ]
+          },
+          "data": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Templates",
+      "description": "templates"
+    }
+  ]
+}

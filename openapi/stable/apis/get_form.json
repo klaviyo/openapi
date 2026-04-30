@@ -1,0 +1,6600 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/forms/{id}": {
+      "get": {
+        "operationId": "get_form",
+        "summary": "Get Form",
+        "description": "Get the form with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`forms:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the form",
+            "required": true,
+            "schema": {
+              "description": "The ID of the form",
+              "type": "string",
+              "example": "Y6nRLr"
+            }
+          },
+          {
+            "name": "fields[form]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ab_test",
+                  "created_at",
+                  "definition",
+                  "definition.versions",
+                  "name",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEncodedFormResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Forms"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "forms:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AdditionalField": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
+      "AfterCloseTimeout": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "after_close_or_submit_timeout"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/AfterCloseTimeoutProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "AfterCloseTimeoutProperties": {
+        "type": "object",
+        "properties": {
+          "timeout_days": {
+            "type": "integer",
+            "example": 5,
+            "default": 5
+          }
+        }
+      },
+      "AgeGate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "age_gate"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/AgeGateStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/AgeGateProperties"
+          },
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "AgeGateProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string",
+            "example": "$age_gated_date_of_birth",
+            "default": "$age_gated_date_of_birth",
+            "enum": [
+              "$age_gated_date_of_birth"
+            ]
+          },
+          "date_format": {
+            "type": "string",
+            "example": "MM/DD/YYYY",
+            "default": "MM/DD/YYYY"
+          },
+          "sms_country_code": {
+            "description": "SMS County Code Enum.",
+            "type": "string",
+            "example": "US",
+            "default": "US",
+            "enum": [
+              "AT",
+              "AU",
+              "CH",
+              "DE",
+              "ES",
+              "FR",
+              "GB",
+              "IE",
+              "IT",
+              "PT",
+              "US"
+            ]
+          },
+          "required": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          }
+        }
+      },
+      "AgeGateStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "BackInStock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "back_in_stock"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/BackInStockProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "BackInStockDynamicButtonBorderStyles": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "style": {
+            "description": "Border pattern enumeration.",
+            "type": "string",
+            "example": "solid",
+            "default": "solid",
+            "enum": [
+              "dashed",
+              "dotted",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "example": 1,
+            "default": 1
+          }
+        }
+      },
+      "BackInStockDynamicButtonData": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "default": ""
+          },
+          "display": {
+            "description": "Back In Stock Dynamic Button display type enumeration.",
+            "type": "string",
+            "example": "REPLACE",
+            "default": "REPLACE",
+            "enum": [
+              "NEXT_TO",
+              "REPLACE"
+            ]
+          },
+          "text_styles": {
+            "$ref": "#/components/schemas/BackInStockDynamicButtonTextStyles"
+          },
+          "button_styles": {
+            "$ref": "#/components/schemas/BackInStockDynamicButtonStyles"
+          }
+        }
+      },
+      "BackInStockDynamicButtonDropShadowStyles": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "blur": {
+            "type": "integer",
+            "example": 15,
+            "default": 15
+          },
+          "x_offset": {
+            "type": "integer",
+            "default": 0
+          },
+          "y_offset": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "BackInStockDynamicButtonStyles": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "border_radius": {
+            "type": "integer",
+            "default": 0
+          },
+          "height": {
+            "type": "integer",
+            "example": 44,
+            "default": 44
+          },
+          "width": {
+            "description": "Back In Stock Dynamic Button display type enumeration.",
+            "type": "string",
+            "example": "fullWidth",
+            "default": "fullWidth",
+            "enum": [
+              "fitToText",
+              "fullWidth"
+            ]
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "border": {
+            "$ref": "#/components/schemas/BackInStockDynamicButtonBorderStyles"
+          },
+          "drop_shadow": {
+            "$ref": "#/components/schemas/BackInStockDynamicButtonDropShadowStyles"
+          }
+        }
+      },
+      "BackInStockDynamicButtonTextStyles": {
+        "type": "object",
+        "properties": {
+          "font_family": {
+            "example": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "default": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Arial Black,Arial",
+                  "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                  "Century Gothic,AppleGothic,Arial",
+                  "Comic Sans MS,Comic Sans,cursive",
+                  "Courier",
+                  "Courier New",
+                  "Geneva,Arial",
+                  "Georgia",
+                  "Helvetica,Arial",
+                  "Lucida Grande,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "MS Serif,Georgia",
+                  "New York,Georgia",
+                  "Palatino Linotype,Palatino,Georgia",
+                  "Palatino,Georgia",
+                  "Tahoma,sans-serif",
+                  "Times New Roman",
+                  "Trebuchet MS",
+                  "Verdana"
+                ],
+                "description": "Web safe font enumeration."
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "font_size": {
+            "type": "integer",
+            "example": 16,
+            "default": 16
+          },
+          "font_weight": {
+            "description": "Font weight enumeration.",
+            "type": "integer",
+            "example": 400,
+            "default": 400,
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ],
+            "nullable": true
+          },
+          "font_color": {
+            "type": "string",
+            "example": "#FFFFFF",
+            "default": "#FFFFFF"
+          },
+          "font_style": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "BackInStockEmailConsentCheckbox": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "bis_promotional_email_checkbox"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/BackInStockEmailConsentCheckboxStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/BackInStockEmailConsentCheckboxProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "BackInStockEmailConsentCheckboxProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          },
+          "property_name": {
+            "type": "string",
+            "example": "opt_in_promotional_email",
+            "default": "opt_in_promotional_email",
+            "enum": [
+              "opt_in_promotional_email"
+            ]
+          },
+          "checkbox_text": {
+            "type": "string"
+          },
+          "placeholder": {
+            "enum": [
+              null
+            ]
+          }
+        },
+        "required": [
+          "checkbox_text"
+        ]
+      },
+      "BackInStockEmailConsentCheckboxStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "horizontal_alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "left",
+            "default": "left",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        }
+      },
+      "BackInStockProperties": {
+        "type": "object",
+        "properties": {
+          "tag_allowlist": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tag_blocklist": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BackgroundImage": {
+        "type": "object",
+        "properties": {
+          "styles": {
+            "$ref": "#/components/schemas/BackgroundImageStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ImageAssetProperties"
+          }
+        },
+        "required": [
+          "properties"
+        ]
+      },
+      "BackgroundImageStyles": {
+        "type": "object",
+        "properties": {
+          "horizontal_alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "position": {
+            "description": "Image position enumeration.",
+            "type": "string",
+            "example": "contain",
+            "default": "contain",
+            "enum": [
+              "contain",
+              "cover",
+              "custom"
+            ]
+          },
+          "vertical_alignment": {
+            "description": "Vertical alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "bottom",
+              "center",
+              "top"
+            ]
+          },
+          "custom_width": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "BannerStyles": {
+        "type": "object",
+        "properties": {
+          "desktop_position": {
+            "description": "Positioning of banner forms.",
+            "type": "string",
+            "example": "top",
+            "default": "top",
+            "enum": [
+              "bottom",
+              "top"
+            ]
+          },
+          "mobile_position": {
+            "description": "Positioning of banner forms.",
+            "type": "string",
+            "example": "top",
+            "default": "top",
+            "enum": [
+              "bottom",
+              "top"
+            ]
+          },
+          "scroll_with_page": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          }
+        }
+      },
+      "BorderStyle": {
+        "type": "object",
+        "properties": {
+          "radius": {
+            "type": "integer",
+            "example": 8,
+            "default": 8
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "style": {
+            "description": "Border pattern enumeration.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "thickness": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "Button": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "button"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ButtonStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ButtonProperties"
+          },
+          "action": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Close"
+              },
+              {
+                "$ref": "#/components/schemas/NextStep"
+              },
+              {
+                "$ref": "#/components/schemas/OpenForm"
+              },
+              {
+                "$ref": "#/components/schemas/PromotionalSMSSubscription"
+              },
+              {
+                "$ref": "#/components/schemas/Redirect"
+              },
+              {
+                "$ref": "#/components/schemas/ResendOptInCode"
+              },
+              {
+                "$ref": "#/components/schemas/SubmitOptInCode"
+              },
+              {
+                "$ref": "#/components/schemas/SubscribeViaSMS"
+              },
+              {
+                "$ref": "#/components/schemas/SubscribeViaWhatsApp"
+              },
+              {
+                "$ref": "#/components/schemas/GoToInbox"
+              },
+              {
+                "$ref": "#/components/schemas/SubmitBackInStock"
+              },
+              {
+                "$ref": "#/components/schemas/SkipToSuccess"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "ButtonDropShadowStyles": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "blur": {
+            "type": "integer",
+            "example": 15,
+            "default": 15
+          },
+          "x_offset": {
+            "type": "integer",
+            "default": 0
+          },
+          "y_offset": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "ButtonProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string"
+          },
+          "additional_fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalField"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "label"
+        ]
+      },
+      "ButtonStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "description": "Valid button block widths.",
+            "type": "string",
+            "example": "fill",
+            "default": "fill",
+            "enum": [
+              "fill",
+              "fit"
+            ]
+          },
+          "height": {
+            "example": 50,
+            "default": 50,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "enum": [
+                  "auto"
+                ],
+                "type": "string"
+              }
+            ]
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "hover_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "hover_text_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_styles": {
+            "$ref": "#/components/schemas/BorderStyle"
+          },
+          "text_styles": {
+            "$ref": "#/components/schemas/TextStyleV0"
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "drop_shadow": {
+            "$ref": "#/components/schemas/ButtonDropShadowStyles"
+          }
+        }
+      },
+      "CartItemCount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cart_item_count"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/CartItemCountProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "CartItemCountProperties": {
+        "type": "object",
+        "properties": {
+          "comparison": {
+            "description": "Number comparison enumeration.",
+            "type": "string",
+            "enum": [
+              "equals",
+              "greater_than",
+              "less_than"
+            ],
+            "nullable": true
+          },
+          "value": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "CartProduct": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cart_product"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/CartProductProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "CartProductProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Product descriptor enumeration.",
+            "type": "string",
+            "enum": [
+              "brand",
+              "categories",
+              "id",
+              "name"
+            ],
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CartValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "cart_value"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/CartValueProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "CartValueProperties": {
+        "type": "object",
+        "properties": {
+          "comparison": {
+            "description": "Number comparison enumeration.",
+            "type": "string",
+            "enum": [
+              "equals",
+              "greater_than",
+              "less_than"
+            ],
+            "nullable": true
+          },
+          "value": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "Channel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "channel"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ChannelProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "ChannelProperties": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "description": "Channel type enumeration.",
+            "type": "string",
+            "enum": [
+              "email",
+              "sms"
+            ]
+          }
+        },
+        "required": [
+          "channel"
+        ]
+      },
+      "ChannelSettings": {
+        "type": "object",
+        "properties": {
+          "sms": {
+            "$ref": "#/components/schemas/PhoneNumberConsentChannelSettings"
+          },
+          "whatsapp": {
+            "$ref": "#/components/schemas/PhoneNumberConsentChannelSettings"
+          }
+        }
+      },
+      "Checkboxes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "checkboxes"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/CheckboxesStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/CheckboxesProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "CheckboxesProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyOption"
+            }
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "property_name",
+          "options"
+        ]
+      },
+      "CheckboxesStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "arrangement": {
+            "description": "Arrangement enumeration.",
+            "type": "string",
+            "example": "vertical",
+            "default": "vertical",
+            "enum": [
+              "horizontal",
+              "vertical"
+            ]
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "left",
+            "default": "left",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        }
+      },
+      "Close": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "close"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/CloseProperties",
+            "nullable": true
+          }
+        },
+        "required": [
+          "submit",
+          "type"
+        ]
+      },
+      "CloseButtonStyle": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "example": "rgba(180, 187, 195, 0.65)",
+            "default": "rgba(180, 187, 195, 0.65)"
+          },
+          "outline_color": {
+            "type": "string",
+            "example": "#FFFFFF",
+            "default": "#FFFFFF"
+          },
+          "color": {
+            "type": "string",
+            "example": "#FFFFFF",
+            "default": "#FFFFFF"
+          },
+          "stroke": {
+            "type": "number",
+            "example": 2,
+            "default": 2
+          },
+          "size": {
+            "type": "integer",
+            "example": 20,
+            "default": 20
+          },
+          "margin": {
+            "$ref": "#/components/schemas/Margin"
+          }
+        }
+      },
+      "CloseProperties": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ColumnStyles": {
+        "type": "object",
+        "properties": {
+          "background_image": {
+            "$ref": "#/components/schemas/BackgroundImage",
+            "nullable": true
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ColumnV0": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RowV0"
+            }
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ColumnStyles",
+            "nullable": true
+          }
+        }
+      },
+      "CountdownTimer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "countdown_timer"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/CountdownTimerStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/CountdownTimerProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "CountdownTimerProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "clock_face": {
+            "description": "Options for displaying a timer.",
+            "type": "string",
+            "example": "simple",
+            "default": "simple",
+            "enum": [
+              "flip",
+              "simple"
+            ]
+          },
+          "animation": {
+            "description": "Options for timer completion animations.",
+            "type": "string",
+            "example": "heartbeat",
+            "default": "heartbeat",
+            "enum": [
+              "flash",
+              "heartbeat",
+              "pulse"
+            ],
+            "nullable": true
+          },
+          "configuration": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FixedTimerConfiguration"
+              },
+              {
+                "$ref": "#/components/schemas/VariableTimerConfiguration"
+              }
+            ]
+          }
+        },
+        "required": [
+          "configuration"
+        ]
+      },
+      "CountdownTimerStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_styles": {
+            "$ref": "#/components/schemas/TextStyleV0"
+          },
+          "card_color": {
+            "type": "string",
+            "example": "rgba(100,100,100, 1.0)",
+            "default": "rgba(100,100,100, 1.0)"
+          },
+          "label_font_size": {
+            "type": "integer",
+            "example": 12,
+            "default": 12
+          },
+          "label_font_weight": {
+            "description": "Font weight enumeration.",
+            "type": "integer",
+            "example": 400,
+            "default": 400,
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ]
+          }
+        }
+      },
+      "Coupon": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "coupon"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/CouponStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/CouponProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "CouponProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "coupon": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UniqueCouponConfig"
+              },
+              {
+                "$ref": "#/components/schemas/StaticCouponConfig"
+              }
+            ]
+          },
+          "success_message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "coupon"
+        ]
+      },
+      "CouponStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_styles": {
+            "$ref": "#/components/schemas/TextStyleV0"
+          },
+          "border_styles": {
+            "$ref": "#/components/schemas/BorderStyle",
+            "nullable": true
+          },
+          "coupon_background_color": {
+            "type": "string",
+            "example": "#EEEEEE",
+            "default": "#EEEEEE",
+            "nullable": true
+          }
+        }
+      },
+      "CustomCss": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "css": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "CustomJavascript": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "properties": {
+            "$ref": "#/components/schemas/TriggerBaseProperties"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "custom_javascript"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "Date": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/DateStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DateProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "DateProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "date_format": {
+            "type": "string",
+            "example": "MM/DD",
+            "default": "MM/DD"
+          }
+        },
+        "required": [
+          "property_name"
+        ]
+      },
+      "DateStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Delay": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "delay"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DelayProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "DelayProperties": {
+        "type": "object",
+        "properties": {
+          "seconds": {
+            "type": "integer",
+            "example": 5,
+            "default": 5
+          }
+        }
+      },
+      "Device": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "device"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DeviceProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "DeviceProperties": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "description": "Enumeration for mobile and desktop.",
+            "type": "string",
+            "example": "desktop",
+            "default": "desktop",
+            "enum": [
+              "both",
+              "desktop",
+              "mobile"
+            ]
+          }
+        }
+      },
+      "DropShadow": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "blur": {
+            "type": "integer",
+            "example": 30,
+            "default": 30
+          },
+          "color": {
+            "type": "string",
+            "example": "rgba(0,0,0,0.15)",
+            "default": "rgba(0,0,0,0.15)",
+            "nullable": true
+          }
+        }
+      },
+      "Dropdown": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "dropdown"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/DropdownStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DropdownProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "DropdownProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyOption"
+            }
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "property_name",
+          "options"
+        ]
+      },
+      "DropdownStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "DynamicButton": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "description": "Dynamic Button type enumeration.",
+            "type": "string",
+            "enum": [
+              "BACK_IN_STOCK_OPEN"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/BackInStockDynamicButtonData"
+          }
+        },
+        "required": [
+          "type",
+          "data"
+        ]
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "email"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/EmailStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/EmailProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "EmailProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string",
+            "example": "$email",
+            "default": "$email",
+            "enum": [
+              "$email"
+            ]
+          }
+        }
+      },
+      "EmailStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EncodedFormResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FormEnum"
+          },
+          "id": {
+            "description": "The ID of the form",
+            "type": "string",
+            "example": "Y6nRLr"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "The status of the form.",
+                "type": "string",
+                "example": "draft",
+                "enum": [
+                  "draft",
+                  "live"
+                ]
+              },
+              "ab_test": {
+                "description": "Whether the form has an A/B test configured.",
+                "type": "boolean"
+              },
+              "name": {
+                "description": "The name of the form.",
+                "type": "string",
+                "example": "Cyber Monday Deals"
+              },
+              "definition": {
+                "description": "The encoded form definition.",
+                "$ref": "#/components/schemas/FormDefinition"
+              },
+              "created_at": {
+                "description": "The ISO8601 timestamp when the form was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-03-04T00:00:00Z"
+              },
+              "updated_at": {
+                "description": "The ISO8601 timestamp when the form was last updated.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-03-04T00:00:00Z"
+              }
+            },
+            "required": [
+              "status",
+              "ab_test",
+              "name",
+              "definition",
+              "created_at",
+              "updated_at"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ErrorMessages": {
+        "type": "object",
+        "properties": {
+          "required": {
+            "type": "string",
+            "example": "This field is required",
+            "default": "This field is required"
+          },
+          "invalid": {
+            "type": "string",
+            "example": "This field is invalid",
+            "default": "This field is invalid"
+          }
+        }
+      },
+      "ExitIntent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "properties": {
+            "$ref": "#/components/schemas/TriggerBaseProperties"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "exit_intent"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "FixedTimerConfiguration": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "fixed"
+            ]
+          },
+          "timezone": {
+            "type": "string",
+            "enum": [
+              "Africa/Abidjan",
+              "Africa/Accra",
+              "Africa/Addis_Ababa",
+              "Africa/Algiers",
+              "Africa/Asmara",
+              "Africa/Asmera",
+              "Africa/Bamako",
+              "Africa/Bangui",
+              "Africa/Banjul",
+              "Africa/Bissau",
+              "Africa/Blantyre",
+              "Africa/Brazzaville",
+              "Africa/Bujumbura",
+              "Africa/Cairo",
+              "Africa/Casablanca",
+              "Africa/Ceuta",
+              "Africa/Conakry",
+              "Africa/Dakar",
+              "Africa/Dar_es_Salaam",
+              "Africa/Djibouti",
+              "Africa/Douala",
+              "Africa/El_Aaiun",
+              "Africa/Freetown",
+              "Africa/Gaborone",
+              "Africa/Harare",
+              "Africa/Johannesburg",
+              "Africa/Juba",
+              "Africa/Kampala",
+              "Africa/Khartoum",
+              "Africa/Kigali",
+              "Africa/Kinshasa",
+              "Africa/Lagos",
+              "Africa/Libreville",
+              "Africa/Lome",
+              "Africa/Luanda",
+              "Africa/Lubumbashi",
+              "Africa/Lusaka",
+              "Africa/Malabo",
+              "Africa/Maputo",
+              "Africa/Maseru",
+              "Africa/Mbabane",
+              "Africa/Mogadishu",
+              "Africa/Monrovia",
+              "Africa/Nairobi",
+              "Africa/Ndjamena",
+              "Africa/Niamey",
+              "Africa/Nouakchott",
+              "Africa/Ouagadougou",
+              "Africa/Porto-Novo",
+              "Africa/Sao_Tome",
+              "Africa/Timbuktu",
+              "Africa/Tripoli",
+              "Africa/Tunis",
+              "Africa/Windhoek",
+              "America/Adak",
+              "America/Anchorage",
+              "America/Anguilla",
+              "America/Antigua",
+              "America/Araguaina",
+              "America/Argentina/Buenos_Aires",
+              "America/Argentina/Catamarca",
+              "America/Argentina/ComodRivadavia",
+              "America/Argentina/Cordoba",
+              "America/Argentina/Jujuy",
+              "America/Argentina/La_Rioja",
+              "America/Argentina/Mendoza",
+              "America/Argentina/Rio_Gallegos",
+              "America/Argentina/Salta",
+              "America/Argentina/San_Juan",
+              "America/Argentina/San_Luis",
+              "America/Argentina/Tucuman",
+              "America/Argentina/Ushuaia",
+              "America/Aruba",
+              "America/Asuncion",
+              "America/Atikokan",
+              "America/Atka",
+              "America/Bahia",
+              "America/Bahia_Banderas",
+              "America/Barbados",
+              "America/Belem",
+              "America/Belize",
+              "America/Blanc-Sablon",
+              "America/Boa_Vista",
+              "America/Bogota",
+              "America/Boise",
+              "America/Buenos_Aires",
+              "America/Cambridge_Bay",
+              "America/Campo_Grande",
+              "America/Cancun",
+              "America/Caracas",
+              "America/Catamarca",
+              "America/Cayenne",
+              "America/Cayman",
+              "America/Chicago",
+              "America/Chihuahua",
+              "America/Ciudad_Juarez",
+              "America/Coral_Harbour",
+              "America/Cordoba",
+              "America/Costa_Rica",
+              "America/Creston",
+              "America/Cuiaba",
+              "America/Curacao",
+              "America/Danmarkshavn",
+              "America/Dawson",
+              "America/Dawson_Creek",
+              "America/Denver",
+              "America/Detroit",
+              "America/Dominica",
+              "America/Edmonton",
+              "America/Eirunepe",
+              "America/El_Salvador",
+              "America/Ensenada",
+              "America/Fort_Nelson",
+              "America/Fort_Wayne",
+              "America/Fortaleza",
+              "America/Glace_Bay",
+              "America/Godthab",
+              "America/Goose_Bay",
+              "America/Grand_Turk",
+              "America/Grenada",
+              "America/Guadeloupe",
+              "America/Guatemala",
+              "America/Guayaquil",
+              "America/Guyana",
+              "America/Halifax",
+              "America/Havana",
+              "America/Hermosillo",
+              "America/Indiana/Indianapolis",
+              "America/Indiana/Knox",
+              "America/Indiana/Marengo",
+              "America/Indiana/Petersburg",
+              "America/Indiana/Tell_City",
+              "America/Indiana/Vevay",
+              "America/Indiana/Vincennes",
+              "America/Indiana/Winamac",
+              "America/Indianapolis",
+              "America/Inuvik",
+              "America/Iqaluit",
+              "America/Jamaica",
+              "America/Jujuy",
+              "America/Juneau",
+              "America/Kentucky/Louisville",
+              "America/Kentucky/Monticello",
+              "America/Knox_IN",
+              "America/Kralendijk",
+              "America/La_Paz",
+              "America/Lima",
+              "America/Los_Angeles",
+              "America/Louisville",
+              "America/Lower_Princes",
+              "America/Maceio",
+              "America/Managua",
+              "America/Manaus",
+              "America/Marigot",
+              "America/Martinique",
+              "America/Matamoros",
+              "America/Mazatlan",
+              "America/Mendoza",
+              "America/Menominee",
+              "America/Merida",
+              "America/Metlakatla",
+              "America/Mexico_City",
+              "America/Miquelon",
+              "America/Moncton",
+              "America/Monterrey",
+              "America/Montevideo",
+              "America/Montreal",
+              "America/Montserrat",
+              "America/Nassau",
+              "America/New_York",
+              "America/Nipigon",
+              "America/Nome",
+              "America/Noronha",
+              "America/North_Dakota/Beulah",
+              "America/North_Dakota/Center",
+              "America/North_Dakota/New_Salem",
+              "America/Nuuk",
+              "America/Ojinaga",
+              "America/Panama",
+              "America/Pangnirtung",
+              "America/Paramaribo",
+              "America/Phoenix",
+              "America/Port-au-Prince",
+              "America/Port_of_Spain",
+              "America/Porto_Acre",
+              "America/Porto_Velho",
+              "America/Puerto_Rico",
+              "America/Punta_Arenas",
+              "America/Rainy_River",
+              "America/Rankin_Inlet",
+              "America/Recife",
+              "America/Regina",
+              "America/Resolute",
+              "America/Rio_Branco",
+              "America/Rosario",
+              "America/Santa_Isabel",
+              "America/Santarem",
+              "America/Santiago",
+              "America/Santo_Domingo",
+              "America/Sao_Paulo",
+              "America/Scoresbysund",
+              "America/Shiprock",
+              "America/Sitka",
+              "America/St_Barthelemy",
+              "America/St_Johns",
+              "America/St_Kitts",
+              "America/St_Lucia",
+              "America/St_Thomas",
+              "America/St_Vincent",
+              "America/Swift_Current",
+              "America/Tegucigalpa",
+              "America/Thule",
+              "America/Thunder_Bay",
+              "America/Tijuana",
+              "America/Toronto",
+              "America/Tortola",
+              "America/Vancouver",
+              "America/Virgin",
+              "America/Whitehorse",
+              "America/Winnipeg",
+              "America/Yakutat",
+              "America/Yellowknife",
+              "Antarctica/Casey",
+              "Antarctica/Davis",
+              "Antarctica/DumontDUrville",
+              "Antarctica/Macquarie",
+              "Antarctica/Mawson",
+              "Antarctica/McMurdo",
+              "Antarctica/Palmer",
+              "Antarctica/Rothera",
+              "Antarctica/South_Pole",
+              "Antarctica/Syowa",
+              "Antarctica/Troll",
+              "Antarctica/Vostok",
+              "Arctic/Longyearbyen",
+              "Asia/Aden",
+              "Asia/Almaty",
+              "Asia/Amman",
+              "Asia/Anadyr",
+              "Asia/Aqtau",
+              "Asia/Aqtobe",
+              "Asia/Ashgabat",
+              "Asia/Ashkhabad",
+              "Asia/Atyrau",
+              "Asia/Baghdad",
+              "Asia/Bahrain",
+              "Asia/Baku",
+              "Asia/Bangkok",
+              "Asia/Barnaul",
+              "Asia/Beirut",
+              "Asia/Bishkek",
+              "Asia/Brunei",
+              "Asia/Calcutta",
+              "Asia/Chita",
+              "Asia/Choibalsan",
+              "Asia/Chongqing",
+              "Asia/Chungking",
+              "Asia/Colombo",
+              "Asia/Dacca",
+              "Asia/Damascus",
+              "Asia/Dhaka",
+              "Asia/Dili",
+              "Asia/Dubai",
+              "Asia/Dushanbe",
+              "Asia/Famagusta",
+              "Asia/Gaza",
+              "Asia/Harbin",
+              "Asia/Hebron",
+              "Asia/Ho_Chi_Minh",
+              "Asia/Hong_Kong",
+              "Asia/Hovd",
+              "Asia/Irkutsk",
+              "Asia/Istanbul",
+              "Asia/Jakarta",
+              "Asia/Jayapura",
+              "Asia/Jerusalem",
+              "Asia/Kabul",
+              "Asia/Kamchatka",
+              "Asia/Karachi",
+              "Asia/Kashgar",
+              "Asia/Kathmandu",
+              "Asia/Katmandu",
+              "Asia/Khandyga",
+              "Asia/Kolkata",
+              "Asia/Krasnoyarsk",
+              "Asia/Kuala_Lumpur",
+              "Asia/Kuching",
+              "Asia/Kuwait",
+              "Asia/Macao",
+              "Asia/Macau",
+              "Asia/Magadan",
+              "Asia/Makassar",
+              "Asia/Manila",
+              "Asia/Muscat",
+              "Asia/Nicosia",
+              "Asia/Novokuznetsk",
+              "Asia/Novosibirsk",
+              "Asia/Omsk",
+              "Asia/Oral",
+              "Asia/Phnom_Penh",
+              "Asia/Pontianak",
+              "Asia/Pyongyang",
+              "Asia/Qatar",
+              "Asia/Qostanay",
+              "Asia/Qyzylorda",
+              "Asia/Rangoon",
+              "Asia/Riyadh",
+              "Asia/Saigon",
+              "Asia/Sakhalin",
+              "Asia/Samarkand",
+              "Asia/Seoul",
+              "Asia/Shanghai",
+              "Asia/Singapore",
+              "Asia/Srednekolymsk",
+              "Asia/Taipei",
+              "Asia/Tashkent",
+              "Asia/Tbilisi",
+              "Asia/Tehran",
+              "Asia/Tel_Aviv",
+              "Asia/Thimbu",
+              "Asia/Thimphu",
+              "Asia/Tokyo",
+              "Asia/Tomsk",
+              "Asia/Ujung_Pandang",
+              "Asia/Ulaanbaatar",
+              "Asia/Ulan_Bator",
+              "Asia/Urumqi",
+              "Asia/Ust-Nera",
+              "Asia/Vientiane",
+              "Asia/Vladivostok",
+              "Asia/Yakutsk",
+              "Asia/Yangon",
+              "Asia/Yekaterinburg",
+              "Asia/Yerevan",
+              "Atlantic/Azores",
+              "Atlantic/Bermuda",
+              "Atlantic/Canary",
+              "Atlantic/Cape_Verde",
+              "Atlantic/Faeroe",
+              "Atlantic/Faroe",
+              "Atlantic/Jan_Mayen",
+              "Atlantic/Madeira",
+              "Atlantic/Reykjavik",
+              "Atlantic/South_Georgia",
+              "Atlantic/St_Helena",
+              "Atlantic/Stanley",
+              "Australia/ACT",
+              "Australia/Adelaide",
+              "Australia/Brisbane",
+              "Australia/Broken_Hill",
+              "Australia/Canberra",
+              "Australia/Currie",
+              "Australia/Darwin",
+              "Australia/Eucla",
+              "Australia/Hobart",
+              "Australia/LHI",
+              "Australia/Lindeman",
+              "Australia/Lord_Howe",
+              "Australia/Melbourne",
+              "Australia/NSW",
+              "Australia/North",
+              "Australia/Perth",
+              "Australia/Queensland",
+              "Australia/South",
+              "Australia/Sydney",
+              "Australia/Tasmania",
+              "Australia/Victoria",
+              "Australia/West",
+              "Australia/Yancowinna",
+              "Brazil/Acre",
+              "Brazil/DeNoronha",
+              "Brazil/East",
+              "Brazil/West",
+              "CET",
+              "CST6CDT",
+              "Canada/Atlantic",
+              "Canada/Central",
+              "Canada/Eastern",
+              "Canada/Mountain",
+              "Canada/Newfoundland",
+              "Canada/Pacific",
+              "Canada/Saskatchewan",
+              "Canada/Yukon",
+              "Chile/Continental",
+              "Chile/EasterIsland",
+              "Cuba",
+              "EET",
+              "EST",
+              "EST5EDT",
+              "Egypt",
+              "Eire",
+              "Etc/GMT",
+              "Etc/GMT+0",
+              "Etc/GMT+1",
+              "Etc/GMT+10",
+              "Etc/GMT+11",
+              "Etc/GMT+12",
+              "Etc/GMT+2",
+              "Etc/GMT+3",
+              "Etc/GMT+4",
+              "Etc/GMT+5",
+              "Etc/GMT+6",
+              "Etc/GMT+7",
+              "Etc/GMT+8",
+              "Etc/GMT+9",
+              "Etc/GMT-0",
+              "Etc/GMT-1",
+              "Etc/GMT-10",
+              "Etc/GMT-11",
+              "Etc/GMT-12",
+              "Etc/GMT-13",
+              "Etc/GMT-14",
+              "Etc/GMT-2",
+              "Etc/GMT-3",
+              "Etc/GMT-4",
+              "Etc/GMT-5",
+              "Etc/GMT-6",
+              "Etc/GMT-7",
+              "Etc/GMT-8",
+              "Etc/GMT-9",
+              "Etc/GMT0",
+              "Etc/Greenwich",
+              "Etc/UCT",
+              "Etc/UTC",
+              "Etc/Universal",
+              "Etc/Zulu",
+              "Europe/Amsterdam",
+              "Europe/Andorra",
+              "Europe/Astrakhan",
+              "Europe/Athens",
+              "Europe/Belfast",
+              "Europe/Belgrade",
+              "Europe/Berlin",
+              "Europe/Bratislava",
+              "Europe/Brussels",
+              "Europe/Bucharest",
+              "Europe/Budapest",
+              "Europe/Busingen",
+              "Europe/Chisinau",
+              "Europe/Copenhagen",
+              "Europe/Dublin",
+              "Europe/Gibraltar",
+              "Europe/Guernsey",
+              "Europe/Helsinki",
+              "Europe/Isle_of_Man",
+              "Europe/Istanbul",
+              "Europe/Jersey",
+              "Europe/Kaliningrad",
+              "Europe/Kiev",
+              "Europe/Kirov",
+              "Europe/Kyiv",
+              "Europe/Lisbon",
+              "Europe/Ljubljana",
+              "Europe/London",
+              "Europe/Luxembourg",
+              "Europe/Madrid",
+              "Europe/Malta",
+              "Europe/Mariehamn",
+              "Europe/Minsk",
+              "Europe/Monaco",
+              "Europe/Moscow",
+              "Europe/Nicosia",
+              "Europe/Oslo",
+              "Europe/Paris",
+              "Europe/Podgorica",
+              "Europe/Prague",
+              "Europe/Riga",
+              "Europe/Rome",
+              "Europe/Samara",
+              "Europe/San_Marino",
+              "Europe/Sarajevo",
+              "Europe/Saratov",
+              "Europe/Simferopol",
+              "Europe/Skopje",
+              "Europe/Sofia",
+              "Europe/Stockholm",
+              "Europe/Tallinn",
+              "Europe/Tirane",
+              "Europe/Tiraspol",
+              "Europe/Ulyanovsk",
+              "Europe/Uzhgorod",
+              "Europe/Vaduz",
+              "Europe/Vatican",
+              "Europe/Vienna",
+              "Europe/Vilnius",
+              "Europe/Volgograd",
+              "Europe/Warsaw",
+              "Europe/Zagreb",
+              "Europe/Zaporozhye",
+              "Europe/Zurich",
+              "GB",
+              "GB-Eire",
+              "GMT",
+              "GMT+0",
+              "GMT-0",
+              "GMT0",
+              "Greenwich",
+              "HST",
+              "Hongkong",
+              "Iceland",
+              "Indian/Antananarivo",
+              "Indian/Chagos",
+              "Indian/Christmas",
+              "Indian/Cocos",
+              "Indian/Comoro",
+              "Indian/Kerguelen",
+              "Indian/Mahe",
+              "Indian/Maldives",
+              "Indian/Mauritius",
+              "Indian/Mayotte",
+              "Indian/Reunion",
+              "Iran",
+              "Israel",
+              "Jamaica",
+              "Japan",
+              "Kwajalein",
+              "Libya",
+              "MET",
+              "MST",
+              "MST7MDT",
+              "Mexico/BajaNorte",
+              "Mexico/BajaSur",
+              "Mexico/General",
+              "NZ",
+              "NZ-CHAT",
+              "Navajo",
+              "PRC",
+              "PST8PDT",
+              "Pacific/Apia",
+              "Pacific/Auckland",
+              "Pacific/Bougainville",
+              "Pacific/Chatham",
+              "Pacific/Chuuk",
+              "Pacific/Easter",
+              "Pacific/Efate",
+              "Pacific/Enderbury",
+              "Pacific/Fakaofo",
+              "Pacific/Fiji",
+              "Pacific/Funafuti",
+              "Pacific/Galapagos",
+              "Pacific/Gambier",
+              "Pacific/Guadalcanal",
+              "Pacific/Guam",
+              "Pacific/Honolulu",
+              "Pacific/Johnston",
+              "Pacific/Kanton",
+              "Pacific/Kiritimati",
+              "Pacific/Kosrae",
+              "Pacific/Kwajalein",
+              "Pacific/Majuro",
+              "Pacific/Marquesas",
+              "Pacific/Midway",
+              "Pacific/Nauru",
+              "Pacific/Niue",
+              "Pacific/Norfolk",
+              "Pacific/Noumea",
+              "Pacific/Pago_Pago",
+              "Pacific/Palau",
+              "Pacific/Pitcairn",
+              "Pacific/Pohnpei",
+              "Pacific/Ponape",
+              "Pacific/Port_Moresby",
+              "Pacific/Rarotonga",
+              "Pacific/Saipan",
+              "Pacific/Samoa",
+              "Pacific/Tahiti",
+              "Pacific/Tarawa",
+              "Pacific/Tongatapu",
+              "Pacific/Truk",
+              "Pacific/Wake",
+              "Pacific/Wallis",
+              "Pacific/Yap",
+              "Poland",
+              "Portugal",
+              "ROC",
+              "ROK",
+              "Singapore",
+              "Turkey",
+              "UCT",
+              "US/Alaska",
+              "US/Aleutian",
+              "US/Arizona",
+              "US/Central",
+              "US/East-Indiana",
+              "US/Eastern",
+              "US/Hawaii",
+              "US/Indiana-Starke",
+              "US/Michigan",
+              "US/Mountain",
+              "US/Pacific",
+              "US/Samoa",
+              "UTC",
+              "Universal",
+              "W-SU",
+              "WET",
+              "Zulu"
+            ]
+          },
+          "end_time": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "timezone"
+        ]
+      },
+      "FormDefinition": {
+        "type": "object",
+        "properties": {
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Version"
+            }
+          }
+        },
+        "required": [
+          "versions"
+        ]
+      },
+      "FormEnum": {
+        "type": "string",
+        "enum": [
+          "form"
+        ]
+      },
+      "GetEncodedFormResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/EncodedFormResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GoToInbox": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "go_to_inbox"
+            ]
+          },
+          "properties": {
+            "enum": [
+              null
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "HTMLText": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "html_text"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/HTMLTextStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/HTMLTextProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "HTMLTextProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "default": "",
+            "type": "string"
+          }
+        }
+      },
+      "HTMLTextStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "IdentifiedProfiles": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "properties": {
+            "$ref": "#/components/schemas/TriggerBaseProperties"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "identified_profiles"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "image"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ImageStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ImageProperties"
+          },
+          "action": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Close"
+              },
+              {
+                "$ref": "#/components/schemas/NextStep"
+              },
+              {
+                "$ref": "#/components/schemas/OpenForm"
+              },
+              {
+                "$ref": "#/components/schemas/PromotionalSMSSubscription"
+              },
+              {
+                "$ref": "#/components/schemas/Redirect"
+              },
+              {
+                "$ref": "#/components/schemas/ResendOptInCode"
+              },
+              {
+                "$ref": "#/components/schemas/SubmitOptInCode"
+              },
+              {
+                "$ref": "#/components/schemas/SubscribeViaSMS"
+              },
+              {
+                "$ref": "#/components/schemas/SubscribeViaWhatsApp"
+              },
+              {
+                "$ref": "#/components/schemas/GoToInbox"
+              },
+              {
+                "$ref": "#/components/schemas/SubmitBackInStock"
+              },
+              {
+                "$ref": "#/components/schemas/SkipToSuccess"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "ImageAssetProperties": {
+        "type": "object",
+        "properties": {
+          "src": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "original_image_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "asset_id": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "ImageDropShadowStyles": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "blur": {
+            "type": "integer",
+            "example": 15,
+            "default": 15
+          },
+          "x_offset": {
+            "type": "integer",
+            "default": 0
+          },
+          "y_offset": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "ImageProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/ImageAssetProperties",
+            "nullable": true
+          },
+          "additional_fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalField"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "image"
+        ]
+      },
+      "ImageStyles": {
+        "type": "object",
+        "properties": {
+          "horizontal_alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "drop_shadow": {
+            "$ref": "#/components/schemas/ImageDropShadowStyles"
+          }
+        }
+      },
+      "InputStyles": {
+        "type": "object",
+        "properties": {
+          "text_styles": {
+            "$ref": "#/components/schemas/TextStyleV0"
+          },
+          "label_color": {
+            "type": "string",
+            "example": "#303B43",
+            "default": "#303B43"
+          },
+          "text_color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "placeholder_color": {
+            "type": "string",
+            "example": "#949596",
+            "default": "#949596"
+          },
+          "background_color": {
+            "type": "string",
+            "example": "#FFFFFF",
+            "default": "#FFFFFF"
+          },
+          "border_color": {
+            "type": "string",
+            "example": "#949596",
+            "default": "#949596"
+          },
+          "border_focus_color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "focus_outline_color": {
+            "type": "string",
+            "example": "#1C65AD",
+            "default": "#1C65AD"
+          },
+          "corner_radius": {
+            "type": "integer",
+            "example": 2,
+            "default": 2
+          },
+          "field_height": {
+            "type": "integer",
+            "example": 38,
+            "default": 38
+          }
+        }
+      },
+      "LinkStyles": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "example": "#0066cc",
+            "default": "#0066cc"
+          },
+          "decoration": {
+            "type": "string",
+            "example": "underline",
+            "default": "underline",
+            "enum": [
+              "underline"
+            ]
+          }
+        }
+      },
+      "ListsAndSegments": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "lists_and_segments"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ListsAndSegmentsProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "ListsAndSegmentsProperties": {
+        "type": "object",
+        "properties": {
+          "allow_list": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "deny_list": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "location"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/LocationProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "LocationProperties": {
+        "type": "object",
+        "properties": {
+          "allow_list": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "con_AF",
+                    "con_AS",
+                    "con_EU",
+                    "con_EUP",
+                    "con_NA",
+                    "con_OC",
+                    "con_SA"
+                  ],
+                  "description": "Geographic Regions."
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "AD",
+                    "AE",
+                    "AF",
+                    "AG",
+                    "AI",
+                    "AL",
+                    "AM",
+                    "AN",
+                    "AO",
+                    "AQ",
+                    "AR",
+                    "AS",
+                    "AT",
+                    "AU",
+                    "AW",
+                    "AX",
+                    "AZ",
+                    "BA",
+                    "BB",
+                    "BD",
+                    "BE",
+                    "BF",
+                    "BG",
+                    "BH",
+                    "BI",
+                    "BJ",
+                    "BM",
+                    "BN",
+                    "BO",
+                    "BR",
+                    "BS",
+                    "BT",
+                    "BV",
+                    "BW",
+                    "BY",
+                    "BZ",
+                    "CA",
+                    "CC",
+                    "CD",
+                    "CF",
+                    "CG",
+                    "CH",
+                    "CI",
+                    "CK",
+                    "CL",
+                    "CM",
+                    "CN",
+                    "CO",
+                    "CR",
+                    "CU",
+                    "CV",
+                    "CX",
+                    "CY",
+                    "CZ",
+                    "DE",
+                    "DJ",
+                    "DK",
+                    "DM",
+                    "DO",
+                    "DZ",
+                    "EC",
+                    "EE",
+                    "EG",
+                    "EH",
+                    "ER",
+                    "ES",
+                    "ET",
+                    "FI",
+                    "FJ",
+                    "FK",
+                    "FM",
+                    "FO",
+                    "FR",
+                    "GA",
+                    "GB",
+                    "GD",
+                    "GE",
+                    "GF",
+                    "GG",
+                    "GH",
+                    "GI",
+                    "GL",
+                    "GM",
+                    "GN",
+                    "GP",
+                    "GQ",
+                    "GR",
+                    "GS",
+                    "GT",
+                    "GU",
+                    "GW",
+                    "GY",
+                    "HK",
+                    "HM",
+                    "HN",
+                    "HR",
+                    "HT",
+                    "HU",
+                    "ID",
+                    "IE",
+                    "IL",
+                    "IM",
+                    "IN",
+                    "IO",
+                    "IQ",
+                    "IR",
+                    "IS",
+                    "IT",
+                    "JE",
+                    "JM",
+                    "JO",
+                    "JP",
+                    "KE",
+                    "KG",
+                    "KH",
+                    "KI",
+                    "KM",
+                    "KN",
+                    "KP",
+                    "KR",
+                    "KW",
+                    "KY",
+                    "KZ",
+                    "LA",
+                    "LB",
+                    "LC",
+                    "LI",
+                    "LK",
+                    "LR",
+                    "LS",
+                    "LT",
+                    "LU",
+                    "LV",
+                    "LY",
+                    "MA",
+                    "MC",
+                    "MD",
+                    "ME",
+                    "MG",
+                    "MH",
+                    "MK",
+                    "ML",
+                    "MM",
+                    "MN",
+                    "MO",
+                    "MP",
+                    "MQ",
+                    "MR",
+                    "MS",
+                    "MT",
+                    "MU",
+                    "MV",
+                    "MW",
+                    "MX",
+                    "MY",
+                    "MZ",
+                    "NA",
+                    "NC",
+                    "NE",
+                    "NF",
+                    "NG",
+                    "NI",
+                    "NL",
+                    "NO",
+                    "NP",
+                    "NR",
+                    "NU",
+                    "NZ",
+                    "OM",
+                    "PA",
+                    "PE",
+                    "PF",
+                    "PG",
+                    "PH",
+                    "PK",
+                    "PL",
+                    "PM",
+                    "PN",
+                    "PR",
+                    "PS",
+                    "PT",
+                    "PW",
+                    "PY",
+                    "QA",
+                    "RE",
+                    "RO",
+                    "RS",
+                    "RU",
+                    "RW",
+                    "SA",
+                    "SB",
+                    "SC",
+                    "SD",
+                    "SE",
+                    "SG",
+                    "SH",
+                    "SI",
+                    "SJ",
+                    "SK",
+                    "SL",
+                    "SM",
+                    "SN",
+                    "SO",
+                    "SR",
+                    "ST",
+                    "SV",
+                    "SY",
+                    "SZ",
+                    "TC",
+                    "TD",
+                    "TF",
+                    "TG",
+                    "TH",
+                    "TJ",
+                    "TK",
+                    "TL",
+                    "TM",
+                    "TN",
+                    "TO",
+                    "TR",
+                    "TT",
+                    "TV",
+                    "TW",
+                    "TZ",
+                    "UA",
+                    "UG",
+                    "UM",
+                    "US",
+                    "UY",
+                    "UZ",
+                    "VA",
+                    "VC",
+                    "VE",
+                    "VG",
+                    "VI",
+                    "VN",
+                    "VU",
+                    "WF",
+                    "WS",
+                    "YE",
+                    "YT",
+                    "ZA",
+                    "ZM",
+                    "ZW"
+                  ],
+                  "description": "Geographic Country - ISO 3166-1 alpha-2 country codes."
+                }
+              ]
+            },
+            "nullable": true
+          },
+          "deny_list": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "con_AF",
+                    "con_AS",
+                    "con_EU",
+                    "con_EUP",
+                    "con_NA",
+                    "con_OC",
+                    "con_SA"
+                  ],
+                  "description": "Geographic Regions."
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "AD",
+                    "AE",
+                    "AF",
+                    "AG",
+                    "AI",
+                    "AL",
+                    "AM",
+                    "AN",
+                    "AO",
+                    "AQ",
+                    "AR",
+                    "AS",
+                    "AT",
+                    "AU",
+                    "AW",
+                    "AX",
+                    "AZ",
+                    "BA",
+                    "BB",
+                    "BD",
+                    "BE",
+                    "BF",
+                    "BG",
+                    "BH",
+                    "BI",
+                    "BJ",
+                    "BM",
+                    "BN",
+                    "BO",
+                    "BR",
+                    "BS",
+                    "BT",
+                    "BV",
+                    "BW",
+                    "BY",
+                    "BZ",
+                    "CA",
+                    "CC",
+                    "CD",
+                    "CF",
+                    "CG",
+                    "CH",
+                    "CI",
+                    "CK",
+                    "CL",
+                    "CM",
+                    "CN",
+                    "CO",
+                    "CR",
+                    "CU",
+                    "CV",
+                    "CX",
+                    "CY",
+                    "CZ",
+                    "DE",
+                    "DJ",
+                    "DK",
+                    "DM",
+                    "DO",
+                    "DZ",
+                    "EC",
+                    "EE",
+                    "EG",
+                    "EH",
+                    "ER",
+                    "ES",
+                    "ET",
+                    "FI",
+                    "FJ",
+                    "FK",
+                    "FM",
+                    "FO",
+                    "FR",
+                    "GA",
+                    "GB",
+                    "GD",
+                    "GE",
+                    "GF",
+                    "GG",
+                    "GH",
+                    "GI",
+                    "GL",
+                    "GM",
+                    "GN",
+                    "GP",
+                    "GQ",
+                    "GR",
+                    "GS",
+                    "GT",
+                    "GU",
+                    "GW",
+                    "GY",
+                    "HK",
+                    "HM",
+                    "HN",
+                    "HR",
+                    "HT",
+                    "HU",
+                    "ID",
+                    "IE",
+                    "IL",
+                    "IM",
+                    "IN",
+                    "IO",
+                    "IQ",
+                    "IR",
+                    "IS",
+                    "IT",
+                    "JE",
+                    "JM",
+                    "JO",
+                    "JP",
+                    "KE",
+                    "KG",
+                    "KH",
+                    "KI",
+                    "KM",
+                    "KN",
+                    "KP",
+                    "KR",
+                    "KW",
+                    "KY",
+                    "KZ",
+                    "LA",
+                    "LB",
+                    "LC",
+                    "LI",
+                    "LK",
+                    "LR",
+                    "LS",
+                    "LT",
+                    "LU",
+                    "LV",
+                    "LY",
+                    "MA",
+                    "MC",
+                    "MD",
+                    "ME",
+                    "MG",
+                    "MH",
+                    "MK",
+                    "ML",
+                    "MM",
+                    "MN",
+                    "MO",
+                    "MP",
+                    "MQ",
+                    "MR",
+                    "MS",
+                    "MT",
+                    "MU",
+                    "MV",
+                    "MW",
+                    "MX",
+                    "MY",
+                    "MZ",
+                    "NA",
+                    "NC",
+                    "NE",
+                    "NF",
+                    "NG",
+                    "NI",
+                    "NL",
+                    "NO",
+                    "NP",
+                    "NR",
+                    "NU",
+                    "NZ",
+                    "OM",
+                    "PA",
+                    "PE",
+                    "PF",
+                    "PG",
+                    "PH",
+                    "PK",
+                    "PL",
+                    "PM",
+                    "PN",
+                    "PR",
+                    "PS",
+                    "PT",
+                    "PW",
+                    "PY",
+                    "QA",
+                    "RE",
+                    "RO",
+                    "RS",
+                    "RU",
+                    "RW",
+                    "SA",
+                    "SB",
+                    "SC",
+                    "SD",
+                    "SE",
+                    "SG",
+                    "SH",
+                    "SI",
+                    "SJ",
+                    "SK",
+                    "SL",
+                    "SM",
+                    "SN",
+                    "SO",
+                    "SR",
+                    "ST",
+                    "SV",
+                    "SY",
+                    "SZ",
+                    "TC",
+                    "TD",
+                    "TF",
+                    "TG",
+                    "TH",
+                    "TJ",
+                    "TK",
+                    "TL",
+                    "TM",
+                    "TN",
+                    "TO",
+                    "TR",
+                    "TT",
+                    "TV",
+                    "TW",
+                    "TZ",
+                    "UA",
+                    "UG",
+                    "UM",
+                    "US",
+                    "UY",
+                    "UZ",
+                    "VA",
+                    "VC",
+                    "VE",
+                    "VG",
+                    "VI",
+                    "VN",
+                    "VU",
+                    "WF",
+                    "WS",
+                    "YE",
+                    "YT",
+                    "ZA",
+                    "ZM",
+                    "ZW"
+                  ],
+                  "description": "Geographic Country - ISO 3166-1 alpha-2 country codes."
+                }
+              ]
+            },
+            "nullable": true
+          }
+        }
+      },
+      "Margin": {
+        "type": "object",
+        "properties": {
+          "left": {
+            "type": "integer",
+            "default": 0
+          },
+          "right": {
+            "type": "integer",
+            "default": 0
+          },
+          "top": {
+            "type": "integer",
+            "default": 0
+          },
+          "bottom": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "MobileOverlay": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "example": "rgba(20, 20, 20, 0.5)",
+            "default": "rgba(20, 20, 20, 0.5)",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          }
+        }
+      },
+      "NextStep": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "next_step"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/NextStepProperties",
+            "nullable": true
+          }
+        },
+        "required": [
+          "submit",
+          "type"
+        ]
+      },
+      "NextStepProperties": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "OpenForm": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "open_form"
+            ]
+          },
+          "submit": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/OpenFormProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "OpenFormProperties": {
+        "type": "object",
+        "properties": {
+          "close_form": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "form_id_to_open": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "form_id_to_open"
+        ]
+      },
+      "OptInCode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "opt_in_code"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/OptInCodeStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/OptInCodeProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "OptInCodeProperties": {
+        "type": "object",
+        "properties": {
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string",
+            "example": "opt_in_code",
+            "default": "opt_in_code",
+            "enum": [
+              "opt_in_code"
+            ]
+          },
+          "required": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          }
+        }
+      },
+      "OptInCodeStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Padding": {
+        "type": "object",
+        "properties": {
+          "left": {
+            "type": "integer",
+            "default": 0
+          },
+          "right": {
+            "type": "integer",
+            "default": 0
+          },
+          "top": {
+            "type": "integer",
+            "default": 0
+          },
+          "bottom": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "PageVisits": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "page_visits"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/PageVisitsProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "PageVisitsProperties": {
+        "type": "object",
+        "properties": {
+          "pages": {
+            "type": "integer",
+            "example": 3,
+            "default": 3
+          }
+        }
+      },
+      "PhoneNumber": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "phone_number"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/PhoneNumberStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/PhoneNumberProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "PhoneNumberConsentChannelSettings": {
+        "type": "object",
+        "properties": {
+          "consent_type": {
+            "description": "Consent Type Enum.",
+            "type": "string",
+            "enum": [
+              "phone_number_only",
+              "promotional",
+              "transactional"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "PhoneNumberProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string",
+            "example": "$phone_number",
+            "default": "$phone_number"
+          },
+          "sms_consent_type": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "phone_number_only",
+                "promotional",
+                "transactional"
+              ],
+              "description": "Consent Type Enum."
+            },
+            "nullable": true
+          },
+          "channel_settings": {
+            "$ref": "#/components/schemas/ChannelSettings",
+            "nullable": true
+          }
+        }
+      },
+      "PhoneNumberStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PreviouslySubmitted": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "properties": {
+            "$ref": "#/components/schemas/TriggerBaseProperties"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "previously_submitted"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "ProfileEventTracked": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile_event_tracked"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ProfileEventTrackedProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "ProfileEventTrackedProperties": {
+        "type": "object",
+        "properties": {
+          "metric": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "metric"
+        ]
+      },
+      "PromotionalSMSSubscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "promotional_sms_subscription"
+            ]
+          },
+          "properties": {
+            "enum": [
+              null
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "PropertyOption": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ]
+      },
+      "QuoteStyle": {
+        "type": "object",
+        "properties": {
+          "font_family": {
+            "type": "string",
+            "example": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "default": "Arial, 'Helvetica Neue', Helvetica, sans-serif"
+          },
+          "font_size": {
+            "type": "integer",
+            "example": 16,
+            "default": 16
+          },
+          "text_color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "character_spacing": {
+            "type": "integer",
+            "default": 0
+          },
+          "font_weight": {
+            "type": "integer",
+            "example": 400,
+            "default": 400
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "line_height": {
+            "type": "number",
+            "example": 1.5,
+            "default": 1.5
+          }
+        }
+      },
+      "RadioButtons": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "radio_buttons"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/RadioButtonsStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/RadioButtonsProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "RadioButtonsProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyOption"
+            }
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "property_name",
+          "options"
+        ]
+      },
+      "RadioButtonsStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "arrangement": {
+            "description": "Arrangement enumeration.",
+            "type": "string",
+            "example": "vertical",
+            "default": "vertical",
+            "enum": [
+              "horizontal",
+              "vertical"
+            ]
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "left",
+            "default": "left",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        }
+      },
+      "RatingStyle": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "example": "#F8BE00",
+            "default": "#F8BE00"
+          },
+          "empty_color": {
+            "type": "string",
+            "example": "#EBEEEF",
+            "default": "#EBEEEF"
+          },
+          "font_size": {
+            "type": "integer",
+            "example": 16,
+            "default": 16
+          },
+          "shape": {
+            "description": "Enumeration for review shapes.",
+            "type": "string",
+            "example": "star",
+            "default": "star",
+            "enum": [
+              "circle",
+              "heart",
+              "star"
+            ]
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "character_spacing": {
+            "type": "number",
+            "default": 0
+          }
+        }
+      },
+      "Redirect": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "redirect"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/RedirectProperties"
+          }
+        },
+        "required": [
+          "submit",
+          "type",
+          "properties"
+        ]
+      },
+      "RedirectProperties": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string"
+          },
+          "new_window": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "ResendOptInCode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "resend_opt_in_code"
+            ]
+          },
+          "properties": {
+            "enum": [
+              null
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "review"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ReviewStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ReviewProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "ReviewProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "nullable": true,
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "example": 5,
+            "default": 5
+          },
+          "verified": {
+            "type": "boolean",
+            "default": false
+          },
+          "review_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_rating": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "show_author": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "show_verified": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          }
+        }
+      },
+      "ReviewStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating_style": {
+            "$ref": "#/components/schemas/RatingStyle"
+          },
+          "quote_style": {
+            "$ref": "#/components/schemas/QuoteStyle"
+          },
+          "reviewer_name_style": {
+            "$ref": "#/components/schemas/ReviewerNameStyle"
+          },
+          "block_background_color": {
+            "type": "string",
+            "example": "rgba(255, 255, 255, 0)",
+            "default": "rgba(255, 255, 255, 0)"
+          }
+        }
+      },
+      "ReviewerNameStyle": {
+        "type": "object",
+        "properties": {
+          "layout": {
+            "description": "Enumeration for review name layouts.",
+            "type": "string",
+            "example": "stacked",
+            "default": "stacked",
+            "enum": [
+              "inline",
+              "stacked"
+            ]
+          },
+          "font_family": {
+            "type": "string",
+            "example": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "default": "Arial, 'Helvetica Neue', Helvetica, sans-serif"
+          },
+          "font_size": {
+            "type": "integer",
+            "example": 16,
+            "default": 16
+          },
+          "text_color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "character_spacing": {
+            "type": "integer",
+            "default": 0
+          },
+          "font_weight": {
+            "type": "integer",
+            "example": 400,
+            "default": 400
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "line_height": {
+            "type": "number",
+            "example": 1.5,
+            "default": 1.5
+          }
+        }
+      },
+      "RichTextMargin": {
+        "type": "object",
+        "properties": {
+          "left": {
+            "type": "integer",
+            "default": 0,
+            "enum": [
+              0
+            ]
+          },
+          "right": {
+            "type": "integer",
+            "default": 0,
+            "enum": [
+              0
+            ]
+          },
+          "top": {
+            "type": "integer",
+            "default": 0,
+            "enum": [
+              0
+            ]
+          },
+          "bottom": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "RichTextStyle": {
+        "type": "object",
+        "properties": {
+          "font_family": {
+            "example": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "default": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Arial Black,Arial",
+                  "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                  "Century Gothic,AppleGothic,Arial",
+                  "Comic Sans MS,Comic Sans,cursive",
+                  "Courier",
+                  "Courier New",
+                  "Geneva,Arial",
+                  "Georgia",
+                  "Helvetica,Arial",
+                  "Lucida Grande,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "MS Serif,Georgia",
+                  "New York,Georgia",
+                  "Palatino Linotype,Palatino,Georgia",
+                  "Palatino,Georgia",
+                  "Tahoma,sans-serif",
+                  "Times New Roman",
+                  "Trebuchet MS",
+                  "Verdana"
+                ],
+                "description": "Web safe font enumeration."
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "font_size": {
+            "type": "integer",
+            "example": 16,
+            "default": 16
+          },
+          "font_weight": {
+            "description": "Font weight enumeration.",
+            "type": "integer",
+            "example": 400,
+            "default": 400,
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ],
+            "nullable": true
+          },
+          "text_color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "font_style": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "line_spacing": {
+            "type": "number",
+            "example": 1,
+            "default": 1
+          },
+          "character_spacing": {
+            "type": "integer",
+            "default": 0,
+            "nullable": true
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "left",
+            "default": "left",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "margin": {
+            "$ref": "#/components/schemas/RichTextMargin"
+          }
+        }
+      },
+      "RichTextStyles": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/components/schemas/RichTextStyle"
+          },
+          "link": {
+            "$ref": "#/components/schemas/LinkStyles"
+          },
+          "h1": {
+            "$ref": "#/components/schemas/RichTextStyle"
+          },
+          "h2": {
+            "$ref": "#/components/schemas/RichTextStyle"
+          },
+          "h3": {
+            "$ref": "#/components/schemas/RichTextStyle"
+          },
+          "h4": {
+            "$ref": "#/components/schemas/RichTextStyle"
+          },
+          "h5": {
+            "$ref": "#/components/schemas/RichTextStyle"
+          },
+          "h6": {
+            "$ref": "#/components/schemas/RichTextStyle"
+          }
+        }
+      },
+      "RowV0": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Button"
+                },
+                {
+                  "$ref": "#/components/schemas/AgeGate"
+                },
+                {
+                  "$ref": "#/components/schemas/Coupon"
+                },
+                {
+                  "$ref": "#/components/schemas/Date"
+                },
+                {
+                  "$ref": "#/components/schemas/Email"
+                },
+                {
+                  "$ref": "#/components/schemas/HTMLText"
+                },
+                {
+                  "$ref": "#/components/schemas/OptInCode"
+                },
+                {
+                  "$ref": "#/components/schemas/PhoneNumber"
+                },
+                {
+                  "$ref": "#/components/schemas/SMSConsentCheckbox"
+                },
+                {
+                  "$ref": "#/components/schemas/Text"
+                },
+                {
+                  "$ref": "#/components/schemas/Checkboxes"
+                },
+                {
+                  "$ref": "#/components/schemas/RadioButtons"
+                },
+                {
+                  "$ref": "#/components/schemas/Dropdown"
+                },
+                {
+                  "$ref": "#/components/schemas/Image"
+                },
+                {
+                  "$ref": "#/components/schemas/CountdownTimer"
+                },
+                {
+                  "$ref": "#/components/schemas/SignupCounter"
+                },
+                {
+                  "$ref": "#/components/schemas/SpinToWin"
+                },
+                {
+                  "$ref": "#/components/schemas/SMSDisclosure"
+                },
+                {
+                  "$ref": "#/components/schemas/BackInStockEmailConsentCheckbox"
+                },
+                {
+                  "$ref": "#/components/schemas/Review"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "blocks"
+        ]
+      },
+      "SMSConsentCheckbox": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "promotional_sms_checkbox"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SMSConsentCheckboxStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SMSConsentCheckboxProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "SMSConsentCheckboxProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          },
+          "property_name": {
+            "type": "string",
+            "example": "opt_in_promotional_sms",
+            "default": "opt_in_promotional_sms",
+            "enum": [
+              "opt_in_promotional_sms"
+            ]
+          },
+          "checkbox_text": {
+            "type": "string"
+          },
+          "placeholder": {
+            "enum": [
+              null
+            ]
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "sms",
+                "whatsapp"
+              ],
+              "description": "Consent channel enumeration."
+            }
+          }
+        },
+        "required": [
+          "checkbox_text"
+        ]
+      },
+      "SMSConsentCheckboxStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "horizontal_alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "left",
+            "default": "left",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        }
+      },
+      "SMSDisclosure": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "sms_disclosure"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SMSDisclosureStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SMSDisclosureProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SMSDisclosureAccountDefault": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "account_default"
+            ]
+          },
+          "html": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SMSDisclosureCustom": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "custom"
+            ]
+          },
+          "compliance_company_name": {
+            "type": "string",
+            "example": "[company name]",
+            "default": "[company name]"
+          },
+          "privacy_policy_url": {
+            "type": "string",
+            "example": "[link]",
+            "default": "[link]"
+          },
+          "terms_of_service_url": {
+            "type": "string",
+            "example": "[link]",
+            "default": "[link]"
+          },
+          "html": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SMSDisclosureProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SMSDisclosureCustom"
+              },
+              {
+                "$ref": "#/components/schemas/SMSDisclosureAccountDefault"
+              }
+            ]
+          }
+        }
+      },
+      "SMSDisclosureStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "link_styles": {
+            "$ref": "#/components/schemas/SMSDisclosureTextStyle"
+          },
+          "text_styles": {
+            "$ref": "#/components/schemas/SMSDisclosureTextStyle"
+          }
+        }
+      },
+      "SMSDisclosureTextStyle": {
+        "type": "object",
+        "properties": {
+          "font_family": {
+            "example": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "default": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Arial Black,Arial",
+                  "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                  "Century Gothic,AppleGothic,Arial",
+                  "Comic Sans MS,Comic Sans,cursive",
+                  "Courier",
+                  "Courier New",
+                  "Geneva,Arial",
+                  "Georgia",
+                  "Helvetica,Arial",
+                  "Lucida Grande,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "MS Serif,Georgia",
+                  "New York,Georgia",
+                  "Palatino Linotype,Palatino,Georgia",
+                  "Palatino,Georgia",
+                  "Tahoma,sans-serif",
+                  "Times New Roman",
+                  "Trebuchet MS",
+                  "Verdana"
+                ],
+                "description": "Web safe font enumeration."
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "font_size": {
+            "type": "integer",
+            "example": 16,
+            "default": 16
+          },
+          "font_weight": {
+            "description": "Font weight enumeration.",
+            "type": "integer",
+            "example": 400,
+            "default": 400,
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ],
+            "nullable": true
+          },
+          "text_color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "character_spacing": {
+            "type": "integer",
+            "default": 0,
+            "nullable": true
+          },
+          "font_style": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Scroll": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "scroll_percentage"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ScrollProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "ScrollProperties": {
+        "type": "object",
+        "properties": {
+          "percentage": {
+            "type": "integer",
+            "example": 30,
+            "default": 30
+          }
+        }
+      },
+      "SideImageSettings": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "description": "Side image size enumeration.",
+            "type": "string",
+            "example": "medium",
+            "default": "medium",
+            "enum": [
+              "large",
+              "medium",
+              "small"
+            ]
+          },
+          "alignment": {
+            "description": "Side image alignment enumeration.",
+            "type": "string",
+            "example": "left",
+            "default": "left",
+            "enum": [
+              "left",
+              "right"
+            ]
+          },
+          "device_type": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          }
+        }
+      },
+      "SignupCounter": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "signup_counter"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SignupCounterStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SignupCounterProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "SignupCounterProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeframe": {
+            "description": "Timeframes for the signup counter lookback.",
+            "type": "string",
+            "enum": [
+              "1_hour",
+              "24_hours",
+              "30_days",
+              "7_days"
+            ]
+          },
+          "min_submits": {
+            "type": "integer"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "timeframe",
+          "min_submits",
+          "content"
+        ]
+      },
+      "SignupCounterStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SkipToSuccess": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "skip_to_success"
+            ]
+          },
+          "submit": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SkipToSuccessProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "SkipToSuccessProperties": {
+        "type": "object",
+        "maxProperties": 0
+      },
+      "SpinToWin": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SpinToWinProperties"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "spin_to_win"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SpinToWinStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "type"
+        ]
+      },
+      "SpinToWinProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "duplicate_slices": {
+            "type": "boolean",
+            "default": false
+          },
+          "slices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpinToWinSliceConfig"
+            }
+          }
+        },
+        "required": [
+          "slices"
+        ]
+      },
+      "SpinToWinSliceConfig": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "probability": {
+            "type": "integer"
+          },
+          "step_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "probability",
+          "step_id"
+        ]
+      },
+      "SpinToWinSliceStyle": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "example": "rgba(0,0,0,1)",
+            "default": "rgba(0,0,0,1)"
+          },
+          "text_color": {
+            "type": "string",
+            "example": "rgba(255,255,255,1)",
+            "default": "rgba(255,255,255,1)"
+          }
+        }
+      },
+      "SpinToWinStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "slice_styles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpinToWinSliceStyle"
+            }
+          },
+          "text_styles": {
+            "$ref": "#/components/schemas/TextStyleV0"
+          },
+          "center_color": {
+            "type": "string",
+            "example": "rgba(255,255,255,1)",
+            "default": "rgba(255,255,255,1)"
+          },
+          "outline_color": {
+            "type": "string",
+            "example": "rgba(0,0,0,1)",
+            "default": "rgba(0,0,0,1)"
+          },
+          "outline_thickness": {
+            "type": "integer",
+            "example": 12,
+            "default": 12
+          },
+          "pin_color": {
+            "type": "string",
+            "example": "rgba(255,255,255,1)",
+            "default": "rgba(255,255,255,1)"
+          },
+          "wheel_size": {
+            "type": "integer",
+            "example": 400,
+            "default": 400
+          }
+        }
+      },
+      "StaticCouponConfig": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "static"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "Step": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ColumnV0"
+            }
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Step"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "columns"
+        ]
+      },
+      "SubmitBackInStock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "submit_back_in_stock"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SubmitBackInStockProperties",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SubmitBackInStockProperties": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SubmitOptInCode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "submit_opt_in_code"
+            ]
+          },
+          "properties": {
+            "enum": [
+              null
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SubscribeViaSMS": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "subscribe_via_sms"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SubscribeViaSMSProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "SubscribeViaSMSProperties": {
+        "type": "object",
+        "properties": {
+          "opt_in_keyword": {
+            "type": "string",
+            "nullable": true
+          },
+          "opt_in_message": {
+            "type": "string"
+          },
+          "sending_number": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "opt_in_keyword",
+          "opt_in_message",
+          "sending_number"
+        ]
+      },
+      "SubscribeViaWhatsApp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "subscribe_via_whatsapp"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/SubscribeViaWhatsAppProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "SubscribeViaWhatsAppProperties": {
+        "type": "object",
+        "properties": {
+          "opt_in_keyword": {
+            "type": "string",
+            "nullable": true
+          },
+          "opt_in_message": {
+            "type": "string"
+          },
+          "sending_number": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "opt_in_keyword",
+          "opt_in_message",
+          "sending_number"
+        ]
+      },
+      "Teaser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string"
+          },
+          "display_order": {
+            "description": "Teaser display order enumeration.",
+            "type": "string",
+            "example": "after",
+            "default": "after",
+            "enum": [
+              "after",
+              "before",
+              "before_and_after"
+            ]
+          },
+          "teaser_type": {
+            "description": "Teaser display order enumeration.",
+            "type": "string",
+            "example": "rectangle",
+            "default": "rectangle",
+            "enum": [
+              "circle",
+              "corner",
+              "rectangle"
+            ]
+          },
+          "location": {
+            "description": "Display location enumeration.",
+            "type": "string",
+            "example": "bottom_left",
+            "default": "bottom_left",
+            "enum": [
+              "bottom_center",
+              "bottom_left",
+              "bottom_right",
+              "center_left",
+              "center_right",
+              "top_center",
+              "top_left",
+              "top_right"
+            ]
+          },
+          "size": {
+            "description": "Teaser size enumeration.",
+            "type": "string",
+            "example": "small",
+            "default": "small",
+            "enum": [
+              "custom",
+              "large",
+              "medium",
+              "small"
+            ]
+          },
+          "custom_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "styles": {
+            "$ref": "#/components/schemas/TeaserStyles"
+          },
+          "close_button": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "device_type": {
+            "description": "Enumeration for mobile and desktop.",
+            "type": "string",
+            "example": "both",
+            "default": "both",
+            "enum": [
+              "both",
+              "desktop",
+              "mobile"
+            ]
+          }
+        },
+        "required": [
+          "content"
+        ]
+      },
+      "TeaserStyles": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "example": "#FFFFFF",
+            "default": "#FFFFFF"
+          },
+          "drop_shadow": {
+            "$ref": "#/components/schemas/DropShadow"
+          },
+          "corner_radius": {
+            "type": "integer",
+            "example": 4,
+            "default": 4
+          },
+          "background_image": {
+            "$ref": "#/components/schemas/BackgroundImage",
+            "nullable": true
+          },
+          "close_button": {
+            "$ref": "#/components/schemas/CloseButtonStyle"
+          },
+          "margin": {
+            "$ref": "#/components/schemas/Margin"
+          }
+        }
+      },
+      "Text": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/TextStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/TextProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "TextProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "property_name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          }
+        },
+        "required": [
+          "property_name"
+        ]
+      },
+      "TextStyleV0": {
+        "type": "object",
+        "properties": {
+          "font_family": {
+            "example": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "default": "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Arial Black,Arial",
+                  "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                  "Century Gothic,AppleGothic,Arial",
+                  "Comic Sans MS,Comic Sans,cursive",
+                  "Courier",
+                  "Courier New",
+                  "Geneva,Arial",
+                  "Georgia",
+                  "Helvetica,Arial",
+                  "Lucida Grande,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "MS Serif,Georgia",
+                  "New York,Georgia",
+                  "Palatino Linotype,Palatino,Georgia",
+                  "Palatino,Georgia",
+                  "Tahoma,sans-serif",
+                  "Times New Roman",
+                  "Trebuchet MS",
+                  "Verdana"
+                ],
+                "description": "Web safe font enumeration."
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "font_size": {
+            "type": "integer",
+            "example": 16,
+            "default": 16
+          },
+          "font_weight": {
+            "description": "Font weight enumeration.",
+            "type": "integer",
+            "example": 400,
+            "default": 400,
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ],
+            "nullable": true
+          },
+          "text_color": {
+            "type": "string",
+            "example": "#000000",
+            "default": "#000000"
+          },
+          "character_spacing": {
+            "type": "integer",
+            "default": 0,
+            "nullable": true
+          },
+          "font_style": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TextStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TriggerBaseProperties": {
+        "type": "object",
+        "maxProperties": 0
+      },
+      "URLPatterns": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "url_patterns"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/URLPatternsProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "URLPatternsProperties": {
+        "type": "object",
+        "properties": {
+          "allow_list": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "deny_list": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "UnidentifiedProfiles": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "properties": {
+            "$ref": "#/components/schemas/TriggerBaseProperties"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "unidentified_profiles"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "UniqueCouponConfig": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "unique"
+            ]
+          },
+          "id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "fallback_coupon_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "integration": {
+            "description": "Coupon integration types for unique coupon blocks.",
+            "type": "string",
+            "example": "shopify",
+            "default": "shopify",
+            "enum": [
+              "api",
+              "magento_two",
+              "prestashop",
+              "shopify",
+              "uploaded",
+              "woocommerce"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "VariableTimerConfiguration": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "variable"
+            ]
+          },
+          "days": {
+            "type": "integer"
+          },
+          "hours": {
+            "type": "integer"
+          },
+          "minutes": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "days",
+          "hours",
+          "minutes"
+        ]
+      },
+      "Version": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "integer",
+            "nullable": true
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Step"
+            }
+          },
+          "triggers": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AfterCloseTimeout"
+                },
+                {
+                  "$ref": "#/components/schemas/CartItemCount"
+                },
+                {
+                  "$ref": "#/components/schemas/CartProduct"
+                },
+                {
+                  "$ref": "#/components/schemas/CartValue"
+                },
+                {
+                  "$ref": "#/components/schemas/Channel"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomJavascript"
+                },
+                {
+                  "$ref": "#/components/schemas/Delay"
+                },
+                {
+                  "$ref": "#/components/schemas/Device"
+                },
+                {
+                  "$ref": "#/components/schemas/ExitIntent"
+                },
+                {
+                  "$ref": "#/components/schemas/IdentifiedProfiles"
+                },
+                {
+                  "$ref": "#/components/schemas/ListsAndSegments"
+                },
+                {
+                  "$ref": "#/components/schemas/Location"
+                },
+                {
+                  "$ref": "#/components/schemas/PageVisits"
+                },
+                {
+                  "$ref": "#/components/schemas/PreviouslySubmitted"
+                },
+                {
+                  "$ref": "#/components/schemas/ProfileEventTracked"
+                },
+                {
+                  "$ref": "#/components/schemas/Scroll"
+                },
+                {
+                  "$ref": "#/components/schemas/UnidentifiedProfiles"
+                },
+                {
+                  "$ref": "#/components/schemas/URLPatterns"
+                },
+                {
+                  "$ref": "#/components/schemas/BackInStock"
+                }
+              ]
+            }
+          },
+          "teasers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Teaser"
+            }
+          },
+          "dynamic_button": {
+            "$ref": "#/components/schemas/DynamicButton",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "styles": {
+            "$ref": "#/components/schemas/VersionStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/VersionProperties"
+          },
+          "type": {
+            "description": "Form type enumeration.",
+            "type": "string",
+            "example": "popup",
+            "default": "popup",
+            "enum": [
+              "banner",
+              "embed",
+              "flyout",
+              "full_screen",
+              "popup"
+            ]
+          },
+          "location": {
+            "description": "Display location enumeration.",
+            "type": "string",
+            "enum": [
+              "bottom_center",
+              "bottom_left",
+              "bottom_right",
+              "center_left",
+              "center_right",
+              "top_center",
+              "top_left",
+              "top_right"
+            ],
+            "nullable": true
+          },
+          "status": {
+            "description": "Form status enumeration.",
+            "type": "string",
+            "example": "draft",
+            "default": "draft",
+            "enum": [
+              "draft",
+              "live"
+            ]
+          },
+          "ab_test": {
+            "type": "boolean",
+            "default": false
+          },
+          "specialties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BACK_IN_STOCK"
+              ],
+              "description": "Form specialty enumeration."
+            }
+          }
+        },
+        "required": [
+          "steps"
+        ]
+      },
+      "VersionProperties": {
+        "type": "object",
+        "properties": {
+          "side_image_settings": {
+            "$ref": "#/components/schemas/SideImageSettings",
+            "nullable": true
+          },
+          "click_outside_to_close": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            },
+            "nullable": true
+          },
+          "rule_based_trigger_evaluation": {
+            "description": "Side image alignment enumeration.",
+            "type": "string",
+            "example": "any",
+            "default": "any",
+            "enum": [
+              "all",
+              "any"
+            ],
+            "nullable": true
+          },
+          "record_utm_params_on_submit": {
+            "type": "boolean",
+            "default": false
+          },
+          "show_close_button": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          }
+        }
+      },
+      "VersionStyles": {
+        "type": "object",
+        "properties": {
+          "wrap_content": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          },
+          "border_styles": {
+            "$ref": "#/components/schemas/BorderStyle",
+            "nullable": true
+          },
+          "close_button": {
+            "$ref": "#/components/schemas/CloseButtonStyle"
+          },
+          "margin": {
+            "$ref": "#/components/schemas/Margin"
+          },
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "minimum_height": {
+            "type": "integer",
+            "example": 250,
+            "default": 250
+          },
+          "width": {
+            "description": "Version width enumeration.",
+            "type": "string",
+            "example": "medium",
+            "default": "medium",
+            "enum": [
+              "custom",
+              "large",
+              "medium",
+              "small"
+            ]
+          },
+          "custom_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "background_image": {
+            "$ref": "#/components/schemas/BackgroundImage",
+            "nullable": true
+          },
+          "background_color": {
+            "type": "string",
+            "example": "#FFFFFF",
+            "default": "#FFFFFF",
+            "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyles"
+          },
+          "drop_shadow": {
+            "$ref": "#/components/schemas/DropShadow"
+          },
+          "overlay_color": {
+            "type": "string",
+            "example": "rgba(20,20,20,0.6)",
+            "default": "rgba(20,20,20,0.6)"
+          },
+          "rich_text_styles": {
+            "$ref": "#/components/schemas/RichTextStyles"
+          },
+          "mobile_overlay": {
+            "$ref": "#/components/schemas/MobileOverlay",
+            "nullable": true
+          },
+          "banner_styles": {
+            "$ref": "#/components/schemas/BannerStyles",
+            "nullable": true
+          },
+          "custom_css": {
+            "$ref": "#/components/schemas/CustomCss"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Forms",
+      "description": "forms"
+    }
+  ]
+}

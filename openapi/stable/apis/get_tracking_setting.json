@@ -1,0 +1,535 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/tracking-settings/{id}": {
+      "get": {
+        "operationId": "get_tracking_setting",
+        "summary": "Get Tracking Setting",
+        "description": "Get the UTM tracking setting with the given account ID.\n\nMore information about UTM tracking settings can be found [here](https://help.klaviyo.com/hc/en-us/articles/115005247808).<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`tracking-settings:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the tracking setting (account ID).",
+            "required": true,
+            "schema": {
+              "description": "The id of the tracking setting (account ID).",
+              "type": "string",
+              "example": "abCdEf"
+            }
+          },
+          {
+            "name": "fields[tracking-setting]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "auto_add_parameters",
+                  "custom_parameters",
+                  "utm_campaign",
+                  "utm_campaign.campaign",
+                  "utm_campaign.campaign.type",
+                  "utm_campaign.campaign.value",
+                  "utm_campaign.flow",
+                  "utm_campaign.flow.type",
+                  "utm_campaign.flow.value",
+                  "utm_id",
+                  "utm_id.campaign",
+                  "utm_id.campaign.type",
+                  "utm_id.campaign.value",
+                  "utm_id.flow",
+                  "utm_id.flow.type",
+                  "utm_id.flow.value",
+                  "utm_medium",
+                  "utm_medium.campaign",
+                  "utm_medium.campaign.type",
+                  "utm_medium.campaign.value",
+                  "utm_medium.flow",
+                  "utm_medium.flow.type",
+                  "utm_medium.flow.value",
+                  "utm_source",
+                  "utm_source.campaign",
+                  "utm_source.campaign.type",
+                  "utm_source.campaign.value",
+                  "utm_source.flow",
+                  "utm_source.flow.type",
+                  "utm_source.flow.value",
+                  "utm_term",
+                  "utm_term.campaign",
+                  "utm_term.campaign.type",
+                  "utm_term.campaign.value",
+                  "utm_term.flow",
+                  "utm_term.flow.type",
+                  "utm_term.flow.value"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTrackingSettingResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Tracking Settings"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "tracking-settings:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CampaignTrackingSettingDynamicParam": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of the tracking parameter",
+            "type": "string",
+            "enum": [
+              "dynamic"
+            ]
+          },
+          "value": {
+            "description": "The value of the tracking parameter",
+            "type": "string",
+            "enum": [
+              "campaign_id",
+              "campaign_name",
+              "campaign_name_id",
+              "campaign_name_send_day",
+              "email_subject",
+              "group_id",
+              "group_name",
+              "group_name_id",
+              "link_alt_text",
+              "message_type",
+              "profile_external_id",
+              "profile_id"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ]
+      },
+      "CampaignTrackingSettingStaticParam": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of the tracking parameter",
+            "type": "string",
+            "enum": [
+              "static"
+            ]
+          },
+          "value": {
+            "description": "The value of the tracking parameter",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ]
+      },
+      "CustomTrackingParamDTO": {
+        "type": "object",
+        "properties": {
+          "flow": {
+            "description": "The value of the tracking parameter when applied to a flow.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FlowTrackingSettingDynamicParam"
+              },
+              {
+                "$ref": "#/components/schemas/FlowTrackingSettingStaticParam"
+              }
+            ]
+          },
+          "campaign": {
+            "description": "The value of the tracking parameter when applied to a campaign.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CampaignTrackingSettingDynamicParam"
+              },
+              {
+                "$ref": "#/components/schemas/CampaignTrackingSettingStaticParam"
+              }
+            ]
+          },
+          "name": {
+            "description": "The name of the custom tracking parameter",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "FlowTrackingSettingDynamicParam": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of the tracking parameter",
+            "type": "string",
+            "enum": [
+              "dynamic"
+            ]
+          },
+          "value": {
+            "description": "The value of the tracking parameter",
+            "type": "string",
+            "enum": [
+              "email_subject",
+              "flow_id",
+              "flow_name",
+              "link_alt_text",
+              "message_name",
+              "message_name_id",
+              "message_type",
+              "profile_external_id",
+              "profile_id"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ]
+      },
+      "FlowTrackingSettingStaticParam": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of the tracking parameter",
+            "type": "string",
+            "enum": [
+              "static"
+            ]
+          },
+          "value": {
+            "description": "The value of the tracking parameter",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ]
+      },
+      "GetTrackingSettingResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TrackingSettingResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "TrackingParamDTO": {
+        "type": "object",
+        "properties": {
+          "flow": {
+            "description": "The value of the tracking parameter when applied to a flow.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FlowTrackingSettingDynamicParam"
+              },
+              {
+                "$ref": "#/components/schemas/FlowTrackingSettingStaticParam"
+              }
+            ]
+          },
+          "campaign": {
+            "description": "The value of the tracking parameter when applied to a campaign.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CampaignTrackingSettingDynamicParam"
+              },
+              {
+                "$ref": "#/components/schemas/CampaignTrackingSettingStaticParam"
+              }
+            ]
+          }
+        }
+      },
+      "TrackingSettingEnum": {
+        "type": "string",
+        "enum": [
+          "tracking-setting"
+        ]
+      },
+      "TrackingSettingResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TrackingSettingEnum"
+          },
+          "id": {
+            "description": "The id of the tracking setting (account ID).",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "auto_add_parameters": {
+                "description": "Whether tracking parameters are automatically added to campaigns and flows.",
+                "type": "boolean"
+              },
+              "utm_source": {
+                "description": "The utm_source tracking parameter.",
+                "$ref": "#/components/schemas/TrackingParamDTO"
+              },
+              "utm_medium": {
+                "description": "The utm_medium tracking parameter.",
+                "$ref": "#/components/schemas/TrackingParamDTO"
+              },
+              "utm_campaign": {
+                "description": "The utm_campaign tracking parameter.",
+                "$ref": "#/components/schemas/TrackingParamDTO",
+                "nullable": true
+              },
+              "utm_id": {
+                "description": "The utm_id tracking parameter.",
+                "$ref": "#/components/schemas/TrackingParamDTO",
+                "nullable": true
+              },
+              "utm_term": {
+                "description": "The utm_term tracking parameter.",
+                "$ref": "#/components/schemas/TrackingParamDTO",
+                "nullable": true
+              },
+              "custom_parameters": {
+                "description": "Additional custom tracking parameters.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CustomTrackingParamDTO"
+                },
+                "nullable": true
+              }
+            },
+            "required": [
+              "auto_add_parameters",
+              "utm_source",
+              "utm_medium"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Tracking Settings",
+      "description": "tracking settings"
+    }
+  ]
+}

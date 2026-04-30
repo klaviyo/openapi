@@ -1,0 +1,504 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/catalog-variant-bulk-delete-jobs": {
+      "post": {
+        "operationId": "bulk_delete_catalog_variants",
+        "summary": "Bulk Delete Catalog Variants",
+        "description": "Create a catalog variant bulk delete job to delete a batch of catalog variants.\n\nAccepts up to 100 catalog variants per request. The maximum allowed payload size is 5MB.\nThe maximum number of jobs in progress at one time is 500.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`catalogs:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogVariantDeleteJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostCatalogVariantDeleteJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Catalogs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "spawn_delete_variants_job",
+          "create_catalog_variant_bulk_delete_job"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "750/m"
+        },
+        "x-klaviyo-scopes": [
+          "catalogs:write"
+        ],
+        "x-klaviyo-subtag": "Variants"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "APIJobErrorPayload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the error.",
+            "type": "string",
+            "example": "e4eebb08-b055-4a6f-bb13-c8cb69c9eb94"
+          },
+          "code": {
+            "description": "A code for classifying the error type.",
+            "type": "string",
+            "example": "invalid"
+          },
+          "title": {
+            "description": "A high-level message about the error.",
+            "type": "string",
+            "example": "Invalid input"
+          },
+          "detail": {
+            "description": "Specific details about the error.",
+            "type": "string",
+            "example": "The payload provided in the request is invalid."
+          },
+          "source": {
+            "description": "Additional information on the source of the error.",
+            "$ref": "#/components/schemas/ErrorSource"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "title",
+          "detail",
+          "source"
+        ]
+      },
+      "CatalogVariantBulkDeleteJobEnum": {
+        "type": "string",
+        "enum": [
+          "catalog-variant-bulk-delete-job"
+        ]
+      },
+      "CatalogVariantDeleteJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogVariantDeleteJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CatalogVariantDeleteJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CatalogVariantBulkDeleteJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "variants": {
+                "description": "Array of catalog variants to delete.",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CatalogVariantDeleteQueryResourceObject"
+                    }
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "variants"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "CatalogVariantDeleteQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CatalogVariantEnum"
+          },
+          "id": {
+            "description": "The catalog variant ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+            "type": "string",
+            "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM"
+          }
+        },
+        "required": [
+          "type",
+          "id"
+        ]
+      },
+      "CatalogVariantEnum": {
+        "type": "string",
+        "enum": [
+          "catalog-variant"
+        ]
+      },
+      "ErrorSource": {
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "description": "A pointer to the source of the error in the request payload.",
+            "type": "string",
+            "example": "/data",
+            "default": "/data",
+            "nullable": true
+          }
+        }
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostCatalogVariantDeleteJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/CatalogVariantBulkDeleteJobEnum"
+              },
+              "id": {
+                "description": "Unique identifier for retrieving the job. Generated by Klaviyo.",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "Status of the asynchronous job.",
+                    "type": "string",
+                    "example": "processing",
+                    "enum": [
+                      "cancelled",
+                      "complete",
+                      "processing",
+                      "queued"
+                    ]
+                  },
+                  "created_at": {
+                    "description": "The date and time the job was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
+                  "total_count": {
+                    "description": "The total number of operations to be processed by the job. See `completed_count` for the job's current progress.",
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "completed_count": {
+                    "description": "The total number of operations that have been completed by the job.",
+                    "type": "integer",
+                    "example": 9,
+                    "default": 0,
+                    "nullable": true
+                  },
+                  "failed_count": {
+                    "description": "The total number of operations that have failed as part of the job.",
+                    "type": "integer",
+                    "example": 1,
+                    "default": 0,
+                    "nullable": true
+                  },
+                  "completed_at": {
+                    "description": "Date and time the job was completed in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "errors": {
+                    "description": "Array of errors encountered during the processing of the job.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/APIJobErrorPayload"
+                    },
+                    "nullable": true
+                  },
+                  "expires_at": {
+                    "description": "Date and time the job expires in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "status",
+                  "created_at",
+                  "total_count"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "variants": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/CatalogVariantEnum"
+                            },
+                            "id": {
+                              "description": "IDs of the deleted catalog variants.",
+                              "type": "string",
+                              "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Catalogs",
+      "description": "catalogs"
+    }
+  ]
+}

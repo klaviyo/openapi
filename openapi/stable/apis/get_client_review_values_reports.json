@@ -1,0 +1,522 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/client/review-values-reports": {
+      "get": {
+        "operationId": "get_client_review_values_reports",
+        "summary": "Get Client Review Values Reports",
+        "description": "Get all reviews values reports in an account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "fields[review-values-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`product_external_ids`: `any`, `equals`",
+            "schema": {
+              "type": "string",
+              "example": "equals(product_external_ids,'example')"
+            }
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "group by value for this report",
+            "required": true,
+            "schema": {
+              "description": "group by value for this report",
+              "type": "string",
+              "example": "product_id",
+              "enum": [
+                "company_id",
+                "product_id"
+              ]
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "statistics",
+            "in": "query",
+            "description": "list of statistics to calculate for this report",
+            "required": true,
+            "schema": {
+              "description": "list of statistics to calculate for this report",
+              "type": "string",
+              "example": "average_rating,total_reviews"
+            }
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "description": "timeframe window for value report",
+            "required": true,
+            "schema": {
+              "description": "timeframe window for value report",
+              "type": "string",
+              "example": "all_time",
+              "enum": [
+                "all_time",
+                "last_30_days",
+                "last_365_days",
+                "last_90_days"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetReviewValuesReportResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": []
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "GetReviewValuesReportResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewValuesReportResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GroupingCompany": {
+        "type": "object",
+        "properties": {
+          "company_id": {
+            "description": "The ID of the company",
+            "type": "string",
+            "example": "67890"
+          }
+        },
+        "required": [
+          "company_id"
+        ]
+      },
+      "GroupingProduct": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "description": "The ID of the product",
+            "type": "string",
+            "example": "12345"
+          }
+        },
+        "required": [
+          "product_id"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ReviewValueReportGrouping": {
+        "type": "object",
+        "properties": {
+          "groupings": {
+            "description": "Grouping details, either by product or company",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GroupingProduct"
+              },
+              {
+                "$ref": "#/components/schemas/GroupingCompany"
+              }
+            ]
+          },
+          "statistics": {
+            "description": "Statistics related to the grouping",
+            "example": {
+              "average_rating": 4.5,
+              "total_reviews": 100,
+              "total_questions": 50,
+              "total_ratings": 200,
+              "total_store_reviews": 5000,
+              "average_store_rating": 2
+            },
+            "$ref": "#/components/schemas/StatisticsDTO"
+          }
+        },
+        "required": [
+          "groupings",
+          "statistics"
+        ]
+      },
+      "ReviewValuesReportEnum": {
+        "type": "string",
+        "enum": [
+          "review-values-report"
+        ]
+      },
+      "ReviewValuesReportResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ReviewValuesReportEnum"
+          },
+          "id": {
+            "description": "The unique identifier for the reviews values report",
+            "type": "string",
+            "example": "925e385b52fb405715f3616c337cc65c"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "description": "The list of groupings and their corresponding statistics in the reviews values report",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReviewValueReportGrouping"
+                },
+                "example": [
+                  {
+                    "groupings": {
+                      "product_id": "id1"
+                    },
+                    "statistics": {
+                      "total_ratings": 459,
+                      "average_rating": 4.5
+                    }
+                  },
+                  {
+                    "groupings": {
+                      "product_id": "id2"
+                    },
+                    "statistics": {
+                      "total_ratings": 459,
+                      "average_rating": 2.5
+                    }
+                  }
+                ]
+              }
+            },
+            "required": [
+              "results"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "StatisticsDTO": {
+        "type": "object",
+        "properties": {
+          "average_rating": {
+            "description": "The average rating",
+            "type": "number",
+            "example": 4.5,
+            "nullable": true
+          },
+          "total_reviews": {
+            "description": "The total number of reviews",
+            "type": "integer",
+            "example": 100,
+            "nullable": true
+          },
+          "total_questions": {
+            "description": "The total number of questions",
+            "type": "integer",
+            "example": 50,
+            "nullable": true
+          },
+          "total_ratings": {
+            "description": "The total number of ratings",
+            "type": "integer",
+            "example": 200,
+            "nullable": true
+          },
+          "total_store_reviews": {
+            "description": "The total number of store reviews",
+            "type": "integer",
+            "example": 5000,
+            "nullable": true
+          },
+          "average_store_rating": {
+            "description": "The average rating of store reviews",
+            "type": "number",
+            "example": 2,
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Client",
+      "description": "client"
+    }
+  ]
+}

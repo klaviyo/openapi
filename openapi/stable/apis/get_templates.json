@@ -1,0 +1,5831 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/templates": {
+      "get": {
+        "operationId": "get_templates",
+        "summary": "Get Templates",
+        "description": "Get all templates in an account.\n\nUse `additional-fields[template]=definition` to include the full template\ndefinition for SYSTEM_DRAGGABLE templates.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`templates:read`",
+        "parameters": [
+          {
+            "name": "additional-fields[template]",
+            "in": "query",
+            "description": "Request additional fields not included by default in the response. Supported values: 'definition'",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "definition"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[template]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "amp",
+                  "created",
+                  "definition",
+                  "definition.body",
+                  "definition.body.id",
+                  "definition.body.properties",
+                  "definition.body.properties.css_class",
+                  "definition.body.properties.id",
+                  "definition.body.sections",
+                  "definition.body.styles",
+                  "definition.body.styles.background_color",
+                  "definition.body.styles.width",
+                  "definition.id",
+                  "definition.styles",
+                  "definition.template_id",
+                  "editor_type",
+                  "html",
+                  "name",
+                  "text",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals`<br>`name`: `any`, `contains`, `equals`<br>`created`: `equals`, `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`updated`: `equals`, `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "schema": {
+              "type": "string",
+              "example": "equals(id,['example'])"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 10. Min: 1. Max: 10.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 10,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created",
+                "id",
+                "-id",
+                "name",
+                "-name",
+                "updated",
+                "-updated"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTemplateDndResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Templates"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "750/m"
+        },
+        "x-klaviyo-scopes": [
+          "templates:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "BaseStyle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "style_type": {
+            "type": "string",
+            "enum": [
+              "base-styles"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/BaseStyleProperties"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/BaseStyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "properties",
+          "styles"
+        ]
+      },
+      "BaseStyleProperties": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "currency_set_on_template": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "disable_websafe_fonts": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_user_draggable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "mobile_optimizations": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "BaseStyleStyles": {
+        "type": "object",
+        "properties": {
+          "background_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "background_format": {
+            "description": "Background format.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "contain",
+              "cover",
+              "initial",
+              "repeat"
+            ],
+            "nullable": true
+          },
+          "background_position": {
+            "description": "Background position.",
+            "type": "string",
+            "enum": [
+              "center-bottom",
+              "center-center",
+              "center-top",
+              "left-bottom",
+              "left-center",
+              "left-top",
+              "right-bottom",
+              "right-center",
+              "right-top"
+            ],
+            "nullable": true
+          },
+          "background_repeat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "background_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_radius": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "content_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "margin_top": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "Body": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "properties": {
+            "$ref": "#/components/schemas/BodyProperties"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/BodyStyles"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SectionV1"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "properties",
+          "styles"
+        ]
+      },
+      "BodyProperties": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "css_class": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "BodyStyles": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "ButtonBlockData": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "nullable": true,
+            "type": "string"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ButtonBlockProperties"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ButtonBlockStyles"
+          }
+        },
+        "required": [
+          "content",
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "ButtonBlockProperties": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ButtonBlockStyles": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_radius": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "drop_shadow_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_stretch_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stretch": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ButtonBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "button"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/ButtonBlockData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ColumnData": {
+        "type": "object",
+        "maxProperties": 0
+      },
+      "ColumnV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ColumnData",
+            "nullable": true
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ButtonBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/CouponBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/DropShadowBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/HeaderBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/HorizontalRuleBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/HTMLBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/ImageBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/ProductBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/ReviewBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/SocialBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/SpacerBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/SplitBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/TableBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/TextBlockV1"
+                },
+                {
+                  "$ref": "#/components/schemas/VideoBlockV1"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        }
+      },
+      "ContentRepeatV1": {
+        "type": "object",
+        "properties": {
+          "repeat_for": {
+            "type": "string"
+          },
+          "item_alias": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "repeat_for",
+          "item_alias"
+        ]
+      },
+      "CouponBlockData": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/CouponBlockProperties"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/CouponBlockStyles"
+          }
+        },
+        "required": [
+          "content",
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "CouponBlockProperties": {
+        "type": "object",
+        "properties": {
+          "coupon_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "coupon": {
+            "type": "string",
+            "nullable": true
+          },
+          "header_enabled": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CouponBlockStyles": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_radius": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "header_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "header_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_stretch_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stretch": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CouponBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "coupon"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/CouponBlockData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "DisplayOptions": {
+        "type": "object",
+        "properties": {
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "content_repeat": {
+            "$ref": "#/components/schemas/ContentRepeatV1",
+            "nullable": true
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility",
+            "nullable": true
+          }
+        }
+      },
+      "DropShadowBlockData": {
+        "type": "object",
+        "properties": {
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/DropShadowBlockStyles"
+          }
+        },
+        "required": [
+          "display_options",
+          "styles"
+        ]
+      },
+      "DropShadowBlockStyles": {
+        "type": "object",
+        "properties": {
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_stretch_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "shadow_color": {
+            "description": "Shadow color.",
+            "type": "string",
+            "enum": [
+              "dark",
+              "light",
+              "medium"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "DropShadowBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "drop_shadow"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/DropShadowBlockData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "DynamicImageBlockProperties": {
+        "type": "object",
+        "properties": {
+          "dynamic": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dynamic"
+        ]
+      },
+      "DynamicProductBlockProperties": {
+        "type": "object",
+        "properties": {
+          "is_ai_generated": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_prebuilt_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "item_subtype_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_button": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_original_price": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_price": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_rating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_rating_count": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_title": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_title_links": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "title_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "dynamic": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "button_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "feed": {
+            "type": "string",
+            "nullable": true
+          },
+          "feed_offset": {
+            "type": "integer",
+            "nullable": true
+          },
+          "is_nbp": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dynamic"
+        ]
+      },
+      "DynamicReviewBlockProperties": {
+        "type": "object",
+        "properties": {
+          "show_rating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_reviewer_name": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_product_name": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_variant_name": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_verified_badge": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "author_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "quote_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_name_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_variant_name_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_badge_language": {
+            "description": "Review block verified badge language.",
+            "type": "string",
+            "enum": [
+              "dutch",
+              "english",
+              "french",
+              "german",
+              "hungarian",
+              "italian",
+              "japanese",
+              "korean",
+              "portuguese",
+              "spanish"
+            ],
+            "nullable": true
+          },
+          "dynamic": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "fallback_options": {
+            "description": "Review block fallback options for dynamic selection.",
+            "type": "string",
+            "enum": [
+              "high-quality-review",
+              "high-quality-review-or-static",
+              "no-review",
+              "recent",
+              "static-only"
+            ],
+            "nullable": true
+          },
+          "fallback_content_type": {
+            "description": "Review block fallback content type.",
+            "type": "string",
+            "enum": [
+              "full",
+              "quote"
+            ],
+            "nullable": true
+          },
+          "fallback_review_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_selection_mode": {
+            "description": "Review block product selection mode.",
+            "type": "string",
+            "enum": [
+              "automatic",
+              "manual"
+            ],
+            "nullable": true
+          },
+          "product_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_event_variable": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dynamic"
+        ]
+      },
+      "DynamicTableBlockProperties": {
+        "type": "object",
+        "properties": {
+          "dynamic": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "num_columns": {
+            "type": "integer",
+            "nullable": true
+          },
+          "row_content_repeat": {
+            "$ref": "#/components/schemas/ContentRepeatV1",
+            "nullable": true
+          },
+          "show_headers": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_fallback_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_static_row": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dynamic"
+        ]
+      },
+      "GetTemplateDndResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "properties": {
+                    "type": {
+                      "$ref": "#/components/schemas/TemplateEnum"
+                    },
+                    "attributes": {
+                      "properties": {
+                        "definition": {
+                          "description": "Template definition for SYSTEM_DRAGGABLE templates. Omitted for CODE/USER_DRAGGABLE. Use additional-fields[template]=definition to include in list responses.",
+                          "$ref": "#/components/schemas/TemplateDefinition",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/components/schemas/TemplateDndResponseObjectResource"
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "HTMLBlockDataV1": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          }
+        },
+        "required": [
+          "content",
+          "display_options"
+        ]
+      },
+      "HTMLBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "html"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/HTMLBlockDataV1"
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "HeaderBlockData": {
+        "type": "object",
+        "properties": {
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/HeaderBlockStyles"
+          }
+        },
+        "required": [
+          "display_options",
+          "styles"
+        ]
+      },
+      "HeaderBlockStyles": {
+        "type": "object",
+        "properties": {
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_radius": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "desktop_layout": {
+            "description": "Header block desktop layout.",
+            "type": "string",
+            "enum": [
+              "centered",
+              "inline",
+              "links",
+              "stacked"
+            ],
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "item_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "item_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "item_spacing_type": {
+            "description": "Header block item spacing type.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "manual"
+            ],
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "logo_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "logo_link_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_layout": {
+            "description": "Header block mobile layout.",
+            "type": "string",
+            "enum": [
+              "inline",
+              "links",
+              "links-stacked",
+              "logo-stacked",
+              "stacked"
+            ],
+            "nullable": true
+          },
+          "mobile_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_wrap": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "vertical_align": {
+            "description": "Vertical alignment.",
+            "type": "string",
+            "enum": [
+              "baseline",
+              "bottom",
+              "middle",
+              "top"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "HeaderBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "header"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/HeaderBlockData",
+            "nullable": true
+          },
+          "subblocks": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/HeaderLinkSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/HeaderImageSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/HeaderLogoSubBlock"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "HeaderImageSubBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "header_link_bar_image"
+            ]
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "max_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "HeaderLinkSubBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "header_link_bar_button"
+            ]
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "nullable": true,
+            "type": "string"
+          },
+          "drop_shadow_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "HeaderLogoSubBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "header_link_bar_logo"
+            ]
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "max_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "Heading1Style": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "style_type": {
+            "type": "string",
+            "enum": [
+              "heading-1-styles"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/HeadingStyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "styles"
+        ]
+      },
+      "Heading2Style": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "style_type": {
+            "type": "string",
+            "enum": [
+              "heading-2-styles"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/HeadingStyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "styles"
+        ]
+      },
+      "Heading3Style": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "style_type": {
+            "type": "string",
+            "enum": [
+              "heading-3-styles"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/HeadingStyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "styles"
+        ]
+      },
+      "Heading4Style": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "style_type": {
+            "type": "string",
+            "enum": [
+              "heading-4-styles"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/HeadingStyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "styles"
+        ]
+      },
+      "HeadingStyleStyles": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "margin_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HorizontalRuleBlockData": {
+        "type": "object",
+        "properties": {
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/HorizontalRuleBlockStyles"
+          }
+        },
+        "required": [
+          "display_options",
+          "styles"
+        ]
+      },
+      "HorizontalRuleBlockStyles": {
+        "type": "object",
+        "properties": {
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_stretch_content": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "HorizontalRuleBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "horizontal_rule"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/HorizontalRuleBlockData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ImageBlockCroppingProperties": {
+        "type": "object",
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "nullable": true
+          },
+          "asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "x": {
+            "type": "integer",
+            "nullable": true
+          },
+          "y": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "ImageBlockData": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticImageBlockProperties"
+              },
+              {
+                "$ref": "#/components/schemas/DynamicImageBlockProperties"
+              }
+            ]
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ImageBlockStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "ImageBlockStyles": {
+        "type": "object",
+        "properties": {
+          "align": {
+            "description": "Image Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "block_border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "full_width_mobile": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "max_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_stretch_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "ImageBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "image"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/ImageBlockData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "LinkStyle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "style_type": {
+            "type": "string",
+            "enum": [
+              "link-styles"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/LinkStyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "styles"
+        ]
+      },
+      "LinkStyleStyles": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "MobileStyle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "style_type": {
+            "type": "string",
+            "enum": [
+              "mobile-styles"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/MobileStyleProperties"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/MobileStyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "properties",
+          "styles"
+        ]
+      },
+      "MobileStyleProperties": {
+        "type": "object",
+        "properties": {
+          "mobile_padding_override": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "MobileStyleStyles": {
+        "type": "object",
+        "properties": {
+          "mobile_block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_margin": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_padding_top": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ProductBlockData": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticProductBlockProperties"
+              },
+              {
+                "$ref": "#/components/schemas/DynamicProductBlockProperties"
+              }
+            ]
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ProductBlockStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "ProductBlockStyles": {
+        "type": "object",
+        "properties": {
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_alignment": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "button_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "button_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "button_border_radius": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "button_border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_drop_shadow_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "button_font_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "button_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "button_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "button_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "button_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "button_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "description_font_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "description_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "description_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "description_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "description_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "description_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "description_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "description_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "description_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "item_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "item_border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "item_border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "item_max_height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "item_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "item_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "item_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "item_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "item_text_alignment": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "layout": {
+            "description": "Product layout options.",
+            "type": "string",
+            "enum": [
+              "horizontal",
+              "vertical-left-image",
+              "vertical-right-image"
+            ],
+            "nullable": true
+          },
+          "num_columns": {
+            "type": "integer",
+            "nullable": true
+          },
+          "num_rows": {
+            "type": "integer",
+            "nullable": true
+          },
+          "original_price_font_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "original_price_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "original_price_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "original_price_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "original_price_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "original_price_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "price_font_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "price_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "price_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "price_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "price_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "price_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "price_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "price_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "price_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating_font_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "rating_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "rating_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "rating_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "rating_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "rating_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "stack_on_mobile": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "title_font_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "title_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "title_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "title_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "title_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "title_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "title_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "title_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "title_text_decoration": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ProductBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "product"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProductBlockData",
+            "nullable": true
+          },
+          "subblocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductSubBlock"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "ProductSubBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "product"
+            ]
+          },
+          "product_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "external_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "autogenerate_link": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "button_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "image_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "link": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "original_price": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "string",
+            "nullable": true
+          },
+          "currency_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "ReviewBlockData": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticReviewBlockProperties"
+              },
+              {
+                "$ref": "#/components/schemas/DynamicReviewBlockProperties"
+              }
+            ]
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ReviewBlockStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "ReviewBlockStyles": {
+        "type": "object",
+        "properties": {
+          "author_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "author_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "author_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "author_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "author_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "author_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "author_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "author_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_radius": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "empty_star_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "layout": {
+            "description": "Review block layout options.",
+            "type": "string",
+            "enum": [
+              "big-quotes",
+              "centered-in-quote-bubble",
+              "centered-rating-first",
+              "centered-review-first",
+              "clean",
+              "left-aligned",
+              "message-bubble",
+              "rating-highlight",
+              "right-aligned-with-quotation-icon",
+              "square",
+              "stacked-card",
+              "subtle-background"
+            ],
+            "nullable": true
+          },
+          "product_name_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "product_name_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_name_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_name_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "product_name_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "product_name_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_name_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "product_name_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "quote_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "quote_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "quote_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "quote_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "quote_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "quote_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "quote_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "quote_line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "quote_style": {
+            "description": "Review block quote style.",
+            "type": "string",
+            "enum": [
+              "line",
+              "square",
+              "standard"
+            ],
+            "nullable": true
+          },
+          "quote_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "shadow_color": {
+            "description": "Shadow color.",
+            "type": "string",
+            "enum": [
+              "dark",
+              "light",
+              "medium"
+            ],
+            "nullable": true
+          },
+          "star_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "star_size": {
+            "description": "Review block star size.",
+            "type": "string",
+            "enum": [
+              "large",
+              "medium",
+              "small"
+            ],
+            "nullable": true
+          },
+          "star_rating_shape": {
+            "description": "Review block star rating shape.",
+            "type": "string",
+            "enum": [
+              "circle",
+              "heart",
+              "star"
+            ],
+            "nullable": true
+          },
+          "star_icon_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "star_alignment": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "text_area_bg_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_area_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "verified_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "verified_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "verified_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_badge_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_badge_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "verified_badge_style": {
+            "description": "Review block verified badge style.",
+            "type": "string",
+            "enum": [
+              "badge-and-text",
+              "badge-only",
+              "text-only"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "ReviewBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "review"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReviewBlockData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "RowData": {
+        "type": "object",
+        "properties": {
+          "styles": {
+            "$ref": "#/components/schemas/RowStyles"
+          }
+        },
+        "required": [
+          "styles"
+        ]
+      },
+      "RowStyles": {
+        "type": "object",
+        "properties": {
+          "column_layout": {
+            "description": "Column layout.",
+            "type": "string",
+            "enum": [
+              "1-column-full-width",
+              "2-columns-25%-75%",
+              "2-columns-33%-67%",
+              "2-columns-67%-33%",
+              "2-columns-75%-25%",
+              "2-columns-equal-width",
+              "3-columns-25%-25%-50%",
+              "3-columns-25%-50%-25%",
+              "3-columns-50%-25%-25%",
+              "3-columns-equal-width",
+              "4-columns-equal-width"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "RowV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/RowData"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ColumnV1"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SectionData": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "$ref": "#/components/schemas/SectionProperties"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SectionStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "SectionProperties": {
+        "type": "object",
+        "properties": {
+          "is_ai_generated": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_prebuilt_content": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "SectionStyles": {
+        "type": "object",
+        "properties": {
+          "background_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "background_format": {
+            "description": "Background format.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "contain",
+              "cover",
+              "initial",
+              "repeat"
+            ],
+            "nullable": true
+          },
+          "background_image_full_width": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "background_position": {
+            "description": "Background position.",
+            "type": "string",
+            "enum": [
+              "center-bottom",
+              "center-center",
+              "center-top",
+              "left-bottom",
+              "left-center",
+              "left-top",
+              "right-bottom",
+              "right-center",
+              "right-top"
+            ],
+            "nullable": true
+          },
+          "background_repeat": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "background_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "column_align": {
+            "description": "Vertical alignment.",
+            "type": "string",
+            "enum": [
+              "baseline",
+              "bottom",
+              "middle",
+              "top"
+            ],
+            "nullable": true
+          },
+          "column_direction": {
+            "description": "Stacking direction.",
+            "type": "string",
+            "enum": [
+              "ltr",
+              "no-stack",
+              "rtl"
+            ],
+            "nullable": true
+          },
+          "content_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "content_color_type": {
+            "description": "Content color type.",
+            "type": "string",
+            "enum": [
+              "none",
+              "section",
+              "template"
+            ],
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "stack_on_mobile": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "SectionV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "section"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "section"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/SectionData"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RowV1"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SocialBlockData": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "$ref": "#/components/schemas/SocialBlockProperties"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SocialBlockStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "SocialBlockProperties": {
+        "type": "object",
+        "properties": {
+          "show_labels": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "SocialBlockStyles": {
+        "type": "object",
+        "properties": {
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "icon_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "icon_color": {
+            "description": "Social block icon color.",
+            "type": "string",
+            "enum": [
+              "black",
+              "default",
+              "grey",
+              "white"
+            ],
+            "nullable": true
+          },
+          "icon_size": {
+            "description": "Social block icon size.",
+            "type": "string",
+            "enum": [
+              "large",
+              "medium",
+              "small"
+            ],
+            "nullable": true
+          },
+          "icon_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "label_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "label_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "label_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "label_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "label_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "label_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "stack_on_mobile": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "SocialBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "social"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/SocialBlockData",
+            "nullable": true
+          },
+          "subblocks": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/SocialIconSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/SocialSpacerSubBlock"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SocialIconSubBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "social_link_icon"
+            ]
+          },
+          "custom_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_src": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "link_type": {
+            "description": "Social block link type.",
+            "type": "string",
+            "enum": [
+              "android",
+              "apple",
+              "custom",
+              "discord",
+              "email",
+              "facebook",
+              "google-plus",
+              "instagram",
+              "linkedin",
+              "pinterest",
+              "rss",
+              "snapchat",
+              "threads",
+              "tiktok",
+              "twitch",
+              "twitter",
+              "whatsapp",
+              "x-twitter",
+              "yelp",
+              "youtube"
+            ],
+            "nullable": true
+          },
+          "link_url": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SocialSpacerSubBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "social_link_spacer"
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SpacerBlockData": {
+        "type": "object",
+        "properties": {
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SpacerBlockStyles"
+          }
+        },
+        "required": [
+          "display_options",
+          "styles"
+        ]
+      },
+      "SpacerBlockStyles": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "SpacerBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "spacer"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/SpacerBlockData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "SplitBlockData": {
+        "type": "object",
+        "properties": {
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/SplitBlockStyles"
+          }
+        },
+        "required": [
+          "display_options",
+          "styles"
+        ]
+      },
+      "SplitBlockStyles": {
+        "type": "object",
+        "properties": {
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "column_widths": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobile_stack_order": {
+            "description": "Stacking direction.",
+            "type": "string",
+            "enum": [
+              "ltr",
+              "no-stack",
+              "rtl"
+            ],
+            "nullable": true
+          },
+          "padding_in_between": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "SplitBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "split"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/SplitBlockData",
+            "nullable": true
+          },
+          "subblocks": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/TableTextSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableImageSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableHtmlSubBlock"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "StaticImageBlockProperties": {
+        "type": "object",
+        "properties": {
+          "dynamic": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "nullable": true
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "cropping_properties": {
+            "$ref": "#/components/schemas/ImageBlockCroppingProperties",
+            "nullable": true,
+            "readOnly": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dynamic"
+        ]
+      },
+      "StaticProductBlockProperties": {
+        "type": "object",
+        "properties": {
+          "is_ai_generated": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_prebuilt_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "item_subtype_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_button": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_original_price": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_price": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_rating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_rating_count": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_title": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_title_links": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "title_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "dynamic": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "nullable": true
+          },
+          "show_description": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "localize_for_recipient": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "nullable": true
+          },
+          "region": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dynamic"
+        ]
+      },
+      "StaticReviewBlockProperties": {
+        "type": "object",
+        "properties": {
+          "show_rating": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_reviewer_name": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_product_name": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_variant_name": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "show_verified_badge": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "author_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "quote_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_name_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_variant_name_placeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_badge_language": {
+            "description": "Review block verified badge language.",
+            "type": "string",
+            "enum": [
+              "dutch",
+              "english",
+              "french",
+              "german",
+              "hungarian",
+              "italian",
+              "japanese",
+              "korean",
+              "portuguese",
+              "spanish"
+            ],
+            "nullable": true
+          },
+          "dynamic": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "product_variant_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "quote": {
+            "type": "string",
+            "nullable": true
+          },
+          "stars": {
+            "type": "integer",
+            "nullable": true
+          },
+          "verified": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dynamic"
+        ]
+      },
+      "StaticTableBlockProperties": {
+        "type": "object",
+        "properties": {
+          "dynamic": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "nullable": true
+          },
+          "num_columns": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_headers": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dynamic"
+        ]
+      },
+      "TableBlockData": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticTableBlockProperties"
+              },
+              {
+                "$ref": "#/components/schemas/DynamicTableBlockProperties"
+              }
+            ]
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/TableBlockStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "TableBlockStyles": {
+        "type": "object",
+        "properties": {
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "block_border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cell_horizontal_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "cell_horizontal_border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "cell_horizontal_border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cell_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cell_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cell_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cell_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cell_vertical_align": {
+            "description": "Vertical alignment.",
+            "type": "string",
+            "enum": [
+              "baseline",
+              "bottom",
+              "middle",
+              "top"
+            ],
+            "nullable": true
+          },
+          "cell_vertical_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "cell_vertical_border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "cell_vertical_border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "header_font_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "header_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "header_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "header_font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "header_letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "header_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "header_text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "table_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "table_font_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "table_font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "table_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "table_text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "use_legacy_mobile_padding": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "TableBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/TableBlockData",
+            "nullable": true
+          },
+          "subblocks": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/TableHeaderSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableHtmlSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableImageSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableTextSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableFallbackHtmlSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableFallbackImageSubBlock"
+                },
+                {
+                  "$ref": "#/components/schemas/TableFallbackTextSubBlock"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "TableFallbackHtmlSubBlock": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "nullable": true,
+            "type": "string"
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table_fallback_html"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "TableFallbackImageSubBlock": {
+        "type": "object",
+        "properties": {
+          "dynamic": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "image_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "image_align": {
+            "description": "Image Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "table_column_width": {
+            "type": "string",
+            "nullable": true
+          },
+          "cell_text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "cropped_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "cropped_src": {
+            "type": "string",
+            "nullable": true
+          },
+          "cropping_aspect_ratio": {
+            "type": "string",
+            "nullable": true
+          },
+          "cropping_height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cropping_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cropping_x": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cropping_y": {
+            "type": "integer",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table_fallback_image"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "TableFallbackTextSubBlock": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "nullable": true,
+            "type": "string"
+          },
+          "cell_text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "table_column_width": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table_fallback_text"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "TableHeaderSubBlock": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "nullable": true,
+            "type": "string"
+          },
+          "cell_text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "table_column_width": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table_header"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "TableHtmlSubBlock": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "nullable": true,
+            "type": "string"
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table_html"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "TableImageSubBlock": {
+        "type": "object",
+        "properties": {
+          "dynamic": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "image_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "image_align": {
+            "description": "Image Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "table_column_width": {
+            "type": "string",
+            "nullable": true
+          },
+          "cell_text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "cropped_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "cropped_src": {
+            "type": "string",
+            "nullable": true
+          },
+          "cropping_aspect_ratio": {
+            "type": "string",
+            "nullable": true
+          },
+          "cropping_height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cropping_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cropping_x": {
+            "type": "integer",
+            "nullable": true
+          },
+          "cropping_y": {
+            "type": "integer",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table_image"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "TableTextSubBlock": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "nullable": true,
+            "type": "string"
+          },
+          "cell_text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "show_on": {
+            "description": "Show on.",
+            "type": "string",
+            "enum": [
+              "all",
+              "desktop",
+              "mobile"
+            ],
+            "nullable": true
+          },
+          "table_column_width": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "table_text"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "TemplateDefinition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "template_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "body": {
+            "$ref": "#/components/schemas/Body"
+          },
+          "styles": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/BaseStyle"
+                },
+                {
+                  "$ref": "#/components/schemas/TextStyleV1"
+                },
+                {
+                  "$ref": "#/components/schemas/Heading1Style"
+                },
+                {
+                  "$ref": "#/components/schemas/Heading2Style"
+                },
+                {
+                  "$ref": "#/components/schemas/Heading3Style"
+                },
+                {
+                  "$ref": "#/components/schemas/Heading4Style"
+                },
+                {
+                  "$ref": "#/components/schemas/LinkStyle"
+                },
+                {
+                  "$ref": "#/components/schemas/MobileStyle"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "body",
+          "styles"
+        ]
+      },
+      "TemplateDndResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TemplateEnum"
+          },
+          "id": {
+            "description": "The ID of template",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name of the template",
+                "type": "string"
+              },
+              "editor_type": {
+                "description": "`editor_type` has a fixed set of values:\n* SYSTEM_DRAGGABLE: indicates a drag-and-drop editor template\n* SIMPLE: A rich text editor template\n* CODE: A custom HTML template\n* USER_DRAGGABLE: A hybrid template, using custom HTML in the drag-and-drop editor",
+                "type": "string"
+              },
+              "html": {
+                "description": "The rendered HTML of the template",
+                "type": "string"
+              },
+              "text": {
+                "description": "The template plain_text",
+                "type": "string",
+                "nullable": true
+              },
+              "amp": {
+                "description": "The AMP version of the template. Requires AMP Email to be enabled to access in-app. Refer to the AMP Email setup guide at https://developers.klaviyo.com/en/docs/send_amp_emails_in_klaviyo",
+                "type": "string",
+                "nullable": true
+              },
+              "created": {
+                "description": "The date the template was created in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "The date the template was updated in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              }
+            },
+            "required": [
+              "name",
+              "editor_type",
+              "html"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "TemplateEnum": {
+        "type": "string",
+        "enum": [
+          "template"
+        ]
+      },
+      "TextBlockDataV1": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/TextBlockStylesV1"
+          }
+        },
+        "required": [
+          "content",
+          "display_options",
+          "styles"
+        ]
+      },
+      "TextBlockStylesV1": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "block_border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "extra_css_class": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "mobile_stretch_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          },
+          "text_table_layout": {
+            "description": "Text table layout.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "fixed",
+              "inherit",
+              "initial"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "TextBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/TextBlockDataV1"
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "TextStyleStyles": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ],
+            "nullable": true
+          },
+          "font_weight": {
+            "type": "string",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "mobile_font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_line_height": {
+            "type": "number",
+            "nullable": true
+          },
+          "text_align": {
+            "description": "Text Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "text_decoration": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TextStyleV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "style_type": {
+            "type": "string",
+            "enum": [
+              "text-styles"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/TextStyleStyles"
+          }
+        },
+        "required": [
+          "style_type",
+          "styles"
+        ]
+      },
+      "VideoBlockData": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "$ref": "#/components/schemas/VideoBlockProperties"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/DisplayOptions"
+          },
+          "styles": {
+            "$ref": "#/components/schemas/VideoBlockStyles"
+          }
+        },
+        "required": [
+          "properties",
+          "display_options",
+          "styles"
+        ]
+      },
+      "VideoBlockProperties": {
+        "type": "object",
+        "properties": {
+          "raw_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "src_asset_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "overlay_toggle": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "raw_src": {
+            "type": "string",
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VideoBlockStyles": {
+        "type": "object",
+        "properties": {
+          "align": {
+            "description": "Image Alignment.",
+            "type": "string",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ],
+            "nullable": true
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "block_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "groove",
+              "inset",
+              "none",
+              "outset",
+              "ridge",
+              "solid"
+            ],
+            "nullable": true
+          },
+          "border_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "full_width_mobile": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_bottom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_left": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_right": {
+            "type": "integer",
+            "nullable": true
+          },
+          "inner_padding_top": {
+            "type": "integer",
+            "nullable": true
+          },
+          "max_width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mobile_stretch_content": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "VideoBlockV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "universal_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "video"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/VideoBlockData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
+      "Visibility": {
+        "type": "object",
+        "properties": {
+          "check": {
+            "type": "string",
+            "nullable": true
+          },
+          "definition": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_code_only": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Templates",
+      "description": "templates"
+    }
+  ]
+}

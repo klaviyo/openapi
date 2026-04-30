@@ -1,0 +1,3701 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/client/review-values-reports": {
+      "get": {
+        "operationId": "get_client_review_values_reports",
+        "summary": "Get Client Review Values Reports",
+        "description": "Get all reviews values reports in an account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "fields[review-values-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`product_external_ids`: `any`, `equals`",
+            "schema": {
+              "type": "string",
+              "example": "equals(product_external_ids,'example')"
+            }
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "group by value for this report",
+            "required": true,
+            "schema": {
+              "description": "group by value for this report",
+              "type": "string",
+              "example": "product_id",
+              "enum": [
+                "company_id",
+                "product_id"
+              ]
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "statistics",
+            "in": "query",
+            "description": "list of statistics to calculate for this report",
+            "required": true,
+            "schema": {
+              "description": "list of statistics to calculate for this report",
+              "type": "string",
+              "example": "average_rating,total_reviews"
+            }
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "description": "timeframe window for value report",
+            "required": true,
+            "schema": {
+              "description": "timeframe window for value report",
+              "type": "string",
+              "example": "all_time",
+              "enum": [
+                "all_time",
+                "last_30_days",
+                "last_365_days",
+                "last_90_days"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetReviewValuesReportResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": []
+      }
+    },
+    "/client/reviews": {
+      "get": {
+        "operationId": "get_client_reviews",
+        "summary": "Get Client Reviews",
+        "description": "Get all reviews. This endpoint is for client-side environments only, for server-side use, refer to https://developers.klaviyo.com/en/reference/get_reviews<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "fields[review]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "author",
+                  "content",
+                  "created",
+                  "images",
+                  "product",
+                  "product.external_id",
+                  "product.image_url",
+                  "product.name",
+                  "product.url",
+                  "public_reply",
+                  "public_reply.author",
+                  "public_reply.content",
+                  "public_reply.updated",
+                  "rating",
+                  "review_type",
+                  "smart_quote",
+                  "status",
+                  "status.rejection_reason",
+                  "status.rejection_reason.reason",
+                  "status.rejection_reason.status_explanation",
+                  "status.value",
+                  "title",
+                  "updated",
+                  "verified"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`status`: `equals`<br>`review_type`: `equals`<br>`rating`: `any`, `equals`, `greater-or-equal`, `less-or-equal`<br>`id`: `any`, `equals`<br>`content`: `contains`<br>`smart_quote`: `has`<br>`public_reply`: `has`<br>`verified`: `equals`<br>`incentivized`: `equals`<br>`edited`: `equals`<br>`media`: `has`<br>`created`: `greater-or-equal`, `less-or-equal`<br>`updated`: `greater-or-equal`, `less-or-equal`",
+            "schema": {
+              "type": "string",
+              "example": "equals(status,'published')"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created",
+                "rating",
+                "-rating",
+                "updated",
+                "-updated"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetClientReviewResponseDTOCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": []
+      },
+      "post": {
+        "operationId": "create_client_review",
+        "summary": "Create Client Review",
+        "description": "Create a review with the given ID. This endpoint is for client-side environments only.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": []
+      }
+    },
+    "/client/geofences": {
+      "get": {
+        "operationId": "get_client_geofences",
+        "summary": "Get Client Geofences",
+        "description": "Get all geofences in an account.\n\nReturns a paginated list of all geofences for the specified company.\nThis is the GA API endpoint designed for mobile SDK consumption.\nNo authentication required.\n\nReturns a maximum of 100 results per page (default 20).\n\nThis API supports filtering via header instead of query param. Provide\n`X-Klaviyo-API-Filters` header to filter geofences. We don't use regular\nquery param filters here because lat and long are sensitive information.\n\nSupported filters:\n- `lat` (equals) - Latitude coordinate for distance-based sorting\n- `lng` (equals) - Longitude coordinate for distance-based sorting\n\nWhen both lat and lng are provided, geofences are returned sorted by\ndistance from the specified coordinates (closest first).\n\nExample filter header:\n`X-Klaviyo-API-Filters: and(equals(lat,40.7128),equals(lng,-74.0060))`<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "fields[geofence]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "latitude",
+                  "longitude",
+                  "radius"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "X-Klaviyo-API-Filters",
+            "in": "header",
+            "description": "\nSupported filters:\n- `lat` (equals) - Latitude coordinate for distance-based sorting\n- `lng` (equals) - Longitude coordinate for distance-based sorting\n\nWhen both lat and lng are provided, geofences are returned sorted by\ndistance from the specified coordinates (closest first).\n",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "and(equals(lat,40.7128),equals(lng,-74.0060))"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGeofenceResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": []
+      }
+    },
+    "/client/subscriptions": {
+      "post": {
+        "operationId": "create_client_subscription",
+        "summary": "Create Client Subscription",
+        "description": "Creates a subscription and consent record for email and/or SMS channels based on the provided `email` and `phone_number` attributes, respectively. One of either `email` or `phone_number` must be provided.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo subscribe profiles from server-side applications, instead use [POST /api/profile-subscription-bulk-create-jobs](https://developers.klaviyo.com/en/reference/subscribe_profiles).\n\nProfiles can be opted into multiple channels: email marketing, SMS marketing, and SMS transactional. You can specify the channel(s) to subscribe the profile to by providing a subscriptions object in the profile attributes.\n\nIf you include a subscriptions object, only channels in that object will be subscribed.  You can use this to update `email` or `phone` on the profile without subscribing them, for example, by setting the profile property but omitting that channel in the subscriptions object. If a subscriptions object is not provided, subscriptions are defaulted to `MARKETING`.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `750/m`\n\n**Scopes:**\n`subscriptions:write`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnsiteSubscriptionCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "750/m"
+        },
+        "x-klaviyo-scopes": [
+          "subscriptions:write"
+        ]
+      }
+    },
+    "/client/push-tokens": {
+      "post": {
+        "operationId": "create_client_push_token",
+        "summary": "Create or Update Client Push Token",
+        "description": "Create or update a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.\n\nTo migrate push tokens from another platform to Klaviyo, please use our server-side [POST /api/push-tokens](https://developers.klaviyo.com/en/reference/create_push_token) endpoint instead.<br><br>*Rate limits*:<br>Burst: `150/s`<br>Steady: `1400/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushTokenCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "150/s",
+          "steady": "1400/m"
+        },
+        "x-klaviyo-scopes": []
+      }
+    },
+    "/client/push-token-unregister": {
+      "post": {
+        "operationId": "unregister_client_push_token",
+        "summary": "Unregister Client Push Token",
+        "description": "Unregister a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushTokenUnregisterQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_client_push_token_unregister"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": []
+      }
+    },
+    "/client/events": {
+      "post": {
+        "operationId": "create_client_event",
+        "summary": "Create Client Event",
+        "description": "Create a new event to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create events from server-side applications, instead use [POST /api/events](https://developers.klaviyo.com/en/reference/create_event).\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventCreateQueryV2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "events:write"
+        ]
+      }
+    },
+    "/client/profiles": {
+      "post": {
+        "operationId": "create_client_profile",
+        "summary": "Create or Update Client Profile",
+        "description": "Create or update properties about a profile without tracking an associated event.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create or update profiles from server-side applications, instead use [POST /api/profile-import](https://developers.klaviyo.com/en/reference/create_or_update_profile).\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`profiles:write`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnsiteProfileCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "profiles:write"
+        ]
+      }
+    },
+    "/client/event-bulk-create": {
+      "post": {
+        "operationId": "bulk_create_client_events",
+        "summary": "Bulk Create Client Events",
+        "description": "Create new events to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create events from server-side applications, instead use [POST /api/event-bulk-create-jobs](https://developers.klaviyo.com/en/reference/bulk_create_events).\n\nAccepts a maximum of `1000` events per request.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:write`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventsBulkCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_client_event_bulk_create"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "events:write"
+        ]
+      }
+    },
+    "/client/back-in-stock-subscriptions": {
+      "post": {
+        "operationId": "create_client_back_in_stock_subscription",
+        "summary": "Create Client Back In Stock Subscription",
+        "description": "Subscribe a profile to receive back in stock notifications. Check out [our Back in Stock API guide](https://developers.klaviyo.com/en/docs/how_to_set_up_custom_back_in_stock) for more details.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create back in stock subscriptions from server-side applications, instead use [POST /api/back-in-stock-subscriptions](https://developers.klaviyo.com/en/reference/create_back_in_stock_subscription).<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:write`\n`profiles:write`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientBISSubscriptionCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "catalogs:write",
+          "profiles:write"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "BackInStockSubscriptionEnum": {
+        "type": "string",
+        "enum": [
+          "back-in-stock-subscription"
+        ]
+      },
+      "BaseEventCreateQueryBulkEntryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/EventEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "properties": {
+                "description": "Properties of this event (must not exceed 400 properties). The size of the event payload must not exceed 5 MB,\nand each string cannot be larger than 100 KB. For a full list of data limits on event payloads,\nsee [Limitations](https://developers.klaviyo.com/en/reference/events_api_overview#limitations).\n\nNote any top-level property that is not an object can be\nused to create segments. The `$extra` property records any\nnon-segmentable values that can be referenced later, e.g., HTML templates are\nuseful on a segment but are not used to create a segment.",
+                "type": "object",
+                "example": {
+                  "Brand": "Kids Book",
+                  "ProductID": 1111,
+                  "ProductName": "Winnie the Pooh"
+                }
+              },
+              "time": {
+                "description": "When this event occurred. By default, the time the request was received will be used.\nThe time is truncated to the second. The time must be after the year 2000 and can only\nbe up to 1 year in the future.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "value": {
+                "description": "A numeric, monetary value to associate with this event. For example, the dollar amount of a purchase.",
+                "type": "number",
+                "example": 9.99,
+                "nullable": true
+              },
+              "value_currency": {
+                "description": "The ISO 4217 currency code of the value associated with the event.",
+                "type": "string",
+                "example": "USD",
+                "nullable": true
+              },
+              "metric": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/MetricCreateQueryResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "unique_id": {
+                "description": "A unique identifier for an event. If a unique_id is repeated for the same profile and metric,\nthe request will fail and no events will be processed. If this field is not\npresent, this field will use the time to the second. Using the default, this limits only one\nevent per profile per second.",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "properties",
+              "metric"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "CatalogVariantEnum": {
+        "type": "string",
+        "enum": [
+          "catalog-variant"
+        ]
+      },
+      "ClientBISSubscriptionCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ClientBISSubscriptionCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ClientBISSubscriptionCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BackInStockSubscriptionEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "channels": {
+                "description": "The channel(s) through which the profile would like to receive the back in stock notification. This can be leveraged within a back in stock flow to notify the subscriber through their preferred channel(s).",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "EMAIL",
+                    "PUSH",
+                    "SMS",
+                    "WHATSAPP"
+                  ],
+                  "description": "The different channel types that a profile could subscribe to BIS notifications for"
+                },
+                "example": [
+                  "EMAIL",
+                  "SMS"
+                ]
+              },
+              "profile": {
+                "type": "object",
+                "example": {
+                  "data": {
+                    "type": "profile",
+                    "attributes": {
+                      "id": "01GDDKASAP8TKDDA2GRZDSVP4H",
+                      "email": "sarah.mason@klaviyo-demo.com",
+                      "phone_number": "+15005550006",
+                      "external_id": "63f64a2b-c6bf-40c7-b81f-bed08162edbe"
+                    }
+                  }
+                },
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/ProfileIdentifierDTOResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "channels",
+              "profile"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "variant": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CatalogVariantEnum"
+                      },
+                      "id": {
+                        "description": "The catalog variant ID for which the profile is subscribing to back in stock notifications. This ID is made up of the integration type, catalog ID, and and the external ID of the variant like so: `integrationType:::catalogId:::externalId`. If the integration you are using is not set up for multi-catalog storage, the 'catalogId' will be `$default`. For Shopify `$shopify:::$default:::33001893429341`",
+                        "type": "string",
+                        "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "ClientReviewResponseDTOObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ReviewEnum"
+          },
+          "id": {
+            "description": "The ID of the review",
+            "type": "string",
+            "example": "925e385b52fb405715f3616c337cc65c"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "The status of this review",
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusRejected"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusFeatured"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusPublished"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusUnpublished"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusPending"
+                  }
+                ]
+              },
+              "verified": {
+                "description": "The verification status of this review (aka whether or not we have confirmation that the customer bought the product)",
+                "type": "boolean",
+                "example": true
+              },
+              "review_type": {
+                "description": "The type of this review \u2014 either a review, question, or rating",
+                "type": "string",
+                "example": "review",
+                "enum": [
+                  "question",
+                  "rating",
+                  "review",
+                  "store"
+                ]
+              },
+              "created": {
+                "description": "The datetime when this review was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "updated": {
+                "description": "The datetime when this review was updated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "images": {
+                "description": "The list of images submitted with this review (represented as a list of urls). If there are no images, this field will be an empty list.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "https://example.com/image1.jpg",
+                  "https://example.com/image2.jpg"
+                ]
+              },
+              "product": {
+                "description": "The product associated with this review",
+                "$ref": "#/components/schemas/ReviewProductDTO",
+                "nullable": true
+              },
+              "rating": {
+                "description": "The rating of this review on a scale from 1-5. If the review type is \"question\", this field will be null.",
+                "type": "integer",
+                "example": 2,
+                "nullable": true
+              },
+              "author": {
+                "description": "The author of this review",
+                "type": "string",
+                "example": "John D",
+                "nullable": true
+              },
+              "content": {
+                "description": "The content of this review",
+                "example": "Great product! I love the smell. I will be buying again.",
+                "nullable": true,
+                "type": "string"
+              },
+              "title": {
+                "description": "The title of this review",
+                "type": "string",
+                "example": "Smells great, would recommend",
+                "nullable": true
+              },
+              "smart_quote": {
+                "description": "A quote from this review that summarizes the content",
+                "type": "string",
+                "example": "I love the smell",
+                "nullable": true
+              },
+              "public_reply": {
+                "description": "The public reply to this review (if one exists)",
+                "$ref": "#/components/schemas/ReviewPublicReply",
+                "nullable": true
+              }
+            },
+            "required": [
+              "verified",
+              "review_type",
+              "created",
+              "updated",
+              "images"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "CustomQuestionDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the custom question",
+            "type": "string",
+            "example": "9ff0d32e-0edb-4513-a6a5-12814a6cb755"
+          },
+          "answers": {
+            "description": "The answers to the custom question",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "M",
+              "L"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "answers"
+        ]
+      },
+      "DeviceMetadata": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "description": "Relatively stable ID for the device. Will update on app uninstall and reinstall",
+            "type": "string",
+            "example": "1234567890",
+            "nullable": true
+          },
+          "klaviyo_sdk": {
+            "description": "The name of the SDK used to create the push token.",
+            "type": "string",
+            "example": "swift",
+            "enum": [
+              "android",
+              "flutter",
+              "flutter_community",
+              "react_native",
+              "swift"
+            ],
+            "nullable": true
+          },
+          "sdk_version": {
+            "description": "The version of the SDK used to create the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "device_model": {
+            "description": "The model of the device",
+            "type": "string",
+            "example": "iPhone12,1",
+            "nullable": true
+          },
+          "os_name": {
+            "description": "The name of the operating system on the device.",
+            "type": "string",
+            "example": "ios",
+            "enum": [
+              "android",
+              "ios",
+              "ipados",
+              "macos",
+              "tvos"
+            ],
+            "nullable": true
+          },
+          "os_version": {
+            "description": "The version of the operating system on the device",
+            "type": "string",
+            "example": "14.0",
+            "nullable": true
+          },
+          "manufacturer": {
+            "description": "The manufacturer of the device",
+            "type": "string",
+            "example": "Apple",
+            "nullable": true
+          },
+          "app_name": {
+            "description": "The name of the app that created the push token",
+            "type": "string",
+            "example": "Klaviyo",
+            "nullable": true
+          },
+          "app_version": {
+            "description": "The version of the app that created the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "app_build": {
+            "description": "The build of the app that created the push token",
+            "type": "string",
+            "example": "1",
+            "nullable": true
+          },
+          "app_id": {
+            "description": "The ID of the app that created the push token",
+            "type": "string",
+            "example": "com.klaviyo.app",
+            "nullable": true
+          },
+          "environment": {
+            "description": "The environment in which the push token was created",
+            "type": "string",
+            "example": "release",
+            "enum": [
+              "debug",
+              "release"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "EmailSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to on the \"EMAIL\" Channel. Currently supports \"MARKETING\".",
+            "$ref": "#/components/schemas/SubscriptionParameters"
+          }
+        },
+        "required": [
+          "marketing"
+        ]
+      },
+      "EventBulkCreateEnum": {
+        "type": "string",
+        "enum": [
+          "event-bulk-create"
+        ]
+      },
+      "EventCreateQueryV2": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/EventCreateQueryV2ResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "EventCreateQueryV2ResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/EventEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "properties": {
+                "description": "Properties of this event (must not exceed 400 properties). The size of the event payload must not exceed 5 MB,\nand each string cannot be larger than 100 KB. For a full list of data limits on event payloads,\nsee [Limitations](https://developers.klaviyo.com/en/reference/events_api_overview#limitations).\n\nNote any top-level property that is not an object can be\nused to create segments. The `$extra` property records any\nnon-segmentable values that can be referenced later, e.g., HTML templates are\nuseful on a segment but are not used to create a segment.",
+                "type": "object",
+                "example": {
+                  "Brand": "Kids Book",
+                  "ProductID": 1111,
+                  "ProductName": "Winnie the Pooh"
+                }
+              },
+              "time": {
+                "description": "When this event occurred. By default, the time the request was received will be used.\nThe time is truncated to the second. The time must be after the year 2000 and can only\nbe up to 1 year in the future.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "value": {
+                "description": "A numeric, monetary value to associate with this event. For example, the dollar amount of a purchase.",
+                "type": "number",
+                "example": 9.99,
+                "nullable": true
+              },
+              "value_currency": {
+                "description": "The ISO 4217 currency code of the value associated with the event.",
+                "type": "string",
+                "example": "USD",
+                "nullable": true
+              },
+              "unique_id": {
+                "description": "A unique identifier for an event. If the unique_id is repeated for the same\nprofile and metric, only the first processed event will be recorded. If this is not\npresent, this will use the time to the second. Using the default, this limits only one\nevent per profile per second.",
+                "type": "string",
+                "nullable": true
+              },
+              "metric": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/MetricCreateQueryResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/EventProfileCreateQueryResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "properties",
+              "metric",
+              "profile"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "EventEnum": {
+        "type": "string",
+        "enum": [
+          "event"
+        ]
+      },
+      "EventProfileCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              },
+              "anonymous_id": {
+                "type": "string",
+                "nullable": true
+              },
+              "_kx": {
+                "description": "Also known as the `exchange_id`, this is an encrypted identifier used for identifying a\nprofile by Klaviyo's web tracking.\n\nYou can use this field as a filter when retrieving profiles via the Get Profiles endpoint.",
+                "type": "string",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format like (ISO 639-1/2)-(ISO 3166 alpha-2)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              },
+              "meta": {
+                "$ref": "#/components/schemas/OnsiteProfileMeta",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "EventsBulkCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/EventsBulkCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "EventsBulkCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/EventBulkCreateEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/OnsiteProfileCreateQueryResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "events": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BaseEventCreateQueryBulkEntryResourceObject"
+                    }
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "profile",
+              "events"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "GeofenceEnum": {
+        "type": "string",
+        "enum": [
+          "geofence"
+        ]
+      },
+      "GeofenceResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/GeofenceEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this geofence. Generated by the system.",
+            "type": "string",
+            "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "description": "Latitude coordinate of the geofence center point",
+                "type": "number",
+                "example": 40.7128
+              },
+              "longitude": {
+                "description": "Longitude coordinate of the geofence center point",
+                "type": "number",
+                "example": -74.006
+              },
+              "radius": {
+                "description": "Radius in meters from the center point",
+                "type": "number",
+                "example": 100
+              }
+            },
+            "required": [
+              "latitude",
+              "longitude",
+              "radius"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetClientReviewResponseDTOCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClientReviewResponseDTOObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetGeofenceResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GeofenceResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetReviewValuesReportResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewValuesReportResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GroupingCompany": {
+        "type": "object",
+        "properties": {
+          "company_id": {
+            "description": "The ID of the company",
+            "type": "string",
+            "example": "67890"
+          }
+        },
+        "required": [
+          "company_id"
+        ]
+      },
+      "GroupingProduct": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "description": "The ID of the product",
+            "type": "string",
+            "example": "12345"
+          }
+        },
+        "required": [
+          "product_id"
+        ]
+      },
+      "ListEnum": {
+        "type": "string",
+        "enum": [
+          "list"
+        ]
+      },
+      "MetricCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MetricEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Name of the event. Must be less than 128 characters.",
+                "type": "string",
+                "example": "Viewed Product"
+              },
+              "service": {
+                "description": "This is for advanced usage. For api requests, this should use the default, which is set to api.",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "MetricEnum": {
+        "type": "string",
+        "enum": [
+          "metric"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "OnsiteProfileCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/OnsiteProfileCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "OnsiteProfileCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              },
+              "anonymous_id": {
+                "type": "string",
+                "nullable": true
+              },
+              "_kx": {
+                "description": "Also known as the `exchange_id`, this is an encrypted identifier used for identifying a\nprofile by Klaviyo's web tracking.\n\nYou can use this field as a filter when retrieving profiles via the Get Profiles endpoint.",
+                "type": "string",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format like (ISO 639-1/2)-(ISO 3166 alpha-2)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              }
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/OnsiteProfileMeta",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "OnsiteProfileMeta": {
+        "type": "object",
+        "properties": {
+          "patch_properties": {
+            "description": "Specify one or more patch operations to apply to existing property data",
+            "example": {
+              "append": {
+                "skus": "92538"
+              }
+            },
+            "$ref": "#/components/schemas/ProfileMetaPatchProperties",
+            "nullable": true
+          },
+          "patch_identifiers": {
+            "description": "Specify one or more patch operations to apply to existing identifier data. Currently only `email` is supported, and it is used to add or remove secondary email addresses on a profile.",
+            "example": {
+              "append": {
+                "email": [
+                  "example@test.com",
+                  "another@example.com"
+                ]
+              }
+            },
+            "$ref": "#/components/schemas/PatchIdentifiers",
+            "nullable": true
+          }
+        }
+      },
+      "OnsiteSubscriptionCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/OnsiteSubscriptionCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "OnsiteSubscriptionCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SubscriptionEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "custom_source": {
+                "description": "A custom method detail or source to store on the consent records for this subscription.",
+                "type": "string",
+                "example": "Homepage footer signup form",
+                "nullable": true
+              },
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/ProfileUpsertQueryWithSubscriptionsResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "profile"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ListEnum"
+                      },
+                      "id": {
+                        "description": "The list ID to add the newly subscribed profile to.",
+                        "type": "string",
+                        "example": "Y6nRLr"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "list"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "OrderEnum": {
+        "type": "string",
+        "enum": [
+          "order"
+        ]
+      },
+      "PatchIdentifiers": {
+        "type": "object",
+        "properties": {
+          "append": {
+            "type": "object"
+          },
+          "unappend": {
+            "type": "object"
+          }
+        }
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
+        ]
+      },
+      "ProfileIdentifierDTOResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "ProfileLocation": {
+        "type": "object",
+        "properties": {
+          "address1": {
+            "description": "First line of street address",
+            "type": "string",
+            "example": "89 E 42nd St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of street address",
+            "type": "string",
+            "example": "1st floor",
+            "nullable": true
+          },
+          "city": {
+            "description": "City name",
+            "type": "string",
+            "example": "New York",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name",
+            "type": "string",
+            "example": "United States",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude coordinate. We recommend providing a precision of four decimal places.",
+            "example": "40.7128",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "longitude": {
+            "description": "Longitude coordinate. We recommend providing a precision of four decimal places.",
+            "example": "74.0060",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "region": {
+            "description": "Region within a country, such as state or province",
+            "type": "string",
+            "example": "NY",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Zip code",
+            "type": "string",
+            "example": "10017",
+            "nullable": true
+          },
+          "timezone": {
+            "description": "Time zone name. We recommend using time zones from the IANA Time Zone Database.",
+            "type": "string",
+            "example": "America/New_York",
+            "nullable": true
+          },
+          "ip": {
+            "description": "IP Address",
+            "type": "string",
+            "example": "127.0.0.1",
+            "nullable": true
+          }
+        }
+      },
+      "ProfileMeta": {
+        "type": "object",
+        "properties": {
+          "patch_properties": {
+            "description": "Specify one or more patch operations to apply to existing property data",
+            "example": {
+              "append": {
+                "skus": "92538"
+              }
+            },
+            "$ref": "#/components/schemas/ProfileMetaPatchProperties",
+            "nullable": true
+          },
+          "patch_identifiers": {
+            "description": "Specify one or more patch operations to apply to existing identifier data. Currently only `email` is supported, and it is used to add or remove secondary email addresses on a profile.",
+            "example": {
+              "append": {
+                "email": [
+                  "example@test.com",
+                  "another@example.com"
+                ]
+              }
+            },
+            "$ref": "#/components/schemas/PatchIdentifiers",
+            "nullable": true
+          }
+        }
+      },
+      "ProfileMetaPatchProperties": {
+        "type": "object",
+        "properties": {
+          "append": {
+            "description": "Append a simple value or values to this property array",
+            "type": "object",
+            "example": {
+              "skus": "92538"
+            },
+            "nullable": true
+          },
+          "unappend": {
+            "description": "Remove a simple value or values from this property array",
+            "type": "object",
+            "example": {
+              "skus": "40571"
+            },
+            "nullable": true
+          },
+          "unset": {
+            "description": "Remove a key or keys (and their values) completely from properties",
+            "example": "skus",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "ProfileUpsertQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              },
+              "_kx": {
+                "description": "Also known as the `exchange_id`, this is an encrypted identifier used for identifying a\nprofile by Klaviyo's web tracking.\n\nYou can use this field as a filter when retrieving profiles via the Get Profiles endpoint.",
+                "type": "string",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format like (ISO 639-1/2)-(ISO 3166 alpha-2)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              }
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ProfileMeta",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "ProfileUpsertQueryWithSubscriptionsResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              },
+              "_kx": {
+                "description": "Also known as the `exchange_id`, this is an encrypted identifier used for identifying a\nprofile by Klaviyo's web tracking.\n\nYou can use this field as a filter when retrieving profiles via the Get Profiles endpoint.",
+                "type": "string",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format like (ISO 639-1/2)-(ISO 3166 alpha-2)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              },
+              "meta": {
+                "$ref": "#/components/schemas/ProfileMeta",
+                "nullable": true
+              },
+              "subscriptions": {
+                "$ref": "#/components/schemas/SubscriptionChannels",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "PushProfileUpsertQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              },
+              "_kx": {
+                "description": "Also known as the `exchange_id`, this is an encrypted identifier used for identifying a\nprofile by Klaviyo's web tracking.\n\nYou can use this field as a filter when retrieving profiles via the Get Profiles endpoint.",
+                "type": "string",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format like (ISO 639-1/2)-(ISO 3166 alpha-2)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              },
+              "meta": {
+                "$ref": "#/components/schemas/ProfileMeta",
+                "nullable": true
+              },
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "PushSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to marketing on the \"Push\" channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters"
+          },
+          "tokens": {
+            "description": "A list of push tokens to register for this profile.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushTokenEntry"
+            },
+            "nullable": true
+          },
+          "anonymous_id": {
+            "description": "An anonymous identifier for push-only profiles with no email/phone.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "marketing"
+        ]
+      },
+      "PushTokenCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PushTokenCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PushTokenCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/PushTokenEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "description": "A push token from APNS or FCM.",
+                "type": "string",
+                "example": "1234567890"
+              },
+              "platform": {
+                "description": "The platform on which the push token was created.",
+                "type": "string",
+                "enum": [
+                  "android",
+                  "ios"
+                ]
+              },
+              "enablement_status": {
+                "description": "This is the enablement status for the individual push token.",
+                "type": "string",
+                "example": "AUTHORIZED",
+                "default": "AUTHORIZED",
+                "enum": [
+                  "AUTHORIZED",
+                  "DENIED",
+                  "NOT_DETERMINED",
+                  "PROVISIONAL",
+                  "UNAUTHORIZED"
+                ],
+                "nullable": true
+              },
+              "vendor": {
+                "description": "The vendor of the push token.",
+                "type": "string",
+                "example": "apns",
+                "enum": [
+                  "apns",
+                  "fcm"
+                ]
+              },
+              "background": {
+                "description": "The background state of the push token.",
+                "type": "string",
+                "example": "AVAILABLE",
+                "default": "AVAILABLE",
+                "enum": [
+                  "AVAILABLE",
+                  "DENIED",
+                  "RESTRICTED"
+                ],
+                "nullable": true
+              },
+              "device_metadata": {
+                "description": "Metadata about the device that created the push token",
+                "$ref": "#/components/schemas/DeviceMetadata",
+                "nullable": true
+              },
+              "profile": {
+                "description": "The profile associated with the push token to create/update",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/PushProfileUpsertQueryResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "token",
+              "platform",
+              "vendor",
+              "profile"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "PushTokenDeviceMetadata": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "description": "Relatively stable ID for the device. Will update on app uninstall and reinstall",
+            "type": "string",
+            "example": "1234567890",
+            "nullable": true
+          },
+          "klaviyo_sdk": {
+            "description": "The name of the SDK used to create the push token.",
+            "type": "string",
+            "example": "swift",
+            "enum": [
+              "android",
+              "flutter",
+              "flutter_community",
+              "react_native",
+              "swift"
+            ],
+            "nullable": true
+          },
+          "sdk_version": {
+            "description": "The version of the SDK used to create the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "device_model": {
+            "description": "The model of the device",
+            "type": "string",
+            "example": "iPhone12,1",
+            "nullable": true
+          },
+          "os_name": {
+            "description": "The name of the operating system on the device.",
+            "type": "string",
+            "example": "ios",
+            "enum": [
+              "android",
+              "ios",
+              "ipados",
+              "macos",
+              "tvos"
+            ],
+            "nullable": true
+          },
+          "os_version": {
+            "description": "The version of the operating system on the device",
+            "type": "string",
+            "example": "14.0",
+            "nullable": true
+          },
+          "manufacturer": {
+            "description": "The manufacturer of the device",
+            "type": "string",
+            "example": "Apple",
+            "nullable": true
+          },
+          "app_name": {
+            "description": "The name of the app that created the push token",
+            "type": "string",
+            "example": "Klaviyo",
+            "nullable": true
+          },
+          "app_version": {
+            "description": "The version of the app that created the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "app_build": {
+            "description": "The build of the app that created the push token",
+            "type": "string",
+            "example": "1",
+            "nullable": true
+          },
+          "app_id": {
+            "description": "The ID of the app that created the push token",
+            "type": "string",
+            "example": "com.klaviyo.app",
+            "nullable": true
+          },
+          "environment": {
+            "description": "The environment in which the push token was created",
+            "type": "string",
+            "example": "release",
+            "enum": [
+              "debug",
+              "release"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "PushTokenEntry": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "description": "A push token from APNS or FCM.",
+            "type": "string",
+            "example": "1234567890abcdef"
+          },
+          "platform": {
+            "description": "The platform on which the push token was created. Either \"ios\" or \"android\".",
+            "type": "string",
+            "enum": [
+              "android",
+              "ios"
+            ]
+          },
+          "vendor": {
+            "description": "The vendor of the push token. Either \"apns\" or \"fcm\".",
+            "type": "string",
+            "example": "apns",
+            "enum": [
+              "apns",
+              "fcm"
+            ]
+          },
+          "enablement_status": {
+            "description": "The enablement status for the push token.",
+            "type": "string",
+            "example": "AUTHORIZED",
+            "enum": [
+              "AUTHORIZED",
+              "DENIED",
+              "NOT_DETERMINED",
+              "PROVISIONAL",
+              "UNAUTHORIZED"
+            ],
+            "nullable": true
+          },
+          "background": {
+            "description": "The background state of the push token.",
+            "type": "string",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "DENIED",
+              "RESTRICTED"
+            ],
+            "nullable": true
+          },
+          "device_metadata": {
+            "description": "Metadata about the device that created the push token.",
+            "$ref": "#/components/schemas/PushTokenDeviceMetadata",
+            "nullable": true
+          }
+        },
+        "required": [
+          "token",
+          "platform",
+          "vendor"
+        ]
+      },
+      "PushTokenEnum": {
+        "type": "string",
+        "enum": [
+          "push-token"
+        ]
+      },
+      "PushTokenUnregisterEnum": {
+        "type": "string",
+        "enum": [
+          "push-token-unregister"
+        ]
+      },
+      "PushTokenUnregisterQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PushTokenUnregisterQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PushTokenUnregisterQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/PushTokenUnregisterEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "description": "A push token from APNS or FCM.",
+                "type": "string",
+                "example": "1234567890"
+              },
+              "platform": {
+                "description": "The platform on which the push token was created.",
+                "type": "string",
+                "enum": [
+                  "android",
+                  "ios"
+                ]
+              },
+              "vendor": {
+                "description": "The vendor of the push token.",
+                "type": "string",
+                "example": "apns",
+                "enum": [
+                  "apns",
+                  "fcm"
+                ],
+                "nullable": true
+              },
+              "profile": {
+                "description": "The profile associated with the push token to create/update",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/ProfileUpsertQueryResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "token",
+              "platform",
+              "profile"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "RejectReasonFake": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to fake content",
+            "type": "string",
+            "enum": [
+              "fake"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonMisleading": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to false or misleading content",
+            "type": "string",
+            "enum": [
+              "false_or_misleading"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonOther": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "reject reason is other",
+            "type": "string",
+            "enum": [
+              "other"
+            ]
+          },
+          "status_explanation": {
+            "description": "If review reject reason is other, we can provide further explanation",
+            "type": "string",
+            "example": "This review is just really poorly detailed and there is another with the same content",
+            "nullable": true
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonPrivateInformation": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to private information",
+            "type": "string",
+            "enum": [
+              "private_information"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonProfanity": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to profanity or inappropriate content",
+            "type": "string",
+            "enum": [
+              "profanity_or_inappropriate"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonUnrelated": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to unrelated content",
+            "type": "string",
+            "enum": [
+              "unrelated"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ReviewCreateDTO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReviewCreateDTOResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ReviewCreateDTOResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ReviewEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "review_type": {
+                "description": "The type of this review -- either a review or a question",
+                "type": "string",
+                "example": "review",
+                "enum": [
+                  "question",
+                  "rating",
+                  "review",
+                  "store"
+                ]
+              },
+              "email": {
+                "description": "The email of the author of this review",
+                "type": "string",
+                "example": "random.123@gmail.com"
+              },
+              "author": {
+                "description": "The author of this review",
+                "type": "string",
+                "example": "John Doe"
+              },
+              "content": {
+                "description": "The content of this review",
+                "example": "This was an absolutely amazing t-shirt. I loved the color and the fit.",
+                "type": "string"
+              },
+              "incentive_type": {
+                "description": "The incentive type for the review",
+                "type": "string",
+                "enum": [
+                  "coupon_or_discount",
+                  "employee_review",
+                  "free_product",
+                  "loyalty_points",
+                  "other",
+                  "paid_promotion",
+                  "sweepstakes_entry"
+                ],
+                "nullable": true
+              },
+              "product": {
+                "description": "The product associated with this review",
+                "$ref": "#/components/schemas/ReviewProductExternalId",
+                "nullable": true
+              },
+              "rating": {
+                "description": "The rating of this review on a scale from 1-5. If the review type is \"question\", this field will be null.",
+                "type": "integer",
+                "example": 2,
+                "enum": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "nullable": true
+              },
+              "title": {
+                "description": "The title of this review",
+                "type": "string",
+                "example": "Great product!",
+                "nullable": true
+              },
+              "custom_questions": {
+                "description": "Custom question and answers for the review",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CustomQuestionDTO"
+                },
+                "example": [
+                  {
+                    "id": "9ff0d32e-0edb-4513-a6a5-12814a6cb755",
+                    "answers": [
+                      "M",
+                      "L"
+                    ]
+                  }
+                ],
+                "nullable": true
+              },
+              "images": {
+                "description": "The list of images submitted with this review (represented as a list of urls or base-64 encoded data-uri). If there are no images, this field will be an empty list.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "https://example.com/image1.jpg",
+                  "https://example.com/image2.jpg"
+                ],
+                "nullable": true
+              }
+            },
+            "required": [
+              "review_type",
+              "email",
+              "author",
+              "content"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "order": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/OrderEnum"
+                      },
+                      "id": {
+                        "description": "The Order ID related to the review",
+                        "type": "string",
+                        "example": "42439497119686"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "ReviewEnum": {
+        "type": "string",
+        "enum": [
+          "review"
+        ]
+      },
+      "ReviewProductDTO": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "description": "The URL of the product",
+            "type": "string",
+            "example": "https://example.com/product/123"
+          },
+          "name": {
+            "description": "The name of the product",
+            "type": "string"
+          },
+          "image_url": {
+            "description": "The URL of the product image",
+            "type": "string",
+            "example": "https://example.com/image.jpg",
+            "nullable": true
+          },
+          "external_id": {
+            "description": "The external ID of the product",
+            "type": "string",
+            "example": "123456789",
+            "nullable": true
+          }
+        },
+        "required": [
+          "url",
+          "name"
+        ]
+      },
+      "ReviewProductExternalId": {
+        "type": "object",
+        "properties": {
+          "external_id": {
+            "description": "The external ID of the product",
+            "type": "string",
+            "example": "7549950034135"
+          },
+          "integration_key": {
+            "description": "The integration key of the product in lowercase",
+            "type": "string",
+            "example": "shopify",
+            "enum": [
+              "shopify",
+              "woocommerce"
+            ]
+          }
+        },
+        "required": [
+          "external_id",
+          "integration_key"
+        ]
+      },
+      "ReviewPublicReply": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "description": "The content of the public reply",
+            "example": "Thanks for the review!",
+            "type": "string"
+          },
+          "author": {
+            "description": "The author of the public reply",
+            "type": "string",
+            "example": "Company X"
+          },
+          "updated": {
+            "description": "The datetime when this public reply was updated",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          }
+        },
+        "required": [
+          "content",
+          "author",
+          "updated"
+        ]
+      },
+      "ReviewStatusFeatured": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Featured review status",
+            "type": "string",
+            "enum": [
+              "featured"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "ReviewStatusPending": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Pending review status",
+            "type": "string",
+            "enum": [
+              "pending"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "ReviewStatusPublished": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Published review status",
+            "type": "string",
+            "enum": [
+              "published"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "ReviewStatusRejected": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Rejected review status",
+            "type": "string",
+            "enum": [
+              "rejected"
+            ]
+          },
+          "rejection_reason": {
+            "description": "The updated status intended for the review with this ID",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RejectReasonOther"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonFake"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonMisleading"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonPrivateInformation"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonProfanity"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonUnrelated"
+              }
+            ]
+          }
+        },
+        "required": [
+          "value",
+          "rejection_reason"
+        ]
+      },
+      "ReviewStatusUnpublished": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Unpublished review status",
+            "type": "string",
+            "enum": [
+              "unpublished"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "ReviewValueReportGrouping": {
+        "type": "object",
+        "properties": {
+          "groupings": {
+            "description": "Grouping details, either by product or company",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GroupingProduct"
+              },
+              {
+                "$ref": "#/components/schemas/GroupingCompany"
+              }
+            ]
+          },
+          "statistics": {
+            "description": "Statistics related to the grouping",
+            "example": {
+              "average_rating": 4.5,
+              "total_reviews": 100,
+              "total_questions": 50,
+              "total_ratings": 200,
+              "total_store_reviews": 5000,
+              "average_store_rating": 2
+            },
+            "$ref": "#/components/schemas/StatisticsDTO"
+          }
+        },
+        "required": [
+          "groupings",
+          "statistics"
+        ]
+      },
+      "ReviewValuesReportEnum": {
+        "type": "string",
+        "enum": [
+          "review-values-report"
+        ]
+      },
+      "ReviewValuesReportResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ReviewValuesReportEnum"
+          },
+          "id": {
+            "description": "The unique identifier for the reviews values report",
+            "type": "string",
+            "example": "925e385b52fb405715f3616c337cc65c"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "description": "The list of groupings and their corresponding statistics in the reviews values report",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReviewValueReportGrouping"
+                },
+                "example": [
+                  {
+                    "groupings": {
+                      "product_id": "id1"
+                    },
+                    "statistics": {
+                      "total_ratings": 459,
+                      "average_rating": 4.5
+                    }
+                  },
+                  {
+                    "groupings": {
+                      "product_id": "id2"
+                    },
+                    "statistics": {
+                      "total_ratings": 459,
+                      "average_rating": 2.5
+                    }
+                  }
+                ]
+              }
+            },
+            "required": [
+              "results"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "SMSSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to marketing on the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          },
+          "transactional": {
+            "description": "The parameters to subscribe to transactional messaging on the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          }
+        }
+      },
+      "StatisticsDTO": {
+        "type": "object",
+        "properties": {
+          "average_rating": {
+            "description": "The average rating",
+            "type": "number",
+            "example": 4.5,
+            "nullable": true
+          },
+          "total_reviews": {
+            "description": "The total number of reviews",
+            "type": "integer",
+            "example": 100,
+            "nullable": true
+          },
+          "total_questions": {
+            "description": "The total number of questions",
+            "type": "integer",
+            "example": 50,
+            "nullable": true
+          },
+          "total_ratings": {
+            "description": "The total number of ratings",
+            "type": "integer",
+            "example": 200,
+            "nullable": true
+          },
+          "total_store_reviews": {
+            "description": "The total number of store reviews",
+            "type": "integer",
+            "example": 5000,
+            "nullable": true
+          },
+          "average_store_rating": {
+            "description": "The average rating of store reviews",
+            "type": "number",
+            "example": 2,
+            "nullable": true
+          }
+        }
+      },
+      "SubscriptionChannels": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "description": "The subscription parameters to subscribe to on the \"EMAIL\" Channel.",
+            "$ref": "#/components/schemas/EmailSubscriptionParameters",
+            "nullable": true
+          },
+          "sms": {
+            "description": "The subscription parameters to subscribe to on the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SMSSubscriptionParameters",
+            "nullable": true
+          },
+          "whatsapp": {
+            "description": "The subscription parameters to subscribe to on the \"WhatsApp\" Channel.",
+            "$ref": "#/components/schemas/WhatsAppSubscriptionParameters",
+            "nullable": true
+          },
+          "push": {
+            "description": "The subscription parameters to subscribe to on the \"Push\" Channel.",
+            "$ref": "#/components/schemas/PushSubscriptionParameters",
+            "nullable": true
+          }
+        }
+      },
+      "SubscriptionEnum": {
+        "type": "string",
+        "enum": [
+          "subscription"
+        ]
+      },
+      "SubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "description": "The Consent status to be set as part of the subscribe call. Currently supports \"SUBSCRIBED\".",
+            "type": "string",
+            "example": "SUBSCRIBED",
+            "enum": [
+              "SUBSCRIBED"
+            ]
+          },
+          "consented_at": {
+            "description": "The timestamp of when the profile's consent was gathered. This should only be used when syncing over historical consent info to Klaviyo; if the `historical_import` flag is not included, providing any value for this field will raise an error.",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": [
+          "consent"
+        ]
+      },
+      "WhatsAppSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to marketing on the \"WhatsApp\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          },
+          "transactional": {
+            "description": "The parameters to subscribe to transactional messaging on the \"WhatsApp\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Client",
+      "description": "client"
+    }
+  ]
+}
