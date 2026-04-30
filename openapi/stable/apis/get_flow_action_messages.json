@@ -1,0 +1,4585 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/flow-actions/{id}/flow-messages": {
+      "get": {
+        "operationId": "get_flow_action_messages",
+        "summary": "Get Messages For Flow Action",
+        "description": "Get all flow messages associated with the given flow action ID.\n\nReturns a maximum of 50 flow message relationships per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[flow-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "channel",
+                  "created",
+                  "definition",
+                  "definition.action_buttons",
+                  "definition.add_info_link",
+                  "definition.add_opt_out_language",
+                  "definition.add_org_prefix",
+                  "definition.add_tracking_params",
+                  "definition.additional_filters",
+                  "definition.additional_filters.condition_groups",
+                  "definition.android_link",
+                  "definition.badge",
+                  "definition.badge_options",
+                  "definition.badge_options.badge_config",
+                  "definition.badge_options.set_from_property",
+                  "definition.badge_options.value",
+                  "definition.bcc_email",
+                  "definition.body",
+                  "definition.cc_email",
+                  "definition.conversion_metric_id",
+                  "definition.custom_tracking_params",
+                  "definition.dynamic_image",
+                  "definition.from_email",
+                  "definition.from_label",
+                  "definition.headers",
+                  "definition.id",
+                  "definition.image_id",
+                  "definition.include_contact_card",
+                  "definition.ios_link",
+                  "definition.kv_pairs",
+                  "definition.name",
+                  "definition.on_open",
+                  "definition.preview_text",
+                  "definition.push_type",
+                  "definition.reply_to_email",
+                  "definition.shorten_links",
+                  "definition.smart_sending_enabled",
+                  "definition.sms_quiet_hours_enabled",
+                  "definition.sound",
+                  "definition.subject_line",
+                  "definition.template_id",
+                  "definition.title",
+                  "definition.to_emails",
+                  "definition.transactional",
+                  "definition.url",
+                  "definition.vendor_id",
+                  "definition.video_asset_id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`<br>`name`: `contains`, `ends-with`, `equals`, `starts-with`<br>`created`: `equals`, `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`updated`: `equals`, `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "schema": {
+              "type": "string",
+              "example": "any(id,['example'])"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 50.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 50,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created",
+                "id",
+                "-id",
+                "name",
+                "-name",
+                "updated",
+                "-updated"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFlowMessageEncodedResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Flows"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_messages_for_flow_action"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "flows:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "APIMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "api"
+            ]
+          },
+          "filter": {
+            "description": "Optional filter on a specific list of API keys (using last 4 digits of the key)",
+            "$ref": "#/components/schemas/InStringArrayFilter",
+            "nullable": true
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "AlltimeDateFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Operators for alltime date filters.",
+            "type": "string",
+            "enum": [
+              "alltime"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator"
+        ]
+      },
+      "AnniversaryDateFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Operators for anniversary date filters.",
+            "type": "string",
+            "enum": [
+              "anniversary",
+              "anniversary-month"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator"
+        ]
+      },
+      "BackInStockMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "back_in_stock"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "BooleanFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "boolean"
+            ]
+          },
+          "operator": {
+            "description": "Operators for boolean filters.",
+            "type": "string",
+            "enum": [
+              "equals"
+            ]
+          },
+          "value": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "BounceDateFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "bounce_date"
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/IsSetExistenceFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "BulkRemoveMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "bulk_remove"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "CalendarDateFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Operators for calendar date filters.",
+            "type": "string",
+            "enum": [
+              "calendar-month"
+            ]
+          },
+          "value": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "CarrierDeactivationMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "carrier_deactivation"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "CheckoutMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "checkout"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ConstantContactIntegrationFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "in"
+            ]
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "constant_contact"
+              ],
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ConstantContactIntegrationMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "integration"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ConstantContactIntegrationFilter"
+          }
+        },
+        "required": [
+          "field",
+          "method",
+          "filter"
+        ]
+      },
+      "CustomSourceFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "custom_source"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/EqualsStringFilter"
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "DataWarehouseImportMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "data_warehouse_import"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "DoubleOptinFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "is_double_opt_in"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/BooleanFilter"
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "EffectiveDateFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "effective_date"
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AnniversaryDateFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "EqualsStringFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "equals"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ExistenceOperatorExistenceFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "existence"
+            ]
+          },
+          "operator": {
+            "description": "Operators for existence filters.",
+            "type": "string",
+            "enum": [
+              "is-set",
+              "not-set"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator"
+        ]
+      },
+      "ExplicitlyReachable": {
+        "type": "object",
+        "properties": {
+          "reachable_status": {
+            "type": "string",
+            "enum": [
+              "explicitly_reachable"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EffectiveDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/RecordedDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/MethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/FormSubscribeFilter"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "reachable_status",
+          "filters"
+        ]
+      },
+      "ExplicitlyUnreachable": {
+        "type": "object",
+        "properties": {
+          "reachable_status": {
+            "type": "string",
+            "enum": [
+              "explicitly_unreachable"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EffectiveDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/RecordedDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/MethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/FormSubscribeFilter"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "reachable_status",
+          "filters"
+        ]
+      },
+      "FailedAgeGateMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "failed_age_gate"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "FlowActionEnum": {
+        "type": "string",
+        "enum": [
+          "flow-action"
+        ]
+      },
+      "FlowEmail": {
+        "type": "object",
+        "properties": {
+          "from_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "from_label": {
+            "type": "string",
+            "nullable": true
+          },
+          "reply_to_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "cc_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "bcc_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject_line": {
+            "type": "string",
+            "nullable": true
+          },
+          "preview_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "template_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "smart_sending_enabled": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "transactional": {
+            "type": "boolean",
+            "default": false
+          },
+          "add_tracking_params": {
+            "type": "boolean",
+            "default": false
+          },
+          "custom_tracking_params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UtmParam"
+            },
+            "nullable": true
+          },
+          "additional_filters": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ProfilePropertyCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileNoGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRegionCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePostalCodeDistanceCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsDateCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsNumericCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileMarketingConsentCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/FlowsProfileMetricCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePermissionsCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasNotReceivedEmailMessageCondition"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "from_email",
+          "from_label",
+          "reply_to_email",
+          "cc_email",
+          "bcc_email",
+          "subject_line",
+          "preview_text"
+        ]
+      },
+      "FlowInternalAlert": {
+        "type": "object",
+        "properties": {
+          "from_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "from_label": {
+            "type": "string",
+            "nullable": true
+          },
+          "to_emails": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subject_line": {
+            "type": "string",
+            "nullable": true
+          },
+          "template_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "from_email",
+          "from_label",
+          "to_emails",
+          "subject_line"
+        ]
+      },
+      "FlowMessageEncodedResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FlowMessageEnum"
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "channel": {
+                "type": "string",
+                "nullable": true
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "definition": {
+                "description": "The encoded flow message definition.",
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/FlowEmail"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FlowInternalAlert"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FlowPushNotification"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FlowSms"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FlowWebhook"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FlowWhatsApp"
+                  }
+                ]
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "flow-action": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/FlowActionEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "template": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TemplateEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "FlowMessageEnum": {
+        "type": "string",
+        "enum": [
+          "flow-message"
+        ]
+      },
+      "FlowPushNotification": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "type": "string"
+          },
+          "sound": {
+            "type": "boolean",
+            "default": false
+          },
+          "badge": {
+            "type": "boolean",
+            "default": false
+          },
+          "badge_options": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Increment"
+              },
+              {
+                "$ref": "#/components/schemas/StaticCount"
+              },
+              {
+                "$ref": "#/components/schemas/Property"
+              }
+            ]
+          },
+          "image_id": {
+            "description": "The id of an ImageAsset. If provided, this will take precedence over a dynamic_image.",
+            "type": "string",
+            "example": "123",
+            "nullable": true
+          },
+          "dynamic_image": {
+            "description": "A dynamic image asset to include in the push notification.",
+            "type": "string",
+            "example": "{{ event.items.0.url }}",
+            "nullable": true
+          },
+          "video_asset_id": {
+            "description": "The ULID of a video asset. If provided, videos and images are mutually exclusive.",
+            "type": "string",
+            "example": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+            "nullable": true
+          },
+          "on_open": {
+            "description": "See PushLinkAction in app.\n\nThis is not a flow action, but the literal action that should be\n    taken when the push notification is tapped.",
+            "type": "string",
+            "example": "home",
+            "default": "home",
+            "enum": [
+              "home",
+              "link"
+            ]
+          },
+          "ios_link": {
+            "type": "string",
+            "nullable": true
+          },
+          "android_link": {
+            "type": "string",
+            "nullable": true
+          },
+          "push_type": {
+            "description": "The type of push notification to send.",
+            "type": "string",
+            "enum": [
+              "silent",
+              "standard"
+            ],
+            "nullable": true
+          },
+          "kv_pairs": {
+            "type": "object",
+            "nullable": true
+          },
+          "conversion_metric_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "smart_sending_enabled": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "additional_filters": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ProfilePropertyCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileNoGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRegionCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePostalCodeDistanceCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsDateCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsNumericCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileMarketingConsentCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/FlowsProfileMetricCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePermissionsCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasNotReceivedPushMessageCondition"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
+          },
+          "action_buttons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushActionButton"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "FlowSms": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string"
+          },
+          "image_id": {
+            "description": "The id of an ImageAsset. If provided, this will take precedence over a dynamic_image.",
+            "type": "string",
+            "example": "123",
+            "nullable": true
+          },
+          "dynamic_image": {
+            "description": "A dynamic image asset to include in the SMS message.",
+            "type": "string",
+            "example": "{{ person|lookup:'image_url' }}",
+            "nullable": true
+          },
+          "shorten_links": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "include_contact_card": {
+            "type": "boolean",
+            "default": false
+          },
+          "add_org_prefix": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "add_info_link": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "add_opt_out_language": {
+            "type": "boolean",
+            "default": false
+          },
+          "smart_sending_enabled": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "sms_quiet_hours_enabled": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "transactional": {
+            "type": "boolean",
+            "default": false
+          },
+          "add_tracking_params": {
+            "type": "boolean",
+            "default": false
+          },
+          "custom_tracking_params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UtmParam"
+            },
+            "nullable": true
+          },
+          "template_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "additional_filters": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ProfilePropertyCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileNoGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRegionCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePostalCodeDistanceCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsDateCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsNumericCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileMarketingConsentCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/FlowsProfileMetricCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePermissionsCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasNotReceivedSmsMessageCondition"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "FlowWebhook": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "headers": {
+            "type": "object",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "FlowWhatsApp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "vendor_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "smart_sending_enabled": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "transactional": {
+            "type": "boolean",
+            "default": false
+          },
+          "add_tracking_params": {
+            "type": "boolean",
+            "default": false
+          },
+          "additional_filters": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ProfilePropertyCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileNoGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRegionCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePostalCodeDistanceCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsDateCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsNumericCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileMarketingConsentCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/FlowsProfileMetricCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePermissionsCondition"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
+          }
+        }
+      },
+      "FlowsProfileMetricCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-metric"
+            ]
+          },
+          "metric_id": {
+            "type": "string"
+          },
+          "measurement": {
+            "description": "Measurements for profile metrics.",
+            "type": "string",
+            "enum": [
+              "count",
+              "sum"
+            ]
+          },
+          "measurement_filter": {
+            "$ref": "#/components/schemas/NumericOperatorNumericFilter"
+          },
+          "timeframe_filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AlltimeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/SinceFlowStartDateFilter"
+              }
+            ]
+          },
+          "metric_filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileMetricPropertyFilter"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "metric_id",
+          "measurement",
+          "measurement_filter",
+          "timeframe_filter"
+        ]
+      },
+      "FormMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "form"
+            ]
+          },
+          "filter": {
+            "description": "Optional filter on a specific list of form ids",
+            "$ref": "#/components/schemas/InStringArrayFilter",
+            "nullable": true
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "FormSubscribeFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "subscribe_method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "form"
+            ]
+          },
+          "filter": {
+            "description": "Optional filter on a specific list of form IDs",
+            "$ref": "#/components/schemas/InStringArrayFilter",
+            "nullable": true
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "GetFlowMessageEncodedResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlowMessageEncodedResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GreaterThanPositiveNumericFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "numeric"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "greater-than"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "HasEmailMarketing": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "any"
+            ]
+          },
+          "filters": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "HasEmailMarketingConsent": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": [
+              "email"
+            ]
+          },
+          "can_receive_marketing": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "consent_status": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/HasEmailMarketing"
+              },
+              {
+                "$ref": "#/components/schemas/HasEmailMarketingSubscribed"
+              },
+              {
+                "$ref": "#/components/schemas/HasEmailMarketingNeverSubscribed"
+              }
+            ]
+          }
+        },
+        "required": [
+          "channel",
+          "can_receive_marketing",
+          "consent_status"
+        ]
+      },
+      "HasEmailMarketingNeverSubscribed": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "never_subscribed"
+            ]
+          },
+          "filters": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "HasEmailMarketingSubscribed": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "subscribed"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DoubleOptinFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/StatusDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomSourceFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/FormMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/PreferencePageFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/APIMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/InboundMessageMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/BackInStockMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/SftpMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualImportManualMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualAddManualMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ShopifyIntegrationMethodFilter"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "HasPushMarketing": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "any"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusDateFilter"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "HasPushMarketingConsent": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": [
+              "push"
+            ]
+          },
+          "can_receive_marketing": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "consent_status": {
+            "$ref": "#/components/schemas/HasPushMarketing"
+          }
+        },
+        "required": [
+          "channel",
+          "can_receive_marketing",
+          "consent_status"
+        ]
+      },
+      "HasSMSMarketingConsent": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": [
+              "sms"
+            ]
+          },
+          "can_receive_marketing": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "consent_status": {
+            "$ref": "#/components/schemas/HasSMSMarketingSubscribed"
+          }
+        },
+        "required": [
+          "channel",
+          "can_receive_marketing",
+          "consent_status"
+        ]
+      },
+      "HasSMSMarketingSubscribed": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "subscribed"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/StatusDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/FormMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualImportManualMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualAddManualMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/CheckoutMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/InboundMessageMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/PreferencePageMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/SftpMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ShopifyIntegrationMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/SubscribedSMSIsRcsCapableFilter"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "ImplicitlyOrExplicitlyReachable": {
+        "type": "object",
+        "properties": {
+          "reachable_status": {
+            "type": "string",
+            "enum": [
+              "implicitly_or_explicitly_reachable"
+            ]
+          }
+        },
+        "required": [
+          "reachable_status"
+        ]
+      },
+      "ImplicitlyOrExplicitlyUnreachable": {
+        "type": "object",
+        "properties": {
+          "reachable_status": {
+            "type": "string",
+            "enum": [
+              "implicitly_or_explicitly_unreachable"
+            ]
+          }
+        },
+        "required": [
+          "reachable_status"
+        ]
+      },
+      "ImplicitlyReachable": {
+        "type": "object",
+        "properties": {
+          "reachable_status": {
+            "type": "string",
+            "enum": [
+              "implicitly_reachable"
+            ]
+          }
+        },
+        "required": [
+          "reachable_status"
+        ]
+      },
+      "ImplicitlyUnreachable": {
+        "type": "object",
+        "properties": {
+          "reachable_status": {
+            "type": "string",
+            "enum": [
+              "implicitly_unreachable"
+            ]
+          }
+        },
+        "required": [
+          "reachable_status"
+        ]
+      },
+      "InStringArrayFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "in"
+            ]
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "InTheLastBaseRelativeDateFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "in-the-last"
+            ]
+          },
+          "unit": {
+            "description": "Units for relative date filters.",
+            "type": "string",
+            "enum": [
+              "day",
+              "hour",
+              "week"
+            ]
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "unit",
+          "quantity"
+        ]
+      },
+      "InboundMessageMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "inbound_message"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "Increment": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "type": "string",
+            "enum": [
+              "increment_one"
+            ]
+          }
+        },
+        "required": [
+          "badge_config"
+        ]
+      },
+      "IntegerFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "numeric"
+            ]
+          },
+          "operator": {
+            "description": "Operators for numeric filters.",
+            "type": "string",
+            "enum": [
+              "equals",
+              "greater-than",
+              "greater-than-or-equal",
+              "less-than",
+              "less-than-or-equal",
+              "not-equals"
+            ]
+          },
+          "value": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "InvalidEmailDateFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "invalid_email_date"
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/IsSetExistenceFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "IsSetExistenceFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "existence"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "is-set"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator"
+        ]
+      },
+      "LessThanPositiveNumericFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "numeric"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "less-than"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ListContainsOperatorListContainsFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "operator": {
+            "description": "Operators for list contains filters.",
+            "type": "string",
+            "enum": [
+              "contains",
+              "not-contains"
+            ]
+          },
+          "value": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ListLengthFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "operator": {
+            "description": "Operators for list length filters.",
+            "type": "string",
+            "enum": [
+              "length-equals",
+              "length-greater-than",
+              "length-greater-than-or-equal",
+              "length-less-than",
+              "length-less-than-or-equal"
+            ]
+          },
+          "value": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ListSetFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "operator": {
+            "description": "Operators for list contains set filters.",
+            "type": "string",
+            "enum": [
+              "contains-all",
+              "contains-any",
+              "not-contains-all",
+              "not-contains-any"
+            ]
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ListSubstringFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "operator": {
+            "description": "Operators for list substring filters.",
+            "type": "string",
+            "enum": [
+              "contains-substring",
+              "not-contains-substring"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "MailboxProviderMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "mailbox_provider"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ManualAddManualMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "manual_add"
+            ]
+          },
+          "filter": {
+            "description": "Optional filter on a specific list of user email addresses who initiated the manual action",
+            "$ref": "#/components/schemas/InStringArrayFilter",
+            "nullable": true
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ManualImportManualMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "manual_import"
+            ]
+          },
+          "filter": {
+            "description": "Optional filter on a specific list of user email addresses who initiated the manual action",
+            "$ref": "#/components/schemas/InStringArrayFilter",
+            "nullable": true
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ManualImportMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "manual_import"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ManualRemoveMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "manual_remove"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ManualSuppressionDateFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "manual_suppression_date"
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/IsSetExistenceFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "MessageBlockedMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "message_blocked"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "MethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "subscribe_method"
+            ]
+          },
+          "method": {
+            "description": "Method for subscribing / unsubscribing.",
+            "type": "string",
+            "enum": [
+              "api",
+              "back_in_stock",
+              "bigcommerce",
+              "bulk_remove",
+              "campaign_monitor",
+              "carrier_deactivation",
+              "checkout",
+              "constant_contact",
+              "exact_target",
+              "facebook",
+              "failed_age_gate",
+              "inbound_message",
+              "integration",
+              "mad_mimi",
+              "magento_two",
+              "mailbox_provider",
+              "manual_add",
+              "manual_import",
+              "manual_remove",
+              "message_blocked",
+              "netsuite",
+              "preference_page",
+              "provided_landline",
+              "provided_no_age",
+              "sftp",
+              "shopify",
+              "social_instagram_message",
+              "spam_complaint",
+              "square",
+              "wix",
+              "woocommerce"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "NoEmailMarketing": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "any"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/BounceDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualSuppressionDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/InvalidEmailDateFilter"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "NoEmailMarketingConsent": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": [
+              "email"
+            ]
+          },
+          "can_receive_marketing": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "consent_status": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NoEmailMarketing"
+              },
+              {
+                "$ref": "#/components/schemas/NoEmailMarketingUnsubscribed"
+              },
+              {
+                "$ref": "#/components/schemas/NoEmailMarketingNeverSubscribed"
+              },
+              {
+                "$ref": "#/components/schemas/NoEmailMarketingSubscribed"
+              }
+            ]
+          }
+        },
+        "required": [
+          "channel",
+          "can_receive_marketing",
+          "consent_status"
+        ]
+      },
+      "NoEmailMarketingNeverSubscribed": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "never_subscribed"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/BounceDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualSuppressionDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/InvalidEmailDateFilter"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "subscription",
+          "filters"
+        ]
+      },
+      "NoEmailMarketingSubscribed": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "subscribed"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/BounceDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualSuppressionDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/InvalidEmailDateFilter"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "subscription",
+          "filters"
+        ]
+      },
+      "NoEmailMarketingUnsubscribed": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "unsubscribed"
+            ]
+          },
+          "filters": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/StatusDateFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/APIMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InboundMessageMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PreferencePageMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ManualRemoveMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SpamComplaintMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MailboxProviderMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OneClickUnsubscribeMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ManualImportMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SftpMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DataWarehouseImportMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ProfileModificationMethodFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ConstantContactIntegrationMethodFilter"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/BounceDateFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ManualSuppressionDateFilter"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InvalidEmailDateFilter"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "NoPushMarketing": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "any"
+            ]
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "NoPushMarketingConsent": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": [
+              "push"
+            ]
+          },
+          "can_receive_marketing": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "consent_status": {
+            "$ref": "#/components/schemas/NoPushMarketing"
+          }
+        },
+        "required": [
+          "channel",
+          "can_receive_marketing",
+          "consent_status"
+        ]
+      },
+      "NoSMSMarketing": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "any"
+            ]
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "NoSMSMarketingConsent": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": [
+              "sms"
+            ]
+          },
+          "can_receive_marketing": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "consent_status": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NoSMSMarketing"
+              },
+              {
+                "$ref": "#/components/schemas/NoSMSMarketingUnsubscribed"
+              },
+              {
+                "$ref": "#/components/schemas/NoSMSMarketingNeverSubscribed"
+              }
+            ]
+          }
+        },
+        "required": [
+          "channel",
+          "can_receive_marketing",
+          "consent_status"
+        ]
+      },
+      "NoSMSMarketingNeverSubscribed": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "never_subscribed"
+            ]
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "NoSMSMarketingUnsubscribed": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "enum": [
+              "unsubscribed"
+            ]
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/StatusDateFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/FormMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualImportManualMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualAddManualMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ManualRemoveMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/BulkRemoveMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/CheckoutMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/InboundMessageMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/PreferencePageMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/SftpMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/CarrierDeactivationMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ProvidedLandlineMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/MessageBlockedMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ProvidedNoAgeMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/FailedAgeGateMethodFilter"
+                },
+                {
+                  "$ref": "#/components/schemas/ShopifyIntegrationMethodFilter"
+                }
+              ]
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "subscription"
+        ]
+      },
+      "NumericOperatorNumericFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "numeric"
+            ]
+          },
+          "operator": {
+            "description": "Operators for numeric filters.",
+            "type": "string",
+            "enum": [
+              "equals",
+              "greater-than",
+              "greater-than-or-equal",
+              "less-than",
+              "less-than-or-equal",
+              "not-equals"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "NumericRangeFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "numeric"
+            ]
+          },
+          "operator": {
+            "description": "Operators for numeric range filters.",
+            "type": "string",
+            "enum": [
+              "between"
+            ]
+          },
+          "start": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "end": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "start",
+          "end"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "OneClickUnsubscribeMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "one_click_unsubscribe"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "PreferencePageFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "preference_page"
+            ]
+          },
+          "filter": {
+            "description": "Optional filter on a specific subscribe page url",
+            "$ref": "#/components/schemas/EqualsStringFilter",
+            "nullable": true
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "PreferencePageMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "preference_page"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ProfileHasCustomObjectCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-has-custom-object"
+            ]
+          },
+          "object_type_id": {
+            "type": "string"
+          },
+          "object_type_relationship_id": {
+            "type": "string"
+          },
+          "filter": {
+            "$ref": "#/components/schemas/IntegerFilter"
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileHasCustomObjectFilter"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "object_type_id",
+          "object_type_relationship_id",
+          "filter",
+          "filters"
+        ]
+      },
+      "ProfileHasCustomObjectFilter": {
+        "type": "object",
+        "properties": {
+          "property_id": {
+            "type": "integer"
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StringOperatorStringFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StringArrayOperatorStringArrayFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericOperatorNumericFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/BooleanFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ExistenceOperatorExistenceFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "property_id",
+          "filter"
+        ]
+      },
+      "ProfileHasGroupMembershipCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-group-membership"
+            ]
+          },
+          "is_member": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "group_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timeframe_filter": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "is_member",
+          "group_ids"
+        ]
+      },
+      "ProfileHasNotReceivedEmailMessageCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-not-sent-email"
+            ]
+          },
+          "timeframe_filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AlltimeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/InTheLastBaseRelativeDateFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "timeframe_filter"
+        ]
+      },
+      "ProfileHasNotReceivedPushMessageCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-not-sent-push"
+            ]
+          },
+          "timeframe_filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AlltimeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/InTheLastBaseRelativeDateFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "timeframe_filter"
+        ]
+      },
+      "ProfileHasNotReceivedSmsMessageCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-not-sent-sms"
+            ]
+          },
+          "timeframe_filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AlltimeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/InTheLastBaseRelativeDateFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "timeframe_filter"
+        ]
+      },
+      "ProfileMarketingConsentCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-marketing-consent"
+            ]
+          },
+          "consent": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/HasEmailMarketingConsent"
+              },
+              {
+                "$ref": "#/components/schemas/NoEmailMarketingConsent"
+              },
+              {
+                "$ref": "#/components/schemas/HasSMSMarketingConsent"
+              },
+              {
+                "$ref": "#/components/schemas/NoSMSMarketingConsent"
+              },
+              {
+                "$ref": "#/components/schemas/HasPushMarketingConsent"
+              },
+              {
+                "$ref": "#/components/schemas/NoPushMarketingConsent"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "consent"
+        ]
+      },
+      "ProfileMetricPropertyFilter": {
+        "type": "object",
+        "properties": {
+          "property": {
+            "type": "string"
+          },
+          "filter": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StringOperatorStringFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StringArrayOperatorStringArrayFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ExistenceOperatorExistenceFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ListSetFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ListLengthFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ListSubstringFilter"
+              },
+              {
+                "$ref": "#/components/schemas/BooleanFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericOperatorNumericFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "property"
+        ]
+      },
+      "ProfileModificationMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "profile_modification"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ProfileNoGroupMembershipCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-group-membership"
+            ]
+          },
+          "is_member": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "group_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "is_member",
+          "group_ids"
+        ]
+      },
+      "ProfilePermissionsCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-permissions"
+            ]
+          },
+          "permission": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ExplicitlyReachable"
+              },
+              {
+                "$ref": "#/components/schemas/ImplicitlyReachable"
+              },
+              {
+                "$ref": "#/components/schemas/ImplicitlyOrExplicitlyReachable"
+              },
+              {
+                "$ref": "#/components/schemas/ExplicitlyUnreachable"
+              },
+              {
+                "$ref": "#/components/schemas/ImplicitlyUnreachable"
+              },
+              {
+                "$ref": "#/components/schemas/ImplicitlyOrExplicitlyUnreachable"
+              }
+            ]
+          },
+          "channel": {
+            "description": "Possible channels for profile permissions criterion.",
+            "type": "string",
+            "enum": [
+              "whatsapp_marketing",
+              "whatsapp_transactional"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "permission",
+          "channel"
+        ]
+      },
+      "ProfilePostalCodeDistanceCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-postal-code-distance"
+            ]
+          },
+          "country_code": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "unit": {
+            "description": "Units for profile postal code distance conditions.",
+            "type": "string",
+            "enum": [
+              "kilometers",
+              "miles"
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GreaterThanPositiveNumericFilter"
+              },
+              {
+                "$ref": "#/components/schemas/LessThanPositiveNumericFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "country_code",
+          "postal_code",
+          "unit",
+          "filter"
+        ]
+      },
+      "ProfilePredictiveAnalyticsDateCondition": {
+        "type": "object",
+        "properties": {
+          "dimension": {
+            "description": "Dimension for date profile predictive analytics conditions.",
+            "type": "string",
+            "enum": [
+              "expected_date_of_next_purchase"
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AnniversaryDateFilter"
+              }
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-predictive-analytics"
+            ]
+          }
+        },
+        "required": [
+          "dimension",
+          "filter",
+          "type"
+        ]
+      },
+      "ProfilePredictiveAnalyticsNumericCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-predictive-analytics"
+            ]
+          },
+          "dimension": {
+            "description": "Dimensions for numeric profile predictive analytics conditions.",
+            "type": "string",
+            "enum": [
+              "average_days_between_orders",
+              "average_order_value",
+              "churn_probability",
+              "historic_clv",
+              "historic_number_of_orders",
+              "predicted_clv",
+              "predicted_number_of_orders",
+              "total_clv"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/NumericOperatorNumericFilter"
+          }
+        },
+        "required": [
+          "type",
+          "dimension",
+          "filter"
+        ]
+      },
+      "ProfilePredictiveAnalyticsStringCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-predictive-analytics"
+            ]
+          },
+          "dimension": {
+            "description": "Dimension for string profile predictive analytics conditions.",
+            "type": "string",
+            "enum": [
+              "predicted_gender"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringFilter"
+          }
+        },
+        "required": [
+          "type",
+          "dimension",
+          "filter"
+        ]
+      },
+      "ProfilePredictiveAnalyticsStringFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "oneOf": [
+              {
+                "enum": [
+                  "equals"
+                ],
+                "type": "string"
+              },
+              {
+                "enum": [
+                  "not-equals"
+                ],
+                "type": "string"
+              }
+            ]
+          },
+          "value": {
+            "description": "Values for profile predictive analytics gender conditions.",
+            "type": "string",
+            "enum": [
+              "likely_female",
+              "likely_male",
+              "uncertain"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ProfilePropertyCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-property"
+            ]
+          },
+          "property": {
+            "type": "string"
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StringOperatorStringFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StringArrayOperatorStringArrayFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StringPhoneOperatorStringArrayFilter"
+              },
+              {
+                "$ref": "#/components/schemas/NumericOperatorNumericFilter"
+              },
+              {
+                "$ref": "#/components/schemas/BooleanFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ListContainsOperatorListContainsFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ListLengthFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ExistenceOperatorExistenceFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "property",
+          "filter"
+        ]
+      },
+      "ProfileRandomSampleCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-sample"
+            ]
+          },
+          "percentage": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "percentage"
+        ]
+      },
+      "ProfileRegionCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-region"
+            ]
+          },
+          "in_region": {
+            "type": "boolean"
+          },
+          "region": {
+            "description": "Regions for profile region conditions.",
+            "type": "string",
+            "enum": [
+              "european_union",
+              "united_states"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "in_region",
+          "region"
+        ]
+      },
+      "Property": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "type": "string",
+            "enum": [
+              "set_property"
+            ]
+          },
+          "set_from_property": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "badge_config",
+          "set_from_property"
+        ]
+      },
+      "ProvidedLandlineMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "provided_landline"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ProvidedNoAgeMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "provided_no_age"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "PushActionButton": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "action_type": {
+            "description": "The action type for a push notification action button.",
+            "type": "string",
+            "enum": [
+              "deep_link",
+              "dismiss",
+              "open_app",
+              "open_url"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_action_id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "label",
+          "action_type"
+        ]
+      },
+      "RecordedDateFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "recorded_date"
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AnniversaryDateFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "RelativeAnniversaryDateFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Operators for relative date filters.\n\ne.g. \"anniversary in the last 10 days\"",
+            "type": "string",
+            "enum": [
+              "anniversary-last",
+              "anniversary-next"
+            ]
+          },
+          "unit": {
+            "description": "Units for relative date filters.",
+            "type": "string",
+            "enum": [
+              "day",
+              "hour",
+              "week"
+            ]
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "unit",
+          "quantity"
+        ]
+      },
+      "RelativeDateOperatorBaseRelativeDateFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Operators for relative date filters.\n\ne.g. \"in the last 10 days\"",
+            "type": "string",
+            "enum": [
+              "at-least",
+              "in-the-last",
+              "in-the-next"
+            ]
+          },
+          "unit": {
+            "description": "Units for relative date filters.",
+            "type": "string",
+            "enum": [
+              "day",
+              "hour",
+              "week"
+            ]
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "unit",
+          "quantity"
+        ]
+      },
+      "RelativeDateRangeFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Operators for relative date range filters.\n\ne.g. \"between 10 and 20 days ago\"",
+            "type": "string",
+            "enum": [
+              "between"
+            ]
+          },
+          "start": {
+            "type": "integer"
+          },
+          "end": {
+            "type": "integer"
+          },
+          "unit": {
+            "description": "Units for relative date filters.",
+            "type": "string",
+            "enum": [
+              "day",
+              "hour",
+              "week"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "start",
+          "end",
+          "unit"
+        ]
+      },
+      "SftpMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "sftp"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "ShopifyIntegrationFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "in"
+            ]
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "shopify"
+              ],
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ShopifyIntegrationMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "integration"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/ShopifyIntegrationFilter"
+          }
+        },
+        "required": [
+          "field",
+          "method",
+          "filter"
+        ]
+      },
+      "SinceFlowStartDateFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Possible operators for since flow start date.",
+            "type": "string",
+            "enum": [
+              "flow-start"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator"
+        ]
+      },
+      "SpamComplaintMethodFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "method"
+            ]
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "spam_complaint"
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "method"
+        ]
+      },
+      "StaticCount": {
+        "type": "object",
+        "properties": {
+          "badge_config": {
+            "type": "string",
+            "enum": [
+              "set_count"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "badge_config",
+          "value"
+        ]
+      },
+      "StaticDateFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Operators for static date filters.\n\nE.g. \"before 2023-01-01\"",
+            "type": "string",
+            "enum": [
+              "after",
+              "before"
+            ]
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "date"
+        ]
+      },
+      "StaticDateRangeFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date"
+            ]
+          },
+          "operator": {
+            "description": "Operators for static date range filters.\n\nE.g. \"between 2023-01-01 and 2023-02-01\"",
+            "type": "string",
+            "enum": [
+              "between-static"
+            ]
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "start",
+          "end"
+        ]
+      },
+      "StatusDateFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "status_date"
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StaticDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateOperatorBaseRelativeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeAnniversaryDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/RelativeDateRangeFilter"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/AnniversaryDateFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "StringArrayOperatorStringArrayFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "description": "Operators for string-in-array filters.",
+            "type": "string",
+            "enum": [
+              "in",
+              "not-in"
+            ]
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "StringOperatorStringFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "description": "Operators for string filters.",
+            "type": "string",
+            "enum": [
+              "contains",
+              "ends-with",
+              "equals",
+              "not-contains",
+              "not-ends-with",
+              "not-equals",
+              "not-starts-with",
+              "nregex",
+              "regex",
+              "starts-with"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "StringPhoneOperatorStringArrayFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "description": "Operators for phone string array filters.\n\nExample condition using this filter:\n        {",
+            "type": "string",
+            "enum": [
+              "phone-country-code-in",
+              "phone-country-code-not-in"
+            ]
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "SubscribedSMSIsRcsCapableFilter": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "is_rcs_capable"
+            ]
+          },
+          "filter": {
+            "$ref": "#/components/schemas/BooleanFilter"
+          }
+        },
+        "required": [
+          "field",
+          "filter"
+        ]
+      },
+      "TemplateEnum": {
+        "type": "string",
+        "enum": [
+          "template"
+        ]
+      },
+      "UtmParam": {
+        "type": "object",
+        "properties": {
+          "param": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "param",
+          "value"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Flows",
+      "description": "flows"
+    }
+  ]
+}

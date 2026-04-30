@@ -1,0 +1,647 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/catalog-items/{id}": {
+      "get": {
+        "operationId": "get_catalog_item",
+        "summary": "Get Catalog Item",
+        "description": "Get a specific catalog item with the given item ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The catalog item ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+            "required": true,
+            "schema": {
+              "description": "The catalog item ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+              "type": "string",
+              "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1"
+            }
+          },
+          {
+            "name": "fields[catalog-item]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "custom_metadata",
+                  "description",
+                  "external_id",
+                  "image_full_url",
+                  "image_thumbnail_url",
+                  "images",
+                  "price",
+                  "published",
+                  "title",
+                  "updated",
+                  "url"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[catalog-variant]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "custom_metadata",
+                  "description",
+                  "external_id",
+                  "image_full_url",
+                  "image_thumbnail_url",
+                  "images",
+                  "inventory_policy",
+                  "inventory_quantity",
+                  "price",
+                  "published",
+                  "sku",
+                  "title",
+                  "updated",
+                  "url"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "variants"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCatalogItemResponseCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Catalogs"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "catalogs:read"
+        ],
+        "x-klaviyo-subtag": "Items"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CatalogItemEnum": {
+        "type": "string",
+        "enum": [
+          "catalog-item"
+        ]
+      },
+      "CatalogItemResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CatalogItemEnum"
+          },
+          "id": {
+            "description": "The catalog item ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+            "type": "string",
+            "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "description": "The ID of the catalog item in an external system.",
+                "type": "string",
+                "example": "SAMPLE-DATA-ITEM-1",
+                "nullable": true
+              },
+              "title": {
+                "description": "The title of the catalog item.",
+                "type": "string",
+                "example": "Ocean Blue Shirt (Sample)",
+                "nullable": true
+              },
+              "description": {
+                "description": "A description of the catalog item.",
+                "type": "string",
+                "example": "Ocean blue cotton shirt with a narrow collar and buttons down the front and long sleeves. Comfortable fit and titled kaleidoscope patterns.",
+                "nullable": true
+              },
+              "price": {
+                "description": "This field can be used to set the price on the catalog item, which is what gets displayed for the item when included in emails. For most price-update use cases, you will also want to update the `price` on any child variants, using the [Update Catalog Variant Endpoint](https://developers.klaviyo.com/en/reference/update_catalog_variant).",
+                "type": "number",
+                "example": 42,
+                "nullable": true
+              },
+              "url": {
+                "description": "URL pointing to the location of the catalog item on your website.",
+                "type": "string",
+                "example": "https://via.placeholder.com/150",
+                "nullable": true
+              },
+              "image_full_url": {
+                "description": "URL pointing to the location of a full image of the catalog item.",
+                "type": "string",
+                "example": "https://via.placeholder.com/300",
+                "nullable": true
+              },
+              "image_thumbnail_url": {
+                "description": "URL pointing to the location of an image thumbnail of the catalog item",
+                "type": "string",
+                "example": "https://via.placeholder.com/150",
+                "nullable": true
+              },
+              "images": {
+                "description": "List of URLs pointing to the locations of images of the catalog item.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "https://via.placeholder.com/150"
+                ],
+                "nullable": true
+              },
+              "custom_metadata": {
+                "description": "Flat JSON blob to provide custom metadata about the catalog item. May not exceed 100kb.",
+                "type": "object",
+                "example": {
+                  "Top Pick": true
+                },
+                "nullable": true
+              },
+              "published": {
+                "description": "Boolean value indicating whether the catalog item is published.",
+                "type": "boolean",
+                "example": true,
+                "nullable": true
+              },
+              "created": {
+                "description": "Date and time when the catalog item was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "Date and time when the catalog item was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "variants": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CatalogVariantEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "CatalogVariantEnum": {
+        "type": "string",
+        "enum": [
+          "catalog-variant"
+        ]
+      },
+      "CatalogVariantResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CatalogVariantEnum"
+          },
+          "id": {
+            "description": "The catalog variant ID is a compound ID (string), with format: `{integration}:::{catalog}:::{external_id}`. Currently, the only supported integration type is `$custom`, and the only supported catalog is `$default`.",
+            "type": "string",
+            "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "description": "The ID of the catalog item variant in an external system.",
+                "type": "string",
+                "example": "SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM",
+                "nullable": true
+              },
+              "title": {
+                "description": "The title of the catalog item variant.",
+                "type": "string",
+                "example": "Ocean Blue Shirt (Sample) Variant Medium",
+                "nullable": true
+              },
+              "description": {
+                "description": "A description of the catalog item variant.",
+                "type": "string",
+                "example": "Ocean blue cotton shirt with a narrow collar and buttons down the front and long sleeves. Comfortable fit and titled kaleidoscope patterns.",
+                "nullable": true
+              },
+              "sku": {
+                "description": "The SKU of the catalog item variant.",
+                "type": "string",
+                "example": "OBS-MD",
+                "nullable": true
+              },
+              "inventory_policy": {
+                "description": "This field controls the visibility of this catalog item variant in product feeds/blocks. This field supports the following values:\n`1`: a product will not appear in dynamic product recommendation feeds and blocks if it is out of stock.\n`0` or `2`: a product can appear in dynamic product recommendation feeds and blocks regardless of inventory quantity.",
+                "type": "integer",
+                "example": 2,
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
+                "nullable": true
+              },
+              "inventory_quantity": {
+                "description": "The quantity of the catalog item variant currently in stock.",
+                "type": "number",
+                "example": 25,
+                "nullable": true
+              },
+              "price": {
+                "description": "This field can be used to set the price on the catalog item variant, which is what gets displayed for the item variant when included in emails. For most price-update use cases, you will also want to update the `price` on any parent items using the [Update Catalog Item Endpoint](https://developers.klaviyo.com/en/reference/update_catalog_item).",
+                "type": "number",
+                "example": 42,
+                "nullable": true
+              },
+              "url": {
+                "description": "URL pointing to the location of the catalog item variant on your website.",
+                "type": "string",
+                "example": "https://via.placeholder.com/150",
+                "nullable": true
+              },
+              "image_full_url": {
+                "description": "URL pointing to the location of a full image of the catalog item variant.",
+                "type": "string",
+                "example": "https://via.placeholder.com/300",
+                "nullable": true
+              },
+              "image_thumbnail_url": {
+                "description": "URL pointing to the location of an image thumbnail of the catalog item variant.",
+                "type": "string",
+                "example": "https://via.placeholder.com/150",
+                "nullable": true
+              },
+              "images": {
+                "description": "List of URLs pointing to the locations of images of the catalog item variant.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "https://via.placeholder.com/150"
+                ],
+                "nullable": true
+              },
+              "custom_metadata": {
+                "description": "Flat JSON blob to provide custom metadata about the catalog item variant. May not exceed 100kb.",
+                "type": "object",
+                "example": {
+                  "Top Pick": true
+                },
+                "nullable": true
+              },
+              "published": {
+                "description": "Boolean value indicating whether the catalog item variant is published.",
+                "type": "boolean",
+                "example": true,
+                "nullable": true
+              },
+              "created": {
+                "description": "Date and time when the catalog item  variant was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "Date and time when the catalog item variant was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "item": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CatalogItemEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetCatalogItemResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CatalogItemResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogVariantResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Catalogs",
+      "description": "catalogs"
+    }
+  ]
+}

@@ -1,0 +1,470 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/segment-series-reports": {
+      "post": {
+        "operationId": "query_segment_series",
+        "summary": "Query Segment Series",
+        "description": "Returns the requested segment analytics series data.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `2/m`<br>Daily: `225/d`\n\n**Scopes:**\n`segments:read`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SegmentSeriesRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSegmentSeriesResponseDTO"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Reporting"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_segment_sery_report",
+          "create_segment_series_report"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "2/m",
+          "daily": "225/d"
+        },
+        "x-klaviyo-scopes": [
+          "segments:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CustomTimeframe": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "description": "A datetime that represents the start of a custom time frame. Offset is ignored and the company timezone is used.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          },
+          "end": {
+            "description": "A datetime that represents the end of a custom time frame. Offset is ignored and the company timezone is used.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostSegmentSeriesResponseDTO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/SegmentSeriesReportEnum"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "results": {
+                    "description": "An array of all the returned values data.\nEach object in the array represents one unique grouping and the results for that grouping.\nEach value in the results array corresponds to the date time at the same index.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/SeriesData"
+                    },
+                    "example": [
+                      {
+                        "groupings": {
+                          "segment_id": "abc123"
+                        },
+                        "statistics": {
+                          "total_members": [
+                            120,
+                            185,
+                            240
+                          ],
+                          "net_members_changed": [
+                            40,
+                            62,
+                            88
+                          ]
+                        }
+                      },
+                      {
+                        "groupings": {
+                          "segment_id": "def456"
+                        },
+                        "statistics": {
+                          "total_members": [
+                            103,
+                            163,
+                            213
+                          ],
+                          "net_members_changed": [
+                            36,
+                            66,
+                            86
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "date_times": {
+                    "description": "An array of date times which correspond to the equivalent index in the results data.",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "example": [
+                      "2024-01-05T00:00:00+00:00",
+                      "2024-01-06T00:00:00+00:00",
+                      "2024-01-07T00:00:00+00:00"
+                    ]
+                  }
+                },
+                "required": [
+                  "results",
+                  "date_times"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "attributes"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SegmentSeriesReportEnum": {
+        "type": "string",
+        "enum": [
+          "segment-series-report"
+        ]
+      },
+      "SegmentSeriesRequestDTO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SegmentSeriesRequestDTOResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SegmentSeriesRequestDTOResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SegmentSeriesReportEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "statistics": {
+                "description": "List of statistics to query for.",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "members_added",
+                    "members_removed",
+                    "net_members_changed",
+                    "total_members"
+                  ],
+                  "description": "Defined segment reporting metric"
+                },
+                "example": [
+                  "total_members",
+                  "net_members_changed"
+                ]
+              },
+              "timeframe": {
+                "description": "The time frame to pull data from (Max length: 1 year). Data is unavailable before June 1st, 2023. Please use a time frame after this date. See [available time frames](https://developers.klaviyo.com/en/reference/reporting_api_overview#available-time-frames).",
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Timeframe"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CustomTimeframe"
+                  }
+                ]
+              },
+              "interval": {
+                "description": "The interval used to aggregate data within the series request.\nIf hourly is used, the timeframe cannot be longer than 7 days.\nIf daily is used, the timeframe cannot be longer than 60 days.\nIf monthly is used, the timeframe cannot be longer than 52 weeks.",
+                "type": "string",
+                "example": "weekly",
+                "enum": [
+                  "daily",
+                  "hourly",
+                  "monthly",
+                  "weekly"
+                ]
+              },
+              "filter": {
+                "description": "API filter string used to filter the query.\nAllowed filters are segment_id.\nAllowed operators are equals, any.\nOnly one filter can be used per attribute.\nMax of 100 messages per ANY filter.",
+                "type": "string",
+                "example": "any(segment_id,[\"xyz123\",\"ghi456\"])",
+                "nullable": true
+              }
+            },
+            "required": [
+              "statistics",
+              "timeframe",
+              "interval"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "SeriesData": {
+        "type": "object",
+        "properties": {
+          "groupings": {
+            "description": "Applied groupings and the values for this object",
+            "type": "object"
+          },
+          "statistics": {
+            "description": "Requested statistics and their series result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "groupings",
+          "statistics"
+        ]
+      },
+      "Timeframe": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "description": "Pre-defined key that represents a set timeframe",
+            "type": "string",
+            "enum": [
+              "last_12_months",
+              "last_30_days",
+              "last_365_days",
+              "last_3_months",
+              "last_7_days",
+              "last_90_days",
+              "last_month",
+              "last_week",
+              "last_year",
+              "this_month",
+              "this_week",
+              "this_year",
+              "today",
+              "yesterday"
+            ]
+          }
+        },
+        "required": [
+          "key"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Reporting",
+      "description": "reporting"
+    }
+  ]
+}

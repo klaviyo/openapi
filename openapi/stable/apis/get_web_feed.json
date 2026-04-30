@@ -1,0 +1,358 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/web-feeds/{id}": {
+      "get": {
+        "operationId": "get_web_feed",
+        "summary": "Get Web Feed",
+        "description": "Get the web feed with the given ID.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`web-feeds:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the web feed",
+            "required": true,
+            "schema": {
+              "description": "The ID of the web feed",
+              "type": "string",
+              "example": "925e385b52fb"
+            }
+          },
+          {
+            "name": "fields[web-feed]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "content_type",
+                  "created",
+                  "name",
+                  "request_method",
+                  "status",
+                  "updated",
+                  "url"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWebFeedResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Web Feeds"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "web-feeds:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "GetWebFeedResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/WebFeedResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "WebFeedEnum": {
+        "type": "string",
+        "enum": [
+          "web-feed"
+        ]
+      },
+      "WebFeedResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/WebFeedEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this web feed. Generated by Klaviyo",
+            "type": "string",
+            "example": "925e385b52fb"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name of this web feed",
+                "type": "string",
+                "example": "Blog_posts"
+              },
+              "url": {
+                "description": "The URL of the web feed",
+                "type": "string",
+                "example": "https://help.klaviyo.com/api/v2/help_center/en-us/articles.json"
+              },
+              "request_method": {
+                "description": "The HTTP method for requesting the web feed",
+                "type": "string",
+                "example": "get",
+                "enum": [
+                  "get",
+                  "post"
+                ]
+              },
+              "content_type": {
+                "description": "The content-type of the web feed",
+                "type": "string",
+                "example": "json",
+                "enum": [
+                  "json",
+                  "xml"
+                ]
+              },
+              "created": {
+                "description": "Date and time when the web feed was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "updated": {
+                "description": "Date and time when the web feed was updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "status": {
+                "description": "The cache status of this web feed if it exists",
+                "type": "string",
+                "example": "ok",
+                "enum": [
+                  "critical_nightly_refresh_timeout",
+                  "disabled",
+                  "ok",
+                  "refreshing",
+                  "warning_nightly_refresh_timeout",
+                  "warning_periodic_refresh_timeout"
+                ],
+                "nullable": true
+              }
+            },
+            "required": [
+              "name",
+              "url",
+              "request_method",
+              "content_type",
+              "created",
+              "updated"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Web Feeds",
+      "description": "web feeds"
+    }
+  ]
+}

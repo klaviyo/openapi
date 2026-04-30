@@ -1,0 +1,636 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/profile-subscription-bulk-create-jobs": {
+      "post": {
+        "operationId": "bulk_subscribe_profiles",
+        "summary": "Bulk Subscribe Profiles",
+        "description": "Subscribe one or more profiles to email marketing, SMS marketing, WhatsApp, or push. If the provided list has double opt-in enabled, profiles will receive a message requiring their confirmation before subscribing. Otherwise, profiles will be immediately subscribed without receiving a confirmation message.\nLearn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nIf a list is not provided, the opt-in process used will be determined by the [account-level default opt-in setting](https://www.klaviyo.com/settings/account/api-keys).\n\nTo add someone to a list without changing their subscription status, use [Add Profile to List](https://developers.klaviyo.com/en/reference/create_list_relationships).\n\nThis API will remove any `UNSUBSCRIBE`, `SPAM_REPORT` or `USER_SUPPRESSED` suppressions from the provided profiles. Learn more about [suppressed profiles](https://help.klaviyo.com/hc/en-us/articles/115005246108-Understanding-suppressed-email-profiles#what-is-a-suppressed-profile-1).\n\nMaximum number of profiles can be submitted for subscription: 1000\n\nThis endpoint now supports a `historical_import` flag. If this flag is set `true`, profiles being subscribed will bypass double opt-in emails and be subscribed immediately. They will also bypass any associated \"Added to list\" flows. This is useful for importing historical data where you have already collected consent. If `historical_import` is set to true, the `consented_at` field is required and must be in the past.\n\nPush tokens provided in `push_tokens` will be registered for each profile as long as push subscriptions are consented to.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Subscribes one or more profiles to marketing, with support for push channel and push tokens.\nAll profiles will be added to the provided list. Either email or phone number is required.\nBoth may be specified to subscribe to both channels. If a profile cannot be found matching\nthe given identifier(s), a new profile will be created and then subscribed.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionCreateJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "subscribe_profiles",
+          "create_profile_subscription_bulk_create_job"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "750/m"
+        },
+        "x-klaviyo-scopes": [
+          "lists:write",
+          "profiles:write",
+          "subscriptions:write"
+        ],
+        "x-klaviyo-subtag": "Consent"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "EmailSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to on the \"EMAIL\" Channel. Currently supports \"MARKETING\".",
+            "$ref": "#/components/schemas/SubscriptionParameters"
+          }
+        },
+        "required": [
+          "marketing"
+        ]
+      },
+      "ListEnum": {
+        "type": "string",
+        "enum": [
+          "list"
+        ]
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
+        ]
+      },
+      "ProfileSubscriptionBulkCreateJobEnum": {
+        "type": "string",
+        "enum": [
+          "profile-subscription-bulk-create-job"
+        ]
+      },
+      "ProfileSubscriptionCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "The ID of the profile to subscribe. If provided, this will be used to perform the lookup.",
+            "type": "string",
+            "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "The email address relating to the email subscription included in `subscriptions`. If the email channel is omitted from `subscriptions`, this will be set on the profile.",
+                "type": "string",
+                "example": "matt-kemp@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "The phone number relating to the SMS subscription included in `subscriptions`. If the SMS channel is omitted from `subscriptions`, this will be set on the profile. This must be in E.164 format.",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "subscriptions": {
+                "description": "Specifies the channel and message types that the profile will be consented to.",
+                "$ref": "#/components/schemas/SubscriptionChannels"
+              },
+              "age_gated_date_of_birth": {
+                "description": "The profile's date of birth. This field is required to update SMS consent for accounts using age-gating: https://help.klaviyo.com/hc/en-us/articles/17252552814875",
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              }
+            },
+            "required": [
+              "subscriptions"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "PushSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to marketing on the \"Push\" channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters"
+          },
+          "tokens": {
+            "description": "A list of push tokens to register for this profile.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushTokenEntry"
+            },
+            "nullable": true
+          },
+          "anonymous_id": {
+            "description": "An anonymous identifier for push-only profiles with no email/phone.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "marketing"
+        ]
+      },
+      "PushTokenDeviceMetadata": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "description": "Relatively stable ID for the device. Will update on app uninstall and reinstall",
+            "type": "string",
+            "example": "1234567890",
+            "nullable": true
+          },
+          "klaviyo_sdk": {
+            "description": "The name of the SDK used to create the push token.",
+            "type": "string",
+            "example": "swift",
+            "enum": [
+              "android",
+              "flutter",
+              "flutter_community",
+              "react_native",
+              "swift"
+            ],
+            "nullable": true
+          },
+          "sdk_version": {
+            "description": "The version of the SDK used to create the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "device_model": {
+            "description": "The model of the device",
+            "type": "string",
+            "example": "iPhone12,1",
+            "nullable": true
+          },
+          "os_name": {
+            "description": "The name of the operating system on the device.",
+            "type": "string",
+            "example": "ios",
+            "enum": [
+              "android",
+              "ios",
+              "ipados",
+              "macos",
+              "tvos"
+            ],
+            "nullable": true
+          },
+          "os_version": {
+            "description": "The version of the operating system on the device",
+            "type": "string",
+            "example": "14.0",
+            "nullable": true
+          },
+          "manufacturer": {
+            "description": "The manufacturer of the device",
+            "type": "string",
+            "example": "Apple",
+            "nullable": true
+          },
+          "app_name": {
+            "description": "The name of the app that created the push token",
+            "type": "string",
+            "example": "Klaviyo",
+            "nullable": true
+          },
+          "app_version": {
+            "description": "The version of the app that created the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "app_build": {
+            "description": "The build of the app that created the push token",
+            "type": "string",
+            "example": "1",
+            "nullable": true
+          },
+          "app_id": {
+            "description": "The ID of the app that created the push token",
+            "type": "string",
+            "example": "com.klaviyo.app",
+            "nullable": true
+          },
+          "environment": {
+            "description": "The environment in which the push token was created",
+            "type": "string",
+            "example": "release",
+            "enum": [
+              "debug",
+              "release"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "PushTokenEntry": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "description": "A push token from APNS or FCM.",
+            "type": "string",
+            "example": "1234567890abcdef"
+          },
+          "platform": {
+            "description": "The platform on which the push token was created. Either \"ios\" or \"android\".",
+            "type": "string",
+            "enum": [
+              "android",
+              "ios"
+            ]
+          },
+          "vendor": {
+            "description": "The vendor of the push token. Either \"apns\" or \"fcm\".",
+            "type": "string",
+            "example": "apns",
+            "enum": [
+              "apns",
+              "fcm"
+            ]
+          },
+          "enablement_status": {
+            "description": "The enablement status for the push token.",
+            "type": "string",
+            "example": "AUTHORIZED",
+            "enum": [
+              "AUTHORIZED",
+              "DENIED",
+              "NOT_DETERMINED",
+              "PROVISIONAL",
+              "UNAUTHORIZED"
+            ],
+            "nullable": true
+          },
+          "background": {
+            "description": "The background state of the push token.",
+            "type": "string",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "DENIED",
+              "RESTRICTED"
+            ],
+            "nullable": true
+          },
+          "device_metadata": {
+            "description": "Metadata about the device that created the push token.",
+            "$ref": "#/components/schemas/PushTokenDeviceMetadata",
+            "nullable": true
+          }
+        },
+        "required": [
+          "token",
+          "platform",
+          "vendor"
+        ]
+      },
+      "SMSSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to marketing on the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          },
+          "transactional": {
+            "description": "The parameters to subscribe to transactional messaging on the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          }
+        }
+      },
+      "SubscriptionChannels": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "description": "The subscription parameters to subscribe to on the \"EMAIL\" Channel.",
+            "$ref": "#/components/schemas/EmailSubscriptionParameters",
+            "nullable": true
+          },
+          "sms": {
+            "description": "The subscription parameters to subscribe to on the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SMSSubscriptionParameters",
+            "nullable": true
+          },
+          "whatsapp": {
+            "description": "The subscription parameters to subscribe to on the \"WhatsApp\" Channel.",
+            "$ref": "#/components/schemas/WhatsAppSubscriptionParameters",
+            "nullable": true
+          },
+          "push": {
+            "description": "The subscription parameters to subscribe to on the \"Push\" Channel.",
+            "$ref": "#/components/schemas/PushSubscriptionParameters",
+            "nullable": true
+          }
+        }
+      },
+      "SubscriptionCreateJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SubscriptionCreateJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SubscriptionCreateJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileSubscriptionBulkCreateJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "custom_source": {
+                "description": "A custom method detail or source to store on the consent records.",
+                "type": "string",
+                "example": "Marketing Event",
+                "nullable": true
+              },
+              "profiles": {
+                "description": "The profile(s) to subscribe",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ProfileSubscriptionCreateQueryResourceObject"
+                    }
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "historical_import": {
+                "description": "Whether this subscription is part of a historical import. If true, the consented_at field must be provided for each profile.",
+                "type": "boolean",
+                "default": false,
+                "nullable": true
+              }
+            },
+            "required": [
+              "profiles"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ListEnum"
+                      },
+                      "id": {
+                        "description": "The list to add the newly subscribed profiles to",
+                        "type": "string",
+                        "example": "Y6nRLr"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "SubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "description": "The Consent status to be set as part of the subscribe call. Currently supports \"SUBSCRIBED\".",
+            "type": "string",
+            "example": "SUBSCRIBED",
+            "enum": [
+              "SUBSCRIBED"
+            ]
+          },
+          "consented_at": {
+            "description": "The timestamp of when the profile's consent was gathered. This should only be used when syncing over historical consent info to Klaviyo; if the `historical_import` flag is not included, providing any value for this field will raise an error.",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": [
+          "consent"
+        ]
+      },
+      "WhatsAppSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to marketing on the \"WhatsApp\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          },
+          "transactional": {
+            "description": "The parameters to subscribe to transactional messaging on the \"WhatsApp\" Channel.",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Profiles",
+      "description": "profiles"
+    }
+  ]
+}

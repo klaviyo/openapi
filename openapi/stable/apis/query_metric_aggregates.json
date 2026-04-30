@@ -1,0 +1,547 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/metric-aggregates": {
+      "post": {
+        "operationId": "query_metric_aggregates",
+        "summary": "Query Metric Aggregates",
+        "description": "Query and aggregate event data associated with a metric, including native Klaviyo metrics, integration-specific metrics, and custom events (not to be confused with [custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview), which are not supported at this time). Queries must be passed in the JSON body of your `POST` request.\n\nTo request campaign and flow performance data that matches the data shown in Klaviyo's UI, we recommend the [Reporting API](https://developers.klaviyo.com/en/reference/reporting_api_overview).\n\nResults can be filtered and grouped by time, event, or profile dimensions.\n\nTo learn more about how to use this endpoint, check out our new [Using the Query Metric Aggregates Endpoint guide](https://developers.klaviyo.com/en/docs/using-the-query-metric-aggregates-endpoint).\n\nFor a comprehensive list of request body parameters, native Klaviyo metrics, and their associated attributes for grouping and filtering, please refer to the [metrics attributes guide](https://developers.klaviyo.com/en/docs/supported_metrics_and_attributes).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`metrics:read`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Retrieve Metric Aggregations",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetricAggregateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostMetricAggregateResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Metrics"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_metric_aggregate"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "metrics:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "MetricAggregateEnum": {
+        "type": "string",
+        "enum": [
+          "metric-aggregate"
+        ]
+      },
+      "MetricAggregateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MetricAggregateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "MetricAggregateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MetricAggregateEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "metric_id": {
+                "description": "The metric ID used in the aggregation.",
+                "type": "string",
+                "example": "0rG4eQ"
+              },
+              "page_cursor": {
+                "description": "Optional pagination cursor to iterate over large result sets",
+                "type": "string"
+              },
+              "measurements": {
+                "description": "Measurement key, e.g. `unique`, `sum_value`, `count`",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "count",
+                    "sum_value",
+                    "unique"
+                  ],
+                  "description": "Supported measurements for aggregation"
+                },
+                "example": [
+                  "count"
+                ]
+              },
+              "interval": {
+                "description": "Aggregation interval, e.g. \"hour\", \"day\", \"week\", \"month\"",
+                "type": "string",
+                "example": "day",
+                "default": "day",
+                "enum": [
+                  "day",
+                  "hour",
+                  "month",
+                  "week"
+                ],
+                "nullable": true
+              },
+              "page_size": {
+                "description": "Alter the maximum number of returned rows in a single page of aggregation results",
+                "type": "integer",
+                "example": 500,
+                "default": 500,
+                "nullable": true
+              },
+              "by": {
+                "description": "Optional attribute(s) used for partitioning by the aggregation function",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "$attributed_channel",
+                    "$attributed_flow",
+                    "$attributed_message",
+                    "$attributed_variation",
+                    "$campaign_channel",
+                    "$flow",
+                    "$flow_channel",
+                    "$message",
+                    "$message_send_cohort",
+                    "$usage_amount",
+                    "$value_currency",
+                    "$variation",
+                    "$variation_send_cohort",
+                    "Bot Click",
+                    "Bounce Type",
+                    "Campaign Name",
+                    "Client Canonical",
+                    "Client Name",
+                    "Client Type",
+                    "Email Domain",
+                    "Failure Source",
+                    "Failure Type",
+                    "From Number",
+                    "From Phone Region",
+                    "Inbox Provider",
+                    "List",
+                    "Message Name",
+                    "Message Type",
+                    "Method",
+                    "Segment Count",
+                    "Subject",
+                    "To Number",
+                    "To Phone Region",
+                    "URL",
+                    "form_id"
+                  ],
+                  "description": "Supported dimensions for grouping and filtering.\n\nIf adding a new dimension, the following will also need to be updated:\n    - adding the key in keys.py\n    - adding an AppMetricDimension to library.py\n    - adding a new entry to the dict in the __init__ method of StaticSchema using the key from keys.py and the\n        AppMetricDimension from library.py"
+                },
+                "example": [
+                  "$message"
+                ],
+                "nullable": true
+              },
+              "return_fields": {
+                "description": "Provide fields to limit the returned data",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              "filter": {
+                "description": "List of filters, must include time range using ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).\n            These filters follow a similar format to those in `GET` requests, the primary difference is that this endpoint asks for a list.\n            The time range can be filtered by providing a `greater-or-equal` and a `less-than` filter on the `datetime` field.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "greater-or-equal(datetime,2022-12-01T00:00:00)",
+                  "less-than(datetime,2022-12-08T00:00:00"
+                ]
+              },
+              "timezone": {
+                "description": "The timezone used for processing the query, e.g. `'America/New_York'`.\n            This field is validated against a list of common timezones from the [IANA Time Zone Database](https://www.iana.org/time-zones).\n            While most are supported, a few notable exceptions are `Factory`, `Europe/Kyiv` and `Pacific/Kanton`. This field is case-sensitive.",
+                "type": "string",
+                "example": "America/New_York",
+                "default": "UTC",
+                "nullable": true
+              },
+              "sort": {
+                "description": "Provide a sort key (e.g. -$message)",
+                "type": "string",
+                "enum": [
+                  "$attributed_channel",
+                  "-$attributed_channel",
+                  "$attributed_flow",
+                  "-$attributed_flow",
+                  "$attributed_message",
+                  "-$attributed_message",
+                  "$attributed_variation",
+                  "-$attributed_variation",
+                  "$campaign_channel",
+                  "-$campaign_channel",
+                  "$flow",
+                  "-$flow",
+                  "$flow_channel",
+                  "-$flow_channel",
+                  "$message",
+                  "-$message",
+                  "$message_send_cohort",
+                  "-$message_send_cohort",
+                  "$usage_amount",
+                  "-$usage_amount",
+                  "$value_currency",
+                  "-$value_currency",
+                  "$variation",
+                  "-$variation",
+                  "$variation_send_cohort",
+                  "-$variation_send_cohort",
+                  "Bot Click",
+                  "-Bot Click",
+                  "Bounce Type",
+                  "-Bounce Type",
+                  "Campaign Name",
+                  "-Campaign Name",
+                  "Client Canonical",
+                  "-Client Canonical",
+                  "Client Name",
+                  "-Client Name",
+                  "Client Type",
+                  "-Client Type",
+                  "Email Domain",
+                  "-Email Domain",
+                  "Failure Source",
+                  "-Failure Source",
+                  "Failure Type",
+                  "-Failure Type",
+                  "From Number",
+                  "-From Number",
+                  "From Phone Region",
+                  "-From Phone Region",
+                  "Inbox Provider",
+                  "-Inbox Provider",
+                  "List",
+                  "-List",
+                  "Message Name",
+                  "-Message Name",
+                  "Message Type",
+                  "-Message Type",
+                  "Method",
+                  "-Method",
+                  "Segment Count",
+                  "-Segment Count",
+                  "Subject",
+                  "-Subject",
+                  "To Number",
+                  "-To Number",
+                  "To Phone Region",
+                  "-To Phone Region",
+                  "URL",
+                  "-URL",
+                  "count",
+                  "-count",
+                  "form_id",
+                  "-form_id",
+                  "sum_value",
+                  "-sum_value",
+                  "unique",
+                  "-unique"
+                ]
+              }
+            },
+            "required": [
+              "metric_id",
+              "measurements",
+              "filter"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "MetricAggregateRowDTO": {
+        "type": "object",
+        "properties": {
+          "dimensions": {
+            "description": "List of dimensions associated with this set of measurements",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "measurements": {
+            "description": "Dictionary of measurement_key, values",
+            "type": "object"
+          }
+        },
+        "required": [
+          "dimensions",
+          "measurements"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostMetricAggregateResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/MetricAggregateEnum"
+              },
+              "id": {
+                "description": "Ephemeral ID associated with the aggregation query",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "dates": {
+                    "description": "The dates of the query range",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "data": {
+                    "description": "Aggregation result data",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MetricAggregateRowDTO"
+                    }
+                  }
+                },
+                "required": [
+                  "dates",
+                  "data"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Metrics",
+      "description": "metrics"
+    }
+  ]
+}

@@ -1,0 +1,606 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/profile-subscription-bulk-delete-jobs": {
+      "post": {
+        "operationId": "bulk_unsubscribe_profiles",
+        "summary": "Bulk Unsubscribe Profiles",
+        "description": "> \ud83d\udea7\n>\n> Profiles not in the specified list will be globally unsubscribed. Always verify profile list membership before calling this endpoint to avoid unintended global unsubscribes.\n\nUnsubscribe one or more profiles from email marketing, SMS marketing, push marketing, or a combination. Learn more about [consent in this guide](https://developers.klaviyo.com/en/docs/collect_email_and_sms_consent_via_api).\n\nPush tokens provided in `subscriptions.push.tokens` will be removed for the specified profiles.\n\nTo remove someone from a list without changing their subscription status, use [Remove Profiles from List](https://developers.klaviyo.com/en/reference/remove_profiles_from_list).\n\nMaximum number of profiles per call: 100<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`lists:write`\n`profiles:write`\n`subscriptions:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Unsubscribes one or more profiles from marketing. Supports email, SMS, WhatsApp, and push channels. All profiles will be removed from the provided list.\nEither email or phone number is required for email/SMS/WhatsApp channels. Push tokens can be removed by providing token strings directly.\nIf a profile cannot be found matching the given identifier(s), a new profile will be created and then unsubscribed.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionDeleteJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "unsubscribe_profiles",
+          "create_profile_subscription_bulk_delete_job"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "750/m"
+        },
+        "x-klaviyo-scopes": [
+          "lists:write",
+          "profiles:write",
+          "subscriptions:write"
+        ],
+        "x-klaviyo-subtag": "Consent"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "EmailUnsubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to unsubscribe from marketing on the \"EMAIL\" channel.",
+            "$ref": "#/components/schemas/UnsubscriptionParameters"
+          }
+        },
+        "required": [
+          "marketing"
+        ]
+      },
+      "ListEnum": {
+        "type": "string",
+        "enum": [
+          "list"
+        ]
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
+        ]
+      },
+      "ProfileSubscriptionBulkDeleteJobEnum": {
+        "type": "string",
+        "enum": [
+          "profile-subscription-bulk-delete-job"
+        ]
+      },
+      "ProfileSubscriptionDeleteQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "The email address to unsubscribe.",
+                "type": "string",
+                "example": "matt-kemp@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "The phone number to unsubscribe. This must be in E.164 format.",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "subscriptions": {
+                "description": "Specifies the channel and message types that the profile will have consent revoked from.",
+                "$ref": "#/components/schemas/UnsubscriptionChannels"
+              }
+            },
+            "required": [
+              "subscriptions"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "PushTokenDeviceMetadata": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "description": "Relatively stable ID for the device. Will update on app uninstall and reinstall",
+            "type": "string",
+            "example": "1234567890",
+            "nullable": true
+          },
+          "klaviyo_sdk": {
+            "description": "The name of the SDK used to create the push token.",
+            "type": "string",
+            "example": "swift",
+            "enum": [
+              "android",
+              "flutter",
+              "flutter_community",
+              "react_native",
+              "swift"
+            ],
+            "nullable": true
+          },
+          "sdk_version": {
+            "description": "The version of the SDK used to create the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "device_model": {
+            "description": "The model of the device",
+            "type": "string",
+            "example": "iPhone12,1",
+            "nullable": true
+          },
+          "os_name": {
+            "description": "The name of the operating system on the device.",
+            "type": "string",
+            "example": "ios",
+            "enum": [
+              "android",
+              "ios",
+              "ipados",
+              "macos",
+              "tvos"
+            ],
+            "nullable": true
+          },
+          "os_version": {
+            "description": "The version of the operating system on the device",
+            "type": "string",
+            "example": "14.0",
+            "nullable": true
+          },
+          "manufacturer": {
+            "description": "The manufacturer of the device",
+            "type": "string",
+            "example": "Apple",
+            "nullable": true
+          },
+          "app_name": {
+            "description": "The name of the app that created the push token",
+            "type": "string",
+            "example": "Klaviyo",
+            "nullable": true
+          },
+          "app_version": {
+            "description": "The version of the app that created the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "app_build": {
+            "description": "The build of the app that created the push token",
+            "type": "string",
+            "example": "1",
+            "nullable": true
+          },
+          "app_id": {
+            "description": "The ID of the app that created the push token",
+            "type": "string",
+            "example": "com.klaviyo.app",
+            "nullable": true
+          },
+          "environment": {
+            "description": "The environment in which the push token was created",
+            "type": "string",
+            "example": "release",
+            "enum": [
+              "debug",
+              "release"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "PushTokenEntry": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "description": "A push token from APNS or FCM.",
+            "type": "string",
+            "example": "1234567890abcdef"
+          },
+          "platform": {
+            "description": "The platform on which the push token was created. Either \"ios\" or \"android\".",
+            "type": "string",
+            "enum": [
+              "android",
+              "ios"
+            ]
+          },
+          "vendor": {
+            "description": "The vendor of the push token. Either \"apns\" or \"fcm\".",
+            "type": "string",
+            "example": "apns",
+            "enum": [
+              "apns",
+              "fcm"
+            ]
+          },
+          "enablement_status": {
+            "description": "The enablement status for the push token.",
+            "type": "string",
+            "example": "AUTHORIZED",
+            "enum": [
+              "AUTHORIZED",
+              "DENIED",
+              "NOT_DETERMINED",
+              "PROVISIONAL",
+              "UNAUTHORIZED"
+            ],
+            "nullable": true
+          },
+          "background": {
+            "description": "The background state of the push token.",
+            "type": "string",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "DENIED",
+              "RESTRICTED"
+            ],
+            "nullable": true
+          },
+          "device_metadata": {
+            "description": "Metadata about the device that created the push token.",
+            "$ref": "#/components/schemas/PushTokenDeviceMetadata",
+            "nullable": true
+          }
+        },
+        "required": [
+          "token",
+          "platform",
+          "vendor"
+        ]
+      },
+      "PushUnsubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to unsubscribe from marketing on the \"Push\" channel.",
+            "$ref": "#/components/schemas/UnsubscriptionParameters"
+          },
+          "tokens": {
+            "description": "A list of push tokens to unsubscribe/remove.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushTokenEntry"
+            }
+          }
+        },
+        "required": [
+          "marketing",
+          "tokens"
+        ]
+      },
+      "SMSUnsubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to unsubscribe from marketing on the \"SMS\" channel.",
+            "$ref": "#/components/schemas/UnsubscriptionParameters",
+            "nullable": true
+          },
+          "transactional": {
+            "description": "The parameters to unsubscribe from transactional messaging on the \"SMS\" channel.",
+            "$ref": "#/components/schemas/UnsubscriptionParameters",
+            "nullable": true
+          }
+        }
+      },
+      "SubscriptionDeleteJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SubscriptionDeleteJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SubscriptionDeleteJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileSubscriptionBulkDeleteJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "profiles": {
+                "description": "The profile(s) to unsubscribe",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ProfileSubscriptionDeleteQueryResourceObject"
+                    }
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "profiles"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ListEnum"
+                      },
+                      "id": {
+                        "description": "The list to remove the profiles from",
+                        "type": "string",
+                        "example": "Y6nRLr"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "UnsubscriptionChannels": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "description": "The subscription parameters to unsubscribe from the \"EMAIL\" Channel.",
+            "$ref": "#/components/schemas/EmailUnsubscriptionParameters",
+            "nullable": true
+          },
+          "sms": {
+            "description": "The subscription parameters to unsubscribe from the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SMSUnsubscriptionParameters",
+            "nullable": true
+          },
+          "whatsapp": {
+            "description": "The subscription parameters to unsubscribe from the \"WhatsApp\" Channel.",
+            "$ref": "#/components/schemas/WhatsAppUnsubscriptionParameters",
+            "nullable": true
+          },
+          "push": {
+            "description": "The subscription parameters to unsubscribe from the \"Push\" Channel.",
+            "$ref": "#/components/schemas/PushUnsubscriptionParameters",
+            "nullable": true
+          }
+        }
+      },
+      "UnsubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "description": "The Consent status to be set as part of the unsubscribe call. Currently supports \"UNSUBSCRIBED\".",
+            "type": "string",
+            "example": "UNSUBSCRIBED",
+            "enum": [
+              "UNSUBSCRIBED"
+            ]
+          }
+        },
+        "required": [
+          "consent"
+        ]
+      },
+      "WhatsAppUnsubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to unsubscribe from marketing on the \"WhatsApp\" channel.",
+            "$ref": "#/components/schemas/UnsubscriptionParameters",
+            "nullable": true
+          },
+          "transactional": {
+            "description": "The parameters to unsubscribe from transactional messaging on the \"WhatsApp\" channel.",
+            "$ref": "#/components/schemas/UnsubscriptionParameters",
+            "nullable": true
+          },
+          "conversational": {
+            "description": "The parameters to unsubscribe from conversational messaging on the \"WhatsApp\" channel.",
+            "$ref": "#/components/schemas/UnsubscriptionParameters",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Profiles",
+      "description": "profiles"
+    }
+  ]
+}

@@ -1,0 +1,858 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/push-tokens/{id}": {
+      "get": {
+        "operationId": "get_push_token",
+        "summary": "Get Push Token",
+        "description": "Return a specific push token based on its ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`profiles:read`\n`push-tokens:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The value of the push token",
+            "required": true,
+            "schema": {
+              "description": "The value of the push token",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[profile]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "email",
+                  "external_id",
+                  "first_name",
+                  "image",
+                  "last_event_date",
+                  "last_name",
+                  "locale",
+                  "location",
+                  "location.address1",
+                  "location.address2",
+                  "location.city",
+                  "location.country",
+                  "location.ip",
+                  "location.latitude",
+                  "location.longitude",
+                  "location.region",
+                  "location.timezone",
+                  "location.zip",
+                  "organization",
+                  "phone_number",
+                  "properties",
+                  "title",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[push-token]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "background",
+                  "created",
+                  "enablement_status",
+                  "metadata",
+                  "metadata.app_build",
+                  "metadata.app_id",
+                  "metadata.app_name",
+                  "metadata.app_version",
+                  "metadata.device_id",
+                  "metadata.device_model",
+                  "metadata.environment",
+                  "metadata.klaviyo_sdk",
+                  "metadata.manufacturer",
+                  "metadata.os_name",
+                  "metadata.os_version",
+                  "metadata.sdk_version",
+                  "platform",
+                  "recorded_date",
+                  "token",
+                  "vendor"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "profile"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPushTokenResponseCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Profiles"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "profiles:read",
+          "push-tokens:read"
+        ],
+        "x-klaviyo-subtag": "Push Tokens"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "DeviceMetadata": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "description": "Relatively stable ID for the device. Will update on app uninstall and reinstall",
+            "type": "string",
+            "example": "1234567890",
+            "nullable": true
+          },
+          "klaviyo_sdk": {
+            "description": "The name of the SDK used to create the push token.",
+            "type": "string",
+            "example": "swift",
+            "enum": [
+              "android",
+              "flutter",
+              "flutter_community",
+              "react_native",
+              "swift"
+            ],
+            "nullable": true
+          },
+          "sdk_version": {
+            "description": "The version of the SDK used to create the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "device_model": {
+            "description": "The model of the device",
+            "type": "string",
+            "example": "iPhone12,1",
+            "nullable": true
+          },
+          "os_name": {
+            "description": "The name of the operating system on the device.",
+            "type": "string",
+            "example": "ios",
+            "enum": [
+              "android",
+              "ios",
+              "ipados",
+              "macos",
+              "tvos"
+            ],
+            "nullable": true
+          },
+          "os_version": {
+            "description": "The version of the operating system on the device",
+            "type": "string",
+            "example": "14.0",
+            "nullable": true
+          },
+          "manufacturer": {
+            "description": "The manufacturer of the device",
+            "type": "string",
+            "example": "Apple",
+            "nullable": true
+          },
+          "app_name": {
+            "description": "The name of the app that created the push token",
+            "type": "string",
+            "example": "Klaviyo",
+            "nullable": true
+          },
+          "app_version": {
+            "description": "The version of the app that created the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "app_build": {
+            "description": "The build of the app that created the push token",
+            "type": "string",
+            "example": "1",
+            "nullable": true
+          },
+          "app_id": {
+            "description": "The ID of the app that created the push token",
+            "type": "string",
+            "example": "com.klaviyo.app",
+            "nullable": true
+          },
+          "environment": {
+            "description": "The environment in which the push token was created",
+            "type": "string",
+            "example": "release",
+            "enum": [
+              "debug",
+              "release"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "GetPushTokenResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PushTokenResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ListEnum": {
+        "type": "string",
+        "enum": [
+          "list"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
+        ]
+      },
+      "ProfileLocation": {
+        "type": "object",
+        "properties": {
+          "address1": {
+            "description": "First line of street address",
+            "type": "string",
+            "example": "89 E 42nd St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of street address",
+            "type": "string",
+            "example": "1st floor",
+            "nullable": true
+          },
+          "city": {
+            "description": "City name",
+            "type": "string",
+            "example": "New York",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name",
+            "type": "string",
+            "example": "United States",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude coordinate. We recommend providing a precision of four decimal places.",
+            "example": "40.7128",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "longitude": {
+            "description": "Longitude coordinate. We recommend providing a precision of four decimal places.",
+            "example": "74.0060",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "region": {
+            "description": "Region within a country, such as state or province",
+            "type": "string",
+            "example": "NY",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Zip code",
+            "type": "string",
+            "example": "10017",
+            "nullable": true
+          },
+          "timezone": {
+            "description": "Time zone name. We recommend using time zones from the IANA Time Zone Database.",
+            "type": "string",
+            "example": "America/New_York",
+            "nullable": true
+          },
+          "ip": {
+            "description": "IP Address",
+            "type": "string",
+            "example": "127.0.0.1",
+            "nullable": true
+          }
+        }
+      },
+      "ProfileResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format like (ISO 639-1/2)-(ISO 3166 alpha-2)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "created": {
+                "description": "Date and time when the profile was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "updated": {
+                "description": "Date and time when the profile was last updated, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "last_event_date": {
+                "description": "Date and time of the most recent event the triggered an update to the profile, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "lists": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ListEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "segments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/SegmentEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "push-tokens": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/PushTokenEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "links"
+        ]
+      },
+      "PushTokenEnum": {
+        "type": "string",
+        "enum": [
+          "push-token"
+        ]
+      },
+      "PushTokenResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/PushTokenEnum"
+          },
+          "id": {
+            "description": "ID of push token",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "created": {
+                "description": "The time at which the token was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "token": {
+                "description": "The push token",
+                "type": "string"
+              },
+              "enablement_status": {
+                "description": "The enablement status of the push token",
+                "type": "string",
+                "enum": [
+                  "AUTHORIZED",
+                  "DENIED",
+                  "NOT_DETERMINED",
+                  "PROVISIONAL",
+                  "UNAUTHORIZED"
+                ]
+              },
+              "platform": {
+                "description": "The platform of the push token('ios', 'android')",
+                "type": "string",
+                "enum": [
+                  "android",
+                  "ios"
+                ]
+              },
+              "vendor": {
+                "description": "The vendor of the push token('APNs', 'FCM')",
+                "type": "string"
+              },
+              "background": {
+                "description": "The background state of the push token",
+                "type": "string"
+              },
+              "recorded_date": {
+                "description": "The date the push token was recorded",
+                "type": "string"
+              },
+              "metadata": {
+                "description": "Metadata of device",
+                "$ref": "#/components/schemas/DeviceMetadata",
+                "nullable": true
+              }
+            },
+            "required": [
+              "created",
+              "token",
+              "enablement_status",
+              "platform",
+              "vendor",
+              "background",
+              "recorded_date"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ProfileEnum"
+                      },
+                      "id": {
+                        "description": "The profile associated with the push token",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SegmentEnum": {
+        "type": "string",
+        "enum": [
+          "segment"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Profiles",
+      "description": "profiles"
+    }
+  ]
+}

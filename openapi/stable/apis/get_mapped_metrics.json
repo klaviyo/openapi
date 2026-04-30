@@ -1,0 +1,1037 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/mapped-metrics": {
+      "get": {
+        "operationId": "get_mapped_metrics",
+        "summary": "Get Mapped Metrics",
+        "description": "Get all mapped metrics in an account.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`metrics:read`",
+        "parameters": [
+          {
+            "name": "fields[custom-metric]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.aggregation_method",
+                  "definition.metric_groups",
+                  "name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[mapped-metric]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[metric]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "integration",
+                  "name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "custom-metric",
+                  "metric"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMappedMetricResponseCollectionCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Metrics"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "metrics:read"
+        ],
+        "x-klaviyo-subtag": "Mapped Metrics"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "BooleanFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "boolean"
+            ]
+          },
+          "operator": {
+            "description": "Operators for boolean filters.",
+            "type": "string",
+            "enum": [
+              "equals"
+            ]
+          },
+          "value": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "CustomMetricCondition": {
+        "type": "object",
+        "properties": {
+          "property": {
+            "type": "string"
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NumericOperatorNumericFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StringInArrayFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ExistenceOperatorExistenceFilter"
+              },
+              {
+                "$ref": "#/components/schemas/BooleanFilter"
+              },
+              {
+                "$ref": "#/components/schemas/StringOperatorStringFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ListContainsOperatorListContainsFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ListRegexOperatorListContainsFilter"
+              },
+              {
+                "$ref": "#/components/schemas/ListSubstringFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "property",
+          "filter"
+        ]
+      },
+      "CustomMetricDefinition": {
+        "type": "object",
+        "properties": {
+          "aggregation_method": {
+            "description": "Method of aggregation for custom metric measurements. If a metric has a `value` aggregation method, it will be treated as a revenue metric, such as a Placed Order metric. If a metric has a `count` aggregation method, it will only be able to report on conversions like an Active on Site metric.\n",
+            "type": "string",
+            "enum": [
+              "count",
+              "value"
+            ]
+          },
+          "metric_groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomMetricGroup"
+            }
+          }
+        },
+        "required": [
+          "aggregation_method",
+          "metric_groups"
+        ]
+      },
+      "CustomMetricEnum": {
+        "type": "string",
+        "enum": [
+          "custom-metric"
+        ]
+      },
+      "CustomMetricGroup": {
+        "type": "object",
+        "properties": {
+          "metric_id": {
+            "description": "The ID of the metric that composes the custom metric.",
+            "type": "string"
+          },
+          "metric_filters": {
+            "description": "An optional array of objects for filtering on properties of the metric.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomMetricCondition"
+            },
+            "nullable": true
+          },
+          "value_property": {
+            "description": "\nIf the custom metric has a `value` aggregation method, the `value_property` of each `metric_group` of the `definition` should specify the property to calculate the conversion value. If null, the default `$value` property will be used.\n",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "metric_id"
+        ]
+      },
+      "CustomMetricResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomMetricEnum"
+          },
+          "id": {
+            "description": "The ID of the custom metric",
+            "type": "string",
+            "example": "925e385b52fb405715f3616c337cc65c"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name for this custom metric. Names must be unique across the account.         Attempting to create a metric with a duplicate name will return a 400 status code.",
+                "type": "string",
+                "example": "My custom metric"
+              },
+              "created": {
+                "description": "The datetime when this custom metric was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-04-15T00:00:00Z"
+              },
+              "updated": {
+                "description": "The datetime when this custom metric was updated.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-04-15T00:00:00Z"
+              },
+              "definition": {
+                "description": "The definition of a custom metric. It is composed of a list of         `metric_groups`. Each group specifies how to query a particular metric with         customized filters and the value property to calculate conversion value measurements         (if applicable). The groups are combined with `AND` relationships, i.e., conversion         and conversion value measurements for each group will be added together to get the final         result.",
+                "example": {
+                  "aggregation_method": "value",
+                  "metric_groups": [
+                    {
+                      "metric_id": "AAAAAA",
+                      "metric_filters": [
+                        {
+                          "property": "my_string_property",
+                          "filter": {
+                            "type": "string",
+                            "operator": "starts-with",
+                            "value": "some_substring"
+                          }
+                        },
+                        {
+                          "property": "my_numeric_property",
+                          "filter": {
+                            "type": "numeric",
+                            "operator": "greater-than-or-equal",
+                            "value": 999
+                          }
+                        }
+                      ],
+                      "value_property": "$value"
+                    },
+                    {
+                      "metric_id": "BBBBBB",
+                      "metric_filters": [
+                        {
+                          "property": "my_boolean_property",
+                          "filter": {
+                            "type": "boolean",
+                            "operator": "equals",
+                            "value": false
+                          }
+                        },
+                        {
+                          "property": "my_list_property",
+                          "filter": {
+                            "type": "list",
+                            "operator": "contains",
+                            "value": "some_value_in_a_list"
+                          }
+                        }
+                      ],
+                      "value_property": "my_numeric_property"
+                    }
+                  ]
+                },
+                "$ref": "#/components/schemas/CustomMetricDefinition"
+              }
+            },
+            "required": [
+              "name",
+              "created",
+              "updated",
+              "definition"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "metrics": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/MetricEnum"
+                        },
+                        "id": {
+                          "description": "Related metrics",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ExistenceOperatorExistenceFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "existence"
+            ]
+          },
+          "operator": {
+            "description": "Operators for existence filters.",
+            "type": "string",
+            "enum": [
+              "is-set",
+              "not-set"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator"
+        ]
+      },
+      "FlowEnum": {
+        "type": "string",
+        "enum": [
+          "flow"
+        ]
+      },
+      "GetMappedMetricResponseCollectionCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MappedMetricResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/MetricResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomMetricResponseObjectResource"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ListContainsOperatorListContainsFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "operator": {
+            "description": "Operators for list contains filters.",
+            "type": "string",
+            "enum": [
+              "contains",
+              "not-contains"
+            ]
+          },
+          "value": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ListRegexOperatorListContainsFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "operator": {
+            "description": "Operators for list regex filters.",
+            "type": "string",
+            "enum": [
+              "contains-ends-with",
+              "contains-starts-with",
+              "not-contains-ends-with",
+              "not-contains-starts-with"
+            ]
+          },
+          "value": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ListSubstringFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "list"
+            ]
+          },
+          "operator": {
+            "description": "Operators for list substring filters.",
+            "type": "string",
+            "enum": [
+              "contains-substring",
+              "not-contains-substring"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "MappedMetricEnum": {
+        "type": "string",
+        "enum": [
+          "mapped-metric"
+        ]
+      },
+      "MappedMetricResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MappedMetricEnum"
+          },
+          "id": {
+            "description": "The type of mapping.",
+            "type": "string",
+            "example": "revenue",
+            "enum": [
+              "added_to_cart",
+              "cancelled_sales",
+              "ordered_product",
+              "refunded_sales",
+              "revenue",
+              "started_checkout",
+              "viewed_product"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "updated": {
+                "description": "The datetime when this mapping was last updated.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-04-15T00:00:00Z"
+              }
+            },
+            "required": [
+              "updated"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "metric": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/MetricEnum"
+                      },
+                      "id": {
+                        "description": "The ID of the metric for this mapping.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "custom-metric": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CustomMetricEnum"
+                      },
+                      "id": {
+                        "description": "The ID of the custom metric for this mapping.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "MetricEnum": {
+        "type": "string",
+        "enum": [
+          "metric"
+        ]
+      },
+      "MetricResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MetricEnum"
+          },
+          "id": {
+            "description": "The Metric ID",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The name of the metric",
+                "type": "string",
+                "nullable": true
+              },
+              "created": {
+                "description": "Creation time in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "nullable": true
+              },
+              "updated": {
+                "description": "Last updated time in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm)",
+                "type": "string",
+                "nullable": true
+              },
+              "integration": {
+                "description": "The integration associated with the event",
+                "type": "object",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "flow-triggers": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/FlowEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "NumericOperatorNumericFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "numeric"
+            ]
+          },
+          "operator": {
+            "description": "Operators for numeric filters.",
+            "type": "string",
+            "enum": [
+              "equals",
+              "greater-than",
+              "greater-than-or-equal",
+              "less-than",
+              "less-than-or-equal",
+              "not-equals"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "StringInArrayFilter": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "enum": [
+              "in"
+            ]
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          }
+        },
+        "required": [
+          "operator",
+          "value",
+          "type"
+        ]
+      },
+      "StringOperatorStringFilter": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string"
+            ]
+          },
+          "operator": {
+            "description": "Operators for string filters.",
+            "type": "string",
+            "enum": [
+              "contains",
+              "ends-with",
+              "equals",
+              "not-contains",
+              "not-ends-with",
+              "not-equals",
+              "not-starts-with",
+              "nregex",
+              "regex",
+              "starts-with"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "operator",
+          "value"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Metrics",
+      "description": "metrics"
+    }
+  ]
+}

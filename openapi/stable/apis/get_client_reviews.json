@@ -1,0 +1,747 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/client/reviews": {
+      "get": {
+        "operationId": "get_client_reviews",
+        "summary": "Get Client Reviews",
+        "description": "Get all reviews. This endpoint is for client-side environments only, for server-side use, refer to https://developers.klaviyo.com/en/reference/get_reviews<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "fields[review]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "author",
+                  "content",
+                  "created",
+                  "images",
+                  "product",
+                  "product.external_id",
+                  "product.image_url",
+                  "product.name",
+                  "product.url",
+                  "public_reply",
+                  "public_reply.author",
+                  "public_reply.content",
+                  "public_reply.updated",
+                  "rating",
+                  "review_type",
+                  "smart_quote",
+                  "status",
+                  "status.rejection_reason",
+                  "status.rejection_reason.reason",
+                  "status.rejection_reason.status_explanation",
+                  "status.value",
+                  "title",
+                  "updated",
+                  "verified"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`status`: `equals`<br>`review_type`: `equals`<br>`rating`: `any`, `equals`, `greater-or-equal`, `less-or-equal`<br>`id`: `any`, `equals`<br>`content`: `contains`<br>`smart_quote`: `has`<br>`public_reply`: `has`<br>`verified`: `equals`<br>`incentivized`: `equals`<br>`edited`: `equals`<br>`media`: `has`<br>`created`: `greater-or-equal`, `less-or-equal`<br>`updated`: `greater-or-equal`, `less-or-equal`",
+            "schema": {
+              "type": "string",
+              "example": "equals(status,'published')"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "-created",
+                "rating",
+                "-rating",
+                "updated",
+                "-updated"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetClientReviewResponseDTOCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": []
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ClientReviewResponseDTOObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ReviewEnum"
+          },
+          "id": {
+            "description": "The ID of the review",
+            "type": "string",
+            "example": "925e385b52fb405715f3616c337cc65c"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "The status of this review",
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusRejected"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusFeatured"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusPublished"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusUnpublished"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviewStatusPending"
+                  }
+                ]
+              },
+              "verified": {
+                "description": "The verification status of this review (aka whether or not we have confirmation that the customer bought the product)",
+                "type": "boolean",
+                "example": true
+              },
+              "review_type": {
+                "description": "The type of this review \u2014 either a review, question, or rating",
+                "type": "string",
+                "example": "review",
+                "enum": [
+                  "question",
+                  "rating",
+                  "review",
+                  "store"
+                ]
+              },
+              "created": {
+                "description": "The datetime when this review was created",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "updated": {
+                "description": "The datetime when this review was updated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              },
+              "images": {
+                "description": "The list of images submitted with this review (represented as a list of urls). If there are no images, this field will be an empty list.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "https://example.com/image1.jpg",
+                  "https://example.com/image2.jpg"
+                ]
+              },
+              "product": {
+                "description": "The product associated with this review",
+                "$ref": "#/components/schemas/ReviewProductDTO",
+                "nullable": true
+              },
+              "rating": {
+                "description": "The rating of this review on a scale from 1-5. If the review type is \"question\", this field will be null.",
+                "type": "integer",
+                "example": 2,
+                "nullable": true
+              },
+              "author": {
+                "description": "The author of this review",
+                "type": "string",
+                "example": "John D",
+                "nullable": true
+              },
+              "content": {
+                "description": "The content of this review",
+                "example": "Great product! I love the smell. I will be buying again.",
+                "nullable": true,
+                "type": "string"
+              },
+              "title": {
+                "description": "The title of this review",
+                "type": "string",
+                "example": "Smells great, would recommend",
+                "nullable": true
+              },
+              "smart_quote": {
+                "description": "A quote from this review that summarizes the content",
+                "type": "string",
+                "example": "I love the smell",
+                "nullable": true
+              },
+              "public_reply": {
+                "description": "The public reply to this review (if one exists)",
+                "$ref": "#/components/schemas/ReviewPublicReply",
+                "nullable": true
+              }
+            },
+            "required": [
+              "verified",
+              "review_type",
+              "created",
+              "updated",
+              "images"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "first": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "GetClientReviewResponseDTOCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClientReviewResponseDTOObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "RejectReasonFake": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to fake content",
+            "type": "string",
+            "enum": [
+              "fake"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonMisleading": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to false or misleading content",
+            "type": "string",
+            "enum": [
+              "false_or_misleading"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonOther": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "reject reason is other",
+            "type": "string",
+            "enum": [
+              "other"
+            ]
+          },
+          "status_explanation": {
+            "description": "If review reject reason is other, we can provide further explanation",
+            "type": "string",
+            "example": "This review is just really poorly detailed and there is another with the same content",
+            "nullable": true
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonPrivateInformation": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to private information",
+            "type": "string",
+            "enum": [
+              "private_information"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonProfanity": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to profanity or inappropriate content",
+            "type": "string",
+            "enum": [
+              "profanity_or_inappropriate"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectReasonUnrelated": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "description": "rejected due to unrelated content",
+            "type": "string",
+            "enum": [
+              "unrelated"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ReviewEnum": {
+        "type": "string",
+        "enum": [
+          "review"
+        ]
+      },
+      "ReviewProductDTO": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "description": "The URL of the product",
+            "type": "string",
+            "example": "https://example.com/product/123"
+          },
+          "name": {
+            "description": "The name of the product",
+            "type": "string"
+          },
+          "image_url": {
+            "description": "The URL of the product image",
+            "type": "string",
+            "example": "https://example.com/image.jpg",
+            "nullable": true
+          },
+          "external_id": {
+            "description": "The external ID of the product",
+            "type": "string",
+            "example": "123456789",
+            "nullable": true
+          }
+        },
+        "required": [
+          "url",
+          "name"
+        ]
+      },
+      "ReviewPublicReply": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "description": "The content of the public reply",
+            "example": "Thanks for the review!",
+            "type": "string"
+          },
+          "author": {
+            "description": "The author of the public reply",
+            "type": "string",
+            "example": "Company X"
+          },
+          "updated": {
+            "description": "The datetime when this public reply was updated",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          }
+        },
+        "required": [
+          "content",
+          "author",
+          "updated"
+        ]
+      },
+      "ReviewStatusFeatured": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Featured review status",
+            "type": "string",
+            "enum": [
+              "featured"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "ReviewStatusPending": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Pending review status",
+            "type": "string",
+            "enum": [
+              "pending"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "ReviewStatusPublished": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Published review status",
+            "type": "string",
+            "enum": [
+              "published"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "ReviewStatusRejected": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Rejected review status",
+            "type": "string",
+            "enum": [
+              "rejected"
+            ]
+          },
+          "rejection_reason": {
+            "description": "The updated status intended for the review with this ID",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RejectReasonOther"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonFake"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonMisleading"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonPrivateInformation"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonProfanity"
+              },
+              {
+                "$ref": "#/components/schemas/RejectReasonUnrelated"
+              }
+            ]
+          }
+        },
+        "required": [
+          "value",
+          "rejection_reason"
+        ]
+      },
+      "ReviewStatusUnpublished": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Unpublished review status",
+            "type": "string",
+            "enum": [
+              "unpublished"
+            ]
+          }
+        },
+        "required": [
+          "value"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Client",
+      "description": "client"
+    }
+  ]
+}

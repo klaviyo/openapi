@@ -1,0 +1,370 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/back-in-stock-subscriptions": {
+      "post": {
+        "operationId": "create_back_in_stock_subscription",
+        "summary": "Create Back In Stock Subscription",
+        "description": "Subscribe a profile to receive back in stock notifications. Check out [our Back in Stock API guide](https://developers.klaviyo.com/en/docs/how_to_set_up_custom_back_in_stock) for more details.\n\nThis endpoint is specifically designed to be called from server-side applications. To create subscriptions from client-side contexts, use [POST /client/back-in-stock-subscriptions](https://developers.klaviyo.com/en/reference/create_client_back_in_stock_subscription).<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:write`\n`profiles:write`",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServerBISSubscriptionCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Catalogs"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "350/s",
+          "steady": "3500/m"
+        },
+        "x-klaviyo-scopes": [
+          "catalogs:write",
+          "profiles:write"
+        ],
+        "x-klaviyo-subtag": "Back In Stock"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "BackInStockSubscriptionEnum": {
+        "type": "string",
+        "enum": [
+          "back-in-stock-subscription"
+        ]
+      },
+      "CatalogVariantEnum": {
+        "type": "string",
+        "enum": [
+          "catalog-variant"
+        ]
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
+        ]
+      },
+      "ProfileIdentifierDTOResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "example": "01GDDKASAP8TKDDA2GRZDSVP4H",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              },
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "ServerBISSubscriptionCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServerBISSubscriptionCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServerBISSubscriptionCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BackInStockSubscriptionEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "channels": {
+                "description": "The channel(s) through which the profile would like to receive the back in stock notification. This can be leveraged within a back in stock flow to notify the subscriber through their preferred channel(s).",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "EMAIL",
+                    "PUSH",
+                    "SMS",
+                    "WHATSAPP"
+                  ],
+                  "description": "The different channel types that a profile could subscribe to BIS notifications for"
+                },
+                "example": [
+                  "EMAIL",
+                  "SMS"
+                ]
+              },
+              "profile": {
+                "type": "object",
+                "example": {
+                  "data": {
+                    "type": "profile",
+                    "attributes": {
+                      "id": "01GDDKASAP8TKDDA2GRZDSVP4H",
+                      "email": "sarah.mason@klaviyo-demo.com",
+                      "phone_number": "+15005550006",
+                      "external_id": "63f64a2b-c6bf-40c7-b81f-bed08162edbe"
+                    }
+                  }
+                },
+                "nullable": true,
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/ProfileIdentifierDTOResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "channels"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "variant": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CatalogVariantEnum"
+                      },
+                      "id": {
+                        "description": "The catalog variant ID for which the profile is subscribing to back in stock notifications. This ID is made up of the integration type, catalog ID, and and the external ID of the variant like so: `integrationType:::catalogId:::externalId`. If the integration you are using is not set up for multi-catalog storage, the 'catalogId' will be `$default`. For Shopify `$shopify:::$default:::33001893429341`",
+                        "type": "string",
+                        "example": "$custom:::$default:::SAMPLE-DATA-ITEM-1-VARIANT-MEDIUM"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "variant"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Catalogs",
+      "description": "catalogs"
+    }
+  ]
+}

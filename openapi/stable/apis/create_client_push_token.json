@@ -1,0 +1,674 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API",
+    "version": "2026-04-15",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/client/push-tokens": {
+      "post": {
+        "operationId": "create_client_push_token",
+        "summary": "Create or Update Client Push Token",
+        "description": "Create or update a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.\n\nTo migrate push tokens from another platform to Klaviyo, please use our server-side [POST /api/push-tokens](https://developers.klaviyo.com/en/reference/create_push_token) endpoint instead.<br><br>*Rate limits*:<br>Burst: `150/s`<br>Steady: `1400/m`",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushTokenCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Client"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "150/s",
+          "steady": "1400/m"
+        },
+        "x-klaviyo-scopes": []
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "DeviceMetadata": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "description": "Relatively stable ID for the device. Will update on app uninstall and reinstall",
+            "type": "string",
+            "example": "1234567890",
+            "nullable": true
+          },
+          "klaviyo_sdk": {
+            "description": "The name of the SDK used to create the push token.",
+            "type": "string",
+            "example": "swift",
+            "enum": [
+              "android",
+              "flutter",
+              "flutter_community",
+              "react_native",
+              "swift"
+            ],
+            "nullable": true
+          },
+          "sdk_version": {
+            "description": "The version of the SDK used to create the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "device_model": {
+            "description": "The model of the device",
+            "type": "string",
+            "example": "iPhone12,1",
+            "nullable": true
+          },
+          "os_name": {
+            "description": "The name of the operating system on the device.",
+            "type": "string",
+            "example": "ios",
+            "enum": [
+              "android",
+              "ios",
+              "ipados",
+              "macos",
+              "tvos"
+            ],
+            "nullable": true
+          },
+          "os_version": {
+            "description": "The version of the operating system on the device",
+            "type": "string",
+            "example": "14.0",
+            "nullable": true
+          },
+          "manufacturer": {
+            "description": "The manufacturer of the device",
+            "type": "string",
+            "example": "Apple",
+            "nullable": true
+          },
+          "app_name": {
+            "description": "The name of the app that created the push token",
+            "type": "string",
+            "example": "Klaviyo",
+            "nullable": true
+          },
+          "app_version": {
+            "description": "The version of the app that created the push token",
+            "type": "string",
+            "example": "1.0.0",
+            "nullable": true
+          },
+          "app_build": {
+            "description": "The build of the app that created the push token",
+            "type": "string",
+            "example": "1",
+            "nullable": true
+          },
+          "app_id": {
+            "description": "The ID of the app that created the push token",
+            "type": "string",
+            "example": "com.klaviyo.app",
+            "nullable": true
+          },
+          "environment": {
+            "description": "The environment in which the push token was created",
+            "type": "string",
+            "example": "release",
+            "enum": [
+              "debug",
+              "release"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "PatchIdentifiers": {
+        "type": "object",
+        "properties": {
+          "append": {
+            "type": "object"
+          },
+          "unappend": {
+            "type": "object"
+          }
+        }
+      },
+      "ProfileEnum": {
+        "type": "string",
+        "enum": [
+          "profile"
+        ]
+      },
+      "ProfileLocation": {
+        "type": "object",
+        "properties": {
+          "address1": {
+            "description": "First line of street address",
+            "type": "string",
+            "example": "89 E 42nd St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of street address",
+            "type": "string",
+            "example": "1st floor",
+            "nullable": true
+          },
+          "city": {
+            "description": "City name",
+            "type": "string",
+            "example": "New York",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name",
+            "type": "string",
+            "example": "United States",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude coordinate. We recommend providing a precision of four decimal places.",
+            "example": "40.7128",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "longitude": {
+            "description": "Longitude coordinate. We recommend providing a precision of four decimal places.",
+            "example": "74.0060",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "region": {
+            "description": "Region within a country, such as state or province",
+            "type": "string",
+            "example": "NY",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Zip code",
+            "type": "string",
+            "example": "10017",
+            "nullable": true
+          },
+          "timezone": {
+            "description": "Time zone name. We recommend using time zones from the IANA Time Zone Database.",
+            "type": "string",
+            "example": "America/New_York",
+            "nullable": true
+          },
+          "ip": {
+            "description": "IP Address",
+            "type": "string",
+            "example": "127.0.0.1",
+            "nullable": true
+          }
+        }
+      },
+      "ProfileMeta": {
+        "type": "object",
+        "properties": {
+          "patch_properties": {
+            "description": "Specify one or more patch operations to apply to existing property data",
+            "example": {
+              "append": {
+                "skus": "92538"
+              }
+            },
+            "$ref": "#/components/schemas/ProfileMetaPatchProperties",
+            "nullable": true
+          },
+          "patch_identifiers": {
+            "description": "Specify one or more patch operations to apply to existing identifier data. Currently only `email` is supported, and it is used to add or remove secondary email addresses on a profile.",
+            "example": {
+              "append": {
+                "email": [
+                  "example@test.com",
+                  "another@example.com"
+                ]
+              }
+            },
+            "$ref": "#/components/schemas/PatchIdentifiers",
+            "nullable": true
+          }
+        }
+      },
+      "ProfileMetaPatchProperties": {
+        "type": "object",
+        "properties": {
+          "append": {
+            "description": "Append a simple value or values to this property array",
+            "type": "object",
+            "example": {
+              "skus": "92538"
+            },
+            "nullable": true
+          },
+          "unappend": {
+            "description": "Remove a simple value or values from this property array",
+            "type": "object",
+            "example": {
+              "skus": "40571"
+            },
+            "nullable": true
+          },
+          "unset": {
+            "description": "Remove a key or keys (and their values) completely from properties",
+            "example": "skus",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "PushProfileUpsertQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileEnum"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this profile. Generated by Klaviyo.",
+            "type": "string",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "phone_number": {
+                "description": "Individual's phone number in E.164 format",
+                "type": "string",
+                "example": "+15005550006",
+                "nullable": true
+              },
+              "external_id": {
+                "description": "A unique identifier used by customers to associate Klaviyo profiles with profiles in an external system, such as a point-of-sale system. Format varies based on the external system.",
+                "type": "string",
+                "nullable": true
+              },
+              "_kx": {
+                "description": "Also known as the `exchange_id`, this is an encrypted identifier used for identifying a\nprofile by Klaviyo's web tracking.\n\nYou can use this field as a filter when retrieving profiles via the Get Profiles endpoint.",
+                "type": "string",
+                "nullable": true
+              },
+              "first_name": {
+                "description": "Individual's first name",
+                "type": "string",
+                "example": "Sarah",
+                "nullable": true
+              },
+              "last_name": {
+                "description": "Individual's last name",
+                "type": "string",
+                "example": "Mason",
+                "nullable": true
+              },
+              "organization": {
+                "description": "Name of the company or organization within the company for whom the individual works",
+                "type": "string",
+                "example": "Example Corporation",
+                "nullable": true
+              },
+              "locale": {
+                "description": "The locale of the profile, in the IETF BCP 47 language tag format like (ISO 639-1/2)-(ISO 3166 alpha-2)",
+                "type": "string",
+                "example": "en-US",
+                "nullable": true
+              },
+              "title": {
+                "description": "Individual's job title",
+                "type": "string",
+                "example": "Regional Manager",
+                "nullable": true
+              },
+              "image": {
+                "description": "URL pointing to the location of a profile image",
+                "type": "string",
+                "example": "https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg",
+                "nullable": true
+              },
+              "location": {
+                "$ref": "#/components/schemas/ProfileLocation",
+                "nullable": true
+              },
+              "properties": {
+                "description": "An object containing key/value pairs for any custom properties assigned to this profile",
+                "type": "object",
+                "example": {
+                  "pseudonym": "Dr. Octopus"
+                },
+                "nullable": true
+              },
+              "meta": {
+                "$ref": "#/components/schemas/ProfileMeta",
+                "nullable": true
+              },
+              "email": {
+                "description": "Individual's email address",
+                "type": "string",
+                "example": "sarah.mason@klaviyo-demo.com",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "PushTokenCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PushTokenCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PushTokenCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/PushTokenEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "description": "A push token from APNS or FCM.",
+                "type": "string",
+                "example": "1234567890"
+              },
+              "platform": {
+                "description": "The platform on which the push token was created.",
+                "type": "string",
+                "enum": [
+                  "android",
+                  "ios"
+                ]
+              },
+              "enablement_status": {
+                "description": "This is the enablement status for the individual push token.",
+                "type": "string",
+                "example": "AUTHORIZED",
+                "default": "AUTHORIZED",
+                "enum": [
+                  "AUTHORIZED",
+                  "DENIED",
+                  "NOT_DETERMINED",
+                  "PROVISIONAL",
+                  "UNAUTHORIZED"
+                ],
+                "nullable": true
+              },
+              "vendor": {
+                "description": "The vendor of the push token.",
+                "type": "string",
+                "example": "apns",
+                "enum": [
+                  "apns",
+                  "fcm"
+                ]
+              },
+              "background": {
+                "description": "The background state of the push token.",
+                "type": "string",
+                "example": "AVAILABLE",
+                "default": "AVAILABLE",
+                "enum": [
+                  "AVAILABLE",
+                  "DENIED",
+                  "RESTRICTED"
+                ],
+                "nullable": true
+              },
+              "device_metadata": {
+                "description": "Metadata about the device that created the push token",
+                "$ref": "#/components/schemas/DeviceMetadata",
+                "nullable": true
+              },
+              "profile": {
+                "description": "The profile associated with the push token to create/update",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/PushProfileUpsertQueryResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              }
+            },
+            "required": [
+              "token",
+              "platform",
+              "vendor",
+              "profile"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "PushTokenEnum": {
+        "type": "string",
+        "enum": [
+          "push-token"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Client",
+      "description": "client"
+    }
+  ]
+}
