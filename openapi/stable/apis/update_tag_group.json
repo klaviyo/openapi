@@ -66,15 +66,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PatchTagGroupResponse"
-                }
-              }
-            }
+          "204": {
+            "description": "Success"
           },
           "4XX": {
             "$ref": "#/components/responses/ClientError"
@@ -207,128 +200,6 @@
       }
     },
     "schemas": {
-      "ObjectLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self"
-        ]
-      },
-      "PatchTagGroupResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "$ref": "#/components/schemas/TagGroupEnum"
-              },
-              "id": {
-                "description": "The Tag Group ID",
-                "type": "string",
-                "example": "zyxw9876-vu54-ts32-rq10-zyxwvu654321"
-              },
-              "attributes": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "description": "The Tag Group name",
-                    "type": "string",
-                    "example": "My Tag Group"
-                  },
-                  "exclusive": {
-                    "description": "If a tag group is non-exclusive, any given related resource (campaign, flow, etc.) can be linked to multiple tags from that tag group. If a tag group is exclusive, any given related resource can only be linked to one tag from that tag group.",
-                    "type": "boolean"
-                  },
-                  "default": {
-                    "description": "Every company automatically has one Default Tag Group. The Default Tag Group cannot be deleted, and no other Default Tag Groups can be created. This value is true for the Default Tag Group and false for all other Tag Groups.",
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "name",
-                  "exclusive",
-                  "default"
-                ]
-              },
-              "relationships": {
-                "type": "object",
-                "properties": {
-                  "tags": {
-                    "type": "object",
-                    "properties": {
-                      "data": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "required": [
-                            "type",
-                            "id"
-                          ],
-                          "properties": {
-                            "type": {
-                              "$ref": "#/components/schemas/TagEnum"
-                            },
-                            "id": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      },
-                      "links": {
-                        "$ref": "#/components/schemas/RelationshipLinks"
-                      }
-                    }
-                  }
-                }
-              },
-              "links": {
-                "$ref": "#/components/schemas/ObjectLinks"
-              }
-            },
-            "required": [
-              "type",
-              "id",
-              "attributes",
-              "links"
-            ]
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "RelationshipLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "related": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self",
-          "related"
-        ]
-      },
-      "TagEnum": {
-        "type": "string",
-        "enum": [
-          "tag"
-        ]
-      },
       "TagGroupEnum": {
         "type": "string",
         "enum": [

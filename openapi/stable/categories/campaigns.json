@@ -47,6 +47,7 @@
                   "definition",
                   "definition.channel",
                   "definition.content",
+                  "definition.content.action_buttons",
                   "definition.content.bcc_email",
                   "definition.content.body",
                   "definition.content.cc_email",
@@ -337,6 +338,7 @@
                   "definition",
                   "definition.channel",
                   "definition.content",
+                  "definition.content.action_buttons",
                   "definition.content.bcc_email",
                   "definition.content.body",
                   "definition.content.cc_email",
@@ -635,6 +637,7 @@
                   "definition",
                   "definition.channel",
                   "definition.content",
+                  "definition.content.action_buttons",
                   "definition.content.bcc_email",
                   "definition.content.body",
                   "definition.content.cc_email",
@@ -2106,6 +2109,7 @@
                   "definition",
                   "definition.channel",
                   "definition.content",
+                  "definition.content.action_buttons",
                   "definition.content.bcc_email",
                   "definition.content.body",
                   "definition.content.cc_email",
@@ -4398,6 +4402,14 @@
             "description": "The dynamic image to be used in the push notification",
             "type": "string",
             "nullable": true
+          },
+          "action_buttons": {
+            "description": "Action buttons for the push notification",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushActionButtonDefinition"
+            },
+            "nullable": true
           }
         }
       },
@@ -4417,6 +4429,14 @@
           "dynamic_image": {
             "description": "The dynamic image to be used in the push notification",
             "type": "string",
+            "nullable": true
+          },
+          "action_buttons": {
+            "description": "Action buttons for the push notification (max 3, positions 0-indexed with no gaps)",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushActionButtonDefinition"
+            },
             "nullable": true
           }
         },
@@ -4441,6 +4461,14 @@
           "dynamic_image": {
             "description": "The dynamic image to be used in the push notification",
             "type": "string",
+            "nullable": true
+          },
+          "action_buttons": {
+            "description": "Action buttons for the push notification (max 3, positions 0-indexed with no gaps)",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushActionButtonDefinition"
+            },
             "nullable": true
           }
         }
@@ -5539,6 +5567,33 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "PushActionButtonDefinition": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "description": "The button label (max 40 characters)",
+            "type": "string"
+          },
+          "action_type": {
+            "description": "The action type: open_app, deep_link, open_url, or dismiss",
+            "type": "string"
+          },
+          "position": {
+            "description": "The display order of the button (0-indexed). If omitted, inferred from the button's order in the list.",
+            "type": "integer",
+            "nullable": true
+          },
+          "url": {
+            "description": "URL for deep_link or open_url action types (max 2048 characters)",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "label",
+          "action_type"
         ]
       },
       "PushOnOpenApp": {
