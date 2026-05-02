@@ -43,6 +43,22 @@
             }
           },
           {
+            "name": "fields[conversation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -255,7 +271,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ConversationResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConversationResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"

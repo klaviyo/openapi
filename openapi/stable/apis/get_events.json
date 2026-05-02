@@ -34,6 +34,22 @@
         "description": "Get all events in an account\n\nRequests can be sorted by the following fields:\n`datetime`, `timestamp`\n\n[Custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview) are not supported in the `metric_id` filter.\n\nReturns a maximum of 200 events per page.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`",
         "parameters": [
           {
+            "name": "fields[attribution]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "fields[event]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
@@ -45,6 +61,7 @@
                 "enum": [
                   "datetime",
                   "event_properties",
+                  "id",
                   "timestamp",
                   "uuid"
                 ]
@@ -63,6 +80,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -85,6 +103,7 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "id",
                   "image",
                   "last_event_date",
                   "last_name",
@@ -538,14 +557,6 @@
         "type": "object",
         "properties": {
           "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "first": {
-            "type": "string",
-            "format": "uri"
-          },
-          "last": {
             "type": "string",
             "format": "uri"
           },

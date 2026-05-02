@@ -45,6 +45,7 @@
                 "enum": [
                   "default",
                   "exclusive",
+                  "id",
                   "name"
                 ]
               }
@@ -61,6 +62,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "id",
                   "name"
                 ]
               }
@@ -173,6 +175,23 @@
         "description": "Create a tag. An account cannot have more than **500** unique tags.\n\nA tag belongs to a single tag group. If `relationships.tag-group.data.id` is not specified,\nthe tag is added to the account's default tag group.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`tags:read`\n`tags:write`",
         "parameters": [
           {
+            "name": "fields[tag]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -254,6 +273,7 @@
                 "enum": [
                   "default",
                   "exclusive",
+                  "id",
                   "name"
                 ]
               }
@@ -270,6 +290,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "id",
                   "name"
                 ]
               }
@@ -463,6 +484,7 @@
                 "enum": [
                   "default",
                   "exclusive",
+                  "id",
                   "name"
                 ]
               }
@@ -561,6 +583,25 @@
         "description": "Create a tag group. An account cannot have more than **50** unique tag groups.\n\nIf `exclusive` is not specified `true` or `false`, the tag group defaults to non-exclusive.\n\nIf a tag group is non-exclusive, any given related resource (campaign, flow, etc.)\ncan be linked to multiple tags from that tag group.\nIf a tag group is exclusive, any given related resource can only be linked to one tag from that tag group.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`tags:read`\n`tags:write`",
         "parameters": [
           {
+            "name": "fields[tag-group]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "default",
+                  "exclusive",
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -643,6 +684,7 @@
                 "enum": [
                   "default",
                   "exclusive",
+                  "id",
                   "name"
                 ]
               }
@@ -1611,6 +1653,7 @@
                 "enum": [
                   "default",
                   "exclusive",
+                  "id",
                   "name"
                 ]
               }
@@ -1754,6 +1797,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "id",
                   "name"
                 ]
               }
@@ -1991,14 +2035,6 @@
             "type": "string",
             "format": "uri"
           },
-          "first": {
-            "type": "string",
-            "format": "uri"
-          },
-          "last": {
-            "type": "string",
-            "format": "uri"
-          },
           "prev": {
             "type": "string",
             "format": "uri"
@@ -2083,6 +2119,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/TagGroupEnum"
@@ -2110,7 +2147,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/TagGroupResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TagGroupResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
