@@ -45,6 +45,7 @@
                 "enum": [
                   "ab_test",
                   "created_at",
+                  "id",
                   "name",
                   "status",
                   "updated_at"
@@ -144,6 +145,29 @@
         "description": "Create a new form.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`forms:write`",
         "parameters": [
           {
+            "name": "fields[form]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ab_test",
+                  "created_at",
+                  "definition",
+                  "definition.versions",
+                  "id",
+                  "name",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -227,6 +251,7 @@
                   "created_at",
                   "definition",
                   "definition.versions",
+                  "id",
                   "name",
                   "status",
                   "updated_at"
@@ -358,6 +383,7 @@
                   "ab_test.variation_name",
                   "created_at",
                   "form_type",
+                  "id",
                   "status",
                   "updated_at",
                   "variation_name"
@@ -440,6 +466,7 @@
                   "ab_test.variation_name",
                   "created_at",
                   "form_type",
+                  "id",
                   "status",
                   "updated_at",
                   "variation_name"
@@ -675,6 +702,7 @@
                 "enum": [
                   "ab_test",
                   "created_at",
+                  "id",
                   "name",
                   "status",
                   "updated_at"
@@ -2104,14 +2132,6 @@
         "type": "object",
         "properties": {
           "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "first": {
-            "type": "string",
-            "format": "uri"
-          },
-          "last": {
             "type": "string",
             "format": "uri"
           },
@@ -3802,7 +3822,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/FormResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FormResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -3834,6 +3859,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/FormEnum"

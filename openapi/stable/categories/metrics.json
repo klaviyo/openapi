@@ -45,6 +45,7 @@
                 "enum": [
                   "archived",
                   "created",
+                  "id",
                   "name",
                   "status",
                   "trigger_type",
@@ -65,6 +66,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -176,6 +178,7 @@
                 "enum": [
                   "archived",
                   "created",
+                  "id",
                   "name",
                   "status",
                   "trigger_type",
@@ -196,6 +199,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -304,6 +308,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "id",
                   "inferred_type",
                   "label",
                   "property",
@@ -324,6 +329,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -409,6 +415,7 @@
                   "definition",
                   "definition.aggregation_method",
                   "definition.metric_groups",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -427,6 +434,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -497,6 +505,28 @@
         "summary": "Create Custom Metric",
         "description": "Create a new custom metric.\n\nCustom metric objects must include a `name` and `definition`.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`<br>Daily: `15/d`\n\n**Scopes:**\n`metrics:write`",
         "parameters": [
+          {
+            "name": "fields[custom-metric]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.aggregation_method",
+                  "definition.metric_groups",
+                  "id",
+                  "name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
           {
             "name": "revision",
             "in": "header",
@@ -583,6 +613,7 @@
                   "definition",
                   "definition.aggregation_method",
                   "definition.metric_groups",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -601,6 +632,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -681,6 +713,28 @@
               "type": "string",
               "example": "925e385b52fb405715f3616c337cc65c"
             }
+          },
+          {
+            "name": "fields[custom-metric]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.aggregation_method",
+                  "definition.metric_groups",
+                  "id",
+                  "name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
           },
           {
             "name": "revision",
@@ -808,6 +862,7 @@
                   "definition",
                   "definition.aggregation_method",
                   "definition.metric_groups",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -825,6 +880,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "id",
                   "updated"
                 ]
               }
@@ -842,6 +898,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -949,6 +1006,7 @@
                   "definition",
                   "definition.aggregation_method",
                   "definition.metric_groups",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -966,6 +1024,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "id",
                   "updated"
                 ]
               }
@@ -983,6 +1042,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -1075,6 +1135,23 @@
             }
           },
           {
+            "name": "fields[mapped-metric]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -1135,6 +1212,24 @@
         "summary": "Query Metric Aggregates",
         "description": "Query and aggregate event data associated with a metric, including native Klaviyo metrics, integration-specific metrics, and custom events (not to be confused with [custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview), which are not supported at this time). Queries must be passed in the JSON body of your `POST` request.\n\nTo request campaign and flow performance data that matches the data shown in Klaviyo's UI, we recommend the [Reporting API](https://developers.klaviyo.com/en/reference/reporting_api_overview).\n\nResults can be filtered and grouped by time, event, or profile dimensions.\n\nTo learn more about how to use this endpoint, check out our new [Using the Query Metric Aggregates Endpoint guide](https://developers.klaviyo.com/en/docs/using-the-query-metric-aggregates-endpoint).\n\nFor a comprehensive list of request body parameters, native Klaviyo metrics, and their associated attributes for grouping and filtering, please refer to the [metrics attributes guide](https://developers.klaviyo.com/en/docs/supported_metrics_and_attributes).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`metrics:read`",
         "parameters": [
+          {
+            "name": "fields[metric-aggregate]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "data",
+                  "dates",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
           {
             "name": "revision",
             "in": "header",
@@ -1218,6 +1313,7 @@
                 "enum": [
                   "archived",
                   "created",
+                  "id",
                   "name",
                   "status",
                   "trigger_type",
@@ -1379,6 +1475,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "id",
                   "inferred_type",
                   "label",
                   "property",
@@ -1525,6 +1622,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -1668,6 +1766,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -1822,6 +1921,7 @@
                 "type": "string",
                 "enum": [
                   "created",
+                  "id",
                   "integration",
                   "name",
                   "updated"
@@ -1988,6 +2088,7 @@
                   "definition",
                   "definition.aggregation_method",
                   "definition.metric_groups",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -2252,14 +2353,6 @@
         "type": "object",
         "properties": {
           "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "first": {
-            "type": "string",
-            "format": "uri"
-          },
-          "last": {
             "type": "string",
             "format": "uri"
           },
@@ -2877,7 +2970,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/CustomMetricResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomMetricResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -2952,6 +3050,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/CustomMetricEnum"
@@ -2980,6 +3079,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/MetricEnum"
@@ -3124,6 +3224,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/MetricEnum"
@@ -3257,7 +3358,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/MetricResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MetricResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
