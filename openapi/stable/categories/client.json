@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_client_review_values_reports",
         "summary": "Get Client Review Values Reports",
-        "description": "Get all reviews values reports in an account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "description": "Get all reviews values reports in an account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_client_review_values_reports.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -167,6 +167,22 @@
         "tags": [
           "Client"
         ],
+        "x-klaviyo-filters": {
+          "product_external_ids": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "10/s",
@@ -179,7 +195,7 @@
       "get": {
         "operationId": "get_client_reviews",
         "summary": "Get Client Reviews",
-        "description": "Get all reviews. This endpoint is for client-side environments only, for server-side use, refer to https://developers.klaviyo.com/en/reference/get_reviews<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "description": "Get all reviews. This endpoint is for client-side environments only, for server-side use, refer to https://developers.klaviyo.com/en/reference/get_reviews<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_client_reviews.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -311,6 +327,157 @@
         "tags": [
           "Client"
         ],
+        "x-klaviyo-filters": {
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "published",
+                "unpublished",
+                "rejected",
+                "featured",
+                "pending",
+                "all"
+              ]
+            }
+          },
+          "review_type": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "question",
+                "review",
+                "rating",
+                "store"
+              ]
+            }
+          },
+          "rating": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "less-or-equal"
+              ]
+            },
+            "value": {
+              "type": "integer"
+            }
+          },
+          "id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "content": {
+            "operators": {
+              "single": [
+                "contains"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "smart_quote": {
+            "operators": {
+              "none": [
+                "has"
+              ]
+            }
+          },
+          "public_reply": {
+            "operators": {
+              "none": [
+                "has"
+              ]
+            }
+          },
+          "verified": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "incentivized": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "edited": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "media": {
+            "operators": {
+              "none": [
+                "has"
+              ]
+            }
+          },
+          "created": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "less-or-equal"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "less-or-equal"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "10/s",
@@ -321,7 +488,7 @@
       "post": {
         "operationId": "create_client_review",
         "summary": "Create Client Review",
-        "description": "Create a review with the given ID. This endpoint is for client-side environments only.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "description": "Create a review with the given ID. This endpoint is for client-side environments only.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_client_review.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -382,7 +549,7 @@
       "get": {
         "operationId": "get_client_geofences",
         "summary": "Get Client Geofences",
-        "description": "Get all geofences in an account.\n\nReturns a paginated list of all geofences for the specified company.\nThis is the GA API endpoint designed for mobile SDK consumption.\nNo authentication required.\n\nReturns a maximum of 100 results per page (default 20).\n\nThis API supports filtering via header instead of query param. Provide\n`X-Klaviyo-API-Filters` header to filter geofences. We don't use regular\nquery param filters here because lat and long are sensitive information.\n\nSupported filters:\n- `lat` (equals) - Latitude coordinate for distance-based sorting\n- `lng` (equals) - Longitude coordinate for distance-based sorting\n\nWhen both lat and lng are provided, geofences are returned sorted by\ndistance from the specified coordinates (closest first).\n\nExample filter header:\n`X-Klaviyo-API-Filters: and(equals(lat,40.7128),equals(lng,-74.0060))`<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`",
+        "description": "Get all geofences in an account.\n\nReturns a paginated list of all geofences for the specified company.\nThis is the GA API endpoint designed for mobile SDK consumption.\nNo authentication required.\n\nReturns a maximum of 100 results per page (default 20).\n\nThis API supports filtering via header instead of query param. Provide\n`X-Klaviyo-API-Filters` header to filter geofences. We don't use regular\nquery param filters here because lat and long are sensitive information.\n\nSupported filters:\n- `lat` (equals) - Latitude coordinate for distance-based sorting\n- `lng` (equals) - Longitude coordinate for distance-based sorting\n\nWhen both lat and lng are provided, geofences are returned sorted by\ndistance from the specified coordinates (closest first).\n\nExample filter header:\n`X-Klaviyo-API-Filters: and(equals(lat,40.7128),equals(lng,-74.0060))`<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_client_geofences.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -490,7 +657,7 @@
       "post": {
         "operationId": "create_client_subscription",
         "summary": "Create Client Subscription",
-        "description": "Creates a subscription and consent record for email and/or SMS channels based on the provided `email` and `phone_number` attributes, respectively. One of either `email` or `phone_number` must be provided.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo subscribe profiles from server-side applications, instead use [POST /api/profile-subscription-bulk-create-jobs](https://developers.klaviyo.com/en/reference/subscribe_profiles).\n\nProfiles can be opted into multiple channels: email marketing, SMS marketing, and SMS transactional. You can specify the channel(s) to subscribe the profile to by providing a subscriptions object in the profile attributes.\n\nIf you include a subscriptions object, only channels in that object will be subscribed.  You can use this to update `email` or `phone` on the profile without subscribing them, for example, by setting the profile property but omitting that channel in the subscriptions object. If a subscriptions object is not provided, subscriptions are defaulted to `MARKETING`.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `750/m`\n\n**Scopes:**\n`subscriptions:write`",
+        "description": "Creates a subscription and consent record for email and/or SMS channels based on the provided `email` and `phone_number` attributes, respectively. One of either `email` or `phone_number` must be provided.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo subscribe profiles from server-side applications, instead use [POST /api/profile-subscription-bulk-create-jobs](https://developers.klaviyo.com/en/reference/subscribe_profiles).\n\nProfiles can be opted into multiple channels: email marketing, SMS marketing, and SMS transactional. You can specify the channel(s) to subscribe the profile to by providing a subscriptions object in the profile attributes.\n\nIf you include a subscriptions object, only channels in that object will be subscribed.  You can use this to update `email` or `phone` on the profile without subscribing them, for example, by setting the profile property but omitting that channel in the subscriptions object. If a subscriptions object is not provided, subscriptions are defaulted to `MARKETING`.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `750/m`\n\n**Scopes:**\n`subscriptions:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_client_subscription.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -553,7 +720,7 @@
       "post": {
         "operationId": "create_client_push_token",
         "summary": "Create or Update Client Push Token",
-        "description": "Create or update a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.\n\nTo migrate push tokens from another platform to Klaviyo, please use our server-side [POST /api/push-tokens](https://developers.klaviyo.com/en/reference/create_push_token) endpoint instead.<br><br>*Rate limits*:<br>Burst: `150/s`<br>Steady: `1400/m`",
+        "description": "Create or update a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.\n\nTo migrate push tokens from another platform to Klaviyo, please use our server-side [POST /api/push-tokens](https://developers.klaviyo.com/en/reference/create_push_token) endpoint instead.<br><br>*Rate limits*:<br>Burst: `150/s`<br>Steady: `1400/m`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_client_push_token.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -614,7 +781,7 @@
       "post": {
         "operationId": "unregister_client_push_token",
         "summary": "Unregister Client Push Token",
-        "description": "Unregister a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`",
+        "description": "Unregister a push token.\n\nThis endpoint is specifically designed to be called from our mobile SDKs ([iOS](https://github.com/klaviyo/klaviyo-swift-sdk) and [Android](https://github.com/klaviyo/klaviyo-android-sdk)) and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\nYou must have push notifications enabled to use this endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/unregister_client_push_token.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -678,7 +845,7 @@
       "post": {
         "operationId": "create_client_event",
         "summary": "Create Client Event",
-        "description": "Create a new event to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create events from server-side applications, instead use [POST /api/events](https://developers.klaviyo.com/en/reference/create_event).\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`",
+        "description": "Create a new event to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create events from server-side applications, instead use [POST /api/events](https://developers.klaviyo.com/en/reference/create_event).\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_client_event.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -741,7 +908,7 @@
       "post": {
         "operationId": "create_client_profile",
         "summary": "Create or Update Client Profile",
-        "description": "Create or update properties about a profile without tracking an associated event.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create or update profiles from server-side applications, instead use [POST /api/profile-import](https://developers.klaviyo.com/en/reference/create_or_update_profile).\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`profiles:write`",
+        "description": "Create or update properties about a profile without tracking an associated event.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create or update profiles from server-side applications, instead use [POST /api/profile-import](https://developers.klaviyo.com/en/reference/create_or_update_profile).\n\nNote that to update a profile's existing identifiers (e.g., email), you must use a server-side endpoint authenticated by a private API key. Attempts to do so via client-side endpoints will return a 202, however the identifier field(s) will not be updated.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`profiles:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_client_profile.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -804,7 +971,7 @@
       "post": {
         "operationId": "bulk_create_client_events",
         "summary": "Bulk Create Client Events",
-        "description": "Create new events to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create events from server-side applications, instead use [POST /api/event-bulk-create-jobs](https://developers.klaviyo.com/en/reference/bulk_create_events).\n\nAccepts a maximum of `1000` events per request.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:write`",
+        "description": "Create new events to track a profile's activity.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create events from server-side applications, instead use [POST /api/event-bulk-create-jobs](https://developers.klaviyo.com/en/reference/bulk_create_events).\n\nAccepts a maximum of `1000` events per request.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/bulk_create_client_events.json)",
         "parameters": [
           {
             "name": "company_id",
@@ -870,7 +1037,7 @@
       "post": {
         "operationId": "create_client_back_in_stock_subscription",
         "summary": "Create Client Back In Stock Subscription",
-        "description": "Subscribe a profile to receive back in stock notifications. Check out [our Back in Stock API guide](https://developers.klaviyo.com/en/docs/how_to_set_up_custom_back_in_stock) for more details.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create back in stock subscriptions from server-side applications, instead use [POST /api/back-in-stock-subscriptions](https://developers.klaviyo.com/en/reference/create_back_in_stock_subscription).<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:write`\n`profiles:write`",
+        "description": "Subscribe a profile to receive back in stock notifications. Check out [our Back in Stock API guide](https://developers.klaviyo.com/en/docs/how_to_set_up_custom_back_in_stock) for more details.\n\nThis endpoint is specifically designed to be called from publicly-browseable, client-side environments only and requires a [public API key (site ID)](https://www.klaviyo.com/settings/account/api-keys). Never use a private API key with our client-side endpoints.\n\nDo not use this endpoint from server-side applications.\nTo create back in stock subscriptions from server-side applications, instead use [POST /api/back-in-stock-subscriptions](https://developers.klaviyo.com/en/reference/create_back_in_stock_subscription).<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`catalogs:write`\n`profiles:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_client_back_in_stock_subscription.json)",
         "parameters": [
           {
             "name": "company_id",

@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_lists",
         "summary": "Get Lists",
-        "description": "Get all lists in an account.\n\nFilter to request a subset of all lists. Lists can be filtered by `id`, `name`, `created`, and `updated` fields.\n\nReturns a maximum of 10 results per page.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`lists:read`",
+        "description": "Get all lists in an account.\n\nFilter to request a subset of all lists. Lists can be filtered by `id`, `name`, `created`, and `updated` fields.\n\nReturns a maximum of 10 results per page.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`lists:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_lists.json)",
         "parameters": [
           {
             "name": "fields[flow]",
@@ -188,6 +188,55 @@
         "tags": [
           "Lists"
         ],
+        "x-klaviyo-filters": {
+          "name": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "created": {
+            "operators": {
+              "single": [
+                "greater-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated": {
+            "operators": {
+              "single": [
+                "greater-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "75/s",

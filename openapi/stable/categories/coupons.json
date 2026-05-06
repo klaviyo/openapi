@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_coupons",
         "summary": "Get Coupons",
-        "description": "Get all coupons in an account.\n\nTo learn more, see our [Coupons API guide](https://developers.klaviyo.com/en/docs/use_klaviyos_coupons_api).<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupons:read`",
+        "description": "Get all coupons in an account.\n\nTo learn more, see our [Coupons API guide](https://developers.klaviyo.com/en/docs/use_klaviyos_coupons_api).<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupons:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupons.json)",
         "parameters": [
           {
             "name": "fields[coupon]",
@@ -117,7 +117,7 @@
       "post": {
         "operationId": "create_coupon",
         "summary": "Create Coupon",
-        "description": "Creates a new coupon.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`",
+        "description": "Creates a new coupon.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_coupon.json)",
         "parameters": [
           {
             "name": "fields[coupon]",
@@ -194,7 +194,7 @@
       "get": {
         "operationId": "get_coupon",
         "summary": "Get Coupon",
-        "description": "Get a specific coupon with the given coupon ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupons:read`",
+        "description": "Get a specific coupon with the given coupon ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupons:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupon.json)",
         "parameters": [
           {
             "name": "id",
@@ -270,7 +270,7 @@
       "patch": {
         "operationId": "update_coupon",
         "summary": "Update Coupon",
-        "description": "*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`",
+        "description": "*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_coupon.json)",
         "parameters": [
           {
             "name": "id",
@@ -356,7 +356,7 @@
       "delete": {
         "operationId": "delete_coupon",
         "summary": "Delete Coupon",
-        "description": "Delete the coupon with the given coupon ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`",
+        "description": "Delete the coupon with the given coupon ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`coupons:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/delete_coupon.json)",
         "parameters": [
           {
             "name": "id",
@@ -408,7 +408,7 @@
       "get": {
         "operationId": "get_coupon_codes",
         "summary": "Get Coupon Codes",
-        "description": "Gets a list of coupon codes associated with a coupon/coupons or a profile/profiles.\n\nA coupon/coupons or a profile/profiles must be provided as required filter params.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "description": "Gets a list of coupon codes associated with a coupon/coupons or a profile/profiles.\n\nA coupon/coupons or a profile/profiles must be provided as required filter params.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupon_codes.json)",
         "parameters": [
           {
             "name": "fields[coupon-code]",
@@ -526,6 +526,62 @@
         "tags": [
           "Coupons"
         ],
+        "x-klaviyo-filters": {
+          "expires_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "UNASSIGNED",
+                "PROCESSING",
+                "ASSIGNED_TO_PROFILE",
+                "VERSION_NOT_ACTIVE",
+                "DELETING",
+                "USED"
+              ]
+            }
+          },
+          "coupon.id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "profile.id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "350/s",
@@ -538,7 +594,7 @@
       "post": {
         "operationId": "create_coupon_code",
         "summary": "Create Coupon Code",
-        "description": "Synchronously creates a coupon code for the given coupon.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:write`",
+        "description": "Synchronously creates a coupon code for the given coupon.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_coupon_code.json)",
         "parameters": [
           {
             "name": "fields[coupon-code]",
@@ -615,7 +671,7 @@
       "get": {
         "operationId": "get_coupon_code",
         "summary": "Get Coupon Code",
-        "description": "Returns a Coupon Code specified by the given identifier.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "description": "Returns a Coupon Code specified by the given identifier.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupon_code.json)",
         "parameters": [
           {
             "name": "id",
@@ -725,7 +781,7 @@
       "patch": {
         "operationId": "update_coupon_code",
         "summary": "Update Coupon Code",
-        "description": "Updates a coupon code specified by the given identifier synchronously. We allow updating the 'status' and\n'expires_at' of coupon codes.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:write`",
+        "description": "Updates a coupon code specified by the given identifier synchronously. We allow updating the 'status' and\n'expires_at' of coupon codes.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_coupon_code.json)",
         "parameters": [
           {
             "name": "id",
@@ -811,7 +867,7 @@
       "delete": {
         "operationId": "delete_coupon_code",
         "summary": "Delete Coupon Code",
-        "description": "Deletes a coupon code specified by the given identifier synchronously. If a profile has been assigned to the\ncoupon code, an exception will be raised<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:write`",
+        "description": "Deletes a coupon code specified by the given identifier synchronously. If a profile has been assigned to the\ncoupon code, an exception will be raised<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`coupon-codes:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/delete_coupon_code.json)",
         "parameters": [
           {
             "name": "id",
@@ -863,7 +919,7 @@
       "get": {
         "operationId": "get_bulk_create_coupon_code_jobs",
         "summary": "Get Bulk Create Coupon Code Jobs",
-        "description": "Get all coupon code bulk create jobs.\n\nReturns a maximum of 100 jobs per request.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "description": "Get all coupon code bulk create jobs.\n\nReturns a maximum of 100 jobs per request.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_bulk_create_coupon_code_jobs.json)",
         "parameters": [
           {
             "name": "fields[coupon-code-bulk-create-job]",
@@ -939,6 +995,24 @@
         "tags": [
           "Coupons"
         ],
+        "x-klaviyo-filters": {
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "queued",
+                "processing",
+                "complete",
+                "cancelled"
+              ]
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_coupon_code_bulk_create_jobs"
         ],
@@ -954,7 +1028,7 @@
       "post": {
         "operationId": "bulk_create_coupon_codes",
         "summary": "Bulk Create Coupon Codes",
-        "description": "Create a coupon-code-bulk-create-job to bulk create a list of coupon codes.\n\nMax number of coupon codes per job we allow for is 1000.\nMax number of jobs queued at once we allow for is 100.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:write`",
+        "description": "Create a coupon-code-bulk-create-job to bulk create a list of coupon codes.\n\nMax number of coupon codes per job we allow for is 1000.\nMax number of jobs queued at once we allow for is 100.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/bulk_create_coupon_codes.json)",
         "parameters": [
           {
             "name": "fields[coupon-code-bulk-create-job]",
@@ -1040,7 +1114,7 @@
       "get": {
         "operationId": "get_bulk_create_coupon_codes_job",
         "summary": "Get Bulk Create Coupon Codes Job",
-        "description": "Get a coupon code bulk create job with the given job ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "description": "Get a coupon code bulk create job with the given job ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_bulk_create_coupon_codes_job.json)",
         "parameters": [
           {
             "name": "job_id",
@@ -1160,7 +1234,7 @@
       "get": {
         "operationId": "get_coupon_for_coupon_code",
         "summary": "Get Coupon For Coupon Code",
-        "description": "Get the coupon associated with a given coupon code ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupons:read`",
+        "description": "Get the coupon associated with a given coupon code ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupons:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupon_for_coupon_code.json)",
         "parameters": [
           {
             "name": "id",
@@ -1241,7 +1315,7 @@
       "get": {
         "operationId": "get_coupon_id_for_coupon_code",
         "summary": "Get Coupon ID for Coupon Code",
-        "description": "Gets the coupon relationship associated with the given coupon code id<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupons:read`",
+        "description": "Gets the coupon relationship associated with the given coupon code id<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupons:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupon_id_for_coupon_code.json)",
         "parameters": [
           {
             "name": "id",
@@ -1303,7 +1377,7 @@
       "get": {
         "operationId": "get_coupon_codes_for_coupon",
         "summary": "Get Coupon Codes for Coupon",
-        "description": "Gets a list of coupon codes associated with the given coupon id<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "description": "Gets a list of coupon codes associated with the given coupon id<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupon_codes_for_coupon.json)",
         "parameters": [
           {
             "name": "id",
@@ -1397,6 +1471,62 @@
         "tags": [
           "Coupons"
         ],
+        "x-klaviyo-filters": {
+          "expires_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "UNASSIGNED",
+                "PROCESSING",
+                "ASSIGNED_TO_PROFILE",
+                "VERSION_NOT_ACTIVE",
+                "DELETING",
+                "USED"
+              ]
+            }
+          },
+          "coupon.id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "profile.id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_coupon_coupon_codes",
           "get_codes_for_coupon"
@@ -1415,7 +1545,7 @@
       "get": {
         "operationId": "get_coupon_code_ids_for_coupon",
         "summary": "Get Coupon Code IDs for Coupon",
-        "description": "Gets a list of coupon code relationships associated with the given coupon id<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "description": "Gets a list of coupon code relationships associated with the given coupon id<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupon_code_ids_for_coupon.json)",
         "parameters": [
           {
             "name": "id",
@@ -1490,6 +1620,62 @@
         "tags": [
           "Coupons"
         ],
+        "x-klaviyo-filters": {
+          "expires_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "UNASSIGNED",
+                "PROCESSING",
+                "ASSIGNED_TO_PROFILE",
+                "VERSION_NOT_ACTIVE",
+                "DELETING",
+                "USED"
+              ]
+            }
+          },
+          "coupon.id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "profile.id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_coupon_code_relationships_coupon",
           "get_code_ids_for_coupon",
