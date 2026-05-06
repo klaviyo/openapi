@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_flows",
         "summary": "Get Flows",
-        "description": "Get all flows in an account.\n\nReturns a maximum of 50 flows per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get all flows in an account.\n\nReturns a maximum of 50 flows per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_flows.json)",
         "parameters": [
           {
             "name": "fields[flow-action]",
@@ -334,6 +334,99 @@
         "tags": [
           "Flows"
         ],
+        "x-klaviyo-filters": {
+          "id": {
+            "operators": {
+              "list": [
+                "any"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "operators": {
+              "single": [
+                "contains",
+                "ends-with",
+                "equals",
+                "starts-with"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "archived": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "created": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "trigger_type": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "Metric",
+                "Added to List",
+                "Unconfigured",
+                "Date Based",
+                "Price Drop",
+                "Low Inventory"
+              ]
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "3/s",
@@ -346,7 +439,7 @@
       "post": {
         "operationId": "create_flow",
         "summary": "Create Flow",
-        "description": "Create a new flow using an encoded flow definition.\n\nNew objects within the flow definition, such as actions, will need to use a\n`temporary_id` field for identification. These will be replaced with traditional `id` fields\nafter successful creation.\n\nA successful request will return the new definition to you.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`<br>Daily: `100/d`\n\n**Scopes:**\n`flows:write`",
+        "description": "Create a new flow using an encoded flow definition.\n\nNew objects within the flow definition, such as actions, will need to use a\n`temporary_id` field for identification. These will be replaced with traditional `id` fields\nafter successful creation.\n\nA successful request will return the new definition to you.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`<br>Daily: `100/d`\n\n**Scopes:**\n`flows:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_flow.json)",
         "parameters": [
           {
             "name": "additional-fields[flow]",
@@ -453,7 +546,7 @@
       "get": {
         "operationId": "get_flow",
         "summary": "Get Flow",
-        "description": "Get a flow with the given flow ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get a flow with the given flow ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_flow.json)",
         "parameters": [
           {
             "name": "id",
@@ -750,7 +843,7 @@
       "patch": {
         "operationId": "update_flow",
         "summary": "Update Flow Status",
-        "description": "Update the status of a flow with the given flow ID, and all actions in that flow.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:write`",
+        "description": "Update the status of a flow with the given flow ID, and all actions in that flow.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_flow.json)",
         "parameters": [
           {
             "name": "id",
@@ -838,7 +931,7 @@
       "delete": {
         "operationId": "delete_flow",
         "summary": "Delete Flow",
-        "description": "Delete a flow with the given flow ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:write`",
+        "description": "Delete a flow with the given flow ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/delete_flow.json)",
         "parameters": [
           {
             "name": "id",
@@ -889,7 +982,7 @@
       "get": {
         "operationId": "get_flow_action",
         "summary": "Get Flow Action",
-        "description": "Get a flow action from a flow with the given flow action ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get a flow action from a flow with the given flow action ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_flow_action.json)",
         "parameters": [
           {
             "name": "id",
@@ -1208,7 +1301,7 @@
       "patch": {
         "operationId": "update_flow_action",
         "summary": "Update Flow Action",
-        "description": "Update a flow action.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:write`",
+        "description": "Update a flow action.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_flow_action.json)",
         "parameters": [
           {
             "name": "id",
@@ -1437,7 +1530,7 @@
       "get": {
         "operationId": "get_flow_message",
         "summary": "Get Flow Message",
-        "description": "Get a flow message from a flow with the given flow message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get a flow message from a flow with the given flow message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_flow_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -1759,7 +1852,7 @@
       "get": {
         "operationId": "get_actions_for_flow",
         "summary": "Get Actions for Flow",
-        "description": "Get all flow actions associated with the given flow ID.\n\nReturns a maximum of 50 flows per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get all flow actions associated with the given flow ID.\n\nReturns a maximum of 50 flows per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_actions_for_flow.json)",
         "parameters": [
           {
             "name": "id",
@@ -2014,6 +2107,72 @@
         "tags": [
           "Flows"
         ],
+        "x-klaviyo-filters": {
+          "id": {
+            "operators": {
+              "list": [
+                "any"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "action_type": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "created": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_flow_flow_actions",
           "get_flow_actions"
@@ -2032,7 +2191,7 @@
       "get": {
         "operationId": "get_action_ids_for_flow",
         "summary": "Get Action IDs for Flow",
-        "description": "Get all [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for flow actions associated with the given flow ID.\n\nReturns a maximum of 100 flows per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get all [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for flow actions associated with the given flow ID.\n\nReturns a maximum of 100 flows per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_action_ids_for_flow.json)",
         "parameters": [
           {
             "name": "id",
@@ -2125,6 +2284,72 @@
         "tags": [
           "Flows"
         ],
+        "x-klaviyo-filters": {
+          "id": {
+            "operators": {
+              "list": [
+                "any"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "action_type": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "created": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_flow_relationships_flow_actions",
           "get_flow_relationships_actions"
@@ -2143,7 +2368,7 @@
       "get": {
         "operationId": "get_tags_for_flow",
         "summary": "Get Tags for Flow",
-        "description": "Return all tags associated with the given flow ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`tags:read`",
+        "description": "Return all tags associated with the given flow ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`tags:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_tags_for_flow.json)",
         "parameters": [
           {
             "name": "id",
@@ -2221,7 +2446,7 @@
       "get": {
         "operationId": "get_tag_ids_for_flow",
         "summary": "Get Tag IDs for Flow",
-        "description": "Return the tag IDs of all tags associated with the given flow.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`tags:read`",
+        "description": "Return the tag IDs of all tags associated with the given flow.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n`tags:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_tag_ids_for_flow.json)",
         "parameters": [
           {
             "name": "id",
@@ -2282,7 +2507,7 @@
       "get": {
         "operationId": "get_flow_for_flow_action",
         "summary": "Get Flow for Flow Action",
-        "description": "Get the flow associated with the given action ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get the flow associated with the given action ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_flow_for_flow_action.json)",
         "parameters": [
           {
             "name": "id",
@@ -2364,7 +2589,7 @@
       "get": {
         "operationId": "get_flow_id_for_flow_action",
         "summary": "Get Flow ID for Flow Action",
-        "description": "Get the flow associated with the given action ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get the flow associated with the given action ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_flow_id_for_flow_action.json)",
         "parameters": [
           {
             "name": "id",
@@ -2424,7 +2649,7 @@
       "get": {
         "operationId": "get_flow_action_messages",
         "summary": "Get Messages For Flow Action",
-        "description": "Get all flow messages associated with the given flow action ID.\n\nReturns a maximum of 50 flow message relationships per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get all flow messages associated with the given flow action ID.\n\nReturns a maximum of 50 flow message relationships per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_flow_action_messages.json)",
         "parameters": [
           {
             "name": "id",
@@ -2579,6 +2804,61 @@
         "tags": [
           "Flows"
         ],
+        "x-klaviyo-filters": {
+          "id": {
+            "operators": {
+              "list": [
+                "any"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "operators": {
+              "single": [
+                "contains",
+                "ends-with",
+                "equals",
+                "starts-with"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "created": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_messages_for_flow_action"
         ],
@@ -2596,7 +2876,7 @@
       "get": {
         "operationId": "get_message_ids_for_flow_action",
         "summary": "Get Message IDs for Flow Action",
-        "description": "Get all relationships for flow messages associated with the given flow action ID.\n\nReturns a maximum of 50 flow message relationships per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get all relationships for flow messages associated with the given flow action ID.\n\nReturns a maximum of 50 flow message relationships per request, which can be paginated with cursor-based pagination.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_message_ids_for_flow_action.json)",
         "parameters": [
           {
             "name": "id",
@@ -2687,6 +2967,51 @@
         "tags": [
           "Flows"
         ],
+        "x-klaviyo-filters": {
+          "name": {
+            "operators": {
+              "single": [
+                "contains",
+                "ends-with",
+                "equals",
+                "starts-with"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "created": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated": {
+            "operators": {
+              "single": [
+                "equals",
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_flow_action_relationships_messages"
         ],
@@ -2704,7 +3029,7 @@
       "get": {
         "operationId": "get_action_for_flow_message",
         "summary": "Get Action for Flow Message",
-        "description": "Get the flow action for a flow message with the given message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get the flow action for a flow message with the given message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_action_for_flow_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -2926,7 +3251,7 @@
       "get": {
         "operationId": "get_action_id_for_flow_message",
         "summary": "Get Action ID for Flow Message",
-        "description": "Get the [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for a flow message's flow action, given the flow ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`",
+        "description": "Get the [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for a flow message's flow action, given the flow ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`flows:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_action_id_for_flow_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -2986,7 +3311,7 @@
       "get": {
         "operationId": "get_template_for_flow_message",
         "summary": "Get Template for Flow Message",
-        "description": "Return the related template<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`templates:read`",
+        "description": "Return the related template<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`templates:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_template_for_flow_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -3069,7 +3394,7 @@
       "get": {
         "operationId": "get_template_id_for_flow_message",
         "summary": "Get Template ID for Flow Message",
-        "description": "Returns the ID of the related template<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`templates:read`",
+        "description": "Returns the ID of the related template<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`templates:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_template_id_for_flow_message.json)",
         "parameters": [
           {
             "name": "id",

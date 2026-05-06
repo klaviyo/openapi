@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_coupon_codes_for_coupon",
         "summary": "Get Coupon Codes for Coupon",
-        "description": "Gets a list of coupon codes associated with the given coupon id<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`",
+        "description": "Gets a list of coupon codes associated with the given coupon id<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`coupon-codes:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_coupon_codes_for_coupon.json)",
         "parameters": [
           {
             "name": "id",
@@ -125,6 +125,62 @@
         "tags": [
           "Coupons"
         ],
+        "x-klaviyo-filters": {
+          "expires_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "UNASSIGNED",
+                "PROCESSING",
+                "ASSIGNED_TO_PROFILE",
+                "VERSION_NOT_ACTIVE",
+                "DELETING",
+                "USED"
+              ]
+            }
+          },
+          "coupon.id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "profile.id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_coupon_coupon_codes",
           "get_codes_for_coupon"

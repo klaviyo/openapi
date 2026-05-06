@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_events",
         "summary": "Get Events",
-        "description": "Get all events in an account\n\nRequests can be sorted by the following fields:\n`datetime`, `timestamp`\n\n[Custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview) are not supported in the `metric_id` filter.\n\nReturns a maximum of 200 events per page.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`",
+        "description": "Get all events in an account\n\nRequests can be sorted by the following fields:\n`datetime`, `timestamp`\n\n[Custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview) are not supported in the `metric_id` filter.\n\nReturns a maximum of 200 events per page.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_events.json)",
         "parameters": [
           {
             "name": "fields[attribution]",
@@ -222,6 +222,65 @@
         "tags": [
           "Events"
         ],
+        "x-klaviyo-filters": {
+          "metric_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ],
+              "list": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "profile_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "profile": {
+            "operators": {
+              "none": [
+                "has"
+              ]
+            }
+          },
+          "datetime": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "timestamp": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "number"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "350/s",

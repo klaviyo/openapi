@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_campaigns",
         "summary": "Get Campaigns",
-        "description": "Returns some or all campaigns based on filters.\n\nA channel filter is required to list campaigns. Please provide either:\n`?filter=equals(messages.channel,'email')` to list email campaigns, or\n`?filter=equals(messages.channel,'sms')` to list SMS campaigns.\n`?filter=equals(messages.channel,'mobile_push')` to list mobile push campaigns.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Returns some or all campaigns based on filters.\n\nA channel filter is required to list campaigns. Please provide either:\n`?filter=equals(messages.channel,'email')` to list email campaigns, or\n`?filter=equals(messages.channel,'sms')` to list SMS campaigns.\n`?filter=equals(messages.channel,'mobile_push')` to list mobile push campaigns.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaigns.json)",
         "parameters": [
           {
             "name": "fields[campaign-message]",
@@ -244,6 +244,129 @@
         "tags": [
           "Campaigns"
         ],
+        "x-klaviyo-filters": {
+          "id": {
+            "operators": {
+              "list": [
+                "any"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "messages.channel": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "email",
+                "sms",
+                "mobile_push"
+              ]
+            }
+          },
+          "name": {
+            "operators": {
+              "single": [
+                "contains"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "Scheduled",
+                "Sent",
+                "Draft",
+                "Cancelled",
+                "Adding Recipients",
+                "Sending",
+                "Variations Sent",
+                "Sending Segments",
+                "Cancelled: Smart Sending",
+                "Preparing to send",
+                "Cancelled: Account Disabled",
+                "Cancelled: No Recipients",
+                "Preparing to schedule",
+                "Cancelled: Internal Error",
+                "Queued without Recipients",
+                "Cancelled: Billing Limit",
+                "Cancelled: Misconfigured",
+                "Unknown"
+              ]
+            }
+          },
+          "archived": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "created_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "scheduled_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "10/s",
@@ -256,7 +379,7 @@
       "post": {
         "operationId": "create_campaign",
         "summary": "Create Campaign",
-        "description": "Creates a campaign given a set of parameters, then returns it.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Creates a campaign given a set of parameters, then returns it.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_campaign.json)",
         "parameters": [
           {
             "name": "fields[campaign]",
@@ -356,7 +479,7 @@
       "get": {
         "operationId": "get_campaign",
         "summary": "Get Campaign",
-        "description": "Returns a specific campaign based on a required id.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Returns a specific campaign based on a required id.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaign.json)",
         "parameters": [
           {
             "name": "id",
@@ -540,7 +663,7 @@
       "patch": {
         "operationId": "update_campaign",
         "summary": "Update Campaign",
-        "description": "Update a campaign with the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Update a campaign with the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_campaign.json)",
         "parameters": [
           {
             "name": "id",
@@ -648,7 +771,7 @@
       "delete": {
         "operationId": "delete_campaign",
         "summary": "Delete Campaign",
-        "description": "Delete a campaign with the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Delete a campaign with the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/delete_campaign.json)",
         "parameters": [
           {
             "name": "id",
@@ -699,7 +822,7 @@
       "get": {
         "operationId": "get_campaign_message",
         "summary": "Get Campaign Message",
-        "description": "Returns a specific message based on a required id.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Returns a specific message based on a required id.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -913,7 +1036,7 @@
       "patch": {
         "operationId": "update_campaign_message",
         "summary": "Update Campaign Message",
-        "description": "Update a campaign message<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Update a campaign message<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -1037,7 +1160,7 @@
       "get": {
         "operationId": "get_campaign_send_job",
         "summary": "Get Campaign Send Job",
-        "description": "Get a campaign send job<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Get a campaign send job<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaign_send_job.json)",
         "parameters": [
           {
             "name": "id",
@@ -1111,7 +1234,7 @@
       "patch": {
         "operationId": "cancel_campaign_send",
         "summary": "Cancel Campaign Send",
-        "description": "Permanently cancel the campaign, setting the status to CANCELED or\nrevert the campaign, setting the status back to DRAFT<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Permanently cancel the campaign, setting the status to CANCELED or\nrevert the campaign, setting the status back to DRAFT<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/cancel_campaign_send.json)",
         "parameters": [
           {
             "name": "id",
@@ -1177,7 +1300,7 @@
       "get": {
         "operationId": "get_campaign_recipient_estimation_job",
         "summary": "Get Campaign Recipient Estimation Job",
-        "description": "Retrieve the status of a recipient estimation job triggered\nwith the `Create Campaign Recipient Estimation Job` endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Retrieve the status of a recipient estimation job triggered\nwith the `Create Campaign Recipient Estimation Job` endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaign_recipient_estimation_job.json)",
         "parameters": [
           {
             "name": "id",
@@ -1253,7 +1376,7 @@
       "get": {
         "operationId": "get_campaign_recipient_estimation",
         "summary": "Get Campaign Recipient Estimation",
-        "description": "Get the estimated recipient count for a campaign with the provided campaign ID.\nYou can refresh this count by using the `Create Campaign Recipient Estimation Job` endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Get the estimated recipient count for a campaign with the provided campaign ID.\nYou can refresh this count by using the `Create Campaign Recipient Estimation Job` endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaign_recipient_estimation.json)",
         "parameters": [
           {
             "name": "id",
@@ -1328,7 +1451,7 @@
       "post": {
         "operationId": "create_campaign_clone",
         "summary": "Create Campaign Clone",
-        "description": "Clones an existing campaign, returning a new campaign based on the original with a new ID and name.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Clones an existing campaign, returning a new campaign based on the original with a new ID and name.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_campaign_clone.json)",
         "parameters": [
           {
             "name": "fields[campaign]",
@@ -1431,7 +1554,7 @@
       "post": {
         "operationId": "assign_template_to_campaign_message",
         "summary": "Assign Template to Campaign Message",
-        "description": "Creates a non-reusable version of the template and assigns it to the message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Creates a non-reusable version of the template and assigns it to the message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/assign_template_to_campaign_message.json)",
         "parameters": [
           {
             "name": "fields[campaign-message]",
@@ -1530,7 +1653,7 @@
       "post": {
         "operationId": "send_campaign",
         "summary": "Send Campaign",
-        "description": "Trigger a campaign to send asynchronously<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Trigger a campaign to send asynchronously<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/send_campaign.json)",
         "parameters": [
           {
             "name": "fields[campaign-send-job]",
@@ -1610,7 +1733,7 @@
       "post": {
         "operationId": "refresh_campaign_recipient_estimation",
         "summary": "Refresh Campaign Recipient Estimation",
-        "description": "Trigger an asynchronous job to update the estimated number of recipients\nfor the given campaign ID. Use the `Get Campaign Recipient Estimation\nJob` endpoint to retrieve the status of this estimation job. Use the\n`Get Campaign Recipient Estimation` endpoint to retrieve the estimated\nrecipient count for a given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`",
+        "description": "Trigger an asynchronous job to update the estimated number of recipients\nfor the given campaign ID. Use the `Get Campaign Recipient Estimation\nJob` endpoint to retrieve the status of this estimation job. Use the\n`Get Campaign Recipient Estimation` endpoint to retrieve the estimated\nrecipient count for a given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/refresh_campaign_recipient_estimation.json)",
         "parameters": [
           {
             "name": "fields[campaign-recipient-estimation-job]",
@@ -1690,7 +1813,7 @@
       "get": {
         "operationId": "get_campaign_for_campaign_message",
         "summary": "Get Campaign for Campaign Message",
-        "description": "Return the related campaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Return the related campaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaign_for_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -1792,7 +1915,7 @@
       "get": {
         "operationId": "get_campaign_id_for_campaign_message",
         "summary": "Get Campaign ID for Campaign Message",
-        "description": "Returns the ID of the related campaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Returns the ID of the related campaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaign_id_for_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -1853,7 +1976,7 @@
       "get": {
         "operationId": "get_template_for_campaign_message",
         "summary": "Get Template for Campaign Message",
-        "description": "Return the related template<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`templates:read`",
+        "description": "Return the related template<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`templates:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_template_for_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -1938,7 +2061,7 @@
       "get": {
         "operationId": "get_template_id_for_campaign_message",
         "summary": "Get Template ID for Campaign Message",
-        "description": "Returns the ID of the related template<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`templates:read`",
+        "description": "Returns the ID of the related template<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`templates:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_template_id_for_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -2000,7 +2123,7 @@
       "get": {
         "operationId": "get_image_for_campaign_message",
         "summary": "Get Image for Campaign Message",
-        "description": "Return the related image for a given campaign message<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`images:read`",
+        "description": "Return the related image for a given campaign message<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`images:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_image_for_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -2084,7 +2207,7 @@
       "get": {
         "operationId": "get_image_id_for_campaign_message",
         "summary": "Get Image ID for Campaign Message",
-        "description": "Returns the ID of the related image<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`images:read`",
+        "description": "Returns the ID of the related image<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`images:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_image_id_for_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -2144,7 +2267,7 @@
       "patch": {
         "operationId": "update_image_for_campaign_message",
         "summary": "Update Image for Campaign Message",
-        "description": "Update a campaign message image<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n`images:read`",
+        "description": "Update a campaign message image<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n`images:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_image_for_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
@@ -2209,7 +2332,7 @@
       "get": {
         "operationId": "get_tags_for_campaign",
         "summary": "Get Tags for Campaign",
-        "description": "Return all tags that belong to the given campaign.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`",
+        "description": "Return all tags that belong to the given campaign.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_tags_for_campaign.json)",
         "parameters": [
           {
             "name": "id",
@@ -2287,7 +2410,7 @@
       "get": {
         "operationId": "get_tag_ids_for_campaign",
         "summary": "Get Tag IDs for Campaign",
-        "description": "Returns the IDs of all tags associated with the given campaign.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`",
+        "description": "Returns the IDs of all tags associated with the given campaign.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_tag_ids_for_campaign.json)",
         "parameters": [
           {
             "name": "id",
@@ -2348,7 +2471,7 @@
       "get": {
         "operationId": "get_messages_for_campaign",
         "summary": "Get Messages for Campaign",
-        "description": "Return all messages that belong to the given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Return all messages that belong to the given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_messages_for_campaign.json)",
         "parameters": [
           {
             "name": "id",
@@ -2566,7 +2689,7 @@
       "get": {
         "operationId": "get_message_ids_for_campaign",
         "summary": "Get Message IDs for Campaign",
-        "description": "Returns the IDs of all messages associated with the given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Returns the IDs of all messages associated with the given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_message_ids_for_campaign.json)",
         "parameters": [
           {
             "name": "id",

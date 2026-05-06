@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_events",
         "summary": "Get Events",
-        "description": "Get all events in an account\n\nRequests can be sorted by the following fields:\n`datetime`, `timestamp`\n\n[Custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview) are not supported in the `metric_id` filter.\n\nReturns a maximum of 200 events per page.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`",
+        "description": "Get all events in an account\n\nRequests can be sorted by the following fields:\n`datetime`, `timestamp`\n\n[Custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview) are not supported in the `metric_id` filter.\n\nReturns a maximum of 200 events per page.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_events.json)",
         "parameters": [
           {
             "name": "fields[attribution]",
@@ -222,6 +222,65 @@
         "tags": [
           "Events"
         ],
+        "x-klaviyo-filters": {
+          "metric_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ],
+              "list": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "profile_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "profile": {
+            "operators": {
+              "none": [
+                "has"
+              ]
+            }
+          },
+          "datetime": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "timestamp": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "number"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "350/s",
@@ -234,7 +293,7 @@
       "post": {
         "operationId": "create_event",
         "summary": "Create Event",
-        "description": "Create a new event to track a profile's activity.\n\nNote that this endpoint allows you to create a new profile or update an existing profile's properties.\n\nAt a minimum, profile and metric objects should include at least one profile identifier (e.g., `id`, `email`, or `phone_number`) and the metric `name`, respectively.\n\nSuccessful response indicates that the event was validated and submitted for processing, but does not guarantee that processing is complete.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`",
+        "description": "Create a new event to track a profile's activity.\n\nNote that this endpoint allows you to create a new profile or update an existing profile's properties.\n\nAt a minimum, profile and metric objects should include at least one profile identifier (e.g., `id`, `email`, or `phone_number`) and the metric `name`, respectively.\n\nSuccessful response indicates that the event was validated and submitted for processing, but does not guarantee that processing is complete.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_event.json)",
         "parameters": [
           {
             "name": "revision",
@@ -285,7 +344,7 @@
       "get": {
         "operationId": "get_event",
         "summary": "Get Event",
-        "description": "Get an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:read`",
+        "description": "Get an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_event.json)",
         "parameters": [
           {
             "name": "id",
@@ -456,7 +515,7 @@
       "post": {
         "operationId": "bulk_create_events",
         "summary": "Bulk Create Events",
-        "description": "Create a batch of events for one or more profiles.\n\nNote that this endpoint allows you to create new profiles or update existing profile properties.\n\nAt a minimum, profile and metric objects should include at least one profile identifier (e.g., `id`, `email`, or `phone_number`) and the metric `name`, respectively.\n\nAccepts up to 1,000 events per request. The maximum allowed payload size is 5MB. A single string cannot exceed 100KB.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:write`",
+        "description": "Create a batch of events for one or more profiles.\n\nNote that this endpoint allows you to create new profiles or update existing profile properties.\n\nAt a minimum, profile and metric objects should include at least one profile identifier (e.g., `id`, `email`, or `phone_number`) and the metric `name`, respectively.\n\nAccepts up to 1,000 events per request. The maximum allowed payload size is 5MB. A single string cannot exceed 100KB.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/bulk_create_events.json)",
         "parameters": [
           {
             "name": "revision",
@@ -510,7 +569,7 @@
       "get": {
         "operationId": "get_metric_for_event",
         "summary": "Get Metric for Event",
-        "description": "Get the metric for an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`metrics:read`",
+        "description": "Get the metric for an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`metrics:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_metric_for_event.json)",
         "parameters": [
           {
             "name": "id",
@@ -592,7 +651,7 @@
       "get": {
         "operationId": "get_metric_id_for_event",
         "summary": "Get Metric ID for Event",
-        "description": "Get a list of related Metrics for an Event<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`metrics:read`",
+        "description": "Get a list of related Metrics for an Event<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`metrics:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_metric_id_for_event.json)",
         "parameters": [
           {
             "name": "id",
@@ -654,7 +713,7 @@
       "get": {
         "operationId": "get_profile_for_event",
         "summary": "Get Profile for Event",
-        "description": "Get the profile associated with an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`profiles:read`",
+        "description": "Get the profile associated with an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`profiles:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_profile_for_event.json)",
         "parameters": [
           {
             "name": "id",
@@ -845,7 +904,7 @@
       "get": {
         "operationId": "get_profile_id_for_event",
         "summary": "Get Profile ID for Event",
-        "description": "Get profile [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`profiles:read`",
+        "description": "Get profile [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for an event with the given event ID.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n`profiles:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_profile_id_for_event.json)",
         "parameters": [
           {
             "name": "id",

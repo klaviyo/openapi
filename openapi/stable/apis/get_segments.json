@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_segments",
         "summary": "Get Segments",
-        "description": "Get all segments in an account.\n\nFilter to request a subset of all segments. Segments can be filtered by `name`, `created`, and `updated` fields.\n\nReturns a maximum of 10 results per page.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`segments:read`",
+        "description": "Get all segments in an account.\n\nFilter to request a subset of all segments. Segments can be filtered by `name`, `created`, and `updated` fields.\n\nReturns a maximum of 10 results per page.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`\n\n**Scopes:**\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_segments.json)",
         "parameters": [
           {
             "name": "fields[flow]",
@@ -192,6 +192,79 @@
         "tags": [
           "Segments"
         ],
+        "x-klaviyo-filters": {
+          "name": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "created": {
+            "operators": {
+              "single": [
+                "greater-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated": {
+            "operators": {
+              "single": [
+                "greater-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "is_active": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "is_starred": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "boolean"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "75/s",
@@ -2970,7 +3043,8 @@
             "enum": [
               "email",
               "push",
-              "sms"
+              "sms",
+              "whatsapp"
             ]
           },
           "filter": {
@@ -3038,7 +3112,8 @@
             "enum": [
               "email",
               "push",
-              "sms"
+              "sms",
+              "whatsapp"
             ]
           },
           "filter": {

@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_campaigns",
         "summary": "Get Campaigns",
-        "description": "Returns some or all campaigns based on filters.\n\nA channel filter is required to list campaigns. Please provide either:\n`?filter=equals(messages.channel,'email')` to list email campaigns, or\n`?filter=equals(messages.channel,'sms')` to list SMS campaigns.\n`?filter=equals(messages.channel,'mobile_push')` to list mobile push campaigns.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`",
+        "description": "Returns some or all campaigns based on filters.\n\nA channel filter is required to list campaigns. Please provide either:\n`?filter=equals(messages.channel,'email')` to list email campaigns, or\n`?filter=equals(messages.channel,'sms')` to list SMS campaigns.\n`?filter=equals(messages.channel,'mobile_push')` to list mobile push campaigns.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_campaigns.json)",
         "parameters": [
           {
             "name": "fields[campaign-message]",
@@ -244,6 +244,129 @@
         "tags": [
           "Campaigns"
         ],
+        "x-klaviyo-filters": {
+          "id": {
+            "operators": {
+              "list": [
+                "any"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "messages.channel": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "email",
+                "sms",
+                "mobile_push"
+              ]
+            }
+          },
+          "name": {
+            "operators": {
+              "single": [
+                "contains"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "Scheduled",
+                "Sent",
+                "Draft",
+                "Cancelled",
+                "Adding Recipients",
+                "Sending",
+                "Variations Sent",
+                "Sending Segments",
+                "Cancelled: Smart Sending",
+                "Preparing to send",
+                "Cancelled: Account Disabled",
+                "Cancelled: No Recipients",
+                "Preparing to schedule",
+                "Cancelled: Internal Error",
+                "Queued without Recipients",
+                "Cancelled: Billing Limit",
+                "Cancelled: Misconfigured",
+                "Unknown"
+              ]
+            }
+          },
+          "archived": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "created_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "scheduled_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "greater-than",
+                "less-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "10/s",
