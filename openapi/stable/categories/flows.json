@@ -63,6 +63,8 @@
                   "definition.data.delay_until_time",
                   "definition.data.delay_until_weekdays",
                   "definition.data.experiment_status",
+                  "definition.data.expire_after_unit",
+                  "definition.data.expire_after_value",
                   "definition.data.list_id",
                   "definition.data.main_action",
                   "definition.data.main_action.data",
@@ -603,6 +605,8 @@
                   "definition.data.delay_until_time",
                   "definition.data.delay_until_weekdays",
                   "definition.data.experiment_status",
+                  "definition.data.expire_after_unit",
+                  "definition.data.expire_after_value",
                   "definition.data.list_id",
                   "definition.data.main_action",
                   "definition.data.main_action.data",
@@ -1023,6 +1027,8 @@
                   "definition.data.delay_until_time",
                   "definition.data.delay_until_weekdays",
                   "definition.data.experiment_status",
+                  "definition.data.expire_after_unit",
+                  "definition.data.expire_after_value",
                   "definition.data.list_id",
                   "definition.data.main_action",
                   "definition.data.main_action.data",
@@ -1342,6 +1348,8 @@
                   "definition.data.delay_until_time",
                   "definition.data.delay_until_weekdays",
                   "definition.data.experiment_status",
+                  "definition.data.expire_after_unit",
+                  "definition.data.expire_after_value",
                   "definition.data.list_id",
                   "definition.data.main_action",
                   "definition.data.main_action.data",
@@ -1571,6 +1579,8 @@
                   "definition.data.delay_until_time",
                   "definition.data.delay_until_weekdays",
                   "definition.data.experiment_status",
+                  "definition.data.expire_after_unit",
+                  "definition.data.expire_after_value",
                   "definition.data.list_id",
                   "definition.data.main_action",
                   "definition.data.main_action.data",
@@ -1893,6 +1903,8 @@
                   "definition.data.delay_until_time",
                   "definition.data.delay_until_weekdays",
                   "definition.data.experiment_status",
+                  "definition.data.expire_after_unit",
+                  "definition.data.expire_after_value",
                   "definition.data.list_id",
                   "definition.data.main_action",
                   "definition.data.main_action.data",
@@ -3070,6 +3082,8 @@
                   "definition.data.delay_until_time",
                   "definition.data.delay_until_weekdays",
                   "definition.data.experiment_status",
+                  "definition.data.expire_after_unit",
+                  "definition.data.expire_after_value",
                   "definition.data.list_id",
                   "definition.data.main_action",
                   "definition.data.main_action.data",
@@ -5131,6 +5145,84 @@
           "filter"
         ]
       },
+      "EnrollFormAction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The real ID of an action. Not allowed on create.",
+            "type": "string",
+            "example": "123",
+            "nullable": true
+          },
+          "temporary_id": {
+            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
+            "type": "string",
+            "example": "action-1",
+            "nullable": true,
+            "writeOnly": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/EnrollFormActionData"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "enroll-form"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/Link",
+            "nullable": true
+          }
+        },
+        "required": [
+          "data",
+          "type"
+        ]
+      },
+      "EnrollFormActionData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "list_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "expire_after_unit": {
+            "description": "aka expire_after_unit in app.",
+            "type": "string",
+            "example": "days",
+            "default": "days",
+            "enum": [
+              "days",
+              "hours",
+              "minutes"
+            ]
+          },
+          "expire_after_value": {
+            "type": "integer",
+            "default": 0
+          },
+          "status": {
+            "description": "Flow action status.",
+            "type": "string",
+            "example": "draft",
+            "default": "draft",
+            "enum": [
+              "disabled",
+              "draft",
+              "live",
+              "manual"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "list_id"
+        ]
+      },
       "EqualsStringFilter": {
         "type": "object",
         "properties": {
@@ -5356,6 +5448,9 @@
                   },
                   {
                     "$ref": "#/components/schemas/ListUpdateAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EnrollFormAction"
                   }
                 ]
               }
@@ -5517,6 +5612,9 @@
                   },
                   {
                     "$ref": "#/components/schemas/ListUpdateAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EnrollFormAction"
                   }
                 ]
               }
@@ -5736,6 +5834,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ListUpdateAction"
+                },
+                {
+                  "$ref": "#/components/schemas/EnrollFormAction"
                 }
               ]
             }
@@ -5891,11 +5992,7 @@
             "type": "string",
             "nullable": true
           }
-        },
-        "required": [
-          "from_email",
-          "subject_line"
-        ]
+        }
       },
       "FlowEnum": {
         "type": "string",
@@ -9512,6 +9609,9 @@
                       },
                       {
                         "$ref": "#/components/schemas/ListUpdateAction"
+                      },
+                      {
+                        "$ref": "#/components/schemas/EnrollFormAction"
                       }
                     ]
                   }
