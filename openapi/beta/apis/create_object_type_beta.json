@@ -31,8 +31,30 @@
       "post": {
         "operationId": "create_object_type_beta",
         "summary": "Create Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate an object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-01-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate an object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_object_type_beta.json)",
         "parameters": [
+          {
+            "name": "fields[object-type]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "description",
+                  "id",
+                  "namespace",
+                  "status",
+                  "title",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
           {
             "name": "revision",
             "in": "header",
@@ -426,16 +448,16 @@
               "visibility": {
                 "description": "The visibility of this object type",
                 "type": "string",
-                "example": "PRIVATE",
-                "default": "PRIVATE",
+                "example": "private",
+                "default": "private",
                 "enum": [
-                  "PRIVATE",
-                  "SHARED"
+                  "private",
+                  "shared"
                 ],
                 "nullable": true
               },
               "namespace": {
-                "description": "The namespace of this object type",
+                "description": "The namespace of this object type. Either `custom-objects` or `applications/<application_id>`, where `<application_id>` is the ULID of the OAuth application that owns the object type. Defaults to `custom-objects`.",
                 "type": "string",
                 "example": "custom-objects",
                 "default": "custom-objects",
@@ -508,7 +530,7 @@
                     ]
                   },
                   "namespace": {
-                    "description": "The namespace of this object type",
+                    "description": "The namespace of this object type. Either `custom-objects` or `applications/<application_id>`, where `<application_id>` is the ULID of the OAuth application that owns the object type.",
                     "type": "string"
                   },
                   "created_at": {

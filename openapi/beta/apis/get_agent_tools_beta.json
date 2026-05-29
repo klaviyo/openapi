@@ -1,0 +1,741 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-04-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/agent-tools": {
+      "get": {
+        "operationId": "get_agent_tools_beta",
+        "summary": "Get Agent Tools",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every external tool (HTTP API endpoint) Customer Agent\nskills can call.\n\nEach tool has an id, display name, protocol details (method, URL\ntemplate), authentication setup, and any referenced secrets. Use\nthis before creating a new tool to avoid duplicates, or before\nbinding a tool to a skill to confirm the tool exists.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`",
+        "parameters": [
+          {
+            "name": "fields[agent-tool]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "details",
+                  "details.config_params",
+                  "details.created_at",
+                  "details.integration_id",
+                  "details.max_retries",
+                  "details.protocol",
+                  "details.request_template",
+                  "details.timeout_seconds",
+                  "details.type",
+                  "details.updated_at",
+                  "details.variables",
+                  "id",
+                  "name",
+                  "public_description",
+                  "public_name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`name`: `contains`<br>`tool_type`: `equals`<br>`created_at`: `equals`, `greater-or-equal`, `less-or-equal`<br>`updated_at`: `equals`, `greater-or-equal`, `less-or-equal`",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "contains(name,'example')"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentToolResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AgentSecretResourceName": {
+        "type": "string",
+        "enum": [
+          "agent-secret"
+        ]
+      },
+      "AgentSkillResourceName": {
+        "type": "string",
+        "enum": [
+          "agent-skill"
+        ]
+      },
+      "AgentToolConfigParam": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Machine key used in instruction tokens and merged into raw input.",
+            "type": "string"
+          },
+          "label": {
+            "description": "End-user facing label shown in the configuration UI.",
+            "type": "string"
+          },
+          "description": {
+            "description": "Optional help text rendered alongside the UI control.",
+            "type": "string",
+            "nullable": true
+          },
+          "input_type": {
+            "description": "UI control type. Values are persisted as list[str].",
+            "default": "single_select",
+            "$ref": "#/components/schemas/AgentToolConfigParamInputType"
+          },
+          "required": {
+            "description": "Whether the configuration parameter is required.",
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": [
+          "name",
+          "label",
+          "input_type",
+          "required"
+        ]
+      },
+      "AgentToolConfigParamInputType": {
+        "type": "string",
+        "enum": [
+          "single_select",
+          "multi_select"
+        ]
+      },
+      "AgentToolCustomReadDetails": {
+        "type": "object",
+        "properties": {
+          "protocol": {
+            "description": "Message protocol for this custom tool.",
+            "$ref": "#/components/schemas/AgentToolMessageProtocol"
+          },
+          "request_template": {
+            "description": "Templated outbound HTTPS request configuration.",
+            "$ref": "#/components/schemas/AgentToolHTTPSRequestTemplate"
+          },
+          "variables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentToolVariable",
+              "description": "Template variables available to the request template."
+            }
+          },
+          "timeout_seconds": {
+            "description": "Overall tool execution timeout in seconds.",
+            "type": "integer"
+          },
+          "max_retries": {
+            "description": "Maximum retry attempts for the tool call.",
+            "type": "integer"
+          },
+          "created_at": {
+            "description": "Date and time when the tool was created, if available.",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updated_at": {
+            "description": "Date and time when the tool was last updated, if available.",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "type": {
+            "description": "Read detail variant for custom HTTPS tools.",
+            "default": "custom",
+            "$ref": "#/components/schemas/AgentToolReadDetailsType"
+          }
+        },
+        "required": [
+          "protocol",
+          "request_template",
+          "variables",
+          "timeout_seconds",
+          "max_retries",
+          "type"
+        ]
+      },
+      "AgentToolHTTPMethod": {
+        "type": "string",
+        "enum": [
+          "GET",
+          "POST",
+          "PUT",
+          "PATCH",
+          "DELETE"
+        ]
+      },
+      "AgentToolHTTPSRequestTemplate": {
+        "type": "object",
+        "properties": {
+          "url_template": {
+            "description": "Outbound URL template. Use Jinja-style variable interpolation, for example `https://example.com/orders/{{order_id}}`.",
+            "type": "string"
+          },
+          "http_method": {
+            "description": "HTTP method for the outbound request.",
+            "$ref": "#/components/schemas/AgentToolHTTPMethod"
+          },
+          "request_timeout_seconds": {
+            "description": "Outbound request timeout in seconds. Must be greater than 0 and at most 10.",
+            "type": "integer",
+            "default": 5
+          },
+          "query_parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentToolKeyValueParameter",
+              "description": "Outbound query parameters. Values may use Jinja-style variables such as `{{email}}`."
+            },
+            "nullable": true
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentToolKeyValueParameter",
+              "description": "Outbound HTTP headers. Values may use Jinja-style variables such as `{{api_key}}`; for secrets, declare a variable with `source: secret` and reference it by name in the template."
+            },
+            "nullable": true
+          },
+          "body_template": {
+            "description": "JSON request body template. String values may use Jinja-style variables such as `{{order_id}}`.",
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "required": [
+          "url_template",
+          "http_method",
+          "request_timeout_seconds"
+        ]
+      },
+      "AgentToolIntegrationReadDetails": {
+        "type": "object",
+        "properties": {
+          "integration_id": {
+            "description": "Integration identifier backing this tool.",
+            "type": "string"
+          },
+          "config_params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentToolConfigParam",
+              "default": [],
+              "description": "Author-time configuration parameters supported by this tool."
+            }
+          },
+          "type": {
+            "description": "Read detail variant for integration-backed tools.",
+            "default": "integration",
+            "$ref": "#/components/schemas/AgentToolReadDetailsType"
+          }
+        },
+        "required": [
+          "integration_id",
+          "config_params",
+          "type"
+        ]
+      },
+      "AgentToolInternalReadDetails": {
+        "type": "object",
+        "properties": {
+          "config_params": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentToolConfigParam",
+              "default": [],
+              "description": "Author-time configuration parameters supported by this tool."
+            }
+          },
+          "type": {
+            "description": "Read detail variant for first-party Klaviyo tools.",
+            "default": "internal",
+            "$ref": "#/components/schemas/AgentToolReadDetailsType"
+          }
+        },
+        "required": [
+          "config_params",
+          "type"
+        ]
+      },
+      "AgentToolKeyValueParameter": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Parameter name.",
+            "type": "string"
+          },
+          "value": {
+            "description": "Parameter value, optionally using Jinja-style variables.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
+      "AgentToolMessageProtocol": {
+        "type": "string",
+        "enum": [
+          "https"
+        ]
+      },
+      "AgentToolReadDetailsType": {
+        "type": "string",
+        "enum": [
+          "custom",
+          "internal",
+          "integration"
+        ]
+      },
+      "AgentToolResourceName": {
+        "type": "string",
+        "enum": [
+          "agent-tool"
+        ]
+      },
+      "AgentToolResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Human-facing display name for the tool.",
+            "type": "string"
+          },
+          "public_description": {
+            "description": "Public description of the tool and when Customer Agent should use it.",
+            "type": "string"
+          },
+          "details": {
+            "description": "Protocol-specific configuration and read details for the tool.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AgentToolCustomReadDetails"
+              },
+              {
+                "$ref": "#/components/schemas/AgentToolInternalReadDetails"
+              },
+              {
+                "$ref": "#/components/schemas/AgentToolIntegrationReadDetails"
+              }
+            ]
+          },
+          "public_name": {
+            "description": "Optional customer-facing name for the tool.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "public_description",
+          "details"
+        ]
+      },
+      "AgentToolResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/AgentToolResourceName"
+          },
+          "id": {
+            "description": "Agent Tool identifier.",
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/AgentToolResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "agent-secrets": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/AgentSecretResourceName"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                },
+                "required": [
+                  "data",
+                  "links"
+                ]
+              },
+              "agent-skills": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/AgentSkillResourceName"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                },
+                "required": [
+                  "data",
+                  "links"
+                ]
+              }
+            },
+            "required": [
+              "agent-secrets"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
+        ]
+      },
+      "AgentToolResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AgentToolResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data",
+          "links"
+        ]
+      },
+      "AgentToolVariable": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Template variable name.",
+            "type": "string"
+          },
+          "type": {
+            "description": "Variable value type.",
+            "$ref": "#/components/schemas/AgentToolVariableType"
+          },
+          "required": {
+            "description": "Whether the variable is required when the tool is called.",
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "description": "Optional description of the variable for agent/tool-call context.",
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "description": "Where the variable value is resolved from. `dynamic` values are supplied at tool-call time. `klaviyo` values reference a Klaviyo-provided value with `value` set to that reference id. `secret` values reference an `agent-secret` with `value` set to the secret id.",
+            "default": "dynamic",
+            "$ref": "#/components/schemas/AgentToolVariableSource"
+          },
+          "value": {
+            "description": "Reference value for non-dynamic variables. For `source: secret`, this is the `agent-secret` id. For `source: klaviyo`, this is the Klaviyo reference id. For `source: dynamic`, omit this field or set it to null.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "required",
+          "source"
+        ]
+      },
+      "AgentToolVariableSource": {
+        "type": "string",
+        "enum": [
+          "dynamic",
+          "klaviyo",
+          "secret"
+        ]
+      },
+      "AgentToolVariableType": {
+        "type": "string",
+        "enum": [
+          "string",
+          "number",
+          "boolean"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}
