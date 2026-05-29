@@ -1,0 +1,932 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-04-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/agent-knowledge": {
+      "get": {
+        "operationId": "list_agent_knowledge_beta",
+        "summary": "List Agent Knowledge",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every Agent Knowledge item for the calling company,\nincluding items that are pending, indexing, indexed, failed, or\nrejected.\n\nTo add a snippet or webpage, POST to this endpoint with the\nappropriate nested ``source.source_type``; upload files with the\nfile upload endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`",
+        "parameters": [
+          {
+            "name": "fields[agent-knowledge]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "error",
+                  "id",
+                  "indexed_at",
+                  "source",
+                  "source.auto_reindex",
+                  "source.content",
+                  "source.scope",
+                  "source.source_type",
+                  "source.title",
+                  "source.url",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "-created_at",
+              "enum": [
+                "-created_at",
+                "-id"
+              ]
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentKnowledgeResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_agent_knowledge"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      },
+      "post": {
+        "operationId": "create_agent_knowledge_beta",
+        "summary": "Create Agent Knowledge",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds an Agent Knowledge item from either a text snippet\n(``source.source_type: snippet``, requires ``title`` and\n``content``) or a single URL (``source.source_type: webpage``,\nrequires ``url``). The URL is normalized before the uniqueness\ncheck; duplicate normalized URLs return ``409 Conflict``. The\nresource is fetchable immediately; clients can poll its ``status``\nuntil indexing completes. For files, use\n``POST /agent-knowledge-files``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`",
+        "parameters": [
+          {
+            "name": "fields[agent-knowledge]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "error",
+                  "id",
+                  "indexed_at",
+                  "source",
+                  "source.auto_reindex",
+                  "source.content",
+                  "source.scope",
+                  "source.source_type",
+                  "source.title",
+                  "source.url",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to create snippet-backed or webpage-backed Agent Knowledge.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentKnowledgeCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentKnowledgeResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:write"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    },
+    "/api/agent-knowledge/{id}": {
+      "get": {
+        "operationId": "get_agent_knowledge_beta",
+        "summary": "Get Agent Knowledge",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Agent Knowledge resource by id.\n\nResources are fetchable immediately after creation, including\nwhile pending, indexing, failed, or rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[agent-knowledge]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "error",
+                  "id",
+                  "indexed_at",
+                  "source",
+                  "source.auto_reindex",
+                  "source.content",
+                  "source.scope",
+                  "source.source_type",
+                  "source.title",
+                  "source.url",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentKnowledgeResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      },
+      "patch": {
+        "operationId": "update_agent_knowledge_beta",
+        "summary": "Update Agent Knowledge",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches editable fields on an Agent Knowledge item.\n\nFor snippets, you can update ``title`` and ``content``. Re-\nindexing on content change is automatic.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[agent-knowledge]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "error",
+                  "id",
+                  "indexed_at",
+                  "source",
+                  "source.auto_reindex",
+                  "source.content",
+                  "source.scope",
+                  "source.source_type",
+                  "source.title",
+                  "source.url",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to update snippet-backed Agent Knowledge.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentKnowledgeUpdateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentKnowledgeResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:write"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      },
+      "delete": {
+        "operationId": "delete_agent_knowledge_beta",
+        "summary": "Delete Agent Knowledge",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the Agent Knowledge item and its indexed\ncontent.\n\nThe agent will stop retrieving from it on the next turn.\nConversations that previously cited this item remain unchanged.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-04-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:write"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AgentKnowledgeCreateRequest": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "Source payload for the new item. `snippet` requires `title` and `content`; `webpage` requires `url` and does not accept caller-provided content. To upload a file, use `POST /agent-knowledge-files`.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeSnippetCreateSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeWebpageCreateSource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "AgentKnowledgeCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/AgentKnowledgeResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/AgentKnowledgeCreateRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "AgentKnowledgeCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AgentKnowledgeCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "AgentKnowledgeFileResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item was created from an uploaded file.",
+            "$ref": "#/components/schemas/FileEnum"
+          },
+          "title": {
+            "description": "Human-readable title for the file-backed knowledge item.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
+      "AgentKnowledgeResourceName": {
+        "type": "string",
+        "enum": [
+          "agent-knowledge"
+        ]
+      },
+      "AgentKnowledgeResponse": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "Source payload for the knowledge item.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeSnippetResponseSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeWebpageResponseSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeFileResponseSource"
+              }
+            ]
+          },
+          "status": {
+            "description": "Indexing lifecycle state for the knowledge item.",
+            "$ref": "#/components/schemas/AgentKnowledgeStatus"
+          },
+          "created_at": {
+            "description": "Date and time when the knowledge item was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "Date and time when the knowledge item was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "indexed_at": {
+            "description": "Date and time when indexing completed, if available.",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "error": {
+            "description": "Error message when indexing failed; otherwise null.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source",
+          "status",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "AgentKnowledgeResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/AgentKnowledgeResourceName"
+          },
+          "id": {
+            "description": "Unique Agent Knowledge identifier.",
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/AgentKnowledgeResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "AgentKnowledgeResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AgentKnowledgeResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data",
+          "links"
+        ]
+      },
+      "AgentKnowledgeSnippetCreateSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "Create a text snippet from caller-provided content.",
+            "$ref": "#/components/schemas/SnippetEnum"
+          },
+          "title": {
+            "description": "Human-readable title for the snippet.",
+            "type": "string"
+          },
+          "content": {
+            "description": "Text body for the snippet.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_type",
+          "title",
+          "content"
+        ]
+      },
+      "AgentKnowledgeSnippetResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item was created from caller-provided content.",
+            "$ref": "#/components/schemas/SnippetEnum"
+          },
+          "title": {
+            "description": "Human-readable title for the snippet.",
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "description": "Text body for the snippet.",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
+      "AgentKnowledgeStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "indexing",
+          "indexed",
+          "failed",
+          "rejected"
+        ]
+      },
+      "AgentKnowledgeUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Human-readable title for the snippet.",
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "description": "Text body for the snippet. Re-indexing is automatic when changed.",
+            "nullable": true,
+            "type": "string"
+          }
+        }
+      },
+      "AgentKnowledgeUpdateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/AgentKnowledgeResourceName"
+          },
+          "id": {
+            "description": "Agent Knowledge identifier. This must match the `agent_knowledge_id` path parameter.",
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/AgentKnowledgeUpdateRequest"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "AgentKnowledgeUpdateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AgentKnowledgeUpdateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "AgentKnowledgeWebpageCreateSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "Create a webpage-backed knowledge source from a URL.",
+            "$ref": "#/components/schemas/WebpageEnum"
+          },
+          "url": {
+            "description": "URL to scrape and index.",
+            "type": "string"
+          },
+          "scope": {
+            "description": "Crawl scope for the webpage. `single-page` indexes only the given URL; `entire-site` crawls URLs listed in the site's root sitemap.",
+            "default": "single-page",
+            "$ref": "#/components/schemas/AgentKnowledgeWebpageScope"
+          },
+          "auto_reindex": {
+            "description": "Whether to periodically re-index the webpage.",
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type",
+          "url",
+          "scope"
+        ]
+      },
+      "AgentKnowledgeWebpageResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item was created from a webpage.",
+            "$ref": "#/components/schemas/WebpageEnum"
+          },
+          "url": {
+            "description": "Normalized URL for the webpage-backed knowledge item.",
+            "type": "string",
+            "nullable": true
+          },
+          "scope": {
+            "description": "Crawl scope for the webpage-backed knowledge item.",
+            "$ref": "#/components/schemas/AgentKnowledgeWebpageScope",
+            "nullable": true
+          },
+          "auto_reindex": {
+            "description": "Whether the webpage is periodically re-indexed.",
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
+      "AgentKnowledgeWebpageScope": {
+        "type": "string",
+        "enum": [
+          "single-page",
+          "entire-site"
+        ]
+      },
+      "FileEnum": {
+        "type": "string",
+        "enum": [
+          "file"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "SnippetEnum": {
+        "type": "string",
+        "enum": [
+          "snippet"
+        ]
+      },
+      "WebpageEnum": {
+        "type": "string",
+        "enum": [
+          "webpage"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

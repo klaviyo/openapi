@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_translations_beta",
         "summary": "Get Translations",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all translations in an account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all translations in an account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_translations_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign-variation]",
@@ -84,6 +84,7 @@
                   "definition.details.title",
                   "definition.details.video_asset_id",
                   "definition.name",
+                  "id",
                   "updated"
                 ]
               }
@@ -102,6 +103,7 @@
                 "enum": [
                   "channel",
                   "content",
+                  "content.action_buttons",
                   "content.android_link",
                   "content.badge",
                   "content.bcc_email",
@@ -119,6 +121,7 @@
                   "content.subject",
                   "content.title",
                   "created",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -174,6 +177,7 @@
                   "definition.data.styles.text_decoration",
                   "definition.data.styles.text_table_layout",
                   "definition.type",
+                  "id",
                   "name",
                   "screenshot_status",
                   "screenshot_url",
@@ -197,6 +201,7 @@
                   "created",
                   "editor_type",
                   "html",
+                  "id",
                   "name",
                   "text",
                   "updated"
@@ -218,6 +223,7 @@
                   "channel",
                   "created",
                   "fallback_locale",
+                  "id",
                   "metadata",
                   "source_locale",
                   "target_locales",
@@ -319,6 +325,58 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-filters": {
+          "id": {
+            "operators": {
+              "list": [
+                "any",
+                "equals"
+              ],
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "resource_type": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "channel": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "email",
+                "sms",
+                "mobile_push",
+                "whatsapp"
+              ]
+            }
+          },
+          "related_resource_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
           "burst": "10/s",
@@ -332,7 +390,7 @@
       "post": {
         "operationId": "create_translation_beta",
         "summary": "Create Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a translation.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:write`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a translation.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_translation_beta.json)",
         "parameters": [
           {
             "name": "additional-fields[translation]",
@@ -344,6 +402,30 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "values"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[translation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "channel",
+                  "created",
+                  "fallback_locale",
+                  "id",
+                  "metadata",
+                  "source_locale",
+                  "target_locales",
+                  "updated",
                   "values"
                 ]
               }
@@ -408,7 +490,7 @@
       "get": {
         "operationId": "get_translation_beta",
         "summary": "Get Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the translation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the translation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -488,6 +570,7 @@
                   "definition.details.title",
                   "definition.details.video_asset_id",
                   "definition.name",
+                  "id",
                   "updated"
                 ]
               }
@@ -506,6 +589,7 @@
                 "enum": [
                   "channel",
                   "content",
+                  "content.action_buttons",
                   "content.android_link",
                   "content.badge",
                   "content.bcc_email",
@@ -523,6 +607,7 @@
                   "content.subject",
                   "content.title",
                   "created",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -578,6 +663,7 @@
                   "definition.data.styles.text_decoration",
                   "definition.data.styles.text_table_layout",
                   "definition.type",
+                  "id",
                   "name",
                   "screenshot_status",
                   "screenshot_url",
@@ -601,6 +687,7 @@
                   "created",
                   "editor_type",
                   "html",
+                  "id",
                   "name",
                   "text",
                   "updated"
@@ -622,6 +709,7 @@
                   "channel",
                   "created",
                   "fallback_locale",
+                  "id",
                   "metadata",
                   "source_locale",
                   "target_locales",
@@ -695,7 +783,7 @@
       "patch": {
         "operationId": "update_translation_beta",
         "summary": "Update Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the translation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:write`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the translation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -718,6 +806,30 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "values"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[translation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "channel",
+                  "created",
+                  "fallback_locale",
+                  "id",
+                  "metadata",
+                  "source_locale",
+                  "target_locales",
+                  "updated",
                   "values"
                 ]
               }
@@ -780,7 +892,7 @@
       "delete": {
         "operationId": "delete_translation_beta",
         "summary": "Delete Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete the translation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:write`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete the translation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -833,7 +945,7 @@
       "get": {
         "operationId": "get_campaign_variation_for_translation_beta",
         "summary": "Get Campaign Variation for Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the campaign variation for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the campaign variation for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_variation_for_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -897,6 +1009,7 @@
                   "definition.details.title",
                   "definition.details.video_asset_id",
                   "definition.name",
+                  "id",
                   "updated"
                 ]
               }
@@ -954,7 +1067,7 @@
       "get": {
         "operationId": "get_campaign_variation_id_for_translation_beta",
         "summary": "Get Campaign Variation ID for Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the campaign variation for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the campaign variation for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_variation_id_for_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1018,7 +1131,7 @@
       "get": {
         "operationId": "get_flow_message_for_translation_beta",
         "summary": "Get Flow Message for Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the flow message for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`flows:read`\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the flow message for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`flows:read`\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_flow_message_for_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1043,6 +1156,7 @@
                 "enum": [
                   "channel",
                   "content",
+                  "content.action_buttons",
                   "content.android_link",
                   "content.badge",
                   "content.bcc_email",
@@ -1060,6 +1174,7 @@
                   "content.subject",
                   "content.title",
                   "created",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -1118,7 +1233,7 @@
       "get": {
         "operationId": "get_flow_message_id_for_translation_beta",
         "summary": "Get Flow Message ID for Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the flow message for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`flows:read`\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the flow message for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`flows:read`\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_flow_message_id_for_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1182,7 +1297,7 @@
       "get": {
         "operationId": "get_template_for_translation_beta",
         "summary": "Get Template for Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the template for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:read`\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the template for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:read`\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_template_for_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1209,6 +1324,7 @@
                   "created",
                   "editor_type",
                   "html",
+                  "id",
                   "name",
                   "text",
                   "updated"
@@ -1268,7 +1384,7 @@
       "get": {
         "operationId": "get_template_id_for_translation_beta",
         "summary": "Get Template ID for Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the template for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:read`\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the template for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:read`\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_template_id_for_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1332,7 +1448,7 @@
       "get": {
         "operationId": "get_template_universal_content_for_translation_beta",
         "summary": "Get Template Universal Content for Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the template universal content for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:read`\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the template universal content for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:read`\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_template_universal_content_for_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1393,6 +1509,7 @@
                   "definition.data.styles.text_decoration",
                   "definition.data.styles.text_table_layout",
                   "definition.type",
+                  "id",
                   "name",
                   "screenshot_status",
                   "screenshot_url",
@@ -1453,7 +1570,7 @@
       "get": {
         "operationId": "get_template_universal_content_id_for_translation_beta",
         "summary": "Get Template Universal Content ID for Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the template universal content for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:read`\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the template universal content for the given translation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`templates:read`\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_template_universal_content_id_for_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1686,14 +1803,6 @@
         "type": "object",
         "properties": {
           "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "first": {
-            "type": "string",
-            "format": "uri"
-          },
-          "last": {
             "type": "string",
             "format": "uri"
           },
@@ -1997,7 +2106,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/FlowMessageResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FlowMessageResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -2011,7 +2125,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/TemplateResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TemplateResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -2026,6 +2145,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/CampaignVariationEnum"
@@ -2054,6 +2174,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/FlowMessageEnum"
@@ -2172,6 +2293,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/TemplateEnum"
@@ -2199,6 +2321,7 @@
         "properties": {
           "data": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "type": {
                 "$ref": "#/components/schemas/TemplateUniversalContentEnum"
@@ -2226,7 +2349,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/UniversalContentResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UniversalContentResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -2240,7 +2368,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/VariationResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VariationResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -2379,6 +2512,12 @@
           "data"
         ]
       },
+      "ImageEnum": {
+        "type": "string",
+        "enum": [
+          "image"
+        ]
+      },
       "MobilePushMessageContent": {
         "type": "object",
         "properties": {
@@ -2416,6 +2555,12 @@
             "type": "string",
             "example": "home",
             "default": "home"
+          },
+          "action_buttons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushActionButtonDefinition"
+            }
           }
         },
         "required": [
@@ -2906,6 +3051,33 @@
           "action_type"
         ]
       },
+      "PushActionButtonDefinition": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "description": "The button label (max 40 characters)",
+            "type": "string"
+          },
+          "action_type": {
+            "description": "The action type: open_app, deep_link, open_url, or dismiss",
+            "type": "string"
+          },
+          "position": {
+            "description": "The display order of the button (0-indexed). If omitted, inferred from the button's order in the list.",
+            "type": "integer",
+            "nullable": true
+          },
+          "url": {
+            "description": "URL for deep_link or open_url action types (max 2048 characters)",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "label",
+          "action_type"
+        ]
+      },
       "PushChannelDetails": {
         "type": "object",
         "properties": {
@@ -3163,27 +3335,12 @@
             ]
           },
           "data": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "boolean"
-              }
-            ]
+            "nullable": true
           }
         },
         "required": [
           "content_type",
-          "type",
-          "data"
+          "type"
         ]
       },
       "SocialBlock": {
@@ -4426,6 +4583,30 @@
                       },
                       "id": {
                         "description": "Related Translation",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "image": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ImageEnum"
+                      },
+                      "id": {
+                        "description": "The associated static image for mobile push variations",
                         "type": "string"
                       }
                     },

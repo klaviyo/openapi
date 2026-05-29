@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_translation_beta",
         "summary": "Get Translation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the translation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the translation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`translations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_translation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -111,6 +111,7 @@
                   "definition.details.title",
                   "definition.details.video_asset_id",
                   "definition.name",
+                  "id",
                   "updated"
                 ]
               }
@@ -129,6 +130,7 @@
                 "enum": [
                   "channel",
                   "content",
+                  "content.action_buttons",
                   "content.android_link",
                   "content.badge",
                   "content.bcc_email",
@@ -146,6 +148,7 @@
                   "content.subject",
                   "content.title",
                   "created",
+                  "id",
                   "name",
                   "updated"
                 ]
@@ -201,6 +204,7 @@
                   "definition.data.styles.text_decoration",
                   "definition.data.styles.text_table_layout",
                   "definition.type",
+                  "id",
                   "name",
                   "screenshot_status",
                   "screenshot_url",
@@ -224,6 +228,7 @@
                   "created",
                   "editor_type",
                   "html",
+                  "id",
                   "name",
                   "text",
                   "updated"
@@ -245,6 +250,7 @@
                   "channel",
                   "created",
                   "fallback_locale",
+                  "id",
                   "metadata",
                   "source_locale",
                   "target_locales",
@@ -953,6 +959,12 @@
           "data"
         ]
       },
+      "ImageEnum": {
+        "type": "string",
+        "enum": [
+          "image"
+        ]
+      },
       "MobilePushMessageContent": {
         "type": "object",
         "properties": {
@@ -990,6 +1002,12 @@
             "type": "string",
             "example": "home",
             "default": "home"
+          },
+          "action_buttons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PushActionButtonDefinition"
+            }
           }
         },
         "required": [
@@ -1073,6 +1091,33 @@
             "nullable": true
           },
           "custom_action_id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "label",
+          "action_type"
+        ]
+      },
+      "PushActionButtonDefinition": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "description": "The button label (max 40 characters)",
+            "type": "string"
+          },
+          "action_type": {
+            "description": "The action type: open_app, deep_link, open_url, or dismiss",
+            "type": "string"
+          },
+          "position": {
+            "description": "The display order of the button (0-indexed). If omitted, inferred from the button's order in the list.",
+            "type": "integer",
+            "nullable": true
+          },
+          "url": {
+            "description": "URL for deep_link or open_url action types (max 2048 characters)",
             "type": "string",
             "nullable": true
           }
@@ -1339,27 +1384,12 @@
             ]
           },
           "data": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "boolean"
-              }
-            ]
+            "nullable": true
           }
         },
         "required": [
           "content_type",
-          "type",
-          "data"
+          "type"
         ]
       },
       "SocialBlock": {
@@ -2210,6 +2240,30 @@
                       },
                       "id": {
                         "description": "Related Translation",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "image": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ImageEnum"
+                      },
+                      "id": {
+                        "description": "The associated static image for mobile push variations",
                         "type": "string"
                       }
                     },
