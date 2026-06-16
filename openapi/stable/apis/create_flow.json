@@ -444,34 +444,6 @@
           "filter"
         ]
       },
-      "ActionOutputConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionOutputCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "ActionOutputConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionOutputConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "ActionOutputSplitAction": {
         "type": "object",
         "properties": {
@@ -511,8 +483,30 @@
         "type": "object",
         "properties": {
           "action_output_filter": {
-            "$ref": "#/components/schemas/ActionOutputConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ActionOutputCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           }
         },
         "required": [
@@ -1044,7 +1038,95 @@
             "nullable": true
           },
           "data": {
-            "$ref": "#/components/schemas/SendPushNotificationActionContentExperimentActionData"
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "Flow action status.",
+                "type": "string",
+                "example": "draft",
+                "default": "draft",
+                "enum": [
+                  "disabled",
+                  "draft",
+                  "live",
+                  "manual"
+                ]
+              },
+              "experiment_status": {
+                "description": "Not allowed on create.",
+                "type": "string",
+                "enum": [
+                  "completed",
+                  "draft",
+                  "live"
+                ],
+                "nullable": true
+              },
+              "main_action": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SendPushNotificationAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SendWhatsAppAction"
+                  }
+                ]
+              },
+              "current_experiment": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "id": {
+                    "description": "Not allowed on create.",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "name": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "variations": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/SendPushNotificationAction"
+                        },
+                        {
+                          "$ref": "#/components/schemas/SendWhatsAppAction"
+                        }
+                      ]
+                    }
+                  },
+                  "allocations": {
+                    "type": "object",
+                    "nullable": true
+                  },
+                  "started": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true,
+                    "readOnly": true
+                  },
+                  "winner_metric": {
+                    "description": "The metric to use to determine the winner of the content experiment\n    action.",
+                    "type": "string",
+                    "enum": [
+                      "click-rate",
+                      "open-rate"
+                    ],
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "variations"
+                ]
+              }
+            },
+            "required": [
+              "main_action"
+            ]
           }
         },
         "required": [
@@ -4493,34 +4575,6 @@
           "filter"
         ]
       },
-      "LowInventoryConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LowInventoryCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "LowInventoryConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LowInventoryConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "LowInventoryTrigger": {
         "type": "object",
         "properties": {
@@ -4539,8 +4593,30 @@
             ]
           },
           "trigger_filter": {
-            "$ref": "#/components/schemas/LowInventoryConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LowInventoryCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           },
           "inventory_count": {
             "type": "integer"
@@ -4874,34 +4950,6 @@
           "filter"
         ]
       },
-      "MetricPropertyConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetricPropertyCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "MetricPropertyConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetricPropertyConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "MetricTrigger": {
         "type": "object",
         "properties": {
@@ -4916,8 +4964,30 @@
             "nullable": true
           },
           "trigger_filter": {
-            "$ref": "#/components/schemas/MetricPropertyConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MetricPropertyCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           }
         },
         "required": [
@@ -5835,34 +5905,6 @@
           "filter"
         ]
       },
-      "PriceDropConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PriceDropCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "PriceDropConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PriceDropConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "PriceDropTrigger": {
         "type": "object",
         "properties": {
@@ -5873,8 +5915,30 @@
             ]
           },
           "trigger_filter": {
-            "$ref": "#/components/schemas/PriceDropConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PriceDropCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           },
           "price_drop_amount_value": {
             "oneOf": [
@@ -7968,85 +8032,6 @@
         },
         "required": [
           "type"
-        ]
-      },
-      "SendPushNotificationActionContentExperimentActionData": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Flow action status.",
-            "type": "string",
-            "example": "draft",
-            "default": "draft",
-            "enum": [
-              "disabled",
-              "draft",
-              "live",
-              "manual"
-            ]
-          },
-          "experiment_status": {
-            "description": "Not allowed on create.",
-            "type": "string",
-            "enum": [
-              "completed",
-              "draft",
-              "live"
-            ],
-            "nullable": true
-          },
-          "main_action": {
-            "$ref": "#/components/schemas/SendPushNotificationAction"
-          },
-          "current_experiment": {
-            "$ref": "#/components/schemas/SendPushNotificationActionCurrentExperiment",
-            "nullable": true
-          }
-        },
-        "required": [
-          "main_action"
-        ]
-      },
-      "SendPushNotificationActionCurrentExperiment": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "Not allowed on create.",
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "variations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SendPushNotificationAction"
-            }
-          },
-          "allocations": {
-            "type": "object",
-            "nullable": true
-          },
-          "started": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-11-08T00:00:00+00:00",
-            "nullable": true,
-            "readOnly": true
-          },
-          "winner_metric": {
-            "description": "The metric to use to determine the winner of the content experiment\n    action.",
-            "type": "string",
-            "enum": [
-              "open-rate"
-            ],
-            "nullable": true
-          }
-        },
-        "required": [
-          "variations"
         ]
       },
       "SendPushNotificationActionData": {

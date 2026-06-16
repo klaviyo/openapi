@@ -115,6 +115,7 @@
                   "definition.data.main_action.data.message.template_id",
                   "definition.data.main_action.data.message.title",
                   "definition.data.main_action.data.message.transactional",
+                  "definition.data.main_action.data.message.vendor_id",
                   "definition.data.main_action.data.message.video_asset_id",
                   "definition.data.main_action.data.message.web_url",
                   "definition.data.main_action.data.status",
@@ -662,34 +663,6 @@
           "filter"
         ]
       },
-      "ActionOutputConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionOutputCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "ActionOutputConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionOutputConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "ActionOutputSplitAction": {
         "type": "object",
         "properties": {
@@ -729,8 +702,30 @@
         "type": "object",
         "properties": {
           "action_output_filter": {
-            "$ref": "#/components/schemas/ActionOutputConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ActionOutputCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           }
         },
         "required": [
@@ -1262,7 +1257,95 @@
             "nullable": true
           },
           "data": {
-            "$ref": "#/components/schemas/SendPushNotificationActionContentExperimentActionData"
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "Flow action status.",
+                "type": "string",
+                "example": "draft",
+                "default": "draft",
+                "enum": [
+                  "disabled",
+                  "draft",
+                  "live",
+                  "manual"
+                ]
+              },
+              "experiment_status": {
+                "description": "Not allowed on create.",
+                "type": "string",
+                "enum": [
+                  "completed",
+                  "draft",
+                  "live"
+                ],
+                "nullable": true
+              },
+              "main_action": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SendPushNotificationAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SendWhatsAppAction"
+                  }
+                ]
+              },
+              "current_experiment": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "id": {
+                    "description": "Not allowed on create.",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "name": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "variations": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/SendPushNotificationAction"
+                        },
+                        {
+                          "$ref": "#/components/schemas/SendWhatsAppAction"
+                        }
+                      ]
+                    }
+                  },
+                  "allocations": {
+                    "type": "object",
+                    "nullable": true
+                  },
+                  "started": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true,
+                    "readOnly": true
+                  },
+                  "winner_metric": {
+                    "description": "The metric to use to determine the winner of the content experiment\n    action.",
+                    "type": "string",
+                    "enum": [
+                      "click-rate",
+                      "open-rate"
+                    ],
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "variations"
+                ]
+              }
+            },
+            "required": [
+              "main_action"
+            ]
           }
         },
         "required": [
@@ -6765,85 +6848,6 @@
         },
         "required": [
           "type"
-        ]
-      },
-      "SendPushNotificationActionContentExperimentActionData": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Flow action status.",
-            "type": "string",
-            "example": "draft",
-            "default": "draft",
-            "enum": [
-              "disabled",
-              "draft",
-              "live",
-              "manual"
-            ]
-          },
-          "experiment_status": {
-            "description": "Not allowed on create.",
-            "type": "string",
-            "enum": [
-              "completed",
-              "draft",
-              "live"
-            ],
-            "nullable": true
-          },
-          "main_action": {
-            "$ref": "#/components/schemas/SendPushNotificationAction"
-          },
-          "current_experiment": {
-            "$ref": "#/components/schemas/SendPushNotificationActionCurrentExperiment",
-            "nullable": true
-          }
-        },
-        "required": [
-          "main_action"
-        ]
-      },
-      "SendPushNotificationActionCurrentExperiment": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "Not allowed on create.",
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "variations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SendPushNotificationAction"
-            }
-          },
-          "allocations": {
-            "type": "object",
-            "nullable": true
-          },
-          "started": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-11-08T00:00:00+00:00",
-            "nullable": true,
-            "readOnly": true
-          },
-          "winner_metric": {
-            "description": "The metric to use to determine the winner of the content experiment\n    action.",
-            "type": "string",
-            "enum": [
-              "open-rate"
-            ],
-            "nullable": true
-          }
-        },
-        "required": [
-          "variations"
         ]
       },
       "SendPushNotificationActionData": {
