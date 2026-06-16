@@ -11891,6 +11891,7 @@
                   "definition.data.main_action.data.message.template_id",
                   "definition.data.main_action.data.message.title",
                   "definition.data.main_action.data.message.transactional",
+                  "definition.data.main_action.data.message.vendor_id",
                   "definition.data.main_action.data.message.video_asset_id",
                   "definition.data.main_action.data.message.web_url",
                   "definition.data.main_action.data.status",
@@ -12433,6 +12434,7 @@
                   "definition.data.main_action.data.message.template_id",
                   "definition.data.main_action.data.message.title",
                   "definition.data.main_action.data.message.transactional",
+                  "definition.data.main_action.data.message.vendor_id",
                   "definition.data.main_action.data.message.video_asset_id",
                   "definition.data.main_action.data.message.web_url",
                   "definition.data.main_action.data.status",
@@ -12855,6 +12857,7 @@
                   "definition.data.main_action.data.message.template_id",
                   "definition.data.main_action.data.message.title",
                   "definition.data.main_action.data.message.transactional",
+                  "definition.data.main_action.data.message.vendor_id",
                   "definition.data.main_action.data.message.video_asset_id",
                   "definition.data.main_action.data.message.web_url",
                   "definition.data.main_action.data.status",
@@ -13177,6 +13180,7 @@
                   "definition.data.main_action.data.message.template_id",
                   "definition.data.main_action.data.message.title",
                   "definition.data.main_action.data.message.transactional",
+                  "definition.data.main_action.data.message.vendor_id",
                   "definition.data.main_action.data.message.video_asset_id",
                   "definition.data.main_action.data.message.web_url",
                   "definition.data.main_action.data.status",
@@ -13408,6 +13412,7 @@
                   "definition.data.main_action.data.message.template_id",
                   "definition.data.main_action.data.message.title",
                   "definition.data.main_action.data.message.transactional",
+                  "definition.data.main_action.data.message.vendor_id",
                   "definition.data.main_action.data.message.video_asset_id",
                   "definition.data.main_action.data.message.web_url",
                   "definition.data.main_action.data.status",
@@ -13733,6 +13738,7 @@
                   "definition.data.main_action.data.message.template_id",
                   "definition.data.main_action.data.message.title",
                   "definition.data.main_action.data.message.transactional",
+                  "definition.data.main_action.data.message.vendor_id",
                   "definition.data.main_action.data.message.video_asset_id",
                   "definition.data.main_action.data.message.web_url",
                   "definition.data.main_action.data.status",
@@ -14913,6 +14919,7 @@
                   "definition.data.main_action.data.message.template_id",
                   "definition.data.main_action.data.message.title",
                   "definition.data.main_action.data.message.transactional",
+                  "definition.data.main_action.data.message.vendor_id",
                   "definition.data.main_action.data.message.video_asset_id",
                   "definition.data.main_action.data.message.web_url",
                   "definition.data.main_action.data.status",
@@ -42350,40 +42357,34 @@
           "filter"
         ]
       },
-      "ActionOutputConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionOutputCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "ActionOutputConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ActionOutputConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "ActionOutputSplitActionData": {
         "type": "object",
         "properties": {
           "action_output_filter": {
-            "$ref": "#/components/schemas/ActionOutputConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ActionOutputCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           }
         },
         "required": [
@@ -43078,7 +43079,7 @@
           "type"
         ]
       },
-      "SendPushNotificationActionCurrentExperiment": {
+      "FlowWhatsApp": {
         "type": "object",
         "properties": {
           "id": {
@@ -43090,39 +43091,104 @@
             "type": "string",
             "nullable": true
           },
-          "variations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SendPushNotificationAction"
-            }
+          "vendor_id": {
+            "type": "string",
+            "nullable": true
           },
-          "allocations": {
+          "smart_sending_enabled": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "transactional": {
+            "type": "boolean",
+            "default": false
+          },
+          "add_tracking_params": {
+            "type": "boolean",
+            "default": false
+          },
+          "additional_filters": {
             "type": "object",
-            "nullable": true
-          },
-          "started": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-11-08T00:00:00+00:00",
             "nullable": true,
-            "readOnly": true
-          },
-          "winner_metric": {
-            "description": "The metric to use to determine the winner of the content experiment\n    action.",
-            "type": "string",
-            "enum": [
-              "open-rate"
-            ],
-            "nullable": true
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ProfilePropertyCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileNoGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRegionCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePostalCodeDistanceCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsDateCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsNumericCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityPriorityCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityRankCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileMarketingConsentCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/FlowsProfileMetricCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePermissionsCondition"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           }
-        },
-        "required": [
-          "variations"
-        ]
+        }
       },
-      "SendPushNotificationActionContentExperimentActionData": {
+      "SendWhatsAppActionData": {
         "type": "object",
         "properties": {
+          "message": {
+            "$ref": "#/components/schemas/FlowWhatsApp",
+            "nullable": true
+          },
           "status": {
             "description": "Flow action status.",
             "type": "string",
@@ -43134,27 +43200,42 @@
               "live",
               "manual"
             ]
-          },
-          "experiment_status": {
-            "description": "Not allowed on create.",
+          }
+        }
+      },
+      "SendWhatsAppAction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The real ID of an action. Not allowed on create.",
             "type": "string",
-            "enum": [
-              "completed",
-              "draft",
-              "live"
-            ],
+            "example": "123",
             "nullable": true
           },
-          "main_action": {
-            "$ref": "#/components/schemas/SendPushNotificationAction"
+          "temporary_id": {
+            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
+            "type": "string",
+            "example": "action-1",
+            "nullable": true,
+            "writeOnly": true
           },
-          "current_experiment": {
-            "$ref": "#/components/schemas/SendPushNotificationActionCurrentExperiment",
+          "type": {
+            "type": "string",
+            "enum": [
+              "send-whatsapp"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/Link",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SendWhatsAppActionData",
             "nullable": true
           }
         },
         "required": [
-          "main_action"
+          "type"
         ]
       },
       "ContentExperimentAction": {
@@ -43184,7 +43265,95 @@
             "nullable": true
           },
           "data": {
-            "$ref": "#/components/schemas/SendPushNotificationActionContentExperimentActionData"
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "Flow action status.",
+                "type": "string",
+                "example": "draft",
+                "default": "draft",
+                "enum": [
+                  "disabled",
+                  "draft",
+                  "live",
+                  "manual"
+                ]
+              },
+              "experiment_status": {
+                "description": "Not allowed on create.",
+                "type": "string",
+                "enum": [
+                  "completed",
+                  "draft",
+                  "live"
+                ],
+                "nullable": true
+              },
+              "main_action": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SendPushNotificationAction"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SendWhatsAppAction"
+                  }
+                ]
+              },
+              "current_experiment": {
+                "type": "object",
+                "nullable": true,
+                "properties": {
+                  "id": {
+                    "description": "Not allowed on create.",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "name": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "variations": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/SendPushNotificationAction"
+                        },
+                        {
+                          "$ref": "#/components/schemas/SendWhatsAppAction"
+                        }
+                      ]
+                    }
+                  },
+                  "allocations": {
+                    "type": "object",
+                    "nullable": true
+                  },
+                  "started": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true,
+                    "readOnly": true
+                  },
+                  "winner_metric": {
+                    "description": "The metric to use to determine the winner of the content experiment\n    action.",
+                    "type": "string",
+                    "enum": [
+                      "click-rate",
+                      "open-rate"
+                    ],
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "variations"
+                ]
+              }
+            },
+            "required": [
+              "main_action"
+            ]
           }
         },
         "required": [
@@ -43849,165 +44018,6 @@
           },
           "data": {
             "$ref": "#/components/schemas/SendInternalAlertActionData",
-            "nullable": true
-          }
-        },
-        "required": [
-          "type"
-        ]
-      },
-      "FlowWhatsApp": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "Not allowed on create.",
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "vendor_id": {
-            "type": "string",
-            "nullable": true
-          },
-          "smart_sending_enabled": {
-            "type": "boolean",
-            "example": true,
-            "default": true
-          },
-          "transactional": {
-            "type": "boolean",
-            "default": false
-          },
-          "add_tracking_params": {
-            "type": "boolean",
-            "default": false
-          },
-          "additional_filters": {
-            "type": "object",
-            "nullable": true,
-            "properties": {
-              "condition_groups": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "conditions": {
-                      "type": "array",
-                      "items": {
-                        "oneOf": [
-                          {
-                            "$ref": "#/components/schemas/ProfilePropertyCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfileHasGroupMembershipCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfileNoGroupMembershipCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfileRegionCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfilePostalCodeDistanceCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsDateCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsNumericCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityPriorityCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityRankCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfileMarketingConsentCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/FlowsProfileMetricCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfileRandomSampleCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
-                          },
-                          {
-                            "$ref": "#/components/schemas/ProfilePermissionsCondition"
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "conditions"
-                  ]
-                }
-              }
-            },
-            "required": [
-              "condition_groups"
-            ]
-          }
-        }
-      },
-      "SendWhatsAppActionData": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "$ref": "#/components/schemas/FlowWhatsApp",
-            "nullable": true
-          },
-          "status": {
-            "description": "Flow action status.",
-            "type": "string",
-            "example": "draft",
-            "default": "draft",
-            "enum": [
-              "disabled",
-              "draft",
-              "live",
-              "manual"
-            ]
-          }
-        }
-      },
-      "SendWhatsAppAction": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "description": "The real ID of an action. Not allowed on create.",
-            "type": "string",
-            "example": "123",
-            "nullable": true
-          },
-          "temporary_id": {
-            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
-            "type": "string",
-            "example": "action-1",
-            "nullable": true,
-            "writeOnly": true
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "send-whatsapp"
-            ]
-          },
-          "links": {
-            "$ref": "#/components/schemas/Link",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/SendWhatsAppActionData",
             "nullable": true
           }
         },
@@ -47084,34 +47094,6 @@
           "type"
         ]
       },
-      "MetricPropertyConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetricPropertyCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "MetricPropertyConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MetricPropertyConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "MetricTrigger": {
         "type": "object",
         "properties": {
@@ -47126,8 +47108,30 @@
             "nullable": true
           },
           "trigger_filter": {
-            "$ref": "#/components/schemas/MetricPropertyConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MetricPropertyCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           }
         },
         "required": [
@@ -48176,34 +48180,6 @@
           "trigger_time"
         ]
       },
-      "PriceDropConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PriceDropCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "PriceDropConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PriceDropConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "PriceDropTrigger": {
         "type": "object",
         "properties": {
@@ -48214,8 +48190,30 @@
             ]
           },
           "trigger_filter": {
-            "$ref": "#/components/schemas/PriceDropConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PriceDropCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           },
           "price_drop_amount_value": {
             "oneOf": [
@@ -48270,34 +48268,6 @@
           "audience"
         ]
       },
-      "LowInventoryConditionConditionGroup": {
-        "type": "object",
-        "properties": {
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LowInventoryCondition"
-            }
-          }
-        },
-        "required": [
-          "conditions"
-        ]
-      },
-      "LowInventoryConditionFilter": {
-        "type": "object",
-        "properties": {
-          "condition_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LowInventoryConditionConditionGroup"
-            }
-          }
-        },
-        "required": [
-          "condition_groups"
-        ]
-      },
       "LowInventoryTrigger": {
         "type": "object",
         "properties": {
@@ -48316,8 +48286,30 @@
             ]
           },
           "trigger_filter": {
-            "$ref": "#/components/schemas/LowInventoryConditionFilter",
-            "nullable": true
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LowInventoryCondition"
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
           },
           "inventory_count": {
             "type": "integer"
@@ -61296,6 +61288,46 @@
           "properties"
         ]
       },
+      "IafDeeplinkToScreenProperties": {
+        "type": "object",
+        "properties": {
+          "deep_link_url": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "IafDeeplinkToScreen": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "submit": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "iaf_deeplink_to_screen"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/IafDeeplinkToScreenProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
       "Button": {
         "type": "object",
         "properties": {
@@ -61353,6 +61385,9 @@
               },
               {
                 "$ref": "#/components/schemas/SkipToSuccess"
+              },
+              {
+                "$ref": "#/components/schemas/IafDeeplinkToScreen"
               }
             ]
           }
@@ -62827,6 +62862,9 @@
               },
               {
                 "$ref": "#/components/schemas/SkipToSuccess"
+              },
+              {
+                "$ref": "#/components/schemas/IafDeeplinkToScreen"
               }
             ]
           }
@@ -67042,6 +67080,16 @@
               ],
               "description": "Form specialty enumeration."
             }
+          },
+          "channel": {
+            "description": "Form channel type enumeration.",
+            "type": "string",
+            "example": "WEB",
+            "default": "WEB",
+            "enum": [
+              "IN_APP",
+              "WEB"
+            ]
           },
           "message_priority": {
             "type": "integer",
