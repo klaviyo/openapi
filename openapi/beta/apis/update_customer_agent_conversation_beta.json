@@ -31,7 +31,7 @@
       "patch": {
         "operationId": "update_customer_agent_conversation_beta",
         "summary": "Update Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nClose a Customer Agent conversation.\n\n``status`` is the only updatable attribute and only ``closed``\nis accepted (the DTO's ``Literal`` constraint enforces this\nbefore this handler runs).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nClose a Customer Agent conversation.\n\n``status`` is the only updatable attribute and only ``closed``\nis accepted (the DTO's ``Literal`` constraint enforces this\nbefore this handler runs).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -234,8 +234,14 @@
         "properties": {
           "status": {
             "description": "Current lifecycle status of the conversation.",
+            "type": "string",
             "example": "resolved-by-ai",
-            "$ref": "#/components/schemas/ConversationStatus"
+            "enum": [
+              "open",
+              "routed-to-team",
+              "resolved-by-ai",
+              "closed"
+            ]
           },
           "created_at": {
             "description": "Date and time when the conversation was created.",
@@ -285,6 +291,7 @@
                           "$ref": "#/components/schemas/CustomerAgentMessageResourceName"
                         },
                         "id": {
+                          "description": "Message turns in this conversation.",
                           "type": "string"
                         }
                       },
@@ -297,11 +304,7 @@
                   "links": {
                     "$ref": "#/components/schemas/RelationshipLinks"
                   }
-                },
-                "required": [
-                  "data",
-                  "links"
-                ]
+                }
               }
             },
             "required": [
@@ -331,20 +334,10 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
-      "ConversationStatus": {
-        "type": "string",
-        "enum": [
-          "open",
-          "routed-to-team",
-          "resolved-by-ai",
-          "closed"
-        ]
-      },
-      "ConversationUpdateRequest": {
+      "ConversationUpdateRequestRequest": {
         "type": "object",
         "properties": {
           "status": {
@@ -363,7 +356,7 @@
             "type": "string"
           },
           "attributes": {
-            "$ref": "#/components/schemas/ConversationUpdateRequest"
+            "$ref": "#/components/schemas/ConversationUpdateRequestRequest"
           }
         },
         "required": [

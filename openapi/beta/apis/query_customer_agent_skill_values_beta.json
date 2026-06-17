@@ -31,7 +31,7 @@
       "post": {
         "operationId": "query_customer_agent_skill_values_beta",
         "summary": "Query Customer Agent Skill Values",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns per-skill aggregates across the requested timeframe.\n\nEach row of ``results`` is one skill bucket with a computed\n``volume`` statistic. Counts are at the invocation level: one\nconversation that runs multiple skills contributes to multiple\nbuckets.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns per-skill aggregates across the requested timeframe.\n\nEach row of ``results`` is one skill bucket with a computed\n``volume`` statistic. Counts are at the invocation level: one\nconversation that runs multiple skills contributes to multiple\nbuckets.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_skill_values_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-skill-values-report]",
@@ -216,26 +216,26 @@
       }
     },
     "schemas": {
-      "CustomerAgentSkillValuesReportQuery": {
+      "CustomerAgentSkillValuesReportQueryRequest": {
         "type": "object",
         "properties": {
           "statistics": {
+            "description": "Metrics to compute for each skill bucket. Currently only volume is supported.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SkillStatistic",
-              "description": "Metrics to compute for each skill bucket. Currently only volume is supported."
+              "$ref": "#/components/schemas/SkillStatistic"
             }
           },
           "groupings": {
+            "description": "Required grouping. Each result row corresponds to one skill.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SkillGrouping",
-              "description": "Required grouping. Each result row corresponds to one skill."
+              "$ref": "#/components/schemas/SkillGrouping"
             }
           },
           "timeframe": {
             "description": "Time window for the report.",
-            "$ref": "#/components/schemas/ReportTimeframe"
+            "$ref": "#/components/schemas/ReportTimeframeRequest"
           },
           "filter": {
             "description": "Optional Klaviyo filter syntax. Use any(skill,[...]) to narrow to specific skills; use any(channel,[...]) to narrow by channel. When omitted, returns aggregates for every skill the company has used in the timeframe.",
@@ -257,7 +257,7 @@
             "$ref": "#/components/schemas/CustomerAgentSkillValuesReportResourceName"
           },
           "attributes": {
-            "$ref": "#/components/schemas/CustomerAgentSkillValuesReportQuery"
+            "$ref": "#/components/schemas/CustomerAgentSkillValuesReportQueryRequest"
           }
         },
         "required": [
@@ -286,10 +286,10 @@
         "type": "object",
         "properties": {
           "results": {
+            "description": "Computed skill-values-report rows.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ValuesData",
-              "description": "Computed skill-values-report rows."
+              "$ref": "#/components/schemas/ValuesData"
             }
           }
         },
@@ -332,8 +332,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "ObjectLinks": {
@@ -348,12 +347,23 @@
           "self"
         ]
       },
-      "ReportTimeframe": {
+      "ReportTimeframeRequest": {
         "type": "object",
         "properties": {
           "key": {
             "description": "Named preset window.",
-            "$ref": "#/components/schemas/TimeframeKey",
+            "type": "string",
+            "enum": [
+              "today",
+              "yesterday",
+              "this_week",
+              "last_week",
+              "last_7_days",
+              "last_30_days",
+              "last_90_days",
+              "this_month",
+              "last_month"
+            ],
             "nullable": true
           },
           "start": {
@@ -373,29 +383,17 @@
         }
       },
       "SkillGrouping": {
+        "description": "Required bucket dimension supported by the skill-values report.\n\nThe spec requires exactly one grouping, and it must be ``skill``.",
         "type": "string",
         "enum": [
           "skill"
         ]
       },
       "SkillStatistic": {
+        "description": "Metrics computable for each skill bucket.",
         "type": "string",
         "enum": [
           "volume"
-        ]
-      },
-      "TimeframeKey": {
-        "type": "string",
-        "enum": [
-          "today",
-          "yesterday",
-          "this_week",
-          "last_week",
-          "last_7_days",
-          "last_30_days",
-          "last_90_days",
-          "this_month",
-          "last_month"
         ]
       },
       "ValuesData": {

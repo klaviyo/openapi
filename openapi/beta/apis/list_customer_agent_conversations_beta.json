@@ -31,7 +31,7 @@
       "get": {
         "operationId": "list_customer_agent_conversations_beta",
         "summary": "List Conversations",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns Customer Agent conversations for the calling company.\n\nResults are ordered with newest conversations first. Supports\nfilters by ``status`` and ``created_at`` time window, plus\ncursor pagination for large pulls. Use to audit production\nbehavior, spot-check escalations, or feed conversation samples\nback into Configure decisions.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns Customer Agent conversations for the calling company.\n\nResults are ordered with newest conversations first. Supports\nfilters by ``status`` and ``created_at`` time window, plus\ncursor pagination for large pulls. Use to audit production\nbehavior, spot-check escalations, or feed conversation samples\nback into Configure decisions.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-conversation]",
@@ -115,6 +115,35 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-filters": {
+          "created_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "open",
+                "routed-to-team",
+                "resolved-by-ai",
+                "closed"
+              ]
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
           "get_customer_agent_conversations"
         ],
@@ -243,8 +272,14 @@
         "properties": {
           "status": {
             "description": "Current lifecycle status of the conversation.",
+            "type": "string",
             "example": "resolved-by-ai",
-            "$ref": "#/components/schemas/ConversationStatus"
+            "enum": [
+              "open",
+              "routed-to-team",
+              "resolved-by-ai",
+              "closed"
+            ]
           },
           "created_at": {
             "description": "Date and time when the conversation was created.",
@@ -294,6 +329,7 @@
                           "$ref": "#/components/schemas/CustomerAgentMessageResourceName"
                         },
                         "id": {
+                          "description": "Message turns in this conversation.",
                           "type": "string"
                         }
                       },
@@ -306,11 +342,7 @@
                   "links": {
                     "$ref": "#/components/schemas/RelationshipLinks"
                   }
-                },
-                "required": [
-                  "data",
-                  "links"
-                ]
+                }
               }
             },
             "required": [
@@ -340,17 +372,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
-        ]
-      },
-      "ConversationStatus": {
-        "type": "string",
-        "enum": [
-          "open",
-          "routed-to-team",
-          "resolved-by-ai",
-          "closed"
+          "data"
         ]
       },
       "CustomerAgentConversationResourceName": {
