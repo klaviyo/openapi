@@ -31,7 +31,7 @@
       "post": {
         "operationId": "query_customer_agent_values_beta",
         "summary": "Query Customer Agent Conversation Metrics",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns conversation-level aggregates across the requested\ntimeframe.\n\nA single call may request multiple ``statistics`` (``volume``\nand/or ``resolution-rate``); each row of ``results`` carries the\nbucket-identifying ``groupings`` values and computed\n``statistics`` for that bucket. Optionally group by ``channel``\nor ``status``, or omit ``groupings`` for a single overall row.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns conversation-level aggregates across the requested\ntimeframe.\n\nA single call may request multiple ``statistics`` (``volume``\nand/or ``resolution-rate``); each row of ``results`` carries the\nbucket-identifying ``groupings`` values and computed\n``statistics`` for that bucket. Optionally group by ``channel``\nor ``status``, or omit ``groupings`` for a single overall row.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_values_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-values-report]",
@@ -216,33 +216,32 @@
       }
     },
     "schemas": {
-      "CustomerAgentValuesReportQuery": {
+      "CustomerAgentValuesReportQueryRequest": {
         "type": "object",
         "properties": {
           "statistics": {
+            "description": "Metrics to compute for each grouping bucket. Combine volume and resolution-rate in one call to receive both per bucket.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ValuesStatistic",
-              "description": "Metrics to compute for each grouping bucket. Combine volume and resolution-rate in one call to receive both per bucket."
+              "$ref": "#/components/schemas/ValuesStatistic"
             }
           },
           "timeframe": {
             "description": "Time window for the report.",
-            "$ref": "#/components/schemas/ReportTimeframe"
+            "$ref": "#/components/schemas/ReportTimeframeRequest"
           },
           "groupings": {
+            "description": "Optional dimension to break the result down by. Provide exactly one of channel or status, or omit entirely for a single aggregate row.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ValuesGrouping",
-              "default": [],
-              "description": "Optional dimension to break the result down by. Provide exactly one of channel or status, or omit entirely for a single aggregate row."
-            }
+              "$ref": "#/components/schemas/ValuesGrouping"
+            },
+            "default": []
           }
         },
         "required": [
           "statistics",
-          "timeframe",
-          "groupings"
+          "timeframe"
         ]
       },
       "CustomerAgentValuesReportQueryRequestData": {
@@ -252,7 +251,7 @@
             "$ref": "#/components/schemas/CustomerAgentValuesReportResourceName"
           },
           "attributes": {
-            "$ref": "#/components/schemas/CustomerAgentValuesReportQuery"
+            "$ref": "#/components/schemas/CustomerAgentValuesReportQueryRequest"
           }
         },
         "required": [
@@ -281,10 +280,10 @@
         "type": "object",
         "properties": {
           "results": {
+            "description": "Computed values-report rows.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ValuesData",
-              "description": "Computed values-report rows."
+              "$ref": "#/components/schemas/ValuesData"
             }
           }
         },
@@ -327,8 +326,7 @@
           }
         },
         "required": [
-          "data",
-          "links"
+          "data"
         ]
       },
       "ObjectLinks": {
@@ -343,12 +341,23 @@
           "self"
         ]
       },
-      "ReportTimeframe": {
+      "ReportTimeframeRequest": {
         "type": "object",
         "properties": {
           "key": {
             "description": "Named preset window.",
-            "$ref": "#/components/schemas/TimeframeKey",
+            "type": "string",
+            "enum": [
+              "today",
+              "yesterday",
+              "this_week",
+              "last_week",
+              "last_7_days",
+              "last_30_days",
+              "last_90_days",
+              "this_month",
+              "last_month"
+            ],
             "nullable": true
           },
           "start": {
@@ -366,20 +375,6 @@
             "nullable": true
           }
         }
-      },
-      "TimeframeKey": {
-        "type": "string",
-        "enum": [
-          "today",
-          "yesterday",
-          "this_week",
-          "last_week",
-          "last_7_days",
-          "last_30_days",
-          "last_90_days",
-          "this_month",
-          "last_month"
-        ]
       },
       "ValuesData": {
         "type": "object",
@@ -399,6 +394,7 @@
         ]
       },
       "ValuesGrouping": {
+        "description": "Optional dimensions that can break down conversation values-report\n    rows.",
         "type": "string",
         "enum": [
           "channel",
@@ -406,6 +402,7 @@
         ]
       },
       "ValuesStatistic": {
+        "description": "Metrics computable for each conversation values-report bucket.",
         "type": "string",
         "enum": [
           "volume",
