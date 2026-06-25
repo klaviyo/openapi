@@ -8708,7 +8708,7 @@
       "post": {
         "operationId": "create_conversation_message",
         "summary": "Create Conversation Message",
-        "description": "Send an outbound message to a conversation.\n\nRequires OAuth authentication and account-level enablement. To request access, reach out in the [developer community](https://community.klaviyo.com/groups/developer-group-64).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`conversations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_conversation_message.json)",
+        "description": "Send an outbound message to a conversation.\n\nRequires account-level enablement. To request access, reach out in the [developer community](https://community.klaviyo.com/groups/developer-group-64).<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`conversations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/create_conversation_message.json)",
         "parameters": [
           {
             "name": "revision",
@@ -15764,6 +15764,42 @@
             "explode": false
           },
           {
+            "name": "fields[form]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ab_test",
+                  "created_at",
+                  "id",
+                  "name",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "form"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -15780,7 +15816,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetFormVersionResponse"
+                  "$ref": "#/components/schemas/GetFormVersionResponseCompoundDocument"
                 }
               }
             }
@@ -16856,7 +16892,7 @@
         "x-klaviyo-ratelimit": {
           "burst": "3/s",
           "steady": "100/m",
-          "daily": "100/d"
+          "daily": "500/d"
         },
         "x-klaviyo-scopes": [
           "images:write"
@@ -67576,6 +67612,34 @@
               "updated_at"
             ]
           },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "form": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/FormEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           }
@@ -67683,11 +67747,17 @@
           "data"
         ]
       },
-      "GetFormVersionResponse": {
+      "GetFormVersionResponseCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
             "$ref": "#/components/schemas/FormVersionResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FormResponseObjectResource"
+            }
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -71379,6 +71449,7 @@
                     "From Phone Region",
                     "Inbox Provider",
                     "List",
+                    "Message Format",
                     "Message Name",
                     "Message Type",
                     "Method",
@@ -71478,6 +71549,8 @@
                   "-Inbox Provider",
                   "List",
                   "-List",
+                  "Message Format",
+                  "-Message Format",
                   "Message Name",
                   "-Message Name",
                   "Message Type",
