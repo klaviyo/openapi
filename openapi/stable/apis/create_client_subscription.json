@@ -204,12 +204,15 @@
         "properties": {
           "marketing": {
             "description": "The parameters to subscribe to on the \"EMAIL\" Channel. Currently supports \"MARKETING\".",
-            "$ref": "#/components/schemas/SubscriptionParameters"
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          },
+          "open_tracking": {
+            "description": "The open-tracking consent to grant on the \"EMAIL\" channel. Open-tracking consent is recorded on the profile only; it does not by itself add the profile to a list specified in the request.",
+            "$ref": "#/components/schemas/OpenTrackingSubscriptionParameters",
+            "nullable": true
           }
-        },
-        "required": [
-          "marketing"
-        ]
+        }
       },
       "ListEnum": {
         "type": "string",
@@ -294,6 +297,22 @@
           "type",
           "attributes",
           "relationships"
+        ]
+      },
+      "OpenTrackingSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "description": "The open-tracking consent to grant. Currently supports \"SUBSCRIBED\".",
+            "type": "string",
+            "example": "SUBSCRIBED",
+            "enum": [
+              "SUBSCRIBED"
+            ]
+          }
+        },
+        "required": [
+          "consent"
         ]
       },
       "PatchIdentifiers": {
