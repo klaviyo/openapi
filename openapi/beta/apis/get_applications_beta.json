@@ -1,0 +1,680 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/applications": {
+      "get": {
+        "operationId": "get_applications_beta",
+        "summary": "Get Applications",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList installable marketplace applications.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_applications_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "short_description",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`name`: `contains`<br>`category`: `equals`<br>`built_by`: `equals`",
+            "schema": {
+              "type": "string",
+              "example": "contains(name,'klaviyo')"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplicationResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-filters": {
+          "name": {
+            "operators": {
+              "single": [
+                "contains"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "category": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "Accounting",
+                "Advertising",
+                "CDP",
+                "CRM",
+                "Data Warehouse",
+                "Design & Content",
+                "Direct Mail",
+                "Donations",
+                "eCommerce Platform",
+                "Email Service Provider",
+                "Event Management",
+                "Fundraising",
+                "Health & Wellness",
+                "Journey Optimization",
+                "Landing Pages & Forms",
+                "Payments",
+                "Personalization",
+                "POS",
+                "Project Management",
+                "Quizzes & Surveys",
+                "Restaurants",
+                "Reviews",
+                "Rewards",
+                "Shipping",
+                "SMTP",
+                "Subscriptions",
+                "Support & Help Desk",
+                "Travel",
+                "Workflow Automation"
+              ]
+            }
+          },
+          "built_by": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "KLAVIYO",
+                "KLAVIYO_PARTNERS"
+              ]
+            }
+          }
+        },
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ApplicationEnum": {
+        "type": "string",
+        "enum": [
+          "application"
+        ]
+      },
+      "ApplicationFeature": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Feature title.",
+            "type": "string",
+            "example": "Recover Abandoned Carts"
+          },
+          "short_description": {
+            "description": "Feature description.",
+            "type": "string",
+            "example": "Trigger custom abandoned cart email flows to recover lost sales."
+          }
+        },
+        "required": [
+          "title",
+          "short_description"
+        ]
+      },
+      "ApplicationResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ApplicationEnum"
+          },
+          "id": {
+            "description": "The ID of the application.",
+            "type": "string",
+            "example": "01HQXYZAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Display name of the application.",
+                "type": "string",
+                "example": "29 Next"
+              },
+              "developed_by": {
+                "description": "Display name of the developer that built the application.",
+                "type": "string",
+                "example": "29 Next"
+              },
+              "short_description": {
+                "description": "One-line description of the application.",
+                "type": "string",
+                "example": "DTC ecommerce platform designed for performance-obsessed brands."
+              },
+              "description": {
+                "description": "Long-form description of the application.",
+                "type": "string",
+                "example": "29 Next helps DTC merchants unlock profitable growth \u2026"
+              },
+              "icon_url": {
+                "description": "URL of the application's icon image.",
+                "type": "string",
+                "example": "https://static-app.klaviyo.com/applications/01HQXYZ.../icon.svg"
+              },
+              "banner_image_url": {
+                "description": "URL of the application's banner image. Set on featured tiles.",
+                "type": "string",
+                "example": "https://static-app.klaviyo.com/applications/01HQXYZ.../banner.png"
+              },
+              "categories": {
+                "description": "Marketplace categories the application is listed under.",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Accounting",
+                    "Advertising",
+                    "CDP",
+                    "CRM",
+                    "Data Warehouse",
+                    "Design & Content",
+                    "Direct Mail",
+                    "Donations",
+                    "Email Service Provider",
+                    "Event Management",
+                    "Fundraising",
+                    "Health & Wellness",
+                    "Journey Optimization",
+                    "Landing Pages & Forms",
+                    "POS",
+                    "Payments",
+                    "Personalization",
+                    "Project Management",
+                    "Quizzes & Surveys",
+                    "Restaurants",
+                    "Reviews",
+                    "Rewards",
+                    "SMTP",
+                    "Shipping",
+                    "Subscriptions",
+                    "Support & Help Desk",
+                    "Travel",
+                    "Workflow Automation",
+                    "eCommerce Platform"
+                  ],
+                  "description": "The marketplace category an application is listed under."
+                },
+                "example": [
+                  "eCommerce Platform"
+                ]
+              },
+              "features": {
+                "description": "Highlighted features of the application.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ApplicationFeature"
+                },
+                "example": [
+                  {
+                    "title": "Grow Your Email and SMS Lists",
+                    "short_description": "Automatically sync customers and their purchases to Klaviyo."
+                  }
+                ]
+              },
+              "gallery_items": {
+                "description": "Images shown in the application's media gallery.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/GalleryItem"
+                },
+                "example": [
+                  {
+                    "image_url": "https://static-app.klaviyo.com/applications/01HQXYZ.../gallery1.png"
+                  }
+                ]
+              },
+              "video": {
+                "description": "YouTube video shown in the media gallery, when set.",
+                "example": {
+                  "video_id": "dQw4w9WgXcQ"
+                },
+                "$ref": "#/components/schemas/VideoLink",
+                "nullable": true
+              },
+              "articles": {
+                "description": "User guides and case studies attached to the application.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Article"
+                },
+                "example": [
+                  {
+                    "type": "USER_GUIDE",
+                    "title": "Getting started",
+                    "link": "https://example.com/docs/getting-started",
+                    "description": "Step-by-step setup walkthrough."
+                  }
+                ]
+              },
+              "install_url": {
+                "description": "URL that begins the install flow for this application.",
+                "type": "string",
+                "example": "https://accounts.example.com/oauth/marketing/klaviyo"
+              },
+              "preferences_link": {
+                "description": "URL where end users manage the installed application.",
+                "type": "string",
+                "example": "https://example.com/manage"
+              },
+              "pricing_information_link": {
+                "description": "URL of the application's pricing information.",
+                "type": "string",
+                "example": "https://example.com/pricing",
+                "nullable": true
+              },
+              "support_link": {
+                "description": "URL or email to contact the application's support team.",
+                "type": "string",
+                "example": "https://example.com/support"
+              },
+              "website_link": {
+                "description": "URL of the developer's website.",
+                "type": "string",
+                "example": "https://example.com"
+              },
+              "privacy_policy_link": {
+                "description": "URL of the application's privacy policy.",
+                "type": "string",
+                "example": "https://example.com/privacy"
+              },
+              "created_at": {
+                "description": "ISO 8601 timestamp when the application was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-03-04T00:00:00Z",
+                "nullable": true
+              }
+            },
+            "required": [
+              "name",
+              "developed_by",
+              "short_description",
+              "description",
+              "icon_url",
+              "banner_image_url",
+              "categories",
+              "features",
+              "gallery_items",
+              "articles",
+              "install_url",
+              "preferences_link",
+              "support_link",
+              "website_link",
+              "privacy_policy_link"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Article type.",
+            "type": "string",
+            "example": "USER_GUIDE",
+            "enum": [
+              "CASE_STUDY",
+              "USER_GUIDE"
+            ]
+          },
+          "title": {
+            "description": "Article title.",
+            "type": "string",
+            "example": "Getting started with 29 Next"
+          },
+          "link": {
+            "description": "URL of the article.",
+            "type": "string",
+            "example": "https://example.com/docs/getting-started"
+          },
+          "description": {
+            "description": "Article description. Set on user-guide articles.",
+            "type": "string",
+            "example": "Step-by-step setup walkthrough.",
+            "nullable": true
+          },
+          "image_url": {
+            "description": "URL of the article's cover image. Set on case-study articles.",
+            "type": "string",
+            "example": "https://static-app.klaviyo.com/applications/01HQXYZ.../article1.png",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "link"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "GalleryItem": {
+        "type": "object",
+        "properties": {
+          "image_url": {
+            "description": "URL of the gallery image.",
+            "type": "string",
+            "example": "https://static-app.klaviyo.com/applications/01HQXYZ.../gallery1.png"
+          }
+        },
+        "required": [
+          "image_url"
+        ]
+      },
+      "GetApplicationResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "VideoLink": {
+        "type": "object",
+        "properties": {
+          "video_id": {
+            "description": "YouTube video ID.",
+            "type": "string",
+            "example": "dQw4w9WgXcQ"
+          }
+        },
+        "required": [
+          "video_id"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

@@ -1,0 +1,2228 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/text-messaging-configurations/{id}": {
+      "get": {
+        "operationId": "get_text_messaging_configuration_beta",
+        "summary": "Get Text Messaging Configuration",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRetrieve the SMS account for the calling company.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_text_messaging_configuration_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier for this text messaging configuration (must equal the caller's company id).",
+            "required": true,
+            "schema": {
+              "description": "The unique identifier for this text messaging configuration (must equal the caller's company id).",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[text-messaging-configuration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "id",
+                  "opt_out_language",
+                  "org_prefix",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTextMessagingConfigurationResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      }
+    },
+    "/api/text-messaging-senders": {
+      "get": {
+        "operationId": "get_text_messaging_senders_beta",
+        "summary": "Get Text Messaging Senders",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList the calling company's text-messaging senders.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_text_messaging_senders_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[text-messaging-sender-registration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "decided_at",
+                  "failures",
+                  "id",
+                  "status",
+                  "submitted_at",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[text-messaging-sender]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "forwarding_number",
+                  "id",
+                  "sender_details",
+                  "sender_details.country",
+                  "sender_identifier",
+                  "sender_type",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "text-messaging-sender-registration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 10. Min: 1. Max: 20.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 20,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created_at",
+                "-created_at"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTextMessagingSenderResponseCollectionCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      },
+      "post": {
+        "operationId": "create_text_messaging_sender_beta",
+        "summary": "Create Text Messaging Sender",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a sender and submit its initial registration.\n\nA toll-free number is provisioned in all supported regions (US + CA), so\nthe response is the sender for the requested country and the\nsibling-region sender also appears in list/retrieve.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_text_messaging_sender_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[text-messaging-sender]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "forwarding_number",
+                  "id",
+                  "sender_details",
+                  "sender_details.country",
+                  "sender_identifier",
+                  "sender_type",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a text-messaging sender.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextMessagingSenderCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostTextMessagingSenderResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      }
+    },
+    "/api/text-messaging-senders/{id}": {
+      "get": {
+        "operationId": "get_text_messaging_sender_beta",
+        "summary": "Get Text Messaging Sender",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRetrieve a single text-messaging sender by ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_text_messaging_sender_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier for the text-messaging sender.",
+            "required": true,
+            "schema": {
+              "description": "The unique identifier for the text-messaging sender.",
+              "type": "string",
+              "example": "01HX2Z8RG7Y4PWFQK3V0M5N1B7"
+            }
+          },
+          {
+            "name": "fields[text-messaging-sender-registration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "decided_at",
+                  "failures",
+                  "id",
+                  "status",
+                  "submitted_at",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[text-messaging-sender]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "forwarding_number",
+                  "id",
+                  "sender_details",
+                  "sender_details.country",
+                  "sender_identifier",
+                  "sender_type",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "text-messaging-sender-registration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTextMessagingSenderResponseCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      }
+    },
+    "/api/text-messaging-sender-registrations/{id}": {
+      "get": {
+        "operationId": "get_text_messaging_sender_registration_beta",
+        "summary": "Get Text Messaging Sender Registration",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRetrieve a sender registration by ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_text_messaging_sender_registration_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the sender registration.",
+            "required": true,
+            "schema": {
+              "description": "The unique identifier of the sender registration.",
+              "type": "string",
+              "example": "01HX2Z8RG7Y4PWFQK3V0M5N1C8"
+            }
+          },
+          {
+            "name": "fields[text-messaging-sender-registration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "decided_at",
+                  "failures",
+                  "id",
+                  "status",
+                  "submitted_at",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[text-messaging-sender]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "forwarding_number",
+                  "id",
+                  "sender_details",
+                  "sender_details.country",
+                  "sender_identifier",
+                  "sender_type",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "text-messaging-sender"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTextMessagingSenderRegistrationResponseCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      }
+    },
+    "/api/text-messaging-configurations": {
+      "post": {
+        "operationId": "create_text_messaging_configuration_beta",
+        "summary": "Create Text Messaging Configuration",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate the SMS account for the calling company.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_text_messaging_configuration_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[text-messaging-configuration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "id",
+                  "opt_out_language",
+                  "org_prefix",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create the text messaging configuration for the calling company.\n\nSingleton \u2014 a company has at most one text messaging configuration.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextMessagingConfigurationCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostTextMessagingConfigurationResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      }
+    },
+    "/api/text-messaging-sender-registrations": {
+      "post": {
+        "operationId": "create_text_messaging_sender_registration_beta",
+        "summary": "Create Text Messaging Sender Registration",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSubmit a new registration for an existing sender (resubmission).<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_text_messaging_sender_registration_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[text-messaging-sender-registration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "decided_at",
+                  "failures",
+                  "id",
+                  "status",
+                  "submitted_at",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Submit a new registration for an existing text-messaging sender.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextMessagingSenderRegistrationCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostTextMessagingSenderRegistrationResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      }
+    },
+    "/api/text-messaging-senders/{id}/text-messaging-sender-registration": {
+      "get": {
+        "operationId": "get_messaging_sender_registration_for_text_messaging_sender_beta",
+        "summary": "Get Messaging Sender Registration for Text Messaging Sender",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturn the most-recent registration for the given sender.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_messaging_sender_registration_for_text_messaging_sender_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the text-messaging sender.",
+            "required": true,
+            "schema": {
+              "description": "The unique identifier of the text-messaging sender.",
+              "type": "string",
+              "example": "01HX2Z8RG7Y4PWFQK3V0M5N1B7"
+            }
+          },
+          {
+            "name": "fields[text-messaging-sender-registration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "decided_at",
+                  "failures",
+                  "id",
+                  "status",
+                  "submitted_at",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTextMessagingSenderRegistrationResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_text_messaging_sender_messaging_sender_registration"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      }
+    },
+    "/api/text-messaging-senders/{id}/relationships/text-messaging-sender-registration": {
+      "get": {
+        "operationId": "get_messaging_sender_registration_id_for_text_messaging_sender_beta",
+        "summary": "Get Messaging Sender Registration ID for Text Messaging Sender",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturn the most-recent registration for the given sender.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_messaging_sender_registration_id_for_text_messaging_sender_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the text-messaging sender.",
+            "required": true,
+            "schema": {
+              "description": "The unique identifier of the text-messaging sender.",
+              "type": "string",
+              "example": "01HX2Z8RG7Y4PWFQK3V0M5N1B7"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTextMessagingSenderMessagingSenderRegistrationRelationshipResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_text_messaging_sender_relationships_messaging_sender_registration"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Text Messaging"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "properties": {
+          "street_address_1": {
+            "description": "Street address line 1.",
+            "type": "string",
+            "example": "125 Summer Street"
+          },
+          "city": {
+            "description": "City.",
+            "type": "string",
+            "example": "Boston"
+          },
+          "region": {
+            "description": "State, province, or region.",
+            "type": "string",
+            "example": "MA"
+          },
+          "postal_code": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110"
+          },
+          "country": {
+            "description": "ISO 3166-1 alpha-2 country code for the business address.",
+            "type": "string",
+            "example": "US"
+          },
+          "street_address_2": {
+            "description": "Street address line 2.",
+            "type": "string",
+            "example": "Suite 400",
+            "nullable": true
+          }
+        },
+        "required": [
+          "street_address_1",
+          "city",
+          "region",
+          "postal_code",
+          "country"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "Failure": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "description": "Human-readable description of the failure.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detail"
+        ]
+      },
+      "GetTextMessagingConfigurationResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TextMessagingConfigurationResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTextMessagingSenderMessagingSenderRegistrationRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/TextMessagingSenderRegistrationEnum"
+              },
+              "id": {
+                "description": "The unique identifier for this sender registration.",
+                "type": "string",
+                "example": "01HX2Z8RG7Y4PWFQK3V0M5N1C8"
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTextMessagingSenderRegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TextMessagingSenderRegistrationResponseObjectResource"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTextMessagingSenderRegistrationResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TextMessagingSenderRegistrationResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTextMessagingSenderResponseCollectionCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderRegistrationResponseObjectResource"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTextMessagingSenderResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TextMessagingSenderResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderRegistrationResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostTextMessagingConfigurationResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/TextMessagingConfigurationEnum"
+              },
+              "id": {
+                "description": "The unique identifier for this text messaging configuration.",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "org_prefix": {
+                    "description": "Branding prefix prepended to outbound messages for sender identification. Up to 50 characters.",
+                    "type": "string",
+                    "example": "Acme"
+                  },
+                  "opt_out_language": {
+                    "description": "Opt-out instruction text appended to outbound messages.",
+                    "type": "string"
+                  },
+                  "status": {
+                    "description": "The lifecycle status of this text messaging configuration.",
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "disabled"
+                    ]
+                  },
+                  "created_at": {
+                    "description": "ISO8601 timestamp when the configuration was created.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-05-19T14:30:00Z"
+                  },
+                  "updated_at": {
+                    "description": "ISO8601 timestamp when the configuration was last updated.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-05-19T14:30:00Z"
+                  }
+                },
+                "required": [
+                  "org_prefix",
+                  "opt_out_language",
+                  "status",
+                  "created_at",
+                  "updated_at"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostTextMessagingSenderRegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/TextMessagingSenderRegistrationEnum"
+              },
+              "id": {
+                "description": "The unique identifier for this sender registration.",
+                "type": "string",
+                "example": "01HX2Z8RG7Y4PWFQK3V0M5N1C8"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "The lifecycle status of this sender registration.",
+                    "type": "string",
+                    "enum": [
+                      "action_required",
+                      "approved",
+                      "in_review",
+                      "rejected"
+                    ]
+                  },
+                  "failures": {
+                    "description": "Failures recorded against this registration.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Failure"
+                    }
+                  },
+                  "created_at": {
+                    "description": "ISO8601 timestamp when the registration was created.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-05-19T14:30:00Z"
+                  },
+                  "updated_at": {
+                    "description": "ISO8601 timestamp when the registration was last updated.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-05-19T14:30:00Z"
+                  },
+                  "submitted_at": {
+                    "description": "ISO8601 timestamp when the registration was submitted. Null until the customer submits the registration.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "decided_at": {
+                    "description": "ISO8601 timestamp when the registration was approved or rejected. Null until the carrier returns a decision.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "status",
+                  "failures",
+                  "created_at",
+                  "updated_at"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "text-messaging-sender": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/TextMessagingSenderEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostTextMessagingSenderResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/TextMessagingSenderEnum"
+              },
+              "id": {
+                "description": "The unique identifier for this text-messaging sender.",
+                "type": "string",
+                "example": "01HX2Z8RG7Y4PWFQK3V0M5N1B7"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "sender_type": {
+                    "description": "The kind of sender (e.g. toll-free, short-code, long-code, alpha).",
+                    "type": "string",
+                    "enum": [
+                      "alpha",
+                      "long_code",
+                      "short_code",
+                      "toll_free",
+                      "vanity_short_code"
+                    ]
+                  },
+                  "sender_details": {
+                    "description": "Attributes specific to the sender's type.",
+                    "$ref": "#/components/schemas/TollFreeSenderResponseDetails"
+                  },
+                  "status": {
+                    "description": "The lifecycle status of this sender.",
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "pending_registration",
+                      "registering",
+                      "registration_failed",
+                      "suspended"
+                    ]
+                  },
+                  "created_at": {
+                    "description": "ISO8601 timestamp when the sender was created.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-05-19T14:30:00Z"
+                  },
+                  "forwarding_number": {
+                    "description": "E.164 phone number inbound voice calls are forwarded to. Null when no forwarding is configured.",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "sender_identifier": {
+                    "description": "The sender's outbound address \u2014 E.164 phone number for phone-number senders. Null while the sender is still pending registration.",
+                    "type": "string",
+                    "example": "+18005551234",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "sender_type",
+                  "sender_details",
+                  "status",
+                  "created_at"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "text-messaging-sender-registration": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/TextMessagingSenderRegistrationEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "TextMessagingConfigurationCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TextMessagingConfigurationCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TextMessagingConfigurationCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TextMessagingConfigurationEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "org_prefix": {
+                "description": "Branding prefix prepended to outbound messages for sender identification. Up to 50 characters.",
+                "type": "string",
+                "example": "Acme"
+              }
+            },
+            "required": [
+              "org_prefix"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "TextMessagingConfigurationEnum": {
+        "type": "string",
+        "enum": [
+          "text-messaging-configuration"
+        ]
+      },
+      "TextMessagingConfigurationResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TextMessagingConfigurationEnum"
+          },
+          "id": {
+            "description": "The unique identifier for this text messaging configuration.",
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "org_prefix": {
+                "description": "Branding prefix prepended to outbound messages for sender identification. Up to 50 characters.",
+                "type": "string",
+                "example": "Acme"
+              },
+              "opt_out_language": {
+                "description": "Opt-out instruction text appended to outbound messages.",
+                "type": "string"
+              },
+              "status": {
+                "description": "The lifecycle status of this text messaging configuration.",
+                "type": "string",
+                "enum": [
+                  "active",
+                  "disabled"
+                ]
+              },
+              "created_at": {
+                "description": "ISO8601 timestamp when the configuration was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-05-19T14:30:00Z"
+              },
+              "updated_at": {
+                "description": "ISO8601 timestamp when the configuration was last updated.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-05-19T14:30:00Z"
+              }
+            },
+            "required": [
+              "org_prefix",
+              "opt_out_language",
+              "status",
+              "created_at",
+              "updated_at"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "TextMessagingSenderCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TextMessagingSenderCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TextMessagingSenderCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TextMessagingSenderEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "sender_type": {
+                "description": "The kind of sender to create. Must be `toll_free` in v1.",
+                "type": "string",
+                "enum": [
+                  "alpha",
+                  "long_code",
+                  "short_code",
+                  "toll_free",
+                  "vanity_short_code"
+                ]
+              },
+              "sender_details": {
+                "description": "Attributes specific to the requested `sender_type`.",
+                "$ref": "#/components/schemas/TollFreeSenderDetails"
+              },
+              "text-messaging-sender-registration": {
+                "description": "Toll-free verification submitted with the new sender.",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/TollFreeRegistrationDetailsResourceObject"
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
+              "forwarding_number": {
+                "description": "E.164 phone number to forward inbound voice calls to. Optional.",
+                "type": "string",
+                "example": "+15557654321",
+                "nullable": true
+              }
+            },
+            "required": [
+              "sender_type",
+              "sender_details",
+              "text-messaging-sender-registration"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "TextMessagingSenderEnum": {
+        "type": "string",
+        "enum": [
+          "text-messaging-sender"
+        ]
+      },
+      "TextMessagingSenderRegistrationCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TextMessagingSenderRegistrationCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TextMessagingSenderRegistrationCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TextMessagingSenderRegistrationEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "description": "Contact first name.",
+                "type": "string",
+                "example": "Jane"
+              },
+              "last_name": {
+                "description": "Contact last name.",
+                "type": "string",
+                "example": "Doe"
+              },
+              "phone_number": {
+                "description": "Contact phone number in E.164 format.",
+                "type": "string",
+                "example": "+15551234567"
+              },
+              "email": {
+                "description": "Contact email address.",
+                "type": "string",
+                "example": "jane@example.com"
+              },
+              "address": {
+                "description": "Business postal address for the registration.",
+                "$ref": "#/components/schemas/Address"
+              },
+              "business_name": {
+                "description": "Legal business name.",
+                "type": "string",
+                "example": "Acme Corp"
+              },
+              "business_website": {
+                "description": "Public website URL for the business.",
+                "type": "string",
+                "example": "https://acme.example.com"
+              },
+              "business_type": {
+                "description": "Legal structure of the business.",
+                "type": "string",
+                "enum": [
+                  "GOVERNMENT",
+                  "NON_PROFIT",
+                  "PRIVATE_PROFIT",
+                  "PUBLIC_PROFIT",
+                  "SOLE_PROPRIETOR"
+                ]
+              },
+              "doing_business_as": {
+                "description": "DBA name if different from the legal business name.",
+                "type": "string",
+                "nullable": true
+              },
+              "business_registration_country": {
+                "description": "ISO 3166-1 alpha-2 country in which the business is registered. Required for all businesses; must be `US` for a sole proprietor omitting the registration authority and number.",
+                "type": "string",
+                "example": "US",
+                "nullable": true
+              },
+              "business_registration_authority": {
+                "description": "Authority that issued the business registration number. Required unless the business is a US sole proprietor without a registration number.",
+                "type": "string",
+                "enum": [
+                  "ABN",
+                  "ACN",
+                  "BRN",
+                  "CBN",
+                  "CIF",
+                  "CNPJ",
+                  "CRN",
+                  "EIN",
+                  "NEQ",
+                  "NIF",
+                  "NZBN",
+                  "OTHER",
+                  "PROVINCIAL_NUMBER",
+                  "SIREN",
+                  "SIRET",
+                  "UID",
+                  "USt-IdNr",
+                  "VAT"
+                ],
+                "nullable": true
+              },
+              "business_registration_number": {
+                "description": "Business registration number. Required unless the business is a US sole proprietor.",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "first_name",
+              "last_name",
+              "phone_number",
+              "email",
+              "address",
+              "business_name",
+              "business_website",
+              "business_type"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "text-messaging-sender": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TextMessagingSenderEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "text-messaging-sender"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "TextMessagingSenderRegistrationEnum": {
+        "type": "string",
+        "enum": [
+          "text-messaging-sender-registration"
+        ]
+      },
+      "TextMessagingSenderRegistrationResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TextMessagingSenderRegistrationEnum"
+          },
+          "id": {
+            "description": "The unique identifier for this sender registration.",
+            "type": "string",
+            "example": "01HX2Z8RG7Y4PWFQK3V0M5N1C8"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "The lifecycle status of this sender registration.",
+                "type": "string",
+                "enum": [
+                  "action_required",
+                  "approved",
+                  "in_review",
+                  "rejected"
+                ]
+              },
+              "failures": {
+                "description": "Failures recorded against this registration.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              },
+              "created_at": {
+                "description": "ISO8601 timestamp when the registration was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-05-19T14:30:00Z"
+              },
+              "updated_at": {
+                "description": "ISO8601 timestamp when the registration was last updated.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-05-19T14:30:00Z"
+              },
+              "submitted_at": {
+                "description": "ISO8601 timestamp when the registration was submitted. Null until the customer submits the registration.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "decided_at": {
+                "description": "ISO8601 timestamp when the registration was approved or rejected. Null until the carrier returns a decision.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              }
+            },
+            "required": [
+              "status",
+              "failures",
+              "created_at",
+              "updated_at"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "text-messaging-sender": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TextMessagingSenderEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "TextMessagingSenderResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TextMessagingSenderEnum"
+          },
+          "id": {
+            "description": "The unique identifier for this text-messaging sender.",
+            "type": "string",
+            "example": "01HX2Z8RG7Y4PWFQK3V0M5N1B7"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "sender_type": {
+                "description": "The kind of sender (e.g. toll-free, short-code, long-code, alpha).",
+                "type": "string",
+                "enum": [
+                  "alpha",
+                  "long_code",
+                  "short_code",
+                  "toll_free",
+                  "vanity_short_code"
+                ]
+              },
+              "sender_details": {
+                "description": "Attributes specific to the sender's type.",
+                "$ref": "#/components/schemas/TollFreeSenderResponseDetails"
+              },
+              "status": {
+                "description": "The lifecycle status of this sender.",
+                "type": "string",
+                "enum": [
+                  "active",
+                  "pending_registration",
+                  "registering",
+                  "registration_failed",
+                  "suspended"
+                ]
+              },
+              "created_at": {
+                "description": "ISO8601 timestamp when the sender was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-05-19T14:30:00Z"
+              },
+              "forwarding_number": {
+                "description": "E.164 phone number inbound voice calls are forwarded to. Null when no forwarding is configured.",
+                "type": "string",
+                "nullable": true
+              },
+              "sender_identifier": {
+                "description": "The sender's outbound address \u2014 E.164 phone number for phone-number senders. Null while the sender is still pending registration.",
+                "type": "string",
+                "example": "+18005551234",
+                "nullable": true
+              }
+            },
+            "required": [
+              "sender_type",
+              "sender_details",
+              "status",
+              "created_at"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "text-messaging-sender-registration": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TextMessagingSenderRegistrationEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "TollFreeRegistrationDetailsResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TextMessagingSenderRegistrationEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "description": "Contact first name.",
+                "type": "string",
+                "example": "Jane"
+              },
+              "last_name": {
+                "description": "Contact last name.",
+                "type": "string",
+                "example": "Doe"
+              },
+              "phone_number": {
+                "description": "Contact phone number in E.164 format.",
+                "type": "string",
+                "example": "+15551234567"
+              },
+              "email": {
+                "description": "Contact email address.",
+                "type": "string",
+                "example": "jane@example.com"
+              },
+              "address": {
+                "description": "Business postal address for the registration.",
+                "$ref": "#/components/schemas/Address"
+              },
+              "business_type": {
+                "description": "Legal structure of the business.",
+                "type": "string",
+                "enum": [
+                  "GOVERNMENT",
+                  "NON_PROFIT",
+                  "PRIVATE_PROFIT",
+                  "PUBLIC_PROFIT",
+                  "SOLE_PROPRIETOR"
+                ]
+              },
+              "business_name": {
+                "description": "Legal business name.",
+                "type": "string",
+                "example": "Acme Corp"
+              },
+              "business_website": {
+                "description": "Public website URL for the business.",
+                "type": "string",
+                "example": "https://acme.example.com"
+              },
+              "doing_business_as": {
+                "description": "DBA name if different from the legal business name.",
+                "type": "string",
+                "nullable": true
+              },
+              "business_registration_country": {
+                "description": "ISO 3166-1 alpha-2 country in which the business is registered. Required for all businesses; must be `US` for a sole proprietor omitting the registration authority and number.",
+                "type": "string",
+                "example": "US",
+                "nullable": true
+              },
+              "business_registration_authority": {
+                "description": "Authority that issued the business registration number. Required unless the business is a US sole proprietor without a registration number.",
+                "type": "string",
+                "enum": [
+                  "ABN",
+                  "ACN",
+                  "BRN",
+                  "CBN",
+                  "CIF",
+                  "CNPJ",
+                  "CRN",
+                  "EIN",
+                  "NEQ",
+                  "NIF",
+                  "NZBN",
+                  "OTHER",
+                  "PROVINCIAL_NUMBER",
+                  "SIREN",
+                  "SIRET",
+                  "UID",
+                  "USt-IdNr",
+                  "VAT"
+                ],
+                "nullable": true
+              },
+              "business_registration_number": {
+                "description": "Business registration number. Required unless the business is a US sole proprietor.",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "first_name",
+              "last_name",
+              "phone_number",
+              "email",
+              "address",
+              "business_type",
+              "business_name",
+              "business_website"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "TollFreeSenderDetails": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "description": "ISO 3166-1 alpha-2 country code for the sender. Supported values: `US` and `CA`.",
+            "type": "string",
+            "example": "US",
+            "enum": [
+              "CA",
+              "US"
+            ]
+          }
+        },
+        "required": [
+          "country"
+        ]
+      },
+      "TollFreeSenderResponseDetails": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "description": "ISO 3166-1 alpha-2 country code the sender is provisioned in.",
+            "type": "string",
+            "example": "US"
+          }
+        },
+        "required": [
+          "country"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}
