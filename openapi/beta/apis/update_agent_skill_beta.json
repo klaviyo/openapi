@@ -1,0 +1,540 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/agent-skills/{id}": {
+      "patch": {
+        "operationId": "update_agent_skill_beta",
+        "summary": "Update Agent Skill",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches one or more fields on an existing skill: ``display_name``,\n``description``, ``instructions``, ``status``, ``handoff``, and the\n``agent-tools`` relationship.\n\nTo rebind tools, send a new\n``agent-tools`` relationship list; this is a full replacement, not\nmerged. Skills are looked up by prefixed ``id``. Use\n``status: draft`` to pause a custom skill.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_skill_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[agent-skill]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "description",
+                  "display_name",
+                  "handoff",
+                  "id",
+                  "instructions",
+                  "name",
+                  "source",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Sparse request to update a Customer Agent skill.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentSkillUpdateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentSkillResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:write"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AgentSkillResourceName": {
+        "type": "string",
+        "enum": [
+          "agent-skill"
+        ]
+      },
+      "AgentSkillResponse": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "Who created this skill?",
+            "type": "string",
+            "enum": [
+              "custom",
+              "prebuilt"
+            ]
+          },
+          "display_name": {
+            "description": "Human-readable name shown for the skill.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Skill name from the backing system.",
+            "type": "string"
+          },
+          "description": {
+            "description": "Summary of the skill's capabilities and when Customer Agent should use it.",
+            "type": "string"
+          },
+          "instructions": {
+            "description": "System prompt the skill uses to handle a turn.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Lifecycle status for the skill.",
+            "type": "string",
+            "enum": [
+              "draft",
+              "live",
+              "disabled",
+              "unavailable"
+            ]
+          },
+          "handoff": {
+            "description": "Escalation behavior for the skill.",
+            "type": "string",
+            "enum": [
+              "none",
+              "offer",
+              "immediate",
+              "all",
+              "custom"
+            ]
+          },
+          "created_at": {
+            "description": "Date and time when the skill was created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          },
+          "updated_at": {
+            "description": "Date and time when the skill was last updated.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source",
+          "display_name",
+          "name",
+          "description",
+          "instructions",
+          "status",
+          "handoff"
+        ]
+      },
+      "AgentSkillResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/AgentSkillResourceName"
+          },
+          "id": {
+            "description": "Skill identifier.",
+            "type": "string",
+            "example": "custom:agent_123"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/AgentSkillResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "agent-tools": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/AgentToolResourceName"
+                        },
+                        "id": {
+                          "description": "Agent tool IDs this skill can call.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            },
+            "required": [
+              "agent-tools"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
+        ]
+      },
+      "AgentSkillResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AgentSkillResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "AgentSkillUpdateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "display_name": {
+            "description": "Human-readable name shown for the skill.",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "description": "Summary of the skill's capabilities and when Customer Agent should use it.",
+            "type": "string",
+            "nullable": true
+          },
+          "instructions": {
+            "description": "System prompt the skill uses to handle a turn.",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "description": "Lifecycle status for a custom skill. Use `draft` to pause the skill and `live` to activate it.",
+            "type": "string",
+            "enum": [
+              "draft",
+              "live"
+            ],
+            "nullable": true
+          },
+          "handoff": {
+            "description": "Escalation behavior for this skill.",
+            "type": "string",
+            "enum": [
+              "none",
+              "offer",
+              "immediate",
+              "all",
+              "custom"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "AgentSkillUpdateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/AgentSkillResourceName"
+          },
+          "id": {
+            "description": "Skill identifier. This must match the `id` path parameter.",
+            "type": "string",
+            "example": "custom:agent_123"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/AgentSkillUpdateRequestRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "agent-tools": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/AgentToolResourceName"
+                        },
+                        "id": {
+                          "description": "Full replacement list of agent-tool IDs bound to this skill. Values are not merged.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "AgentSkillUpdateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AgentSkillUpdateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "AgentToolResourceName": {
+        "type": "string",
+        "enum": [
+          "agent-tool"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}
