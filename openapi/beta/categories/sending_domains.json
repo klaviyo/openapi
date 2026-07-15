@@ -1,0 +1,1308 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/sending-domains": {
+      "get": {
+        "operationId": "get_sending_domains_beta",
+        "summary": "Get Sending Domains",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList all sending domains configured for the account.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_sending_domains_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[sending-domain]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "configuration",
+                  "created_at",
+                  "dkim_selector",
+                  "dns_records",
+                  "domain",
+                  "id",
+                  "purpose",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 20.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 20,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSendingDomainResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      },
+      "post": {
+        "operationId": "create_sending_domain_beta",
+        "summary": "Create Sending Domain",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRegister a new sending domain and return the DNS records to configure.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_sending_domain_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[sending-domain]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "configuration",
+                  "created_at",
+                  "dkim_selector",
+                  "dns_records",
+                  "domain",
+                  "id",
+                  "purpose",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a new sending domain.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendingDomainCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSendingDomainResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      }
+    },
+    "/api/sending-domains/{id}": {
+      "get": {
+        "operationId": "get_sending_domain_beta",
+        "summary": "Get Sending Domain",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the sending domain with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_sending_domain_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the sending domain.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the sending domain.",
+              "type": "string",
+              "example": "123"
+            }
+          },
+          {
+            "name": "fields[sending-domain]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "configuration",
+                  "created_at",
+                  "dkim_selector",
+                  "dns_records",
+                  "domain",
+                  "id",
+                  "purpose",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSendingDomainResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      },
+      "delete": {
+        "operationId": "delete_sending_domain_beta",
+        "summary": "Delete Sending Domain",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete a sending domain.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_sending_domain_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the sending domain.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the sending domain.",
+              "type": "string",
+              "example": "123"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      }
+    },
+    "/api/sending-domain-verification-jobs": {
+      "post": {
+        "operationId": "create_sending_domain_verification_job_beta",
+        "summary": "Create Sending Domain Verification Job",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRun a DNS verification check for the referenced sending domain.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_sending_domain_verification_job_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[sending-domain-verification-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "checked_at",
+                  "dns_records",
+                  "error_code",
+                  "id",
+                  "verification_state"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Trigger a DNS verification check for a sending domain.\n\nVerification is read-only: it runs the DNS checks and returns the\ncurrent per-record state. It does not activate the domain \u2014 call the\nactivation-job endpoint to do that once verification passes.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendingDomainVerificationJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSendingDomainVerificationJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      }
+    },
+    "/api/sending-domain-activation-jobs": {
+      "post": {
+        "operationId": "create_sending_domain_activation_job_beta",
+        "summary": "Create Sending Domain Activation Job",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nActivate the referenced sending domain (requires prior verify to pass).<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_sending_domain_activation_job_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[sending-domain-activation-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "activated_at",
+                  "id",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Activate a sending domain after its DNS records have been verified.\n\nFails with 409 if DNS verification has not yet passed, or if the domain\nis already active.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendingDomainActivationJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSendingDomainActivationJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "DnsRecord": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The DNS record type (cname, txt, mx).",
+            "type": "string",
+            "enum": [
+              "cname",
+              "mx",
+              "ns",
+              "txt"
+            ]
+          },
+          "host": {
+            "description": "The DNS hostname that must be configured by the customer.",
+            "type": "string",
+            "example": "send.example.com"
+          },
+          "value": {
+            "description": "The value the DNS record must resolve to.",
+            "type": "string",
+            "example": "u123.wl.sendgrid.net"
+          },
+          "verified": {
+            "description": "Whether Klaviyo has verified that this DNS record resolves correctly.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "host",
+          "value",
+          "verified"
+        ]
+      },
+      "GetSendingDomainResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SendingDomainResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetSendingDomainResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SendingDomainResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostSendingDomainActivationJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/SendingDomainActivationJobEnum"
+              },
+              "id": {
+                "description": "The ID of the activation job.",
+                "type": "string",
+                "example": "act_01JE3Z5PSNKN9V9TRGQ1N6V782"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "The lifecycle status of the sending domain after the activation attempt.",
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "pending",
+                      "warming"
+                    ]
+                  },
+                  "activated_at": {
+                    "description": "ISO8601 timestamp when activation was requested.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-04-23T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "activated_at"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "sending-domain": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/SendingDomainEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostSendingDomainResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/SendingDomainEnum"
+              },
+              "id": {
+                "description": "The ID of the sending domain. Generated by Klaviyo.",
+                "type": "string",
+                "example": "123"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "domain": {
+                    "description": "The fully-qualified sending domain (e.g. `send.example.com`).",
+                    "type": "string",
+                    "example": "send.example.com"
+                  },
+                  "dkim_selector": {
+                    "description": "The DKIM selector used to locate the public key in DNS.",
+                    "type": "string",
+                    "example": "s1",
+                    "nullable": true
+                  },
+                  "purpose": {
+                    "description": "What this sending domain is used for.",
+                    "type": "string",
+                    "enum": [
+                      "marketing",
+                      "service",
+                      "transactional"
+                    ]
+                  },
+                  "configuration": {
+                    "description": "How the customer publishes DNS for this domain. `static` exposes per-ESP CNAME/TXT records the customer publishes directly. `dynamic` exposes the 4 NS delegation records pointing at `ns{1..4}.klaviyo.com`; Klaviyo then manages the per-ESP records inside the delegated zone.",
+                    "type": "string",
+                    "enum": [
+                      "dynamic",
+                      "static"
+                    ]
+                  },
+                  "status": {
+                    "description": "The lifecycle status of this sending domain for the calling account. Run a verification job (`POST /api/sending-domain-verification-jobs`) followed by an activation job (`POST /api/sending-domain-activation-jobs`) to move a domain from `pending` to `warming` or `active`.",
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "pending",
+                      "warming"
+                    ]
+                  },
+                  "dns_records": {
+                    "description": "DNS records the customer must add to their domain for Klaviyo to validate and send on their behalf. For `static` configuration, includes CNAMEs for the mail host and DKIM selectors and, when applicable, a TXT record for site verification. For `dynamic` configuration, exposes the 4 NS delegation records \u2014 the per-ESP CNAMEs inside the delegated zone are managed by Klaviyo and are not surfaced here.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/DnsRecord"
+                    }
+                  },
+                  "created_at": {
+                    "description": "ISO8601 timestamp when the sending domain record was created.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-04-23T00:00:00Z"
+                  },
+                  "updated_at": {
+                    "description": "ISO8601 timestamp when the sending domain record was last updated.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-04-23T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "domain",
+                  "purpose",
+                  "configuration",
+                  "status",
+                  "dns_records",
+                  "created_at",
+                  "updated_at"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostSendingDomainVerificationJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/SendingDomainVerificationJobEnum"
+              },
+              "id": {
+                "description": "The ID of the verification job.",
+                "type": "string",
+                "example": "ver_01JE3Z5PSNKN9V9TRGQ1N6V782"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "verification_state": {
+                    "description": "The verification state after the check completed.",
+                    "type": "string",
+                    "enum": [
+                      "failed",
+                      "pending",
+                      "verified"
+                    ]
+                  },
+                  "dns_records": {
+                    "description": "DNS records with their per-record verification status.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/DnsRecord"
+                    }
+                  },
+                  "error_code": {
+                    "description": "Non-null when verification failed; describes the failure cause.",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "checked_at": {
+                    "description": "ISO8601 timestamp when the verification check ran.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-04-23T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "verification_state",
+                  "dns_records",
+                  "checked_at"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "sending-domain": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/SendingDomainEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SendingDomainActivationJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SendingDomainActivationJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SendingDomainActivationJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SendingDomainActivationJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "warming_enabled": {
+                "description": "Whether to warm send volume on activation. Not supported if you have only one domain. Defaults to True if you have multiple domains.",
+                "type": "boolean",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "sending-domain": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SendingDomainEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "sending-domain"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "SendingDomainActivationJobEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain-activation-job"
+        ]
+      },
+      "SendingDomainCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SendingDomainCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SendingDomainCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SendingDomainEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "domain": {
+                "description": "The fully-qualified sending domain to register (e.g. `send.example.com`). Must be a domain you own.",
+                "type": "string",
+                "example": "send.example.com"
+              },
+              "configuration": {
+                "description": "How DNS will be published for this domain. `static` (default) returns per-ESP CNAME/TXT records you publish directly. `dynamic` delegates the subdomain to Klaviyo: publish the 4 NS records returned in `dns_records` and Klaviyo manages the per-ESP records inside the delegated zone.",
+                "type": "string",
+                "example": "static",
+                "default": "static",
+                "enum": [
+                  "dynamic",
+                  "static"
+                ],
+                "nullable": true
+              },
+              "purpose": {
+                "description": "What this sending domain is used for.",
+                "type": "string",
+                "example": "marketing",
+                "default": "marketing",
+                "enum": [
+                  "marketing",
+                  "service",
+                  "transactional"
+                ],
+                "nullable": true
+              }
+            },
+            "required": [
+              "domain"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "SendingDomainEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain"
+        ]
+      },
+      "SendingDomainResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SendingDomainEnum"
+          },
+          "id": {
+            "description": "The ID of the sending domain. Generated by Klaviyo.",
+            "type": "string",
+            "example": "123"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "domain": {
+                "description": "The fully-qualified sending domain (e.g. `send.example.com`).",
+                "type": "string",
+                "example": "send.example.com"
+              },
+              "dkim_selector": {
+                "description": "The DKIM selector used to locate the public key in DNS.",
+                "type": "string",
+                "example": "s1",
+                "nullable": true
+              },
+              "purpose": {
+                "description": "What this sending domain is used for.",
+                "type": "string",
+                "enum": [
+                  "marketing",
+                  "service",
+                  "transactional"
+                ]
+              },
+              "configuration": {
+                "description": "How the customer publishes DNS for this domain. `static` exposes per-ESP CNAME/TXT records the customer publishes directly. `dynamic` exposes the 4 NS delegation records pointing at `ns{1..4}.klaviyo.com`; Klaviyo then manages the per-ESP records inside the delegated zone.",
+                "type": "string",
+                "enum": [
+                  "dynamic",
+                  "static"
+                ]
+              },
+              "status": {
+                "description": "The lifecycle status of this sending domain for the calling account. Run a verification job (`POST /api/sending-domain-verification-jobs`) followed by an activation job (`POST /api/sending-domain-activation-jobs`) to move a domain from `pending` to `warming` or `active`.",
+                "type": "string",
+                "enum": [
+                  "active",
+                  "pending",
+                  "warming"
+                ]
+              },
+              "dns_records": {
+                "description": "DNS records the customer must add to their domain for Klaviyo to validate and send on their behalf. For `static` configuration, includes CNAMEs for the mail host and DKIM selectors and, when applicable, a TXT record for site verification. For `dynamic` configuration, exposes the 4 NS delegation records \u2014 the per-ESP CNAMEs inside the delegated zone are managed by Klaviyo and are not surfaced here.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DnsRecord"
+                }
+              },
+              "created_at": {
+                "description": "ISO8601 timestamp when the sending domain record was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-04-23T00:00:00Z"
+              },
+              "updated_at": {
+                "description": "ISO8601 timestamp when the sending domain record was last updated.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-04-23T00:00:00Z"
+              }
+            },
+            "required": [
+              "domain",
+              "purpose",
+              "configuration",
+              "status",
+              "dns_records",
+              "created_at",
+              "updated_at"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "SendingDomainVerificationJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SendingDomainVerificationJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SendingDomainVerificationJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SendingDomainVerificationJobEnum"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "sending-domain": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SendingDomainEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "sending-domain"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "relationships"
+        ]
+      },
+      "SendingDomainVerificationJobEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain-verification-job"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

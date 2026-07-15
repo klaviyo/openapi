@@ -1,0 +1,5302 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/brand-logos": {
+      "get": {
+        "operationId": "get_brand_logos_beta",
+        "summary": "Get Brand Logos",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all brand logos for the authenticated account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_logos_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-logo]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "alt_text",
+                  "height",
+                  "id",
+                  "link_url",
+                  "name",
+                  "width"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[image]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "format",
+                  "hidden",
+                  "id",
+                  "image_url",
+                  "name",
+                  "size",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "image"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandLogoResponseCollectionCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "post": {
+        "operationId": "create_brand_logo_beta",
+        "summary": "Create Brand Logo",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new brand logo.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_brand_logo_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-logo]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "alt_text",
+                  "height",
+                  "id",
+                  "link_url",
+                  "name",
+                  "width"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "POST /api/brand-logos \u2014 link a new logo to an existing image asset.\n\nThe `image` relationship (required) references the image the logo\nrenders \u2014 manage image assets via the v3 Images API.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandLogoCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostBrandLogoResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-logos/{id}": {
+      "get": {
+        "operationId": "get_brand_logo_beta",
+        "summary": "Get Brand Logo",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the brand logo with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_logo_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand logo.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand logo.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "fields[brand-logo]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "alt_text",
+                  "height",
+                  "id",
+                  "link_url",
+                  "name",
+                  "width"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[image]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "format",
+                  "hidden",
+                  "id",
+                  "image_url",
+                  "name",
+                  "size",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "image"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandLogoResponseCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "patch": {
+        "operationId": "update_brand_logo_beta",
+        "summary": "Update Brand Logo",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the brand logo with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_logo_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand logo.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand logo.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "fields[brand-logo]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "alt_text",
+                  "height",
+                  "id",
+                  "link_url",
+                  "name",
+                  "width"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /api/brand-logos/{id} \u2014 JSON:API field-level partial update.\n\nPer https://jsonapi.org/format/#crud-updating-resource-attributes, only\nthe top-level attributes/relationships present in the request body are\nreplaced; missing top-level fields are preserved. A client can patch\njust `name` without disturbing `width`, `alt_text`, the `image`\nrelationship, etc.\n\nA present top-level field is replaced wholesale (no recursive merge\ninto nested structures), so sending `\"alt_text\": null` clears it.\n\nThe `image` relationship is optional on PATCH \u2014 omit to keep the\nexisting image; include with a non-null `data` to repoint at a\ndifferent image. A logo *must* have an image, so the JSON:API\n\"unlink\" form (`\"image\": {\"data\": null}`) is not supported and is\ntreated the same as omitting the relationship (existing image\npreserved).",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandLogoPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandLogoResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "delete": {
+        "operationId": "delete_brand_logo_beta",
+        "summary": "Delete Brand Logo",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete the brand logo with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_brand_logo_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand logo.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand logo.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-buttons": {
+      "get": {
+        "operationId": "get_brand_buttons_beta",
+        "summary": "Get Brand Buttons",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all brand buttons for the authenticated account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_buttons_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-button]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "border",
+                  "border.border_color",
+                  "border.border_style",
+                  "border.border_width",
+                  "border.is_border_active",
+                  "id",
+                  "is_primary",
+                  "name",
+                  "preview_page_hex",
+                  "spacing",
+                  "spacing.padding_bottom",
+                  "spacing.padding_left",
+                  "spacing.padding_right",
+                  "spacing.padding_top",
+                  "style",
+                  "style.background_color",
+                  "style.border_radius",
+                  "style.box_shadow",
+                  "style.is_shadow_active",
+                  "text",
+                  "text.color",
+                  "text.font_family",
+                  "text.font_size",
+                  "text.font_style",
+                  "text.font_weight",
+                  "text.letter_spacing",
+                  "text.text_decoration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandButtonResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "post": {
+        "operationId": "create_brand_button_beta",
+        "summary": "Create Brand Button",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new brand button.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_brand_button_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-button]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "border",
+                  "border.border_color",
+                  "border.border_style",
+                  "border.border_width",
+                  "border.is_border_active",
+                  "id",
+                  "is_primary",
+                  "name",
+                  "preview_page_hex",
+                  "spacing",
+                  "spacing.padding_bottom",
+                  "spacing.padding_left",
+                  "spacing.padding_right",
+                  "spacing.padding_top",
+                  "style",
+                  "style.background_color",
+                  "style.border_radius",
+                  "style.box_shadow",
+                  "style.is_shadow_active",
+                  "text",
+                  "text.color",
+                  "text.font_family",
+                  "text.font_size",
+                  "text.font_style",
+                  "text.font_weight",
+                  "text.letter_spacing",
+                  "text.text_decoration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandButtonCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostBrandButtonResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-buttons/{id}": {
+      "get": {
+        "operationId": "get_brand_button_beta",
+        "summary": "Get Brand Button",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the brand button with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_button_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand button.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand button.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "fields[brand-button]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "border",
+                  "border.border_color",
+                  "border.border_style",
+                  "border.border_width",
+                  "border.is_border_active",
+                  "id",
+                  "is_primary",
+                  "name",
+                  "preview_page_hex",
+                  "spacing",
+                  "spacing.padding_bottom",
+                  "spacing.padding_left",
+                  "spacing.padding_right",
+                  "spacing.padding_top",
+                  "style",
+                  "style.background_color",
+                  "style.border_radius",
+                  "style.box_shadow",
+                  "style.is_shadow_active",
+                  "text",
+                  "text.color",
+                  "text.font_family",
+                  "text.font_size",
+                  "text.font_style",
+                  "text.font_weight",
+                  "text.letter_spacing",
+                  "text.text_decoration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandButtonResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "patch": {
+        "operationId": "update_brand_button_beta",
+        "summary": "Update Brand Button",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the brand button with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_button_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand button.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand button.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "fields[brand-button]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "border",
+                  "border.border_color",
+                  "border.border_style",
+                  "border.border_width",
+                  "border.is_border_active",
+                  "id",
+                  "is_primary",
+                  "name",
+                  "preview_page_hex",
+                  "spacing",
+                  "spacing.padding_bottom",
+                  "spacing.padding_left",
+                  "spacing.padding_right",
+                  "spacing.padding_top",
+                  "style",
+                  "style.background_color",
+                  "style.border_radius",
+                  "style.box_shadow",
+                  "style.is_shadow_active",
+                  "text",
+                  "text.color",
+                  "text.font_family",
+                  "text.font_size",
+                  "text.font_style",
+                  "text.font_weight",
+                  "text.letter_spacing",
+                  "text.text_decoration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandButtonPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandButtonResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "delete": {
+        "operationId": "delete_brand_button_beta",
+        "summary": "Delete Brand Button",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete the brand button with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_brand_button_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand button.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand button.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-colors": {
+      "get": {
+        "operationId": "get_brand_colors_beta",
+        "summary": "Get Brand Colors",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all brand color groups for the authenticated account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_colors_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-color]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "colors",
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandColorResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "post": {
+        "operationId": "create_brand_color_beta",
+        "summary": "Create Brand Color",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new brand color group.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_brand_color_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-color]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "colors",
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandColorCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostBrandColorResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-colors/{id}": {
+      "get": {
+        "operationId": "get_brand_color_beta",
+        "summary": "Get Brand Color",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the brand color group with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_color_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand color group.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand color group.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "fields[brand-color]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "colors",
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandColorResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "patch": {
+        "operationId": "update_brand_color_beta",
+        "summary": "Update Brand Color",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the brand color group with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_color_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand color group.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand color group.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "fields[brand-color]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "colors",
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandColorPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandColorResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "delete": {
+        "operationId": "delete_brand_color_beta",
+        "summary": "Delete Brand Color",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete the brand color group with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_brand_color_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand color group.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand color group.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-voice/{id}": {
+      "get": {
+        "operationId": "get_brand_voice_beta",
+        "summary": "Get Brand Voice",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the brand voice for the authenticated company.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_voice_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The company ID. Must match the authenticated account.",
+            "required": true,
+            "schema": {
+              "description": "The company ID. Must match the authenticated account.",
+              "type": "string",
+              "example": "abc123"
+            }
+          },
+          {
+            "name": "fields[brand-voice]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "language_patterns",
+                  "tone_descriptors",
+                  "version"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandVoiceResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "patch": {
+        "operationId": "update_brand_voice_beta",
+        "summary": "Update Brand Voice",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the brand voice for the authenticated company.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_voice_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The company ID. Must match the authenticated account.",
+            "required": true,
+            "schema": {
+              "description": "The company ID. Must match the authenticated account.",
+              "type": "string",
+              "example": "abc123"
+            }
+          },
+          {
+            "name": "fields[brand-voice]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "language_patterns",
+                  "tone_descriptors",
+                  "version"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /api/brand-voice/{company_id} \u2014 JSON:API field-level partial update.\n\nPer https://jsonapi.org/format/#crud-updating-resource-attributes, only\nthe top-level attributes present in the request body are replaced;\nmissing top-level fields are preserved. A client can patch just\n`tone_descriptors` without disturbing `language_patterns`, and vice\nversa.\n\nA present top-level field is replaced wholesale (no recursive merge\ninto the list contents) \u2014 the underlying service treats\n`tone_descriptors` and `language_patterns` as full-list replacements,\nso partial-list edits must be done client-side by reading, modifying,\nand writing the full list.\n\nThe path `id` must equal the auth context's company id; mismatches\nreturn 404.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandVoicePartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandVoiceResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-social-groups": {
+      "get": {
+        "operationId": "get_brand_social_groups_beta",
+        "summary": "Get Brand Social Groups",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all brand social groups for the authenticated account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_social_groups_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-social-group]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "name",
+                  "social_links"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandSocialGroupResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "post": {
+        "operationId": "create_brand_social_group_beta",
+        "summary": "Create Brand Social Group",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new brand social group.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_brand_social_group_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-social-group]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "name",
+                  "social_links"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandSocialGroupCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostBrandSocialGroupResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-social-groups/{id}": {
+      "get": {
+        "operationId": "get_brand_social_group_beta",
+        "summary": "Get Brand Social Group",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the brand social group with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_social_group_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand social group.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand social group.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "fields[brand-social-group]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "name",
+                  "social_links"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandSocialGroupResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "patch": {
+        "operationId": "update_brand_social_group_beta",
+        "summary": "Update Brand Social Group",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the brand social group with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_social_group_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand social group.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand social group.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "fields[brand-social-group]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "name",
+                  "social_links"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandSocialGroupPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandSocialGroupResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "delete": {
+        "operationId": "delete_brand_social_group_beta",
+        "summary": "Delete Brand Social Group",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete the brand social group with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_brand_social_group_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand social group.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand social group.",
+              "type": "string",
+              "example": "42"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-email-defaults": {
+      "get": {
+        "operationId": "get_brand_email_defaults_beta",
+        "summary": "Get Brand Email Defaults",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList the brand email defaults for the authenticated account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_email_defaults_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[brand-button]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "border",
+                  "border.border_color",
+                  "border.border_style",
+                  "border.border_width",
+                  "border.is_border_active",
+                  "id",
+                  "is_primary",
+                  "name",
+                  "preview_page_hex",
+                  "spacing",
+                  "spacing.padding_bottom",
+                  "spacing.padding_left",
+                  "spacing.padding_right",
+                  "spacing.padding_top",
+                  "style",
+                  "style.background_color",
+                  "style.border_radius",
+                  "style.box_shadow",
+                  "style.is_shadow_active",
+                  "text",
+                  "text.color",
+                  "text.font_family",
+                  "text.font_size",
+                  "text.font_style",
+                  "text.font_weight",
+                  "text.letter_spacing",
+                  "text.text_decoration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[brand-email-default]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "body",
+                  "body.background_color",
+                  "body.body_background_color",
+                  "body.h1_text",
+                  "body.h1_text.color",
+                  "body.h1_text.font_family",
+                  "body.h1_text.font_size",
+                  "body.h1_text.font_style",
+                  "body.h1_text.font_weight",
+                  "body.h1_text.letter_spacing",
+                  "body.h1_text.text_decoration",
+                  "body.h2_text",
+                  "body.h2_text.color",
+                  "body.h2_text.font_family",
+                  "body.h2_text.font_size",
+                  "body.h2_text.font_style",
+                  "body.h2_text.font_weight",
+                  "body.h2_text.letter_spacing",
+                  "body.h2_text.text_decoration",
+                  "body.h3_text",
+                  "body.h3_text.color",
+                  "body.h3_text.font_family",
+                  "body.h3_text.font_size",
+                  "body.h3_text.font_style",
+                  "body.h3_text.font_weight",
+                  "body.h3_text.letter_spacing",
+                  "body.h3_text.text_decoration",
+                  "body.h4_text",
+                  "body.h4_text.color",
+                  "body.h4_text.font_family",
+                  "body.h4_text.font_size",
+                  "body.h4_text.font_style",
+                  "body.h4_text.font_weight",
+                  "body.h4_text.letter_spacing",
+                  "body.h4_text.text_decoration",
+                  "body.link_text",
+                  "body.link_text.color",
+                  "body.link_text.font_family",
+                  "body.link_text.font_size",
+                  "body.link_text.font_style",
+                  "body.link_text.font_weight",
+                  "body.link_text.letter_spacing",
+                  "body.link_text.text_decoration",
+                  "body.text",
+                  "body.text.color",
+                  "body.text.font_family",
+                  "body.text.font_size",
+                  "body.text.font_style",
+                  "body.text.font_weight",
+                  "body.text.letter_spacing",
+                  "body.text.text_decoration",
+                  "footer",
+                  "footer.background_color",
+                  "footer.link_text",
+                  "footer.link_text.color",
+                  "footer.link_text.font_family",
+                  "footer.link_text.font_size",
+                  "footer.link_text.font_style",
+                  "footer.link_text.font_weight",
+                  "footer.link_text.letter_spacing",
+                  "footer.link_text.text_decoration",
+                  "footer.social_group_color",
+                  "footer.text",
+                  "footer.text.color",
+                  "footer.text.font_family",
+                  "footer.text.font_size",
+                  "footer.text.font_style",
+                  "footer.text.font_weight",
+                  "footer.text.letter_spacing",
+                  "footer.text.text_decoration",
+                  "header",
+                  "header.background_color",
+                  "header.link_text",
+                  "header.link_text.color",
+                  "header.link_text.font_family",
+                  "header.link_text.font_size",
+                  "header.link_text.font_style",
+                  "header.link_text.font_weight",
+                  "header.link_text.letter_spacing",
+                  "header.link_text.text_decoration",
+                  "header.links",
+                  "header.logo_max_width",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[brand-logo]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "alt_text",
+                  "height",
+                  "id",
+                  "link_url",
+                  "name",
+                  "width"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[brand-social-group]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "name",
+                  "social_links"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "brand-button",
+                  "brand-logo",
+                  "brand-social-group"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandEmailDefaultResponseCollectionCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    },
+    "/api/brand-email-defaults/{id}": {
+      "get": {
+        "operationId": "get_brand_email_default_beta",
+        "summary": "Get Brand Email Default",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the brand email defaults for the authenticated account.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`brands:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_brand_email_default_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand email defaults (must equal the account ID).",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand email defaults (must equal the account ID).",
+              "type": "string",
+              "example": "abc123"
+            }
+          },
+          {
+            "name": "fields[brand-button]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "border",
+                  "border.border_color",
+                  "border.border_style",
+                  "border.border_width",
+                  "border.is_border_active",
+                  "id",
+                  "is_primary",
+                  "name",
+                  "preview_page_hex",
+                  "spacing",
+                  "spacing.padding_bottom",
+                  "spacing.padding_left",
+                  "spacing.padding_right",
+                  "spacing.padding_top",
+                  "style",
+                  "style.background_color",
+                  "style.border_radius",
+                  "style.box_shadow",
+                  "style.is_shadow_active",
+                  "text",
+                  "text.color",
+                  "text.font_family",
+                  "text.font_size",
+                  "text.font_style",
+                  "text.font_weight",
+                  "text.letter_spacing",
+                  "text.text_decoration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[brand-email-default]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "body",
+                  "body.background_color",
+                  "body.body_background_color",
+                  "body.h1_text",
+                  "body.h1_text.color",
+                  "body.h1_text.font_family",
+                  "body.h1_text.font_size",
+                  "body.h1_text.font_style",
+                  "body.h1_text.font_weight",
+                  "body.h1_text.letter_spacing",
+                  "body.h1_text.text_decoration",
+                  "body.h2_text",
+                  "body.h2_text.color",
+                  "body.h2_text.font_family",
+                  "body.h2_text.font_size",
+                  "body.h2_text.font_style",
+                  "body.h2_text.font_weight",
+                  "body.h2_text.letter_spacing",
+                  "body.h2_text.text_decoration",
+                  "body.h3_text",
+                  "body.h3_text.color",
+                  "body.h3_text.font_family",
+                  "body.h3_text.font_size",
+                  "body.h3_text.font_style",
+                  "body.h3_text.font_weight",
+                  "body.h3_text.letter_spacing",
+                  "body.h3_text.text_decoration",
+                  "body.h4_text",
+                  "body.h4_text.color",
+                  "body.h4_text.font_family",
+                  "body.h4_text.font_size",
+                  "body.h4_text.font_style",
+                  "body.h4_text.font_weight",
+                  "body.h4_text.letter_spacing",
+                  "body.h4_text.text_decoration",
+                  "body.link_text",
+                  "body.link_text.color",
+                  "body.link_text.font_family",
+                  "body.link_text.font_size",
+                  "body.link_text.font_style",
+                  "body.link_text.font_weight",
+                  "body.link_text.letter_spacing",
+                  "body.link_text.text_decoration",
+                  "body.text",
+                  "body.text.color",
+                  "body.text.font_family",
+                  "body.text.font_size",
+                  "body.text.font_style",
+                  "body.text.font_weight",
+                  "body.text.letter_spacing",
+                  "body.text.text_decoration",
+                  "footer",
+                  "footer.background_color",
+                  "footer.link_text",
+                  "footer.link_text.color",
+                  "footer.link_text.font_family",
+                  "footer.link_text.font_size",
+                  "footer.link_text.font_style",
+                  "footer.link_text.font_weight",
+                  "footer.link_text.letter_spacing",
+                  "footer.link_text.text_decoration",
+                  "footer.social_group_color",
+                  "footer.text",
+                  "footer.text.color",
+                  "footer.text.font_family",
+                  "footer.text.font_size",
+                  "footer.text.font_style",
+                  "footer.text.font_weight",
+                  "footer.text.letter_spacing",
+                  "footer.text.text_decoration",
+                  "header",
+                  "header.background_color",
+                  "header.link_text",
+                  "header.link_text.color",
+                  "header.link_text.font_family",
+                  "header.link_text.font_size",
+                  "header.link_text.font_style",
+                  "header.link_text.font_weight",
+                  "header.link_text.letter_spacing",
+                  "header.link_text.text_decoration",
+                  "header.links",
+                  "header.logo_max_width",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[brand-logo]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "alt_text",
+                  "height",
+                  "id",
+                  "link_url",
+                  "name",
+                  "width"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[brand-social-group]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "name",
+                  "social_links"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "brand-button",
+                  "brand-logo",
+                  "brand-social-group"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandEmailDefaultResponseCompoundDocument"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:read"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      },
+      "patch": {
+        "operationId": "update_brand_email_default_beta",
+        "summary": "Update Brand Email Default",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPartial update of the brand email defaults for the authenticated account.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_email_default_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand email defaults (must equal the account ID).",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand email defaults (must equal the account ID).",
+              "type": "string",
+              "example": "abc123"
+            }
+          },
+          {
+            "name": "fields[brand-email-default]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "body",
+                  "body.background_color",
+                  "body.body_background_color",
+                  "body.h1_text",
+                  "body.h1_text.color",
+                  "body.h1_text.font_family",
+                  "body.h1_text.font_size",
+                  "body.h1_text.font_style",
+                  "body.h1_text.font_weight",
+                  "body.h1_text.letter_spacing",
+                  "body.h1_text.text_decoration",
+                  "body.h2_text",
+                  "body.h2_text.color",
+                  "body.h2_text.font_family",
+                  "body.h2_text.font_size",
+                  "body.h2_text.font_style",
+                  "body.h2_text.font_weight",
+                  "body.h2_text.letter_spacing",
+                  "body.h2_text.text_decoration",
+                  "body.h3_text",
+                  "body.h3_text.color",
+                  "body.h3_text.font_family",
+                  "body.h3_text.font_size",
+                  "body.h3_text.font_style",
+                  "body.h3_text.font_weight",
+                  "body.h3_text.letter_spacing",
+                  "body.h3_text.text_decoration",
+                  "body.h4_text",
+                  "body.h4_text.color",
+                  "body.h4_text.font_family",
+                  "body.h4_text.font_size",
+                  "body.h4_text.font_style",
+                  "body.h4_text.font_weight",
+                  "body.h4_text.letter_spacing",
+                  "body.h4_text.text_decoration",
+                  "body.link_text",
+                  "body.link_text.color",
+                  "body.link_text.font_family",
+                  "body.link_text.font_size",
+                  "body.link_text.font_style",
+                  "body.link_text.font_weight",
+                  "body.link_text.letter_spacing",
+                  "body.link_text.text_decoration",
+                  "body.text",
+                  "body.text.color",
+                  "body.text.font_family",
+                  "body.text.font_size",
+                  "body.text.font_style",
+                  "body.text.font_weight",
+                  "body.text.letter_spacing",
+                  "body.text.text_decoration",
+                  "footer",
+                  "footer.background_color",
+                  "footer.link_text",
+                  "footer.link_text.color",
+                  "footer.link_text.font_family",
+                  "footer.link_text.font_size",
+                  "footer.link_text.font_style",
+                  "footer.link_text.font_weight",
+                  "footer.link_text.letter_spacing",
+                  "footer.link_text.text_decoration",
+                  "footer.social_group_color",
+                  "footer.text",
+                  "footer.text.color",
+                  "footer.text.font_family",
+                  "footer.text.font_size",
+                  "footer.text.font_style",
+                  "footer.text.font_weight",
+                  "footer.text.letter_spacing",
+                  "footer.text.text_decoration",
+                  "header",
+                  "header.background_color",
+                  "header.link_text",
+                  "header.link_text.color",
+                  "header.link_text.font_family",
+                  "header.link_text.font_size",
+                  "header.link_text.font_style",
+                  "header.link_text.font_weight",
+                  "header.link_text.letter_spacing",
+                  "header.link_text.text_decoration",
+                  "header.links",
+                  "header.logo_max_width",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /api/brand-email-defaults/{id}: JSON:API field-level partial update.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandEmailDefaultPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandEmailDefaultResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "BorderStyles": {
+        "type": "object",
+        "properties": {
+          "border_color": {
+            "type": "string"
+          },
+          "border_style": {
+            "description": "Border style.",
+            "type": "string",
+            "enum": [
+              "dashed",
+              "dotted",
+              "solid"
+            ]
+          },
+          "border_width": {
+            "type": "integer"
+          },
+          "is_border_active": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "border_color",
+          "border_style",
+          "border_width"
+        ]
+      },
+      "BrandButtonCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandButtonCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandButtonCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandButtonEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "style": {
+                "description": "Misc button styles.",
+                "$ref": "#/components/schemas/ButtonStyles"
+              },
+              "border": {
+                "description": "Border styles.",
+                "$ref": "#/components/schemas/BorderStyles"
+              },
+              "spacing": {
+                "description": "Spacing styles.",
+                "$ref": "#/components/schemas/SpacingStyles"
+              },
+              "text": {
+                "description": "Button-text styles.",
+                "$ref": "#/components/schemas/TextStyles"
+              },
+              "name": {
+                "description": "Human-readable name for this button.",
+                "type": "string",
+                "nullable": true
+              },
+              "is_primary": {
+                "description": "Whether this button is the account's primary brand button. Setting to `true` demotes any existing primary.",
+                "type": "boolean",
+                "nullable": true
+              },
+              "preview_page_hex": {
+                "description": "Optional hex color for the preview-page background.",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "style",
+              "border",
+              "spacing",
+              "text"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "BrandButtonEnum": {
+        "type": "string",
+        "enum": [
+          "brand-button"
+        ]
+      },
+      "BrandButtonPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandButtonPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandButtonPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandButtonEnum"
+          },
+          "id": {
+            "description": "The ID of the brand button.",
+            "type": "string",
+            "example": "42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "is_primary": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "style": {
+                "$ref": "#/components/schemas/ButtonStyles",
+                "nullable": true
+              },
+              "border": {
+                "$ref": "#/components/schemas/BorderStyles",
+                "nullable": true
+              },
+              "spacing": {
+                "$ref": "#/components/schemas/SpacingStyles",
+                "nullable": true
+              },
+              "text": {
+                "$ref": "#/components/schemas/TextStyles",
+                "nullable": true
+              },
+              "preview_page_hex": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "BrandButtonResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandButtonEnum"
+          },
+          "id": {
+            "description": "The ID of the brand button.",
+            "type": "string",
+            "example": "42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Human-readable name for this button.",
+                "type": "string",
+                "example": "Primary CTA",
+                "nullable": true
+              },
+              "is_primary": {
+                "description": "Whether this button is the account's primary brand button. Only one button per account can be primary at a time \u2014 promoting another button automatically demotes the previous primary.",
+                "type": "boolean",
+                "example": true,
+                "nullable": true
+              },
+              "style": {
+                "description": "Misc button styles (background, radius, shadow).",
+                "$ref": "#/components/schemas/ButtonStyles",
+                "nullable": true
+              },
+              "border": {
+                "description": "Border styles (color, width, style, active flag).",
+                "$ref": "#/components/schemas/BorderStyles",
+                "nullable": true
+              },
+              "spacing": {
+                "description": "Spacing styles (padding on each side, in pixels).",
+                "$ref": "#/components/schemas/SpacingStyles",
+                "nullable": true
+              },
+              "text": {
+                "description": "Button-text styles (color, font, weight, decoration).",
+                "$ref": "#/components/schemas/TextStyles",
+                "nullable": true
+              },
+              "preview_page_hex": {
+                "description": "Optional hex color for the preview-page background.",
+                "type": "string",
+                "example": "#ffffff",
+                "nullable": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "BrandColorCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandColorCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandColorCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandColorEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Human-readable name for this color group (palette).",
+                "type": "string",
+                "nullable": true
+              },
+              "colors": {
+                "description": "Ordered list of named hex colors. Optional at create time.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Color"
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "BrandColorEnum": {
+        "type": "string",
+        "enum": [
+          "brand-color"
+        ]
+      },
+      "BrandColorPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandColorPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandColorPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandColorEnum"
+          },
+          "id": {
+            "description": "The ID of the brand color group.",
+            "type": "string",
+            "example": "42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "colors": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Color"
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "BrandColorResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandColorEnum"
+          },
+          "id": {
+            "description": "The ID of the brand color group.",
+            "type": "string",
+            "example": "42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Human-readable name for this color group (palette).",
+                "type": "string",
+                "example": "Primary",
+                "nullable": true
+              },
+              "colors": {
+                "description": "Ordered list of named hex colors in this group.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Color"
+                },
+                "nullable": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "BrandEmailBodyAttributes": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "description": "Hex color for the body section background.",
+            "type": "string",
+            "example": "#ffffff"
+          },
+          "body_background_color": {
+            "description": "Hex color for the canvas behind the body content. Visible as a frame around the body when the email is wider than the body.",
+            "type": "string",
+            "example": "#f5f5f5"
+          },
+          "text": {
+            "description": "Default text styles for paragraph copy in the body.",
+            "$ref": "#/components/schemas/TextStyles"
+          },
+          "h1_text": {
+            "description": "H1 heading styles.",
+            "$ref": "#/components/schemas/TextStyles"
+          },
+          "h2_text": {
+            "description": "H2 heading styles.",
+            "$ref": "#/components/schemas/TextStyles"
+          },
+          "h3_text": {
+            "description": "H3 heading styles.",
+            "$ref": "#/components/schemas/TextStyles"
+          },
+          "h4_text": {
+            "description": "H4 heading styles.",
+            "$ref": "#/components/schemas/TextStyles"
+          },
+          "link_text": {
+            "description": "Default styles for inline body links.",
+            "$ref": "#/components/schemas/LinkTextStyles"
+          }
+        },
+        "required": [
+          "background_color",
+          "body_background_color",
+          "text",
+          "h1_text",
+          "h2_text",
+          "h3_text",
+          "h4_text",
+          "link_text"
+        ]
+      },
+      "BrandEmailBodyPatchAttributes": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "description": "Hex color for the body section background.",
+            "type": "string",
+            "example": "#ffffff",
+            "nullable": true
+          },
+          "body_background_color": {
+            "description": "Hex color for the canvas behind the body content. Visible as a frame around the body when the email is wider than the body.",
+            "type": "string",
+            "example": "#f5f5f5",
+            "nullable": true
+          },
+          "text": {
+            "description": "Default text styles for paragraph copy in the body.",
+            "$ref": "#/components/schemas/TextStyles",
+            "nullable": true
+          },
+          "h1_text": {
+            "description": "H1 heading styles.",
+            "$ref": "#/components/schemas/TextStyles",
+            "nullable": true
+          },
+          "h2_text": {
+            "description": "H2 heading styles.",
+            "$ref": "#/components/schemas/TextStyles",
+            "nullable": true
+          },
+          "h3_text": {
+            "description": "H3 heading styles.",
+            "$ref": "#/components/schemas/TextStyles",
+            "nullable": true
+          },
+          "h4_text": {
+            "description": "H4 heading styles.",
+            "$ref": "#/components/schemas/TextStyles",
+            "nullable": true
+          },
+          "link_text": {
+            "description": "Default styles for inline body links.",
+            "$ref": "#/components/schemas/LinkTextStyles",
+            "nullable": true
+          }
+        }
+      },
+      "BrandEmailDefaultEnum": {
+        "type": "string",
+        "enum": [
+          "brand-email-default"
+        ]
+      },
+      "BrandEmailDefaultPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandEmailDefaultPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandEmailDefaultPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandEmailDefaultEnum"
+          },
+          "id": {
+            "description": "The ID of the brand email defaults (must equal the account ID).",
+            "type": "string",
+            "example": "abc123"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "body": {
+                "description": "Patch the body styling block (per-field merge).",
+                "$ref": "#/components/schemas/BrandEmailBodyPatchAttributes",
+                "nullable": true
+              },
+              "header": {
+                "description": "Patch the header styling block (per-field merge).",
+                "$ref": "#/components/schemas/BrandEmailHeaderPatchAttributes",
+                "nullable": true
+              },
+              "footer": {
+                "description": "Patch the footer styling block (per-field merge).",
+                "$ref": "#/components/schemas/BrandEmailFooterPatchAttributes",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "brand-button": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/BrandButtonEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "brand-logo": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/BrandLogoEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "brand-social-group": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/BrandSocialGroupEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "BrandEmailDefaultResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandEmailDefaultEnum"
+          },
+          "id": {
+            "description": "The ID of the brand email defaults (equal to the company ID).",
+            "type": "string",
+            "example": "abc123"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "body": {
+                "description": "Default styling for the email body.",
+                "$ref": "#/components/schemas/BrandEmailBodyAttributes"
+              },
+              "header": {
+                "description": "Default styling for the email header.",
+                "$ref": "#/components/schemas/BrandEmailHeaderAttributes"
+              },
+              "footer": {
+                "description": "Default styling for the email footer.",
+                "$ref": "#/components/schemas/BrandEmailFooterAttributes"
+              }
+            },
+            "required": [
+              "body",
+              "header",
+              "footer"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "brand-button": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/BrandButtonEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "brand-logo": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/BrandLogoEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "brand-social-group": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/BrandSocialGroupEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "BrandEmailFooterAttributes": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "description": "Hex color for the footer background.",
+            "type": "string",
+            "example": "#ffffff"
+          },
+          "text": {
+            "description": "Footer body text styles.",
+            "$ref": "#/components/schemas/TextStyles"
+          },
+          "link_text": {
+            "description": "Footer link text styles.",
+            "$ref": "#/components/schemas/LinkTextStyles"
+          },
+          "social_group_color": {
+            "description": "Color treatment to apply to social-group icons in the footer (`black`, `default`, `grey`, or `white`).",
+            "type": "string",
+            "example": "default",
+            "enum": [
+              "black",
+              "default",
+              "grey",
+              "white"
+            ]
+          }
+        },
+        "required": [
+          "background_color",
+          "text",
+          "link_text",
+          "social_group_color"
+        ]
+      },
+      "BrandEmailFooterPatchAttributes": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "description": "Hex color for the footer background.",
+            "type": "string",
+            "example": "#ffffff",
+            "nullable": true
+          },
+          "text": {
+            "description": "Footer body text styles.",
+            "$ref": "#/components/schemas/TextStyles",
+            "nullable": true
+          },
+          "link_text": {
+            "description": "Footer link text styles.",
+            "$ref": "#/components/schemas/LinkTextStyles",
+            "nullable": true
+          },
+          "social_group_color": {
+            "description": "Color treatment to apply to social-group icons in the footer (`black`, `default`, `grey`, or `white`).",
+            "type": "string",
+            "example": "default",
+            "enum": [
+              "black",
+              "default",
+              "grey",
+              "white"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "BrandEmailHeaderAttributes": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "description": "Hex color for the header background.",
+            "type": "string",
+            "example": "#000000"
+          },
+          "links": {
+            "description": "Header navigation links rendered above the body.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailHeaderLink"
+            }
+          },
+          "link_text": {
+            "description": "Header link text styles.",
+            "$ref": "#/components/schemas/LinkTextStyles"
+          },
+          "logo_max_width": {
+            "description": "Maximum rendered width of the header logo, in pixels. `null` lets the logo render at its natural width.",
+            "type": "integer",
+            "example": 160,
+            "default": 160,
+            "nullable": true
+          }
+        },
+        "required": [
+          "background_color",
+          "links",
+          "link_text"
+        ]
+      },
+      "BrandEmailHeaderPatchAttributes": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "description": "Hex color for the header background.",
+            "type": "string",
+            "example": "#000000",
+            "nullable": true
+          },
+          "links": {
+            "description": "Header navigation links rendered above the body.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailHeaderLink"
+            },
+            "nullable": true
+          },
+          "link_text": {
+            "description": "Header link text styles.",
+            "$ref": "#/components/schemas/LinkTextStyles",
+            "nullable": true
+          },
+          "logo_max_width": {
+            "description": "Maximum rendered width of the header logo, in pixels. Omit to preserve the currently stored value; send `null` to clear it (the logo will render at its natural width).",
+            "type": "integer",
+            "example": 160,
+            "nullable": true
+          }
+        }
+      },
+      "BrandLogoCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandLogoCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandLogoCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandLogoEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "description": "Rendered width in pixels.",
+                "type": "integer",
+                "nullable": true
+              },
+              "height": {
+                "description": "Rendered height in pixels.",
+                "type": "integer",
+                "nullable": true
+              },
+              "alt_text": {
+                "description": "Accessibility alt-text for screen readers.",
+                "type": "string",
+                "nullable": true
+              },
+              "link_url": {
+                "description": "Destination URL when the logo is clicked in an email.",
+                "type": "string",
+                "nullable": true
+              },
+              "name": {
+                "description": "Human-readable name for this logo.",
+                "type": "string",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "image": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ImageEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "BrandLogoEnum": {
+        "type": "string",
+        "enum": [
+          "brand-logo"
+        ]
+      },
+      "BrandLogoPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandLogoPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandLogoPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandLogoEnum"
+          },
+          "id": {
+            "description": "The ID of the brand logo.",
+            "type": "string",
+            "example": "42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer",
+                "nullable": true
+              },
+              "height": {
+                "type": "integer",
+                "nullable": true
+              },
+              "alt_text": {
+                "type": "string",
+                "nullable": true
+              },
+              "link_url": {
+                "type": "string",
+                "nullable": true
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "image": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ImageEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "BrandLogoResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandLogoEnum"
+          },
+          "id": {
+            "description": "The ID of the brand logo.",
+            "type": "string",
+            "example": "42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "description": "Rendered width in pixels.",
+                "type": "integer",
+                "example": 200,
+                "nullable": true
+              },
+              "height": {
+                "description": "Rendered height in pixels.",
+                "type": "integer",
+                "example": 60,
+                "nullable": true
+              },
+              "alt_text": {
+                "description": "Accessibility alt-text for screen readers.",
+                "type": "string",
+                "example": "Company logo",
+                "nullable": true
+              },
+              "link_url": {
+                "description": "Destination URL when the logo is clicked in an email.",
+                "type": "string",
+                "example": "https://example.com",
+                "nullable": true
+              },
+              "name": {
+                "description": "Human-readable name for this logo.",
+                "type": "string",
+                "example": "Main logo",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "image": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ImageEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "BrandSocialGroupCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandSocialGroupCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandSocialGroupCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandSocialGroupEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "social_links": {
+                "description": "Ordered list of social links.",
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FirstPartySocialLink"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CustomSocialLink"
+                    }
+                  ]
+                }
+              },
+              "name": {
+                "description": "Human-readable name for this social group.",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "social_links"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "BrandSocialGroupEnum": {
+        "type": "string",
+        "enum": [
+          "brand-social-group"
+        ]
+      },
+      "BrandSocialGroupPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandSocialGroupPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandSocialGroupPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandSocialGroupEnum"
+          },
+          "id": {
+            "description": "The ID of the brand social group.",
+            "type": "string",
+            "example": "42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "social_links": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FirstPartySocialLink"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CustomSocialLink"
+                    }
+                  ]
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "BrandSocialGroupResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandSocialGroupEnum"
+          },
+          "id": {
+            "description": "The ID of the brand social group.",
+            "type": "string",
+            "example": "42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Human-readable name for this social group.",
+                "type": "string",
+                "example": "Footer socials",
+                "nullable": true
+              },
+              "social_links": {
+                "description": "Ordered list of social links.",
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FirstPartySocialLink"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CustomSocialLink"
+                    }
+                  ]
+                },
+                "nullable": true
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "BrandVoiceDescriptor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "user_modified": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "BrandVoiceEnum": {
+        "type": "string",
+        "enum": [
+          "brand-voice"
+        ]
+      },
+      "BrandVoicePartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandVoicePartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandVoicePartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandVoiceEnum"
+          },
+          "id": {
+            "description": "The company ID. Must match the authenticated account.",
+            "type": "string",
+            "example": "abc123"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "tone_descriptors": {
+                "description": "Tone descriptors to set on the brand voice. Replaces the existing list.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                },
+                "nullable": true
+              },
+              "language_patterns": {
+                "description": "Language patterns to set on the brand voice. Replaces the existing list.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "BrandVoiceResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandVoiceEnum"
+          },
+          "id": {
+            "description": "The company ID this brand voice belongs to.",
+            "type": "string",
+            "example": "abc123"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "description": "The version identifier of this brand voice.",
+                "type": "string",
+                "example": "v1"
+              },
+              "tone_descriptors": {
+                "description": "Tone descriptors that characterize the brand voice.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                }
+              },
+              "language_patterns": {
+                "description": "Language patterns that characterize the brand voice.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                }
+              }
+            },
+            "required": [
+              "version",
+              "tone_descriptors",
+              "language_patterns"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ButtonStyles": {
+        "type": "object",
+        "properties": {
+          "background_color": {
+            "type": "string"
+          },
+          "border_radius": {
+            "type": "integer"
+          },
+          "box_shadow": {
+            "type": "string"
+          },
+          "is_shadow_active": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "background_color",
+          "border_radius",
+          "box_shadow"
+        ]
+      },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "Color": {
+        "type": "object",
+        "properties": {
+          "hex": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "hex",
+          "name"
+        ]
+      },
+      "CustomSocialLink": {
+        "type": "object",
+        "properties": {
+          "link_url": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "custom"
+            ]
+          },
+          "asset_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "asset_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "link_url",
+          "platform"
+        ]
+      },
+      "EmailHeaderLink": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "url"
+        ]
+      },
+      "FirstPartySocialLink": {
+        "type": "object",
+        "properties": {
+          "link_url": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "x_twitter"
+            ]
+          }
+        },
+        "required": [
+          "link_url",
+          "platform"
+        ]
+      },
+      "GetBrandButtonResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandButtonResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandButtonResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrandButtonResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandColorResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandColorResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandColorResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrandColorResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandEmailDefaultResponseCollectionCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrandEmailDefaultResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/BrandButtonResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/BrandLogoResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/BrandSocialGroupResponseObjectResource"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandEmailDefaultResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandEmailDefaultResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/BrandButtonResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/BrandLogoResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/BrandSocialGroupResponseObjectResource"
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandLogoResponseCollectionCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrandLogoResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageResponseObjectResource"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandLogoResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandLogoResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandSocialGroupResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandSocialGroupResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandSocialGroupResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrandSocialGroupResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetBrandVoiceResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandVoiceResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ImageEnum": {
+        "type": "string",
+        "enum": [
+          "image"
+        ]
+      },
+      "ImageResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ImageEnum"
+          },
+          "id": {
+            "description": "The ID of the image",
+            "type": "string",
+            "example": "7"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "image_url": {
+                "type": "string"
+              },
+              "format": {
+                "type": "string"
+              },
+              "size": {
+                "type": "integer"
+              },
+              "hidden": {
+                "type": "boolean"
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              }
+            },
+            "required": [
+              "name",
+              "image_url",
+              "format",
+              "size",
+              "hidden",
+              "updated_at"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "LinkTextStyles": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string"
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ]
+          },
+          "font_weight": {
+            "description": "Font weight.",
+            "type": "integer",
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ],
+            "nullable": true
+          },
+          "font_family": {
+            "type": "string",
+            "nullable": true
+          },
+          "letter_spacing": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "text_decoration": {
+            "description": "Text decoration.",
+            "type": "string",
+            "enum": [
+              "",
+              "line-through",
+              "line-through underline",
+              "none",
+              "underline",
+              "underline line-through"
+            ]
+          }
+        },
+        "required": [
+          "color",
+          "font_style",
+          "text_decoration"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PatchBrandButtonResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandButtonEnum"
+              },
+              "id": {
+                "description": "The ID of the brand button.",
+                "type": "string",
+                "example": "42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Human-readable name for this button.",
+                    "type": "string",
+                    "example": "Primary CTA",
+                    "nullable": true
+                  },
+                  "is_primary": {
+                    "description": "Whether this button is the account's primary brand button. Only one button per account can be primary at a time \u2014 promoting another button automatically demotes the previous primary.",
+                    "type": "boolean",
+                    "example": true,
+                    "nullable": true
+                  },
+                  "style": {
+                    "description": "Misc button styles (background, radius, shadow).",
+                    "$ref": "#/components/schemas/ButtonStyles",
+                    "nullable": true
+                  },
+                  "border": {
+                    "description": "Border styles (color, width, style, active flag).",
+                    "$ref": "#/components/schemas/BorderStyles",
+                    "nullable": true
+                  },
+                  "spacing": {
+                    "description": "Spacing styles (padding on each side, in pixels).",
+                    "$ref": "#/components/schemas/SpacingStyles",
+                    "nullable": true
+                  },
+                  "text": {
+                    "description": "Button-text styles (color, font, weight, decoration).",
+                    "$ref": "#/components/schemas/TextStyles",
+                    "nullable": true
+                  },
+                  "preview_page_hex": {
+                    "description": "Optional hex color for the preview-page background.",
+                    "type": "string",
+                    "example": "#ffffff",
+                    "nullable": true
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PatchBrandColorResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandColorEnum"
+              },
+              "id": {
+                "description": "The ID of the brand color group.",
+                "type": "string",
+                "example": "42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Human-readable name for this color group (palette).",
+                    "type": "string",
+                    "example": "Primary",
+                    "nullable": true
+                  },
+                  "colors": {
+                    "description": "Ordered list of named hex colors in this group.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Color"
+                    },
+                    "nullable": true
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PatchBrandEmailDefaultResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandEmailDefaultEnum"
+              },
+              "id": {
+                "description": "The ID of the brand email defaults (equal to the company ID).",
+                "type": "string",
+                "example": "abc123"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "description": "Default styling for the email body.",
+                    "$ref": "#/components/schemas/BrandEmailBodyAttributes"
+                  },
+                  "header": {
+                    "description": "Default styling for the email header.",
+                    "$ref": "#/components/schemas/BrandEmailHeaderAttributes"
+                  },
+                  "footer": {
+                    "description": "Default styling for the email footer.",
+                    "$ref": "#/components/schemas/BrandEmailFooterAttributes"
+                  }
+                },
+                "required": [
+                  "body",
+                  "header",
+                  "footer"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "brand-button": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/BrandButtonEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "brand-logo": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/BrandLogoEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "brand-social-group": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/BrandSocialGroupEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PatchBrandLogoResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandLogoEnum"
+              },
+              "id": {
+                "description": "The ID of the brand logo.",
+                "type": "string",
+                "example": "42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "description": "Rendered width in pixels.",
+                    "type": "integer",
+                    "example": 200,
+                    "nullable": true
+                  },
+                  "height": {
+                    "description": "Rendered height in pixels.",
+                    "type": "integer",
+                    "example": 60,
+                    "nullable": true
+                  },
+                  "alt_text": {
+                    "description": "Accessibility alt-text for screen readers.",
+                    "type": "string",
+                    "example": "Company logo",
+                    "nullable": true
+                  },
+                  "link_url": {
+                    "description": "Destination URL when the logo is clicked in an email.",
+                    "type": "string",
+                    "example": "https://example.com",
+                    "nullable": true
+                  },
+                  "name": {
+                    "description": "Human-readable name for this logo.",
+                    "type": "string",
+                    "example": "Main logo",
+                    "nullable": true
+                  }
+                }
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/ImageEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PatchBrandSocialGroupResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandSocialGroupEnum"
+              },
+              "id": {
+                "description": "The ID of the brand social group.",
+                "type": "string",
+                "example": "42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Human-readable name for this social group.",
+                    "type": "string",
+                    "example": "Footer socials",
+                    "nullable": true
+                  },
+                  "social_links": {
+                    "description": "Ordered list of social links.",
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/FirstPartySocialLink"
+                        },
+                        {
+                          "$ref": "#/components/schemas/CustomSocialLink"
+                        }
+                      ]
+                    },
+                    "nullable": true
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PatchBrandVoiceResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandVoiceEnum"
+              },
+              "id": {
+                "description": "The company ID this brand voice belongs to.",
+                "type": "string",
+                "example": "abc123"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "description": "The version identifier of this brand voice.",
+                    "type": "string",
+                    "example": "v1"
+                  },
+                  "tone_descriptors": {
+                    "description": "Tone descriptors that characterize the brand voice.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                    }
+                  },
+                  "language_patterns": {
+                    "description": "Language patterns that characterize the brand voice.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                    }
+                  }
+                },
+                "required": [
+                  "version",
+                  "tone_descriptors",
+                  "language_patterns"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostBrandButtonResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandButtonEnum"
+              },
+              "id": {
+                "description": "The ID of the brand button.",
+                "type": "string",
+                "example": "42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Human-readable name for this button.",
+                    "type": "string",
+                    "example": "Primary CTA",
+                    "nullable": true
+                  },
+                  "is_primary": {
+                    "description": "Whether this button is the account's primary brand button. Only one button per account can be primary at a time \u2014 promoting another button automatically demotes the previous primary.",
+                    "type": "boolean",
+                    "example": true,
+                    "nullable": true
+                  },
+                  "style": {
+                    "description": "Misc button styles (background, radius, shadow).",
+                    "$ref": "#/components/schemas/ButtonStyles",
+                    "nullable": true
+                  },
+                  "border": {
+                    "description": "Border styles (color, width, style, active flag).",
+                    "$ref": "#/components/schemas/BorderStyles",
+                    "nullable": true
+                  },
+                  "spacing": {
+                    "description": "Spacing styles (padding on each side, in pixels).",
+                    "$ref": "#/components/schemas/SpacingStyles",
+                    "nullable": true
+                  },
+                  "text": {
+                    "description": "Button-text styles (color, font, weight, decoration).",
+                    "$ref": "#/components/schemas/TextStyles",
+                    "nullable": true
+                  },
+                  "preview_page_hex": {
+                    "description": "Optional hex color for the preview-page background.",
+                    "type": "string",
+                    "example": "#ffffff",
+                    "nullable": true
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostBrandColorResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandColorEnum"
+              },
+              "id": {
+                "description": "The ID of the brand color group.",
+                "type": "string",
+                "example": "42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Human-readable name for this color group (palette).",
+                    "type": "string",
+                    "example": "Primary",
+                    "nullable": true
+                  },
+                  "colors": {
+                    "description": "Ordered list of named hex colors in this group.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Color"
+                    },
+                    "nullable": true
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostBrandLogoResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandLogoEnum"
+              },
+              "id": {
+                "description": "The ID of the brand logo.",
+                "type": "string",
+                "example": "42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "description": "Rendered width in pixels.",
+                    "type": "integer",
+                    "example": 200,
+                    "nullable": true
+                  },
+                  "height": {
+                    "description": "Rendered height in pixels.",
+                    "type": "integer",
+                    "example": 60,
+                    "nullable": true
+                  },
+                  "alt_text": {
+                    "description": "Accessibility alt-text for screen readers.",
+                    "type": "string",
+                    "example": "Company logo",
+                    "nullable": true
+                  },
+                  "link_url": {
+                    "description": "Destination URL when the logo is clicked in an email.",
+                    "type": "string",
+                    "example": "https://example.com",
+                    "nullable": true
+                  },
+                  "name": {
+                    "description": "Human-readable name for this logo.",
+                    "type": "string",
+                    "example": "Main logo",
+                    "nullable": true
+                  }
+                }
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/ImageEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostBrandSocialGroupResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandSocialGroupEnum"
+              },
+              "id": {
+                "description": "The ID of the brand social group.",
+                "type": "string",
+                "example": "42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Human-readable name for this social group.",
+                    "type": "string",
+                    "example": "Footer socials",
+                    "nullable": true
+                  },
+                  "social_links": {
+                    "description": "Ordered list of social links.",
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/FirstPartySocialLink"
+                        },
+                        {
+                          "$ref": "#/components/schemas/CustomSocialLink"
+                        }
+                      ]
+                    },
+                    "nullable": true
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SpacingStyles": {
+        "type": "object",
+        "properties": {
+          "padding_top": {
+            "type": "integer"
+          },
+          "padding_right": {
+            "type": "integer"
+          },
+          "padding_bottom": {
+            "type": "integer"
+          },
+          "padding_left": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "padding_top",
+          "padding_right",
+          "padding_bottom",
+          "padding_left"
+        ]
+      },
+      "TextStyles": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string"
+          },
+          "font_size": {
+            "type": "integer"
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ]
+          },
+          "font_family": {
+            "type": "string"
+          },
+          "font_weight": {
+            "description": "Font weight.",
+            "type": "integer",
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ]
+          },
+          "letter_spacing": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "text_decoration": {
+            "description": "Text decoration.",
+            "type": "string",
+            "enum": [
+              "",
+              "line-through",
+              "line-through underline",
+              "none",
+              "underline",
+              "underline line-through"
+            ]
+          }
+        },
+        "required": [
+          "color",
+          "font_size",
+          "font_style",
+          "font_family",
+          "font_weight",
+          "letter_spacing",
+          "text_decoration"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

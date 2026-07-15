@@ -1,0 +1,422 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/sending-domain-activation-jobs": {
+      "post": {
+        "operationId": "create_sending_domain_activation_job_beta",
+        "summary": "Create Sending Domain Activation Job",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nActivate the referenced sending domain (requires prior verify to pass).<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_sending_domain_activation_job_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[sending-domain-activation-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "activated_at",
+                  "id",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Activate a sending domain after its DNS records have been verified.\n\nFails with 409 if DNS verification has not yet passed, or if the domain\nis already active.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendingDomainActivationJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSendingDomainActivationJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostSendingDomainActivationJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/SendingDomainActivationJobEnum"
+              },
+              "id": {
+                "description": "The ID of the activation job.",
+                "type": "string",
+                "example": "act_01JE3Z5PSNKN9V9TRGQ1N6V782"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "The lifecycle status of the sending domain after the activation attempt.",
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "pending",
+                      "warming"
+                    ]
+                  },
+                  "activated_at": {
+                    "description": "ISO8601 timestamp when activation was requested.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-04-23T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "activated_at"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "sending-domain": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/SendingDomainEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SendingDomainActivationJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SendingDomainActivationJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SendingDomainActivationJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SendingDomainActivationJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "warming_enabled": {
+                "description": "Whether to warm send volume on activation. Not supported if you have only one domain. Defaults to True if you have multiple domains.",
+                "type": "boolean",
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "sending-domain": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SendingDomainEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "sending-domain"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "SendingDomainActivationJobEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain-activation-job"
+        ]
+      },
+      "SendingDomainEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

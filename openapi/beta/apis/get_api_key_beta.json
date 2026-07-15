@@ -1,0 +1,435 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/api-keys/{id}": {
+      "get": {
+        "operationId": "get_api_key_beta",
+        "summary": "Get API Key",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRetrieve a single private API key by id.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`credentials:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_api_key_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier for the key.",
+            "required": true,
+            "schema": {
+              "description": "Identifier for the key.",
+              "type": "string",
+              "example": "01HQXYZ"
+            }
+          },
+          {
+            "name": "additional-fields[api-key]",
+            "in": "query",
+            "description": "Request additional fields not included by default in the response. Supported values: 'redacted_key'",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "redacted_key"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[api-key]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "id",
+                  "name",
+                  "redacted_key",
+                  "scopes",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiKeyResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "credentials:read"
+        ],
+        "x-klaviyo-subtag": "API Keys"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ApiKeyEnum": {
+        "type": "string",
+        "enum": [
+          "api-key"
+        ]
+      },
+      "ApiKeyResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ApiKeyEnum"
+          },
+          "id": {
+            "description": "Identifier for the key.",
+            "type": "string",
+            "example": "01HQXYZ"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Human-readable label set on the key.",
+                "type": "string",
+                "example": "prod-webhook-handler"
+              },
+              "status": {
+                "description": "Whether the key is active or disabled.",
+                "type": "string",
+                "example": "active",
+                "enum": [
+                  "active",
+                  "disabled"
+                ]
+              },
+              "scopes": {
+                "description": "API scopes granted to this key.",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "accounts:read",
+                    "accounts:write",
+                    "agents:read",
+                    "agents:write",
+                    "applications:read",
+                    "applications:write",
+                    "brands:read",
+                    "brands:write",
+                    "campaigns:read",
+                    "campaigns:write",
+                    "catalogs:read",
+                    "catalogs:write",
+                    "conversations:read",
+                    "conversations:write",
+                    "coupon-codes:read",
+                    "coupon-codes:write",
+                    "coupons:read",
+                    "coupons:write",
+                    "credentials:read",
+                    "credentials:write",
+                    "custom-objects:read",
+                    "custom-objects:write",
+                    "data-privacy:read",
+                    "data-privacy:write",
+                    "events:read",
+                    "events:write",
+                    "flows:read",
+                    "flows:write",
+                    "forms:read",
+                    "forms:write",
+                    "images:read",
+                    "images:write",
+                    "lists:read",
+                    "lists:write",
+                    "metrics:read",
+                    "metrics:write",
+                    "profiles:read",
+                    "profiles:write",
+                    "push-tokens:read",
+                    "push-tokens:write",
+                    "reviews:read",
+                    "reviews:write",
+                    "segments:read",
+                    "segments:write",
+                    "sender-config:read",
+                    "sender-config:write",
+                    "subscriptions:read",
+                    "subscriptions:write",
+                    "tags:read",
+                    "tags:write",
+                    "templates:read",
+                    "templates:write",
+                    "tracking-settings:read",
+                    "tracking-settings:write",
+                    "translations:read",
+                    "translations:write",
+                    "usage:read",
+                    "users:read",
+                    "users:write",
+                    "web-feeds:read",
+                    "web-feeds:write",
+                    "webhooks:read",
+                    "webhooks:write"
+                  ]
+                },
+                "example": [
+                  "profiles:read",
+                  "events:write"
+                ]
+              },
+              "created": {
+                "description": "Date and time when the key was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00"
+              }
+            },
+            "required": [
+              "name",
+              "status",
+              "scopes",
+              "created"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "GetApiKeyResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "properties": {
+                  "type": {
+                    "$ref": "#/components/schemas/ApiKeyEnum"
+                  },
+                  "attributes": {
+                    "properties": {
+                      "redacted_key": {
+                        "description": "Masked form of the key showing only the last four characters. Returned only when requested via ``additional-fields[api-key]=redacted_key``.",
+                        "type": "string",
+                        "example": "pk_****abcd",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "$ref": "#/components/schemas/ApiKeyResponseObjectResource"
+              }
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

@@ -1,0 +1,387 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/event-bulk-export-jobs/{job_id}": {
+      "get": {
+        "operationId": "get_event_bulk_export_job_beta",
+        "summary": "Get Event Bulk Export Job",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the status and details of an event bulk export job.\n\nWhen the job is complete, the response will include the expiration and file size\nof the exported events file.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`events:read`\n`metrics:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_event_bulk_export_job_beta.json)",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "description": "ID of the job to retrieve.",
+            "required": true,
+            "schema": {
+              "description": "ID of the job to retrieve.",
+              "type": "string",
+              "example": "01GSQPBF74KQ5YTDEPP41T1BZH"
+            }
+          },
+          {
+            "name": "fields[event-bulk-export-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "error",
+                  "id",
+                  "result",
+                  "result.expires_at",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEventBulkExportJobStatusRetrieveResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "events:read",
+          "metrics:read"
+        ],
+        "x-klaviyo-subtag": "Events"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "EventBulkExportJobEnum": {
+        "type": "string",
+        "enum": [
+          "event-bulk-export-job"
+        ]
+      },
+      "EventBulkExportJobStatusRetrieveResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/EventBulkExportJobEnum"
+          },
+          "id": {
+            "description": "Unique identifier for the export job.",
+            "type": "string",
+            "example": "01GSQPBF74KQ5YTDEPP41T1BZH"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "description": "Current status of the export job.",
+                "type": "string",
+                "example": "processing",
+                "enum": [
+                  "complete",
+                  "expired",
+                  "failed",
+                  "processing"
+                ]
+              },
+              "result": {
+                "description": "Result of the export job containing the download URL. Only present when status is 'complete'.",
+                "$ref": "#/components/schemas/ExportResult",
+                "nullable": true
+              },
+              "error": {
+                "description": "Error message if the export job failed. Only present when status is 'failed'.",
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "metric": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/MetricEnum"
+                      },
+                      "id": {
+                        "description": "The metric that events are exported from.",
+                        "type": "string",
+                        "example": "ABC123"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ExportResult": {
+        "type": "object",
+        "properties": {
+          "expires_at": {
+            "description": "Date and time when the export file expires in ISO 8601 format.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-07T12:00:00Z"
+          }
+        },
+        "required": [
+          "expires_at"
+        ]
+      },
+      "GetEventBulkExportJobStatusRetrieveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/EventBulkExportJobStatusRetrieveResponseObjectResource"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "MetricEnum": {
+        "type": "string",
+        "enum": [
+          "metric"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

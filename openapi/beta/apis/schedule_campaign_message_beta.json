@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API (Beta)",
-    "version": "2026-04-15.pre",
+    "version": "2026-07-15.pre",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -36,7 +36,7 @@
           {
             "name": "fields[campaign-message-schedule]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -46,7 +46,9 @@
                   "id",
                   "send_date",
                   "send_time",
-                  "strategy"
+                  "strategy",
+                  "throttle_unit",
+                  "throttling_percentage"
                 ]
               }
             },
@@ -377,6 +379,20 @@
                       "static",
                       "throttled"
                     ]
+                  },
+                  "throttling_percentage": {
+                    "description": "Percentage of recipients sent to per throttle unit. Present when strategy is 'throttled'.",
+                    "type": "integer",
+                    "nullable": true
+                  },
+                  "throttle_unit": {
+                    "description": "The time unit each batch of recipients is sent over. Present when strategy is 'throttled'.",
+                    "type": "string",
+                    "enum": [
+                      "hour",
+                      "minute"
+                    ],
+                    "nullable": true
                   }
                 },
                 "required": [
@@ -452,9 +468,19 @@
         "type": "object",
         "properties": {
           "throttling_percentage": {
-            "description": "Percentage of recipients to send to per hour (10, 11, 13, 14, 17, 20, 25, 33, or 50)",
+            "description": "Percentage of recipients to send to per throttle unit (10, 11, 13, 14, 17, 20, 25, 33, or 50)",
             "type": "integer",
             "example": 20
+          },
+          "throttle_unit": {
+            "description": "The time unit each batch of recipients is sent over: 'hour' or 'minute'.",
+            "type": "string",
+            "example": "hour",
+            "default": "hour",
+            "enum": [
+              "hour",
+              "minute"
+            ]
           }
         },
         "required": [
@@ -478,7 +504,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-04-15.pre/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }

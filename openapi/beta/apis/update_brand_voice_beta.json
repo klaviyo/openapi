@@ -1,0 +1,395 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/brand-voice/{id}": {
+      "patch": {
+        "operationId": "update_brand_voice_beta",
+        "summary": "Update Brand Voice",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the brand voice for the authenticated company.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_voice_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The company ID. Must match the authenticated account.",
+            "required": true,
+            "schema": {
+              "description": "The company ID. Must match the authenticated account.",
+              "type": "string",
+              "example": "abc123"
+            }
+          },
+          {
+            "name": "fields[brand-voice]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "language_patterns",
+                  "tone_descriptors",
+                  "version"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /api/brand-voice/{company_id} \u2014 JSON:API field-level partial update.\n\nPer https://jsonapi.org/format/#crud-updating-resource-attributes, only\nthe top-level attributes present in the request body are replaced;\nmissing top-level fields are preserved. A client can patch just\n`tone_descriptors` without disturbing `language_patterns`, and vice\nversa.\n\nA present top-level field is replaced wholesale (no recursive merge\ninto the list contents) \u2014 the underlying service treats\n`tone_descriptors` and `language_patterns` as full-list replacements,\nso partial-list edits must be done client-side by reading, modifying,\nand writing the full list.\n\nThe path `id` must equal the auth context's company id; mismatches\nreturn 404.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandVoicePartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandVoiceResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "BrandVoiceDescriptor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "user_modified": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "BrandVoiceEnum": {
+        "type": "string",
+        "enum": [
+          "brand-voice"
+        ]
+      },
+      "BrandVoicePartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandVoicePartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandVoicePartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandVoiceEnum"
+          },
+          "id": {
+            "description": "The company ID. Must match the authenticated account.",
+            "type": "string",
+            "example": "abc123"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "tone_descriptors": {
+                "description": "Tone descriptors to set on the brand voice. Replaces the existing list.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                },
+                "nullable": true
+              },
+              "language_patterns": {
+                "description": "Language patterns to set on the brand voice. Replaces the existing list.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                },
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PatchBrandVoiceResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandVoiceEnum"
+              },
+              "id": {
+                "description": "The company ID this brand voice belongs to.",
+                "type": "string",
+                "example": "abc123"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "description": "The version identifier of this brand voice.",
+                    "type": "string",
+                    "example": "v1"
+                  },
+                  "tone_descriptors": {
+                    "description": "Tone descriptors that characterize the brand voice.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                    }
+                  },
+                  "language_patterns": {
+                    "description": "Language patterns that characterize the brand voice.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BrandVoiceDescriptor"
+                    }
+                  }
+                },
+                "required": [
+                  "version",
+                  "tone_descriptors",
+                  "language_patterns"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

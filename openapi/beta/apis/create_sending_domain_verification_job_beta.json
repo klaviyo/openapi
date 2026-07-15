@@ -1,0 +1,461 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/sending-domain-verification-jobs": {
+      "post": {
+        "operationId": "create_sending_domain_verification_job_beta",
+        "summary": "Create Sending Domain Verification Job",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRun a DNS verification check for the referenced sending domain.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_sending_domain_verification_job_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[sending-domain-verification-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "checked_at",
+                  "dns_records",
+                  "error_code",
+                  "id",
+                  "verification_state"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Trigger a DNS verification check for a sending domain.\n\nVerification is read-only: it runs the DNS checks and returns the\ncurrent per-record state. It does not activate the domain \u2014 call the\nactivation-job endpoint to do that once verification passes.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendingDomainVerificationJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostSendingDomainVerificationJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "DnsRecord": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The DNS record type (cname, txt, mx).",
+            "type": "string",
+            "enum": [
+              "cname",
+              "mx",
+              "ns",
+              "txt"
+            ]
+          },
+          "host": {
+            "description": "The DNS hostname that must be configured by the customer.",
+            "type": "string",
+            "example": "send.example.com"
+          },
+          "value": {
+            "description": "The value the DNS record must resolve to.",
+            "type": "string",
+            "example": "u123.wl.sendgrid.net"
+          },
+          "verified": {
+            "description": "Whether Klaviyo has verified that this DNS record resolves correctly.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "host",
+          "value",
+          "verified"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostSendingDomainVerificationJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/SendingDomainVerificationJobEnum"
+              },
+              "id": {
+                "description": "The ID of the verification job.",
+                "type": "string",
+                "example": "ver_01JE3Z5PSNKN9V9TRGQ1N6V782"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "verification_state": {
+                    "description": "The verification state after the check completed.",
+                    "type": "string",
+                    "enum": [
+                      "failed",
+                      "pending",
+                      "verified"
+                    ]
+                  },
+                  "dns_records": {
+                    "description": "DNS records with their per-record verification status.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/DnsRecord"
+                    }
+                  },
+                  "error_code": {
+                    "description": "Non-null when verification failed; describes the failure cause.",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "checked_at": {
+                    "description": "ISO8601 timestamp when the verification check ran.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-04-23T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "verification_state",
+                  "dns_records",
+                  "checked_at"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "sending-domain": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/SendingDomainEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SendingDomainEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain"
+        ]
+      },
+      "SendingDomainVerificationJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SendingDomainVerificationJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SendingDomainVerificationJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SendingDomainVerificationJobEnum"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "sending-domain": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SendingDomainEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "sending-domain"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "relationships"
+        ]
+      },
+      "SendingDomainVerificationJobEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain-verification-job"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}
