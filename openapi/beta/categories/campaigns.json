@@ -31,8 +31,64 @@
       "get": {
         "operationId": "get_campaigns_beta",
         "summary": "Get Campaigns",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaigns, with optional filtering.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaigns_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all campaigns, with optional filtering.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaigns_beta.json)",
         "parameters": [
+          {
+            "name": "fields[campaign-audience]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.excluded",
+                  "definition.included",
+                  "definition.name",
+                  "definition.priority",
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.name",
+                  "definition.send_options",
+                  "definition.send_options.is_ignoring_unsubscribes",
+                  "definition.send_options.recipient_percentage",
+                  "definition.send_options.send_strategy",
+                  "definition.send_options.send_time",
+                  "definition.send_options.send_times",
+                  "definition.send_options.throttle_unit",
+                  "definition.send_options.throttling_type",
+                  "definition.status",
+                  "definition.tracking_options",
+                  "definition.tracking_options.is_add_utm",
+                  "definition.tracking_options.is_tracking_clicks",
+                  "definition.tracking_options.is_tracking_opens",
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
           {
             "name": "fields[campaign]",
             "in": "query",
@@ -71,6 +127,22 @@
               "type": "string",
               "example": "any(id,['example'])"
             }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "campaign-audiences",
+                  "campaign-messages"
+                ]
+              }
+            },
+            "explode": false
           },
           {
             "name": "page[cursor]",
@@ -118,7 +190,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -128,7 +200,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCampaignResponseCollection"
+                  "$ref": "#/components/schemas/GetCampaignResponseCollectionCompoundDocument"
                 }
               }
             }
@@ -226,7 +298,7 @@
       "post": {
         "operationId": "create_campaign_beta",
         "summary": "Create Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nCreate a campaign with inline audiences, messages, and variations.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nCreate a campaign with inline audiences, messages, and variations.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_campaign_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign]",
@@ -265,7 +337,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -316,7 +388,7 @@
       "get": {
         "operationId": "get_campaign_beta",
         "summary": "Get Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet a campaign by ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet a campaign by ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -327,6 +399,62 @@
               "description": "The campaign ID to be retrieved",
               "type": "string"
             }
+          },
+          {
+            "name": "fields[campaign-audience]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.excluded",
+                  "definition.included",
+                  "definition.name",
+                  "definition.priority",
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.name",
+                  "definition.send_options",
+                  "definition.send_options.is_ignoring_unsubscribes",
+                  "definition.send_options.recipient_percentage",
+                  "definition.send_options.send_strategy",
+                  "definition.send_options.send_time",
+                  "definition.send_options.send_times",
+                  "definition.send_options.throttle_unit",
+                  "definition.send_options.throttling_type",
+                  "definition.status",
+                  "definition.tracking_options",
+                  "definition.tracking_options.is_add_utm",
+                  "definition.tracking_options.is_tracking_clicks",
+                  "definition.tracking_options.is_tracking_opens",
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
           },
           {
             "name": "fields[campaign]",
@@ -359,13 +487,29 @@
             "explode": false
           },
           {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "campaign-audiences",
+                  "campaign-messages"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -375,7 +519,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCampaignResponse"
+                  "$ref": "#/components/schemas/GetCampaignResponseCompoundDocument"
                 }
               }
             }
@@ -403,7 +547,7 @@
       "patch": {
         "operationId": "update_campaign_beta",
         "summary": "Update Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nUpdate a campaign with the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nUpdate a campaign with the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -452,7 +596,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -501,7 +645,7 @@
       "delete": {
         "operationId": "delete_campaign_beta",
         "summary": "Delete Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nDelete a campaign with the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nDelete a campaign with the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_campaign_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -520,7 +664,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -553,7 +697,7 @@
       "get": {
         "operationId": "get_campaign_messages_beta",
         "summary": "Get Campaign Messages",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nReturns campaign messages based on filters.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_messages_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nReturns campaign messages based on filters.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_messages_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign-message]",
@@ -589,6 +733,95 @@
             "explode": false
           },
           {
+            "name": "fields[campaign-variation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.details",
+                  "definition.details.action_buttons",
+                  "definition.details.add_info_link",
+                  "definition.details.add_opt_out_language",
+                  "definition.details.add_org_prefix",
+                  "definition.details.android_deep_link",
+                  "definition.details.badge",
+                  "definition.details.badge_config",
+                  "definition.details.badge_value",
+                  "definition.details.bcc_email",
+                  "definition.details.body",
+                  "definition.details.cc_email",
+                  "definition.details.channel",
+                  "definition.details.content_available",
+                  "definition.details.cost",
+                  "definition.details.dynamic_media_template",
+                  "definition.details.from_email",
+                  "definition.details.from_label",
+                  "definition.details.include_contact_card",
+                  "definition.details.ios_deep_link",
+                  "definition.details.kv_pairs",
+                  "definition.details.message_hierarchy",
+                  "definition.details.mms_dynamic_image_template",
+                  "definition.details.mms_static_image_asset_id",
+                  "definition.details.mutable_content",
+                  "definition.details.open_action",
+                  "definition.details.preview_text",
+                  "definition.details.push_type",
+                  "definition.details.reply_to_email",
+                  "definition.details.shorten_links",
+                  "definition.details.sound",
+                  "definition.details.sound_file_name",
+                  "definition.details.static_asset_id",
+                  "definition.details.subject",
+                  "definition.details.template_id",
+                  "definition.details.text_message_type",
+                  "definition.details.title",
+                  "definition.details.video_asset_id",
+                  "definition.details.web_url",
+                  "definition.name",
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "definition",
+                  "definition.archived",
+                  "definition.builder",
+                  "definition.color",
+                  "definition.description",
+                  "definition.name",
+                  "definition.send_settings",
+                  "definition.send_settings.exit_condition_conversion_metric_id",
+                  "definition.send_settings.exit_condition_enabled",
+                  "definition.send_settings.send_passed_rltz_immediately",
+                  "definition.send_settings.send_strategy",
+                  "definition.send_settings.send_timezone",
+                  "id",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "filter",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals`<br>`campaign_id`: `equals`<br>`name`: `contains`<br>`status`: `equals`<br>`created`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`updated`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
@@ -596,6 +829,22 @@
               "type": "string",
               "example": "equals(id,'example')"
             }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "campaign",
+                  "campaign-variations"
+                ]
+              }
+            },
+            "explode": false
           },
           {
             "name": "page[cursor]",
@@ -645,7 +894,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -655,7 +904,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMessageResponseCollection"
+                  "$ref": "#/components/schemas/GetMessageResponseCollectionCompoundDocument"
                 }
               }
             }
@@ -757,7 +1006,7 @@
       "post": {
         "operationId": "create_campaign_message_beta",
         "summary": "Create Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nCreate a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nCreate a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign-message]",
@@ -799,7 +1048,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -849,7 +1098,7 @@
       "get": {
         "operationId": "get_campaign_message_beta",
         "summary": "Get Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet a campaign message by ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet a campaign message by ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -895,13 +1144,118 @@
             "explode": false
           },
           {
+            "name": "fields[campaign-variation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.details",
+                  "definition.details.action_buttons",
+                  "definition.details.add_info_link",
+                  "definition.details.add_opt_out_language",
+                  "definition.details.add_org_prefix",
+                  "definition.details.android_deep_link",
+                  "definition.details.badge",
+                  "definition.details.badge_config",
+                  "definition.details.badge_value",
+                  "definition.details.bcc_email",
+                  "definition.details.body",
+                  "definition.details.cc_email",
+                  "definition.details.channel",
+                  "definition.details.content_available",
+                  "definition.details.cost",
+                  "definition.details.dynamic_media_template",
+                  "definition.details.from_email",
+                  "definition.details.from_label",
+                  "definition.details.include_contact_card",
+                  "definition.details.ios_deep_link",
+                  "definition.details.kv_pairs",
+                  "definition.details.message_hierarchy",
+                  "definition.details.mms_dynamic_image_template",
+                  "definition.details.mms_static_image_asset_id",
+                  "definition.details.mutable_content",
+                  "definition.details.open_action",
+                  "definition.details.preview_text",
+                  "definition.details.push_type",
+                  "definition.details.reply_to_email",
+                  "definition.details.shorten_links",
+                  "definition.details.sound",
+                  "definition.details.sound_file_name",
+                  "definition.details.static_asset_id",
+                  "definition.details.subject",
+                  "definition.details.template_id",
+                  "definition.details.text_message_type",
+                  "definition.details.title",
+                  "definition.details.video_asset_id",
+                  "definition.details.web_url",
+                  "definition.name",
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "definition",
+                  "definition.archived",
+                  "definition.builder",
+                  "definition.color",
+                  "definition.description",
+                  "definition.name",
+                  "definition.send_settings",
+                  "definition.send_settings.exit_condition_conversion_metric_id",
+                  "definition.send_settings.exit_condition_enabled",
+                  "definition.send_settings.send_passed_rltz_immediately",
+                  "definition.send_settings.send_strategy",
+                  "definition.send_settings.send_timezone",
+                  "id",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "campaign",
+                  "campaign-variations"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -911,7 +1265,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMessageResponse"
+                  "$ref": "#/components/schemas/GetMessageResponseCompoundDocument"
                 }
               }
             }
@@ -939,7 +1293,7 @@
       "patch": {
         "operationId": "update_campaign_message_beta",
         "summary": "Update Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nUpdate a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nUpdate a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -991,7 +1345,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1039,7 +1393,7 @@
       "delete": {
         "operationId": "delete_campaign_message_beta",
         "summary": "Delete Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nDelete a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nDelete a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1058,7 +1412,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1091,7 +1445,7 @@
       "get": {
         "operationId": "get_campaign_audience_beta",
         "summary": "Get Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign audience with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the campaign audience with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1128,13 +1482,92 @@
             "explode": false
           },
           {
+            "name": "fields[campaign-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.name",
+                  "definition.send_options",
+                  "definition.send_options.is_ignoring_unsubscribes",
+                  "definition.send_options.recipient_percentage",
+                  "definition.send_options.send_strategy",
+                  "definition.send_options.send_time",
+                  "definition.send_options.send_times",
+                  "definition.send_options.throttle_unit",
+                  "definition.send_options.throttling_type",
+                  "definition.status",
+                  "definition.tracking_options",
+                  "definition.tracking_options.is_add_utm",
+                  "definition.tracking_options.is_tracking_clicks",
+                  "definition.tracking_options.is_tracking_opens",
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[campaign]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "definition",
+                  "definition.archived",
+                  "definition.builder",
+                  "definition.color",
+                  "definition.description",
+                  "definition.name",
+                  "definition.send_settings",
+                  "definition.send_settings.exit_condition_conversion_metric_id",
+                  "definition.send_settings.exit_condition_enabled",
+                  "definition.send_settings.send_passed_rltz_immediately",
+                  "definition.send_settings.send_strategy",
+                  "definition.send_settings.send_timezone",
+                  "id",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "campaign",
+                  "campaign-messages"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1144,7 +1577,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetAudienceResponse"
+                  "$ref": "#/components/schemas/GetAudienceResponseCompoundDocument"
                 }
               }
             }
@@ -1172,7 +1605,7 @@
       "patch": {
         "operationId": "update_campaign_audience_beta",
         "summary": "Update Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nUpdate the campaign audience with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nUpdate the campaign audience with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1215,7 +1648,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1263,7 +1696,7 @@
       "delete": {
         "operationId": "delete_campaign_audience_beta",
         "summary": "Delete Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nDelete the campaign audience with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nDelete the campaign audience with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1283,7 +1716,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1316,7 +1749,7 @@
       "get": {
         "operationId": "get_campaign_variation_beta",
         "summary": "Get Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign variation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the campaign variation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1328,6 +1761,39 @@
               "type": "string",
               "example": "925e385b52fb405715f3616c337cc65c"
             }
+          },
+          {
+            "name": "fields[campaign-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "definition.name",
+                  "definition.send_options",
+                  "definition.send_options.is_ignoring_unsubscribes",
+                  "definition.send_options.recipient_percentage",
+                  "definition.send_options.send_strategy",
+                  "definition.send_options.send_time",
+                  "definition.send_options.send_times",
+                  "definition.send_options.throttle_unit",
+                  "definition.send_options.throttling_type",
+                  "definition.status",
+                  "definition.tracking_options",
+                  "definition.tracking_options.is_add_utm",
+                  "definition.tracking_options.is_tracking_clicks",
+                  "definition.tracking_options.is_tracking_opens",
+                  "id",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
           },
           {
             "name": "fields[campaign-variation]",
@@ -1389,13 +1855,75 @@
             "explode": false
           },
           {
+            "name": "fields[image]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "format",
+                  "hidden",
+                  "id",
+                  "image_url",
+                  "name",
+                  "size",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[translation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "channel",
+                  "created",
+                  "fallback_locale",
+                  "id",
+                  "metadata",
+                  "source_locale",
+                  "target_locales",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "campaign-message",
+                  "image",
+                  "translation"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1405,7 +1933,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetVariationResponse"
+                  "$ref": "#/components/schemas/GetVariationResponseCompoundDocument"
                 }
               }
             }
@@ -1433,7 +1961,7 @@
       "patch": {
         "operationId": "update_campaign_variation_beta",
         "summary": "Update Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nUpdate the campaign variation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nUpdate the campaign variation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1512,7 +2040,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1560,7 +2088,7 @@
       "delete": {
         "operationId": "delete_campaign_variation_beta",
         "summary": "Delete Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nDelete the campaign variation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nDelete the campaign variation with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1580,7 +2108,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1613,7 +2141,7 @@
       "post": {
         "operationId": "clone_campaign_beta",
         "summary": "Clone Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nClones an existing campaign, returning a new campaign based on the original with a new ID and name.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/clone_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nClones an existing campaign, returning a new campaign based on the original with a new ID and name.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/clone_campaign_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign]",
@@ -1652,7 +2180,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1706,7 +2234,7 @@
       "post": {
         "operationId": "create_campaign_audience_beta",
         "summary": "Create Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nCreate a campaign audience.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nCreate a campaign audience.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign-audience]",
@@ -1738,7 +2266,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1788,7 +2316,7 @@
       "post": {
         "operationId": "clone_campaign_audience_beta",
         "summary": "Clone Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nClone an existing campaign audience to a target campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/clone_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nClone an existing campaign audience to a target campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/clone_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign-audience]",
@@ -1820,7 +2348,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1873,7 +2401,7 @@
       "post": {
         "operationId": "clone_campaign_message_beta",
         "summary": "Clone Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nClone an existing campaign message to a target audience.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/clone_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nClone an existing campaign message to a target audience.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/clone_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign-message]",
@@ -1915,7 +2443,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -1968,7 +2496,7 @@
       "post": {
         "operationId": "create_campaign_variation_beta",
         "summary": "Create Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nCreate a campaign variation.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nCreate a campaign variation.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign-variation]",
@@ -2036,7 +2564,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2086,7 +2614,7 @@
       "post": {
         "operationId": "schedule_campaign_message_beta",
         "summary": "Schedule Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nSchedule a single campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/schedule_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nSchedule a single campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/schedule_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "fields[campaign-message-schedule]",
@@ -2116,7 +2644,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2170,7 +2698,7 @@
       "patch": {
         "operationId": "update_campaign_message_schedule_beta",
         "summary": "Update Campaign Message Schedule",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nCancel or revert a scheduled campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_message_schedule_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nCancel or revert a scheduled campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_campaign_message_schedule_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2188,7 +2716,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2231,7 +2759,7 @@
       "get": {
         "operationId": "get_campaign_for_campaign_message_beta",
         "summary": "Get Campaign for Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nReturn the related omnicampaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_for_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nReturn the related omnicampaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_for_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2280,7 +2808,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2323,7 +2851,7 @@
       "get": {
         "operationId": "get_campaign_id_for_campaign_message_beta",
         "summary": "Get Campaign ID for Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nReturns the ID of the related omnicampaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_id_for_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nReturns the ID of the related omnicampaign<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_id_for_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2342,7 +2870,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2385,7 +2913,7 @@
       "get": {
         "operationId": "get_audience_for_campaign_message_beta",
         "summary": "Get Audience for Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign audience for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_audience_for_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the campaign audience for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_audience_for_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2427,7 +2955,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2470,7 +2998,7 @@
       "get": {
         "operationId": "get_audience_id_for_campaign_message_beta",
         "summary": "Get Audience ID for Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign audience [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_audience_id_for_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the campaign audience [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_audience_id_for_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2489,7 +3017,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2532,7 +3060,7 @@
       "get": {
         "operationId": "get_tags_for_campaign_message_beta",
         "summary": "Get Tags for Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all tags for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tags_for_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all tags for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tags_for_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2567,7 +3095,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2611,7 +3139,7 @@
       "get": {
         "operationId": "get_tag_ids_for_campaign_message_beta",
         "summary": "Get Tag IDs for Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all tag [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tag_ids_for_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all tag [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`campaigns:read`\n`tags:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tag_ids_for_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2629,7 +3157,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2673,7 +3201,7 @@
       "get": {
         "operationId": "get_messages_for_campaign_beta",
         "summary": "Get Messages for Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all messages for the given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_messages_for_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all messages for the given campaign.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_messages_for_campaign_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2734,7 +3262,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2778,7 +3306,7 @@
       "get": {
         "operationId": "get_message_ids_for_campaign_beta",
         "summary": "Get Message IDs for Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign message [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_ids_for_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all campaign message [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_ids_for_campaign_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2806,7 +3334,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2850,7 +3378,7 @@
       "get": {
         "operationId": "get_campaign_audiences_for_campaign_beta",
         "summary": "Get Campaign Audiences for Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign audiences for the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_audiences_for_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all campaign audiences for the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_audiences_for_campaign_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2892,7 +3420,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2936,7 +3464,7 @@
       "get": {
         "operationId": "get_audience_ids_for_campaign_beta",
         "summary": "Get Audience IDs for Campaign",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign audience [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_audience_ids_for_campaign_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all campaign audience [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_audience_ids_for_campaign_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2955,7 +3483,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -2998,7 +3526,7 @@
       "get": {
         "operationId": "get_campaign_for_campaign_audience_beta",
         "summary": "Get Campaign for Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign for the given campaign audience ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_for_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the campaign for the given campaign audience ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_for_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3048,7 +3576,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3091,7 +3619,7 @@
       "get": {
         "operationId": "get_campaign_id_for_campaign_audience_beta",
         "summary": "Get Campaign ID for Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign audience ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_id_for_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the campaign [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign audience ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_id_for_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3111,7 +3639,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3154,7 +3682,7 @@
       "get": {
         "operationId": "get_campaign_messages_for_campaign_audience_beta",
         "summary": "Get Campaign Messages for Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign messages for the given campaign audience ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_messages_for_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all campaign messages for the given campaign audience ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_campaign_messages_for_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3216,7 +3744,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3260,7 +3788,7 @@
       "get": {
         "operationId": "get_message_ids_for_campaign_audience_beta",
         "summary": "Get Message IDs for Campaign Audience",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign messages [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign audience ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_ids_for_campaign_audience_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all campaign messages [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign audience ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_ids_for_campaign_audience_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3289,7 +3817,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3332,7 +3860,7 @@
       "get": {
         "operationId": "get_message_for_campaign_variation_beta",
         "summary": "Get Message for Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign message for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_for_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the campaign message for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_for_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3385,7 +3913,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3428,7 +3956,7 @@
       "get": {
         "operationId": "get_message_id_for_campaign_variation_beta",
         "summary": "Get Message ID for Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the campaign message [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_id_for_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the campaign message [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_id_for_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3448,7 +3976,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3491,7 +4019,7 @@
       "get": {
         "operationId": "get_translation_for_campaign_variation_beta",
         "summary": "Get Translation for Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the translation for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_translation_for_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the translation for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_translation_for_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3534,7 +4062,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3577,7 +4105,7 @@
       "get": {
         "operationId": "get_translation_id_for_campaign_variation_beta",
         "summary": "Get Translation ID for Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the translation [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_translation_id_for_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the translation [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_translation_id_for_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3597,7 +4125,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3640,7 +4168,7 @@
       "get": {
         "operationId": "get_image_for_campaign_variation_beta",
         "summary": "Get Image for Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the image for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_image_for_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the image for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_image_for_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3682,7 +4210,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3725,7 +4253,7 @@
       "get": {
         "operationId": "get_image_id_for_campaign_variation_beta",
         "summary": "Get Image ID for Campaign Variation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet the image [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_image_id_for_campaign_variation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet the image [relationship](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign variation ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_image_id_for_campaign_variation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3745,7 +4273,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3788,7 +4316,7 @@
       "get": {
         "operationId": "get_variations_for_campaign_message_beta",
         "summary": "Get Variations for Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign variations for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_variations_for_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all campaign variations for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_variations_for_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3866,7 +4394,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -3909,7 +4437,7 @@
       "get": {
         "operationId": "get_variation_ids_for_campaign_message_beta",
         "summary": "Get Variation IDs for Campaign Message",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-07-15 revision.\n            >\n            > A beta revision header (2026-04-15.pre) is required to use our beta APIs.\n\nGet all campaign variation [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_variation_ids_for_campaign_message_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and will be released in GA in our 2026-10-15 revision.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs.\n\nGet all campaign variation [relationships](https://developers.klaviyo.com/en/reference/api_overview#relationships) for the given campaign message ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_variation_ids_for_campaign_message_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3928,7 +4456,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-04-15.pre"
+              "default": "2026-07-15.pre"
             }
           }
         ],
@@ -5094,7 +5622,12 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/AudienceResponseObjectResource"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AudienceResponseObjectResource"
+              }
+            ],
+            "nullable": true
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -5115,6 +5648,33 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetAudienceResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AudienceResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CampaignResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/MessageResponseObjectResource"
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -5378,7 +5938,7 @@
           "data"
         ]
       },
-      "GetCampaignResponseCollection": {
+      "GetCampaignResponseCollectionCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
@@ -5389,6 +5949,46 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/MessageResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/AudienceResponseObjectResource"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCampaignResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CampaignResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/MessageResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/AudienceResponseObjectResource"
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -5536,6 +6136,63 @@
           "data"
         ]
       },
+      "GetMessageResponseCollectionCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CampaignResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/VariationResponseObjectResource"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetMessageResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MessageResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CampaignResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/VariationResponseObjectResource"
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "GetTagResponseCollection": {
         "type": "object",
         "properties": {
@@ -5572,25 +6229,6 @@
           "data"
         ]
       },
-      "GetVariationResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VariationResponseObjectResource"
-              }
-            ],
-            "nullable": true
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "GetVariationResponseCollection": {
         "type": "object",
         "properties": {
@@ -5602,6 +6240,36 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetVariationResponseCompoundDocument": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/VariationResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ImageResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/MessageResponseObjectResource"
+                },
+                {
+                  "$ref": "#/components/schemas/TranslationResponseObjectResource"
+                }
+              ]
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
