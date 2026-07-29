@@ -134,6 +134,7 @@
                   "definition.data.message.additional_filters",
                   "definition.data.message.additional_filters.condition_groups",
                   "definition.data.message.android_link",
+                  "definition.data.message.automation_id",
                   "definition.data.message.badge",
                   "definition.data.message.badge_options",
                   "definition.data.message.badge_options.badge_config",
@@ -145,6 +146,7 @@
                   "definition.data.message.conversion_metric_id",
                   "definition.data.message.custom_tracking_params",
                   "definition.data.message.dynamic_image",
+                  "definition.data.message.expiry_hours",
                   "definition.data.message.from_email",
                   "definition.data.message.from_label",
                   "definition.data.message.headers",
@@ -2247,6 +2249,9 @@
                     "$ref": "#/components/schemas/SendWhatsAppAction"
                   },
                   {
+                    "$ref": "#/components/schemas/SendWhatsAppWithACAction"
+                  },
+                  {
                     "$ref": "#/components/schemas/TimeDelayAction"
                   },
                   {
@@ -3005,6 +3010,126 @@
             "required": [
               "condition_groups"
             ]
+          }
+        }
+      },
+      "FlowWhatsAppWithAC": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "vendor_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "smart_sending_enabled": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "transactional": {
+            "type": "boolean",
+            "default": false
+          },
+          "add_tracking_params": {
+            "type": "boolean",
+            "default": false
+          },
+          "additional_filters": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "condition_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/ProfilePropertyCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileNoGroupMembershipCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRegionCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePostalCodeDistanceCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsDateCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsStringCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsNumericCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityPriorityCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePredictiveAnalyticsChannelAffinityRankCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileMarketingConsentCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/FlowsProfileMetricCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileRandomSampleCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasCustomObjectCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfilePermissionsCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasNotReceivedEmailMessageCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasNotReceivedSmsMessageCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileHasNotReceivedPushMessageCondition"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "conditions"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "condition_groups"
+            ]
+          },
+          "automation_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiry_hours": {
+            "type": "integer",
+            "nullable": true
           }
         }
       },
@@ -5399,6 +5524,9 @@
                         "$ref": "#/components/schemas/SendWhatsAppAction"
                       },
                       {
+                        "$ref": "#/components/schemas/SendWhatsAppWithACAction"
+                      },
+                      {
                         "$ref": "#/components/schemas/TimeDelayAction"
                       },
                       {
@@ -7405,6 +7533,62 @@
         "properties": {
           "message": {
             "$ref": "#/components/schemas/FlowWhatsApp",
+            "nullable": true
+          },
+          "status": {
+            "description": "Flow action status.",
+            "type": "string",
+            "example": "draft",
+            "default": "draft",
+            "enum": [
+              "disabled",
+              "draft",
+              "live",
+              "manual"
+            ]
+          }
+        }
+      },
+      "SendWhatsAppWithACAction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The real ID of an action. Not allowed on create.",
+            "type": "string",
+            "example": "123",
+            "nullable": true
+          },
+          "temporary_id": {
+            "description": "A temporary ID to use only during a create operation. Existing actions should use the id field.",
+            "type": "string",
+            "example": "action-1",
+            "nullable": true,
+            "writeOnly": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "send-whatsapp-with-ac"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/Link",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SendWhatsAppWithACActionData",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "SendWhatsAppWithACActionData": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/FlowWhatsAppWithAC",
             "nullable": true
           },
           "status": {
