@@ -1143,7 +1143,7 @@
             "schema": {
               "description": "The compound ID of the object record, formatted as object_type_id:::object_record_id",
               "type": "string",
-              "example": "01K8XV2MM6RFVZT8W61K6CR3ER:::external-id-1"
+              "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::sub-001"
             }
           },
           {
@@ -3360,7 +3360,7 @@
           "name": {
             "description": "The name of the schema property",
             "type": "string",
-            "example": "age"
+            "example": "service_plan"
           },
           "type": {
             "description": "The type of the schema property",
@@ -3437,7 +3437,7 @@
           },
           "value": {
             "description": "Constant value assigned to every record",
-            "example": "some_value",
+            "example": "active",
             "oneOf": [
               {
                 "type": "integer"
@@ -3466,7 +3466,7 @@
           "source_id": {
             "description": "Data source ULID ID",
             "type": "string",
-            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+            "example": "01JXKX2HM7NV4QPTR5WE8BF6GY"
           },
           "type": {
             "description": "String literal for serialization",
@@ -3478,12 +3478,12 @@
           "id_path": {
             "description": "JSONPath data selector to owning ID",
             "type": "string",
-            "example": "$['id']"
+            "example": "$['object_record']['subscription_id']"
           },
           "related_id_path": {
             "description": "JSONPath data selector to related ID",
             "type": "string",
-            "example": "$['related_id']"
+            "example": "$['object_record']['pet_id']"
           },
           "update_strategy": {
             "description": "Strategy for updating relationships with each new RawDataRecord ingestion",
@@ -3597,8 +3597,29 @@
                       "type": "data-source-record",
                       "attributes": {
                         "record": {
-                          "key1": "value1",
-                          "key2": "value2"
+                          "object_record": {
+                            "subscription_id": "sub-001",
+                            "service_plan": "Monthly Grooming",
+                            "visits_per_month": 2,
+                            "monthly_rate": 79.99,
+                            "is_active": true,
+                            "next_appointment": "2026-08-15T10:00:00Z",
+                            "pet_id": "pet-001"
+                          },
+                          "relationships": {
+                            "owners": [
+                              {
+                                "id": "sub-001",
+                                "email": "alex@example.com",
+                                "phone": "+15550001000"
+                              },
+                              {
+                                "id": "sub-001",
+                                "email": "jordan@example.com",
+                                "phone": "+15550001001"
+                              }
+                            ]
+                          }
                         }
                       }
                     }
@@ -3634,7 +3655,7 @@
                       "id": {
                         "description": "The data source to which the records belong.",
                         "type": "string",
-                        "example": "01J7C23V8XWMRG13FMD7VZN6GW"
+                        "example": "01JXKX2HM7NV4QPTR5WE8BF6GY"
                       }
                     },
                     "required": [
@@ -3686,8 +3707,29 @@
                     "type": "data-source-record",
                     "attributes": {
                       "record": {
-                        "key1": "value1",
-                        "key2": "value2"
+                        "object_record": {
+                          "subscription_id": "sub-001",
+                          "service_plan": "Monthly Grooming",
+                          "visits_per_month": 2,
+                          "monthly_rate": 79.99,
+                          "is_active": true,
+                          "next_appointment": "2026-08-15T10:00:00Z",
+                          "pet_id": "pet-001"
+                        },
+                        "relationships": {
+                          "owners": [
+                            {
+                              "id": "sub-001",
+                              "email": "alex@example.com",
+                              "phone": "+15550001000"
+                            },
+                            {
+                              "id": "sub-001",
+                              "email": "jordan@example.com",
+                              "phone": "+15550001001"
+                            }
+                          ]
+                        }
                       }
                     }
                   }
@@ -3721,7 +3763,7 @@
                       "id": {
                         "description": "The data source to which the records belong.",
                         "type": "string",
-                        "example": "01J7C23V8XWMRG13FMD7VZN6GW"
+                        "example": "01JXKX2HM7NV4QPTR5WE8BF6GY"
                       }
                     },
                     "required": [
@@ -3791,7 +3833,7 @@
               "title": {
                 "description": "The title of the data source",
                 "type": "string",
-                "example": "My Data Source"
+                "example": "Pet Care CRM"
               },
               "visibility": {
                 "description": "The status of the data source",
@@ -3804,7 +3846,7 @@
               "description": {
                 "description": "The description of the data source",
                 "type": "string",
-                "example": "This is a data source"
+                "example": "Subscription records exported from the pet care CRM"
               },
               "namespace": {
                 "description": "The namespace of the data source",
@@ -4120,7 +4162,7 @@
                 "id": {
                   "description": "A compound ID uniquely identifying this relationship, in the format '{related_schema_id}:::{relationship_name}'.",
                   "type": "string",
-                  "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
+                  "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::subscription"
                 }
               }
             }
@@ -4284,7 +4326,7 @@
                 "id": {
                   "description": "A compound ID uniquely identifying this relationship, in the format 'profile:::{relationship_name}'.",
                   "type": "string",
-                  "example": "profile:::related_items"
+                  "example": "profile:::booked_by"
                 }
               }
             }
@@ -4318,7 +4360,7 @@
                 "id": {
                   "description": "The compound ID of the object record, formatted as object_type_id:::object_record_id",
                   "type": "string",
-                  "example": "01K8XV2MM6RFVZT8W61K6CR3ER:::external-id-1"
+                  "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::sub-001"
                 }
               }
             }
@@ -4445,7 +4487,7 @@
                 "id": {
                   "description": "A compound ID uniquely identifying this relationship, in the format '{related_object_type_id}:::{relationship_name}'.",
                   "type": "string",
-                  "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
+                  "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::subscription"
                 }
               }
             }
@@ -4731,7 +4773,7 @@
           "id": {
             "description": "The compound ID of the object record, formatted as object_type_id:::object_record_id",
             "type": "string",
-            "example": "01K8XV2MM6RFVZT8W61K6CR3ER:::external-id-1"
+            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::sub-001"
           },
           "attributes": {
             "type": "object",
@@ -4779,7 +4821,7 @@
               "title": {
                 "description": "The title for this object schema",
                 "type": "string",
-                "example": "My object"
+                "example": "Pet Care Subscription"
               },
               "properties": {
                 "description": "Properties of the object schema",
@@ -4945,12 +4987,12 @@
           "name": {
             "description": "The name of the relationship",
             "type": "string",
-            "example": "related_items"
+            "example": "subscription"
           },
           "description": {
             "description": "The description of the relationship",
             "type": "string",
-            "example": "Items related to this schema",
+            "example": "The subscription this pet is enrolled in",
             "default": "",
             "nullable": true
           }
@@ -5047,12 +5089,12 @@
           "name": {
             "description": "The name of the relationship",
             "type": "string",
-            "example": "related_items"
+            "example": "subscription"
           },
           "description": {
             "description": "The description of the relationship",
             "type": "string",
-            "example": "Items related to this schema",
+            "example": "The subscription this pet is enrolled in",
             "nullable": true
           }
         },
@@ -5099,7 +5141,7 @@
           "id": {
             "description": "A compound ID uniquely identifying this relationship, in the format '{related_schema_id}:::{relationship_name}'.",
             "type": "string",
-            "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
+            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::subscription"
           },
           "attributes": {
             "type": "object",
@@ -5132,13 +5174,13 @@
           "name": {
             "description": "The name of the relationship",
             "type": "string",
-            "example": "related_items",
+            "example": "subscription",
             "nullable": true
           },
           "description": {
             "description": "The description of the relationship",
             "type": "string",
-            "example": "Items related to this schema",
+            "example": "The subscription this pet is enrolled in",
             "nullable": true
           }
         },
@@ -5334,7 +5376,7 @@
               "title": {
                 "description": "The title for this object type. Note that this title moves in lockstep with the associated object-schema title.",
                 "type": "string",
-                "example": "My object type"
+                "example": "Pet Care Subscription"
               },
               "description": {
                 "description": "The description of this object type. Note that this description moves in lockstep with the associated object-schema description.",
@@ -5401,12 +5443,12 @@
           "name": {
             "description": "The name of the relationship",
             "type": "string",
-            "example": "related_items"
+            "example": "subscription"
           },
           "description": {
             "description": "The description of the relationship",
             "type": "string",
-            "example": "Items related to this object",
+            "example": "The subscription this pet is enrolled in",
             "nullable": true
           }
         },
@@ -5424,7 +5466,7 @@
           "id": {
             "description": "A compound ID uniquely identifying this relationship, in the format '{related_object_type_id}:::{relationship_name}'.",
             "type": "string",
-            "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
+            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::subscription"
           },
           "attributes": {
             "type": "object",
@@ -5455,7 +5497,7 @@
           "id": {
             "description": "The ULID ID of the object type",
             "type": "string",
-            "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD"
           },
           "attributes": {
             "type": "object",
@@ -5463,7 +5505,7 @@
               "title": {
                 "description": "The title for this object type",
                 "type": "string",
-                "example": "My object"
+                "example": "Pet Care Subscription"
               },
               "description": {
                 "description": "The description of this object type",
@@ -5915,7 +5957,7 @@
                   "title": {
                     "description": "The title of the data source",
                     "type": "string",
-                    "example": "My Data Source"
+                    "example": "Pet Care CRM"
                   },
                   "visibility": {
                     "description": "The status of the data source",
@@ -5928,7 +5970,7 @@
                   "description": {
                     "description": "The description of the data source",
                     "type": "string",
-                    "example": "This is a data source"
+                    "example": "Subscription records exported from the pet care CRM"
                   },
                   "namespace": {
                     "description": "The namespace of the data source",
@@ -6156,7 +6198,7 @@
               "id": {
                 "description": "The ULID ID of the object type",
                 "type": "string",
-                "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+                "example": "01JXKYCN9A5M3QPVR8T2WE4BLD"
               },
               "attributes": {
                 "type": "object",
@@ -6164,7 +6206,7 @@
                   "title": {
                     "description": "The title for this object type",
                     "type": "string",
-                    "example": "My object"
+                    "example": "Pet Care Subscription"
                   },
                   "description": {
                     "description": "The description of this object type",
@@ -6503,7 +6545,7 @@
           "source_id": {
             "description": "Data source ULID ID",
             "type": "string",
-            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+            "example": "01JXKX2HM7NV4QPTR5WE8BF6GY"
           },
           "type": {
             "description": "String literal for serialization",
@@ -6515,7 +6557,7 @@
           "id_path": {
             "description": "JSONPath data selector to owning ID",
             "type": "string",
-            "example": "$['id']"
+            "example": "$['relationships']['owners'][*]['id']"
           },
           "related_id_paths": {
             "description": "List of profile identifier mappings to JSONPath data selectors",
@@ -6526,7 +6568,11 @@
             "example": [
               {
                 "identifier_type": "email",
-                "path": "$['email']"
+                "path": "$['relationships']['owners'][*]['email']"
+              },
+              {
+                "identifier_type": "phone",
+                "path": "$['relationships']['owners'][*]['phone']"
               }
             ]
           },
@@ -6558,7 +6604,7 @@
           "id": {
             "description": "A compound ID uniquely identifying this relationship, in the format 'profile:::{relationship_name}'.",
             "type": "string",
-            "example": "profile:::related_items"
+            "example": "profile:::booked_by"
           },
           "attributes": {
             "type": "object",
@@ -6586,17 +6632,17 @@
           "source_id": {
             "description": "Data source ULID ID",
             "type": "string",
-            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+            "example": "01JXKX2HM7NV4QPTR5WE8BF6GY"
           },
           "id_path": {
             "description": "JSONPath ID selector",
             "type": "string",
-            "example": "$['id']"
+            "example": "$['object_record']['subscription_id']"
           },
           "data_path": {
             "description": "JSONPath data selector",
             "type": "string",
-            "example": "$['full_name']"
+            "example": "$['object_record']['service_plan']"
           }
         },
         "required": [
@@ -6622,7 +6668,7 @@
           "path": {
             "description": "JSONPath data selector to related ID",
             "type": "string",
-            "example": "$['email']"
+            "example": "$['relationships']['owners'][*]['email']"
           }
         },
         "required": [
@@ -6674,9 +6720,9 @@
           "source": {
             "description": "Data source mapping",
             "example": {
-              "source_id": "01JT8ZFT0RD24A0XPXQVNBBB04",
-              "id_path": "$['id']",
-              "data_path": "$['full_name']"
+              "source_id": "01JXKX2HM7NV4QPTR5WE8BF6GY",
+              "id_path": "$['object_record']['subscription_id']",
+              "data_path": "$['object_record']['service_plan']"
             },
             "$ref": "#/components/schemas/PropertySource"
           }

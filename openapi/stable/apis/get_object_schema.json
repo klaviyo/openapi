@@ -289,7 +289,7 @@
           "name": {
             "description": "The name of the schema property",
             "type": "string",
-            "example": "age"
+            "example": "service_plan"
           },
           "type": {
             "description": "The type of the schema property",
@@ -346,7 +346,7 @@
           },
           "value": {
             "description": "Constant value assigned to every record",
-            "example": "some_value",
+            "example": "active",
             "oneOf": [
               {
                 "type": "integer"
@@ -375,7 +375,7 @@
           "source_id": {
             "description": "Data source ULID ID",
             "type": "string",
-            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+            "example": "01JXKX2HM7NV4QPTR5WE8BF6GY"
           },
           "type": {
             "description": "String literal for serialization",
@@ -387,12 +387,12 @@
           "id_path": {
             "description": "JSONPath data selector to owning ID",
             "type": "string",
-            "example": "$['id']"
+            "example": "$['object_record']['subscription_id']"
           },
           "related_id_path": {
             "description": "JSONPath data selector to related ID",
             "type": "string",
-            "example": "$['related_id']"
+            "example": "$['object_record']['pet_id']"
           },
           "update_strategy": {
             "description": "Strategy for updating relationships with each new RawDataRecord ingestion",
@@ -475,12 +475,12 @@
           "name": {
             "description": "The name of the relationship",
             "type": "string",
-            "example": "related_items"
+            "example": "subscription"
           },
           "description": {
             "description": "The description of the relationship",
             "type": "string",
-            "example": "Items related to this schema",
+            "example": "The subscription this pet is enrolled in",
             "nullable": true
           }
         },
@@ -498,7 +498,7 @@
           "id": {
             "description": "A compound ID uniquely identifying this relationship, in the format '{related_schema_id}:::{relationship_name}'.",
             "type": "string",
-            "example": "01K5YKKQKM819VVGCPZZKGE6D4:::related_items"
+            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::subscription"
           },
           "attributes": {
             "type": "object",
@@ -727,7 +727,7 @@
           "source_id": {
             "description": "Data source ULID ID",
             "type": "string",
-            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+            "example": "01JXKX2HM7NV4QPTR5WE8BF6GY"
           },
           "type": {
             "description": "String literal for serialization",
@@ -739,7 +739,7 @@
           "id_path": {
             "description": "JSONPath data selector to owning ID",
             "type": "string",
-            "example": "$['id']"
+            "example": "$['relationships']['owners'][*]['id']"
           },
           "related_id_paths": {
             "description": "List of profile identifier mappings to JSONPath data selectors",
@@ -750,7 +750,11 @@
             "example": [
               {
                 "identifier_type": "email",
-                "path": "$['email']"
+                "path": "$['relationships']['owners'][*]['email']"
+              },
+              {
+                "identifier_type": "phone",
+                "path": "$['relationships']['owners'][*]['phone']"
               }
             ]
           },
@@ -779,17 +783,17 @@
           "source_id": {
             "description": "Data source ULID ID",
             "type": "string",
-            "example": "01JT8ZFT0RD24A0XPXQVNBBB04"
+            "example": "01JXKX2HM7NV4QPTR5WE8BF6GY"
           },
           "id_path": {
             "description": "JSONPath ID selector",
             "type": "string",
-            "example": "$['id']"
+            "example": "$['object_record']['subscription_id']"
           },
           "data_path": {
             "description": "JSONPath data selector",
             "type": "string",
-            "example": "$['full_name']"
+            "example": "$['object_record']['service_plan']"
           }
         },
         "required": [
@@ -815,7 +819,7 @@
           "path": {
             "description": "JSONPath data selector to related ID",
             "type": "string",
-            "example": "$['email']"
+            "example": "$['relationships']['owners'][*]['email']"
           }
         },
         "required": [
@@ -867,9 +871,9 @@
           "source": {
             "description": "Data source mapping",
             "example": {
-              "source_id": "01JT8ZFT0RD24A0XPXQVNBBB04",
-              "id_path": "$['id']",
-              "data_path": "$['full_name']"
+              "source_id": "01JXKX2HM7NV4QPTR5WE8BF6GY",
+              "id_path": "$['object_record']['subscription_id']",
+              "data_path": "$['object_record']['service_plan']"
             },
             "$ref": "#/components/schemas/PropertySource"
           }
