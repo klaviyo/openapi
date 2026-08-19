@@ -106,6 +106,14 @@
                   "properties",
                   "subscriptions",
                   "subscriptions.email",
+                  "subscriptions.email.click_tracking",
+                  "subscriptions.email.click_tracking.can_receive",
+                  "subscriptions.email.click_tracking.consent",
+                  "subscriptions.email.click_tracking.consent_timestamp",
+                  "subscriptions.email.click_tracking.created_timestamp",
+                  "subscriptions.email.click_tracking.last_updated",
+                  "subscriptions.email.click_tracking.metadata",
+                  "subscriptions.email.click_tracking.valid_until",
                   "subscriptions.email.marketing",
                   "subscriptions.email.marketing.can_receive_email_marketing",
                   "subscriptions.email.marketing.consent",
@@ -349,6 +357,57 @@
           }
         }
       },
+      "ClickTrackingConsent": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "description": "The consent status for the channel.",
+            "type": "string",
+            "example": "SUBSCRIBED"
+          },
+          "consent_timestamp": {
+            "description": "The timestamp when consent was recorded or updated for the channel, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-02-21T20:07:38+00:00",
+            "nullable": true
+          },
+          "last_updated": {
+            "description": "The timestamp when the channel was last modified, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-02-21T20:07:38+00:00",
+            "nullable": true
+          },
+          "created_timestamp": {
+            "description": "The timestamp when the channel was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-02-21T20:07:38+00:00",
+            "nullable": true
+          },
+          "metadata": {
+            "description": "Channel-specific metadata containing additional information about the permission.",
+            "type": "object",
+            "nullable": true
+          },
+          "can_receive": {
+            "description": "Whether the profile can receive messages on this channel.",
+            "type": "boolean"
+          },
+          "valid_until": {
+            "description": "Optional expiration date for the permission, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-02-21T20:07:38+00:00",
+            "nullable": true
+          }
+        },
+        "required": [
+          "consent",
+          "can_receive"
+        ]
+      },
       "EmailChannel": {
         "type": "object",
         "properties": {
@@ -360,6 +419,11 @@
           "open_tracking": {
             "description": "The email open tracking consent.",
             "$ref": "#/components/schemas/OpenTrackingConsent",
+            "nullable": true
+          },
+          "click_tracking": {
+            "description": "The email click tracking consent.",
+            "$ref": "#/components/schemas/ClickTrackingConsent",
             "nullable": true
           }
         }
