@@ -64,7 +64,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`product_external_ids`: `any`, `equals`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`product_external_ids`: `any`, `equals` (string)",
             "schema": {
               "type": "string",
               "example": "equals(product_external_ids,'example')"
@@ -251,7 +251,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`status`: `equals`<br>`review_type`: `equals`<br>`rating`: `any`, `equals`, `greater-or-equal`, `less-or-equal`<br>`id`: `any`, `equals`<br>`content`: `contains`<br>`smart_quote`: `has`<br>`public_reply`: `has`<br>`verified`: `equals`<br>`incentivized`: `equals`<br>`edited`: `equals`<br>`media`: `has`<br>`created`: `greater-or-equal`, `less-or-equal`<br>`updated`: `greater-or-equal`, `less-or-equal`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`status`: `equals` (allowed values: `'published'`, `'unpublished'`, `'rejected'`, `'featured'`, `'pending'`, `'all'`)<br>`review_type`: `equals` (allowed values: `'question'`, `'review'`, `'rating'`, `'store'`)<br>`rating`: `any`, `equals`, `greater-or-equal`, `less-or-equal` (integer)<br>`id`: `any`, `equals` (string)<br>`content`: `contains` (string)<br>`smart_quote`: `has`<br>`public_reply`: `has`<br>`verified`: `equals` (boolean)<br>`incentivized`: `equals` (boolean)<br>`edited`: `equals` (boolean)<br>`media`: `has`<br>`created`: `greater-or-equal`, `less-or-equal` (date-time)<br>`updated`: `greater-or-equal`, `less-or-equal` (date-time)",
             "schema": {
               "type": "string",
               "example": "equals(status,'published')"
@@ -1387,6 +1387,22 @@
           "catalog-variant"
         ]
       },
+      "ClickTrackingSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "description": "The click-tracking consent to grant. Currently supports \"SUBSCRIBED\".",
+            "type": "string",
+            "example": "SUBSCRIBED",
+            "enum": [
+              "SUBSCRIBED"
+            ]
+          }
+        },
+        "required": [
+          "consent"
+        ]
+      },
       "ClientBISSubscriptionCreateQuery": {
         "type": "object",
         "properties": {
@@ -1776,6 +1792,11 @@
             "description": "The open-tracking consent to grant on the \"EMAIL\" channel. Open-tracking consent is recorded on the profile only; it does not by itself add the profile to a list specified in the request.",
             "$ref": "#/components/schemas/OpenTrackingSubscriptionParameters",
             "nullable": true
+          },
+          "click_tracking": {
+            "description": "The click-tracking consent to grant on the \"EMAIL\" channel. Click-tracking consent is recorded on the profile only; it does not by itself add the profile to a list specified in the request.",
+            "$ref": "#/components/schemas/ClickTrackingSubscriptionParameters",
+            "nullable": true
           }
         }
       },
@@ -1972,12 +1993,12 @@
                   "pseudonym": "Dr. Octopus"
                 },
                 "nullable": true
-              },
-              "meta": {
-                "$ref": "#/components/schemas/OnsiteProfileMeta",
-                "nullable": true
               }
             }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/OnsiteProfileMeta",
+            "nullable": true
           }
         },
         "required": [
@@ -2939,15 +2960,15 @@
                 },
                 "nullable": true
               },
-              "meta": {
-                "$ref": "#/components/schemas/ProfileMeta",
-                "nullable": true
-              },
               "subscriptions": {
                 "$ref": "#/components/schemas/SubscriptionChannels",
                 "nullable": true
               }
             }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ProfileMeta",
+            "nullable": true
           }
         },
         "required": [
@@ -3033,10 +3054,6 @@
                 },
                 "nullable": true
               },
-              "meta": {
-                "$ref": "#/components/schemas/ProfileMeta",
-                "nullable": true
-              },
               "email": {
                 "description": "Individual's email address",
                 "type": "string",
@@ -3044,6 +3061,10 @@
                 "nullable": true
               }
             }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ProfileMeta",
+            "nullable": true
           }
         },
         "required": [

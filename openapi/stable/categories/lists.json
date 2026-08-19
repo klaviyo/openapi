@@ -95,7 +95,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`name`: `any`, `equals`<br>`id`: `any`, `equals`<br>`created`: `greater-than`<br>`updated`: `greater-than`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`name`: `any`, `equals` (string)<br>`id`: `any`, `equals` (string)<br>`created`: `greater-than` (date-time)<br>`updated`: `greater-than` (date-time)",
             "schema": {
               "type": "string",
               "example": "equals(name,['example'])"
@@ -836,6 +836,14 @@
                   "properties",
                   "subscriptions",
                   "subscriptions.email",
+                  "subscriptions.email.click_tracking",
+                  "subscriptions.email.click_tracking.can_receive",
+                  "subscriptions.email.click_tracking.consent",
+                  "subscriptions.email.click_tracking.consent_timestamp",
+                  "subscriptions.email.click_tracking.created_timestamp",
+                  "subscriptions.email.click_tracking.last_updated",
+                  "subscriptions.email.click_tracking.metadata",
+                  "subscriptions.email.click_tracking.valid_until",
                   "subscriptions.email.marketing",
                   "subscriptions.email.marketing.can_receive_email_marketing",
                   "subscriptions.email.marketing.consent",
@@ -913,7 +921,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`email`: `any`, `equals`<br>`phone_number`: `any`, `equals`<br>`push_token`: `any`, `equals`<br>`_kx`: `equals`<br>`joined_group_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`email`: `any`, `equals` (string)<br>`phone_number`: `any`, `equals` (string)<br>`push_token`: `any`, `equals` (string)<br>`_kx`: `equals` (string)<br>`joined_group_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)",
             "schema": {
               "type": "string",
               "example": "equals(email,['example'])"
@@ -1077,7 +1085,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`email`: `any`, `equals`<br>`phone_number`: `any`, `equals`<br>`push_token`: `any`, `equals`<br>`_kx`: `equals`<br>`joined_group_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`email`: `any`, `equals` (string)<br>`phone_number`: `any`, `equals` (string)<br>`push_token`: `any`, `equals` (string)<br>`_kx`: `equals` (string)<br>`joined_group_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)",
             "schema": {
               "type": "string",
               "example": "equals(email,['example'])"
@@ -1626,6 +1634,57 @@
           "campaign"
         ]
       },
+      "ClickTrackingConsent": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "description": "The consent status for the channel.",
+            "type": "string",
+            "example": "SUBSCRIBED"
+          },
+          "consent_timestamp": {
+            "description": "The timestamp when consent was recorded or updated for the channel, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-02-21T20:07:38+00:00",
+            "nullable": true
+          },
+          "last_updated": {
+            "description": "The timestamp when the channel was last modified, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-02-21T20:07:38+00:00",
+            "nullable": true
+          },
+          "created_timestamp": {
+            "description": "The timestamp when the channel was created, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-02-21T20:07:38+00:00",
+            "nullable": true
+          },
+          "metadata": {
+            "description": "Channel-specific metadata containing additional information about the permission.",
+            "type": "object",
+            "nullable": true
+          },
+          "can_receive": {
+            "description": "Whether the profile can receive messages on this channel.",
+            "type": "boolean"
+          },
+          "valid_until": {
+            "description": "Optional expiration date for the permission, in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.mmmmmm).",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-02-21T20:07:38+00:00",
+            "nullable": true
+          }
+        },
+        "required": [
+          "consent",
+          "can_receive"
+        ]
+      },
       "CollectionLinks": {
         "type": "object",
         "properties": {
@@ -1657,6 +1716,11 @@
           "open_tracking": {
             "description": "The email open tracking consent.",
             "$ref": "#/components/schemas/OpenTrackingConsent",
+            "nullable": true
+          },
+          "click_tracking": {
+            "description": "The email click tracking consent.",
+            "$ref": "#/components/schemas/ClickTrackingConsent",
             "nullable": true
           }
         }
