@@ -1,0 +1,436 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/customer-agent-tool-values-reports": {
+      "post": {
+        "operationId": "query_customer_agent_tool_values_beta",
+        "summary": "Query Customer Agent Tool Values",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns per-tool aggregates across the requested timeframe.\n\nEach row of ``results`` is one tool bucket with the requested\nstatistics. Counts are at the invocation level: one conversation\nthat calls a tool multiple times contributes multiple\ninvocations to that tool's bucket.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_tool_values_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[customer-agent-tool-values-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for the tool-values-report endpoint.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerAgentToolValuesReportQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAgentToolValuesReportResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_customer_agent_tool_values_report"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CustomerAgentToolValuesReportQueryRequest": {
+        "type": "object",
+        "properties": {
+          "statistics": {
+            "description": "Metrics to compute for each tool bucket. Combine any of count, last-call, avg-duration-ms, and success-rate in one call to receive them per bucket.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolStatistic"
+            }
+          },
+          "groupings": {
+            "description": "Required grouping. Each result row corresponds to one tool.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolGrouping"
+            }
+          },
+          "timeframe": {
+            "description": "Time window for the report.",
+            "$ref": "#/components/schemas/ReportTimeframeRequest"
+          },
+          "filter": {
+            "description": "Optional Klaviyo filter syntax. Use any(tool,[...]) to narrow to specific namespaced tool ids; use any(source,[...]) to narrow by call source (conversation or test). When omitted, returns aggregates for every tool the company has called in the timeframe.",
+            "type": "string",
+            "example": "any(tool,[\"klaviyo:get_orders_shopify\"]),any(source,[\"conversation\"])",
+            "nullable": true
+          }
+        },
+        "required": [
+          "statistics",
+          "groupings",
+          "timeframe"
+        ]
+      },
+      "CustomerAgentToolValuesReportQueryRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentToolValuesReportResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/CustomerAgentToolValuesReportQueryRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "CustomerAgentToolValuesReportQueryRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CustomerAgentToolValuesReportQueryRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CustomerAgentToolValuesReportResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent-tool-values-report"
+        ]
+      },
+      "CustomerAgentToolValuesReportResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "description": "Computed tool-values-report rows.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolValuesData"
+            }
+          }
+        },
+        "required": [
+          "results"
+        ]
+      },
+      "CustomerAgentToolValuesReportResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentToolValuesReportResourceName"
+          },
+          "id": {
+            "description": "Opaque identifier for the tool-values report response.",
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/CustomerAgentToolValuesReportResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "CustomerAgentToolValuesReportResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CustomerAgentToolValuesReportResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ReportTimeframeRequest": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "description": "Named preset window.",
+            "type": "string",
+            "enum": [
+              "today",
+              "yesterday",
+              "this_week",
+              "last_week",
+              "last_7_days",
+              "last_30_days",
+              "last_90_days",
+              "this_month",
+              "last_month"
+            ],
+            "nullable": true
+          },
+          "start": {
+            "description": "ISO-8601 lower-bound (inclusive) for the report window.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-05-01T00:00:00+00:00",
+            "nullable": true
+          },
+          "end": {
+            "description": "ISO-8601 upper-bound (exclusive) for the report window.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-06-01T00:00:00+00:00",
+            "nullable": true
+          }
+        }
+      },
+      "ToolGrouping": {
+        "description": "Required bucket dimension supported by the tool-values report.\n\nThe spec requires exactly one grouping, and it must be ``tool``.",
+        "type": "string",
+        "enum": [
+          "tool"
+        ]
+      },
+      "ToolStatistic": {
+        "description": "Metrics computable for each tool bucket.",
+        "type": "string",
+        "enum": [
+          "count",
+          "last-call",
+          "avg-duration-ms",
+          "success-rate"
+        ]
+      },
+      "ToolValuesData": {
+        "type": "object",
+        "properties": {
+          "groupings": {
+            "description": "Bucket-identifying values for this row (the namespaced tool id).",
+            "type": "object"
+          },
+          "statistics": {
+            "description": "Computed metrics for this row. Only the statistics named in the request appear here.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "groupings",
+          "statistics"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

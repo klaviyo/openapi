@@ -31,7 +31,7 @@
       "post": {
         "operationId": "create_agent_skill_beta",
         "summary": "Create Agent Skill",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds a skill to Customer Agent.\n\nCustomer Agent will invoke this skill when the customer message\nmatches its ``description``. Provide ``display_name``,\n``description`` (summary of the skill's capabilities and when it\nshould be used), ``instructions`` (the system prompt the skill\nuses to handle a turn), optional ``handoff`` (escalation\nbehavior), optional ``agent-tools`` relationship data, and\n``status``. Set ``status: draft`` to stage without going live,\n``live`` to activate immediately. Customer Agent generates the\nskill name and returns a prefixed custom id plus the generated\n``name`` attribute.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_skill_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds a skill to Customer Agent.\n\nCustomer Agent will invoke this skill when the customer message\nmatches its ``description``. Provide ``display_name``,\n``description`` (summary of the skill's capabilities and when it\nshould be used), ``instructions`` (the system prompt the skill\nuses to handle a turn), optional ``handoff`` (escalation\nbehavior), optional ``references`` for named tools used as\n``{{tool ref=<name>}}`` in instructions, optional ``agent-\ntools`` relationship data, and ``status``. Set ``status: draft``\nto stage without going live, ``live`` to activate immediately.\nCustomer Agent generates the skill name and returns a prefixed\ncustom id plus the generated ``name`` attribute.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_skill_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-skill]",
@@ -50,6 +50,8 @@
                   "id",
                   "instructions",
                   "name",
+                  "references",
+                  "references.tools",
                   "source",
                   "status",
                   "updated_at"
@@ -255,6 +257,11 @@
               "custom"
             ],
             "nullable": true
+          },
+          "references": {
+            "description": "Named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters.",
+            "$ref": "#/components/schemas/AgentSkillReferencesRequest",
+            "nullable": true
           }
         },
         "required": [
@@ -319,6 +326,24 @@
           "data"
         ]
       },
+      "AgentSkillReferences": {
+        "type": "object",
+        "properties": {
+          "tools": {
+            "description": "Tool definitions keyed by the name used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
+            "type": "object"
+          }
+        }
+      },
+      "AgentSkillReferencesRequest": {
+        "type": "object",
+        "properties": {
+          "tools": {
+            "description": "Tool definitions keyed by the name used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
+            "type": "object"
+          }
+        }
+      },
       "AgentSkillResourceName": {
         "type": "string",
         "enum": [
@@ -372,6 +397,16 @@
               "all",
               "custom"
             ]
+          },
+          "references": {
+            "description": "Named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
+            "example": {
+              "tools": {}
+            },
+            "default": {
+              "tools": {}
+            },
+            "$ref": "#/components/schemas/AgentSkillReferences"
           },
           "created_at": {
             "description": "Date and time when the skill was created.",
