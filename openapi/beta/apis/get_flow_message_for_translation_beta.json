@@ -239,6 +239,19 @@
       }
     },
     "schemas": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
+        "type": "object",
+        "properties": {
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "EmailMessageContent": {
         "type": "object",
         "properties": {
@@ -411,6 +424,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -500,7 +516,17 @@
             "nullable": true
           },
           "url": {
-            "description": "URL for deep_link or open_url action types (max 2048 characters)",
+            "description": "URL for deep_link or open_url action types (max 2048 characters). Used as a fallback on platforms without a more specific ios_deep_link or android_deep_link.",
+            "type": "string",
+            "nullable": true
+          },
+          "ios_deep_link": {
+            "description": "iOS-specific URL for deep_link or open_url action types (max 2048 characters). Overrides url on iOS.",
+            "type": "string",
+            "nullable": true
+          },
+          "android_deep_link": {
+            "description": "Android-specific URL for deep_link or open_url action types (max 2048 characters). Overrides url on Android.",
             "type": "string",
             "nullable": true
           }
@@ -526,6 +552,15 @@
           "self",
           "related"
         ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
       },
       "SMSMessageContent": {
         "type": "object",

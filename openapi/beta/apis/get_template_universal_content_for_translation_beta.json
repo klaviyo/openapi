@@ -258,6 +258,19 @@
       }
     },
     "schemas": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
+        "type": "object",
+        "properties": {
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "BlockDisplayOptions": {
         "type": "object",
         "properties": {
@@ -276,12 +289,12 @@
             "nullable": true
           },
           "content_repeat": {
-            "$ref": "#/components/schemas/ContentRepeat",
+            "$ref": "#/components/schemas/ContentRepeatV0",
             "nullable": true
           }
         }
       },
-      "ButtonBlock": {
+      "ButtonBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -306,7 +319,7 @@
           "data"
         ]
       },
-      "ContentRepeat": {
+      "ContentRepeatV0": {
         "type": "object",
         "properties": {
           "repeat_for": {
@@ -321,7 +334,7 @@
           "item_alias"
         ]
       },
-      "CouponBlock": {
+      "CouponBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -360,7 +373,7 @@
           "data"
         ]
       },
-      "DropShadowBlock": {
+      "DropShadowBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -398,13 +411,31 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
           "data"
         ]
       },
-      "HTMLBlock": {
+      "HTMLBlockDataV0": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "display_options": {
+            "$ref": "#/components/schemas/BlockDisplayOptions"
+          }
+        },
+        "required": [
+          "content",
+          "display_options"
+        ]
+      },
+      "HTMLBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -420,7 +451,7 @@
             ]
           },
           "data": {
-            "$ref": "#/components/schemas/HTMLBlockData"
+            "$ref": "#/components/schemas/HTMLBlockDataV0"
           }
         },
         "required": [
@@ -429,22 +460,7 @@
           "data"
         ]
       },
-      "HTMLBlockData": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "string"
-          },
-          "display_options": {
-            "$ref": "#/components/schemas/BlockDisplayOptions"
-          }
-        },
-        "required": [
-          "content",
-          "display_options"
-        ]
-      },
-      "HeaderBlock": {
+      "HeaderBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -483,7 +499,7 @@
           "data"
         ]
       },
-      "HorizontalRuleBlock": {
+      "HorizontalRuleBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -508,7 +524,7 @@
           "data"
         ]
       },
-      "ImageBlock": {
+      "ImageBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -545,7 +561,7 @@
           "self"
         ]
       },
-      "ProductBlock": {
+      "ProductBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -584,7 +600,16 @@
           "data"
         ]
       },
-      "ReviewBlock": {
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
+      },
+      "ReviewBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -623,7 +648,7 @@
           "data"
         ]
       },
-      "Section": {
+      "SectionV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -647,7 +672,7 @@
           "type"
         ]
       },
-      "SocialBlock": {
+      "SocialBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -686,7 +711,7 @@
           "data"
         ]
       },
-      "SpacerBlock": {
+      "SpacerBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -711,7 +736,7 @@
           "data"
         ]
       },
-      "SplitBlock": {
+      "SplitBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -750,7 +775,7 @@
           "data"
         ]
       },
-      "TableBlock": {
+      "TableBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {
@@ -795,32 +820,7 @@
           "template-universal-content"
         ]
       },
-      "TextBlock": {
-        "type": "object",
-        "properties": {
-          "content_type": {
-            "type": "string",
-            "enum": [
-              "block"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "text"
-            ]
-          },
-          "data": {
-            "$ref": "#/components/schemas/TextBlockData"
-          }
-        },
-        "required": [
-          "content_type",
-          "type",
-          "data"
-        ]
-      },
-      "TextBlockData": {
+      "TextBlockDataV0": {
         "type": "object",
         "properties": {
           "content": {
@@ -830,7 +830,7 @@
             "$ref": "#/components/schemas/BlockDisplayOptions"
           },
           "styles": {
-            "$ref": "#/components/schemas/TextBlockStyles"
+            "$ref": "#/components/schemas/TextBlockStylesV0"
           }
         },
         "required": [
@@ -839,7 +839,7 @@
           "styles"
         ]
       },
-      "TextBlockStyles": {
+      "TextBlockStylesV0": {
         "type": "object",
         "properties": {
           "background_color": {
@@ -973,6 +973,31 @@
           }
         }
       },
+      "TextBlockV0": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "type": "string",
+            "enum": [
+              "block"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/TextBlockDataV0"
+          }
+        },
+        "required": [
+          "content_type",
+          "type",
+          "data"
+        ]
+      },
       "UniversalContentResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -995,55 +1020,55 @@
                 "nullable": true,
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/ButtonBlock"
+                    "$ref": "#/components/schemas/ButtonBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/CouponBlock"
+                    "$ref": "#/components/schemas/CouponBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/DropShadowBlock"
+                    "$ref": "#/components/schemas/DropShadowBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/HeaderBlock"
+                    "$ref": "#/components/schemas/HeaderBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/HorizontalRuleBlock"
+                    "$ref": "#/components/schemas/HorizontalRuleBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/HTMLBlock"
+                    "$ref": "#/components/schemas/HTMLBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/ImageBlock"
+                    "$ref": "#/components/schemas/ImageBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/ProductBlock"
+                    "$ref": "#/components/schemas/ProductBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/ReviewBlock"
+                    "$ref": "#/components/schemas/ReviewBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/SocialBlock"
+                    "$ref": "#/components/schemas/SocialBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/SpacerBlock"
+                    "$ref": "#/components/schemas/SpacerBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/SplitBlock"
+                    "$ref": "#/components/schemas/SplitBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/TableBlock"
+                    "$ref": "#/components/schemas/TableBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/TextBlock"
+                    "$ref": "#/components/schemas/TextBlockV0"
                   },
                   {
                     "$ref": "#/components/schemas/UnsupportedBlock"
                   },
                   {
-                    "$ref": "#/components/schemas/VideoBlock"
+                    "$ref": "#/components/schemas/VideoBlockV0"
                   },
                   {
-                    "$ref": "#/components/schemas/Section"
+                    "$ref": "#/components/schemas/SectionV0"
                   }
                 ]
               },
@@ -1133,7 +1158,7 @@
           "data"
         ]
       },
-      "VideoBlock": {
+      "VideoBlockV0": {
         "type": "object",
         "properties": {
           "content_type": {

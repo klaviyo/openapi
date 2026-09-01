@@ -122,7 +122,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`<br>`name`: `contains`<br>`archived`: `equals`<br>`builder`: `equals`<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any` (string)<br>`name`: `contains` (string)<br>`archived`: `equals` (boolean)<br>`builder`: `equals` (string)<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)",
             "schema": {
               "type": "string",
               "example": "any(id,['example'])"
@@ -771,8 +771,10 @@
                   "definition.details.mutable_content",
                   "definition.details.open_action",
                   "definition.details.preview_text",
+                  "definition.details.push_platform_target",
                   "definition.details.push_type",
                   "definition.details.reply_to_email",
+                  "definition.details.send_to_primary",
                   "definition.details.shorten_links",
                   "definition.details.sound",
                   "definition.details.sound_file_name",
@@ -824,7 +826,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals`<br>`campaign_id`: `equals`<br>`name`: `contains`<br>`status`: `equals`<br>`created`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`<br>`updated`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than`",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals` (string)<br>`campaign_id`: `equals` (string)<br>`name`: `contains` (string)<br>`status`: `equals` (string)<br>`created`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`updated`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)",
             "schema": {
               "type": "string",
               "example": "equals(id,'example')"
@@ -1182,8 +1184,10 @@
                   "definition.details.mutable_content",
                   "definition.details.open_action",
                   "definition.details.preview_text",
+                  "definition.details.push_platform_target",
                   "definition.details.push_type",
                   "definition.details.reply_to_email",
+                  "definition.details.send_to_primary",
                   "definition.details.shorten_links",
                   "definition.details.sound",
                   "definition.details.sound_file_name",
@@ -1834,8 +1838,10 @@
                   "definition.details.mutable_content",
                   "definition.details.open_action",
                   "definition.details.preview_text",
+                  "definition.details.push_platform_target",
                   "definition.details.push_type",
                   "definition.details.reply_to_email",
+                  "definition.details.send_to_primary",
                   "definition.details.shorten_links",
                   "definition.details.sound",
                   "definition.details.sound_file_name",
@@ -2013,8 +2019,10 @@
                   "definition.details.mutable_content",
                   "definition.details.open_action",
                   "definition.details.preview_text",
+                  "definition.details.push_platform_target",
                   "definition.details.push_type",
                   "definition.details.reply_to_email",
+                  "definition.details.send_to_primary",
                   "definition.details.shorten_links",
                   "definition.details.sound",
                   "definition.details.sound_file_name",
@@ -2537,8 +2545,10 @@
                   "definition.details.mutable_content",
                   "definition.details.open_action",
                   "definition.details.preview_text",
+                  "definition.details.push_platform_target",
                   "definition.details.push_type",
                   "definition.details.reply_to_email",
+                  "definition.details.send_to_primary",
                   "definition.details.shorten_links",
                   "definition.details.sound",
                   "definition.details.sound_file_name",
@@ -4367,8 +4377,10 @@
                   "definition.details.mutable_content",
                   "definition.details.open_action",
                   "definition.details.preview_text",
+                  "definition.details.push_platform_target",
                   "definition.details.push_type",
                   "definition.details.reply_to_email",
+                  "definition.details.send_to_primary",
                   "definition.details.shorten_links",
                   "definition.details.sound",
                   "definition.details.sound_file_name",
@@ -4604,6 +4616,19 @@
       }
     },
     "schemas": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
+        "type": "object",
+        "properties": {
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "AudienceCloneQuery": {
         "type": "object",
         "properties": {
@@ -5561,6 +5586,32 @@
           "self"
         ]
       },
+      "ConsentPageEnum": {
+        "type": "string",
+        "enum": [
+          "consent-page"
+        ]
+      },
+      "DynamicSMSImage": {
+        "type": "object",
+        "properties": {
+          "dynamic": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "enum": [
+              true
+            ]
+          },
+          "dynamic_image_template": {
+            "description": "Dynamic image template URL (e.g., {{product.image_url}}).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dynamic_image_template"
+        ]
+      },
       "EmailChannelDetails": {
         "type": "object",
         "properties": {
@@ -5631,6 +5682,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5648,6 +5702,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5675,6 +5732,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5703,6 +5763,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5733,6 +5796,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5764,6 +5830,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5793,6 +5862,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5821,6 +5893,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5852,6 +5927,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5883,6 +5961,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5913,6 +5994,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5932,6 +6016,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -5949,6 +6036,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           },
           "included": {
             "type": "array",
@@ -5989,6 +6079,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6018,6 +6111,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6046,6 +6142,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6075,6 +6174,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6094,6 +6196,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6113,6 +6218,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6130,6 +6238,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6147,6 +6258,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           },
           "included": {
             "type": "array",
@@ -6187,6 +6301,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6204,6 +6321,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6223,6 +6343,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6240,6 +6363,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -6270,10 +6396,109 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
           "data"
+        ]
+      },
+      "ImageAsset": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for this image asset. Not allowed on update.",
+            "type": "integer"
+          },
+          "file_path": {
+            "description": "The file path of the image in Klaviyo's storage.",
+            "type": "string",
+            "example": "images/aa1ee5c1-039e-4d20-9e98-345755214556.jpeg"
+          },
+          "name": {
+            "description": "The human-readable name of the image.",
+            "type": "string",
+            "example": "product-image"
+          },
+          "format": {
+            "description": "The image file format.",
+            "type": "string",
+            "enum": [
+              "gif",
+              "jpeg",
+              "jpg",
+              "png",
+              "webp"
+            ]
+          },
+          "file_size": {
+            "description": "The size of the image file in bytes.",
+            "type": "integer"
+          },
+          "updated": {
+            "description": "Timestamp when the image was last updated.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00"
+          },
+          "origin": {
+            "description": "The origin/source of the image (e.g., UI, API, AI, etc.).",
+            "type": "string",
+            "enum": [
+              "ADOPTION_SMS_FORM_FROM_EMAIL_FORM",
+              "ADOPTION_SMS_MULTI_STEP_FORM_FROM_EMAIL_FORM",
+              "AI",
+              "API",
+              "APPLICATION",
+              "CLONED",
+              "COMPOSER",
+              "COMPOSER_AI_EDITED",
+              "COMPOSER_AI_GENERATED",
+              "COMPOSER_USED_IN_KLAVIYO_OBJECT",
+              "COMPOSER_USER_UPLOADED",
+              "COMPOSER_WEB_SCRAPED",
+              "INTEGRATION",
+              "KLAVIYO",
+              "LIBRARY",
+              "MARKETING_AGENT",
+              "SOCIAL_INSTAGRAM",
+              "SOCIAL_INSTAGRAM_OVERLAID",
+              "UI",
+              "WEB_SCRAPE"
+            ],
+            "nullable": true
+          },
+          "url": {
+            "description": "The full URL to access the image.",
+            "type": "string",
+            "example": "https://d3k81ch9hvuctc.cloudfront.net/company/RyGRiN/images/aa1ee5c1-039e-4d20-9e98-345755214556.jpeg"
+          },
+          "image_type": {
+            "description": "The type of image (static or dynamic).",
+            "type": "string",
+            "enum": [
+              "dynamic",
+              "static"
+            ]
+          },
+          "l10n_key": {
+            "description": "Localization key for this image asset, if applicable.",
+            "type": "string",
+            "example": "sms::01KAPBZTQBAJFD5RG9NYXBWHMR::mms_static_image_asset_id",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "file_path",
+          "name",
+          "format",
+          "file_size",
+          "updated",
+          "url",
+          "image_type"
         ]
       },
       "ImageEnum": {
@@ -6342,6 +6567,77 @@
         "enum": [
           "list"
         ]
+      },
+      "MediaAsset": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for this media asset. Not allowed on update.",
+            "type": "string"
+          },
+          "company_id": {
+            "description": "The company ID that owns this media.",
+            "type": "string",
+            "example": "RyGRiN"
+          },
+          "url": {
+            "description": "The full URL to access the media.",
+            "type": "string",
+            "example": "https://d3k81ch9hvuctc.cloudfront.net/company/RyGRiN/videos/01KG5BPQBSY8F12ZWTGYHPPRXC.mp4"
+          },
+          "media_type": {
+            "description": "The media type (e.g., 'video' for video assets).",
+            "type": "string",
+            "example": "video",
+            "default": "video"
+          },
+          "name": {
+            "description": "The human-readable name of the media.",
+            "type": "string",
+            "example": "demo video.1"
+          },
+          "file_size": {
+            "description": "The size of the media file in bytes.",
+            "type": "integer"
+          },
+          "thumbnail_url": {
+            "description": "Optional thumbnail URL for video previews in RCS cards.",
+            "type": "string",
+            "nullable": true
+          },
+          "l10n_key": {
+            "description": "Localization key for this media asset, if applicable.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "company_id",
+          "url",
+          "name",
+          "file_size"
+        ]
+      },
+      "MediaAssetReference": {
+        "type": "object",
+        "properties": {
+          "static_asset_id": {
+            "description": "Reference to a static media asset.",
+            "type": "string",
+            "nullable": true
+          },
+          "dynamic_template": {
+            "description": "Dynamic template (e.g. Django tags) resolving to the media URL.",
+            "type": "string",
+            "nullable": true
+          },
+          "thumbnail": {
+            "description": "Optional thumbnail image reference for video media.",
+            "$ref": "#/components/schemas/SlimImageReference",
+            "nullable": true
+          }
+        }
       },
       "MessageCloneQuery": {
         "type": "object",
@@ -6544,6 +6840,91 @@
             "nullable": true
           }
         }
+      },
+      "MessageHierarchyRcsItem": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "The plain text message content. Often empty for RCS when rich_content is used.",
+            "type": "string",
+            "default": ""
+          },
+          "message_format": {
+            "description": "The format of this message (always 'RCS' for RCS entries).",
+            "type": "string",
+            "example": "RCS",
+            "default": "RCS",
+            "enum": [
+              "RCS"
+            ]
+          },
+          "rich_content": {
+            "description": "Rich content for RCS messages (cards, suggestions, etc.).",
+            "$ref": "#/components/schemas/RCSRichContent",
+            "nullable": true
+          },
+          "extra": {
+            "description": "Additional metadata for RCS messages. Legacy placement. This is typically used in rich_content.cards.extra.",
+            "type": "object",
+            "nullable": true
+          },
+          "image": {
+            "description": "Legacy top-level image reference on the RCS hierarchy row (MySQL-backed). Prefer rich_content for RCS media going forward.",
+            "$ref": "#/components/schemas/SlimImageReference",
+            "nullable": true
+          }
+        }
+      },
+      "MessageHierarchySmsItem": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "The plain text SMS message content.",
+            "type": "string",
+            "example": "Check out our latest deals: https://example.com"
+          },
+          "message_format": {
+            "description": "The format of this message (always 'SMS' for SMS entries).",
+            "type": "string",
+            "example": "SMS",
+            "default": "SMS",
+            "enum": [
+              "SMS"
+            ]
+          },
+          "extra": {
+            "description": "Additional metadata for SMS messages (e.g., should_use_same_content flag).",
+            "type": "object",
+            "nullable": true
+          },
+          "image": {
+            "description": "Image reference for MMS messages. Mutually exclusive with media.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StaticSMSImage"
+              },
+              {
+                "$ref": "#/components/schemas/DynamicSMSImage"
+              }
+            ]
+          },
+          "media": {
+            "description": "Video media for MMS messages as either a hydrated MediaAsset or a reference-style payload. Mutually exclusive with image.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MediaAsset"
+              },
+              {
+                "$ref": "#/components/schemas/MediaAssetReference"
+              }
+            ]
+          }
+        },
+        "required": [
+          "message"
+        ]
       },
       "MessageInlineCreate": {
         "type": "object",
@@ -6952,6 +7333,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -7096,6 +7480,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -7234,6 +7621,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -7370,6 +7760,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -7485,6 +7878,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -7592,6 +7988,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -7736,6 +8135,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -7874,6 +8276,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -8010,6 +8415,9 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
@@ -8041,6 +8449,14 @@
             "nullable": true
           },
           "custom_action_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "ios_deep_link": {
+            "type": "string",
+            "nullable": true
+          },
+          "android_deep_link": {
             "type": "string",
             "nullable": true
           }
@@ -8153,8 +8569,150 @@
               "$ref": "#/components/schemas/PushActionButton"
             },
             "nullable": true
+          },
+          "push_platform_target": {
+            "type": "integer",
+            "nullable": true
+          },
+          "send_to_primary": {
+            "type": "boolean",
+            "nullable": true
           }
         }
+      },
+      "RCSCard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for this card.",
+            "type": "string",
+            "example": "44214e8f-a2fb-43b1-a8e1-1170715ffcfa"
+          },
+          "title": {
+            "description": "Optional title for the card. 200 characters is the rendered-length budget; the stored value may be longer because it is template-evaluated before it reaches the carrier.",
+            "type": "string",
+            "example": "Special Offer",
+            "nullable": true
+          },
+          "text": {
+            "description": "The text content/description of the card. 2000 characters is the rendered-length budget; the stored value may be longer because it is template-evaluated before it reaches the carrier.",
+            "type": "string",
+            "example": "Check out our new collection!",
+            "nullable": true
+          },
+          "extra": {
+            "description": "Additional card-specific metadata (e.g., product info). Optional.",
+            "type": "object",
+            "nullable": true
+          },
+          "image": {
+            "description": "Optional image for this card.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ImageAsset"
+              },
+              {
+                "$ref": "#/components/schemas/SlimImageReference"
+              }
+            ]
+          },
+          "video": {
+            "description": "Optional video for this card. May be a hydrated MediaAsset or a reference-style payload (e.g. static_asset_id), matching MMS ``MessageHierarchySmsItem.media`` behavior.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MediaAsset"
+              },
+              {
+                "$ref": "#/components/schemas/MediaAssetReference"
+              }
+            ]
+          },
+          "buttons": {
+            "description": "Optional action buttons for this card. At most 4.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RCSSuggestion"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "RCSRichContent": {
+        "type": "object",
+        "properties": {
+          "cards": {
+            "description": "List of cards in this rich content. At most 10.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RCSCard"
+            },
+            "nullable": true
+          },
+          "suggestions": {
+            "description": "List of suggestion buttons for user interaction. At most 11.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RCSSuggestion"
+            },
+            "nullable": true
+          },
+          "file": {
+            "description": "Standalone media file for RCS messages without cards.",
+            "$ref": "#/components/schemas/MediaAssetReference",
+            "nullable": true
+          }
+        }
+      },
+      "RCSSuggestion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for this suggestion/button.",
+            "type": "string",
+            "example": "quick-action-1767105662671"
+          },
+          "text": {
+            "description": "The display text for the suggestion button. 25 characters is the rendered-length budget; the stored value may be longer because it is template-evaluated before it reaches the carrier.",
+            "type": "string",
+            "example": "Shop Now"
+          },
+          "type": {
+            "description": "The type of action this suggestion performs.",
+            "type": "string",
+            "enum": [
+              "OPEN_URL",
+              "REPLY"
+            ]
+          },
+          "url": {
+            "description": "The URL to open (required for OPEN_URL type).",
+            "type": "string",
+            "example": "https://www.example.com/shop",
+            "nullable": true
+          },
+          "open_mode": {
+            "description": "How the URL opens on the device for OPEN_URL suggestions (browser vs webview size). Emitted to Infobip as openIn. Absent means browser.",
+            "type": "string",
+            "example": "WEBVIEW_FULL",
+            "enum": [
+              "BROWSER",
+              "WEBVIEW_FULL",
+              "WEBVIEW_HALF",
+              "WEBVIEW_TALL"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "type"
+        ]
       },
       "RelationshipLinks": {
         "type": "object",
@@ -8172,6 +8730,15 @@
           "self",
           "related"
         ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
       },
       "SMSChannelDetails": {
         "type": "object",
@@ -8237,6 +8804,17 @@
             ]
           },
           "message_hierarchy": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/MessageHierarchyRcsItem"
+                },
+                {
+                  "$ref": "#/components/schemas/MessageHierarchySmsItem"
+                }
+              ]
+            },
             "nullable": true
           }
         }
@@ -8276,6 +8854,46 @@
             "nullable": true
           }
         }
+      },
+      "SlimImageReference": {
+        "type": "object",
+        "properties": {
+          "static_image_asset_id": {
+            "description": "ID of the static image asset when the card uses a library image.",
+            "type": "integer",
+            "nullable": true
+          },
+          "dynamic_image_template": {
+            "description": "Dynamic image template (e.g. Django tags) for the card image.",
+            "type": "string",
+            "nullable": true
+          },
+          "rendered_asset_url": {
+            "description": "Pre-rendered image URL when available.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "StaticSMSImage": {
+        "type": "object",
+        "properties": {
+          "dynamic": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ],
+            "nullable": true
+          },
+          "static_image_asset_id": {
+            "description": "The ID of the static image asset to include.",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "static_image_asset_id"
+        ]
       },
       "TagEnum": {
         "type": "string",
@@ -8472,7 +9090,7 @@
         "type": "object",
         "properties": {
           "throttling_percentage": {
-            "description": "Percentage of recipients to send to per throttle unit (10, 11, 13, 14, 17, 20, 25, 33, or 50)",
+            "description": "Percentage of recipients to send to per throttle unit (1, 2, 5, 10, 11, 13, 14, 17, 20, 25, 33, or 50)",
             "type": "integer",
             "example": 20
           },
@@ -8547,6 +9165,7 @@
                   "email",
                   "mobile_push",
                   "sms",
+                  "web",
                   "whatsapp"
                 ]
               },
@@ -8662,6 +9281,30 @@
                       },
                       "id": {
                         "description": "Related Template Universal Content",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "consent-page": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ConsentPageEnum"
+                      },
+                      "id": {
+                        "description": "Related Consent Page",
                         "type": "string"
                       }
                     },

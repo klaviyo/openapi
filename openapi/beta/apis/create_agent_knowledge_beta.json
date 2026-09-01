@@ -49,6 +49,7 @@
                   "indexed_at",
                   "source",
                   "source.auto_reindex",
+                  "source.child_count",
                   "source.content",
                   "source.scope",
                   "source.source_type",
@@ -286,6 +287,28 @@
           "source_type"
         ]
       },
+      "AgentKnowledgeFolderResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item is a folder that organizes other knowledge items.",
+            "$ref": "#/components/schemas/FolderEnum"
+          },
+          "title": {
+            "description": "Human-readable title for the folder.",
+            "type": "string",
+            "nullable": true
+          },
+          "child_count": {
+            "description": "Number of knowledge items nested under this folder at any depth (nested folders don't count themselves, only their contents do). Only populated when listed via GET /agent-knowledge; null when fetched by id via GET /agent-knowledge/{id}.",
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
       "AgentKnowledgeResourceName": {
         "type": "string",
         "enum": [
@@ -306,6 +329,9 @@
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeFileResponseSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeFolderResponseSource"
               }
             ]
           },
@@ -501,6 +527,12 @@
         "type": "string",
         "enum": [
           "file"
+        ]
+      },
+      "FolderEnum": {
+        "type": "string",
+        "enum": [
+          "folder"
         ]
       },
       "ObjectLinks": {

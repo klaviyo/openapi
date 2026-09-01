@@ -58,6 +58,8 @@
                   "id",
                   "instructions",
                   "name",
+                  "references",
+                  "references.tools",
                   "source",
                   "status",
                   "updated_at"
@@ -242,6 +244,15 @@
       }
     },
     "schemas": {
+      "AgentSkillReferences": {
+        "type": "object",
+        "properties": {
+          "tools": {
+            "description": "Tool definitions keyed by the name used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
+            "type": "object"
+          }
+        }
+      },
       "AgentSkillResourceName": {
         "type": "string",
         "enum": [
@@ -295,6 +306,16 @@
               "all",
               "custom"
             ]
+          },
+          "references": {
+            "description": "Named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
+            "example": {
+              "tools": {}
+            },
+            "default": {
+              "tools": {}
+            },
+            "$ref": "#/components/schemas/AgentSkillReferences"
           },
           "created_at": {
             "description": "Date and time when the skill was created.",
