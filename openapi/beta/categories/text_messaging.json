@@ -254,6 +254,28 @@
         "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a sender and submit its initial registration.\n\nA toll-free number is provisioned in all supported regions (US + CA), so\nthe response is the sender for the requested country and the\nsibling-region sender also appears in list/retrieve.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_text_messaging_sender_beta.json)",
         "parameters": [
           {
+            "name": "fields[text-messaging-sender-registration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "decided_at",
+                  "failures",
+                  "id",
+                  "status",
+                  "submitted_at",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "fields[text-messaging-sender]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
@@ -689,6 +711,29 @@
                   "status",
                   "submitted_at",
                   "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[text-messaging-sender]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "forwarding_number",
+                  "id",
+                  "sender_details",
+                  "sender_details.country",
+                  "sender_identifier",
+                  "sender_type",
+                  "status"
                 ]
               }
             },
@@ -1446,6 +1491,12 @@
               "links"
             ]
           },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderResponseObjectResource"
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           },
@@ -1563,6 +1614,12 @@
               "attributes",
               "links"
             ]
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderRegistrationResponseObjectResource"
+            }
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"

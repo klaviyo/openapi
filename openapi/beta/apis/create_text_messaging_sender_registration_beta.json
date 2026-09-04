@@ -56,6 +56,29 @@
             "explode": false
           },
           {
+            "name": "fields[text-messaging-sender]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "forwarding_number",
+                  "id",
+                  "sender_details",
+                  "sender_details.country",
+                  "sender_identifier",
+                  "sender_type",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "include",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
@@ -420,6 +443,12 @@
               "links"
             ]
           },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderResponseObjectResource"
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           },
@@ -620,6 +649,123 @@
         "type": "string",
         "enum": [
           "text-messaging-sender-registration"
+        ]
+      },
+      "TextMessagingSenderResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TextMessagingSenderEnum"
+          },
+          "id": {
+            "description": "The unique identifier for this text-messaging sender.",
+            "type": "string",
+            "example": "01HX2Z8RG7Y4PWFQK3V0M5N1B7"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "sender_type": {
+                "description": "The kind of sender (e.g. toll-free, short-code, long-code, alpha).",
+                "type": "string",
+                "enum": [
+                  "alpha",
+                  "long_code",
+                  "short_code",
+                  "toll_free",
+                  "vanity_short_code"
+                ]
+              },
+              "sender_details": {
+                "description": "Attributes specific to the sender's type.",
+                "$ref": "#/components/schemas/TollFreeSenderResponseDetails"
+              },
+              "status": {
+                "description": "The lifecycle status of this sender.",
+                "type": "string",
+                "enum": [
+                  "active",
+                  "pending_registration",
+                  "registering",
+                  "registration_failed",
+                  "suspended"
+                ]
+              },
+              "created_at": {
+                "description": "ISO8601 timestamp when the sender was created.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2026-05-19T14:30:00Z"
+              },
+              "forwarding_number": {
+                "description": "E.164 phone number inbound voice calls are forwarded to. Null when no forwarding is configured.",
+                "type": "string",
+                "nullable": true
+              },
+              "sender_identifier": {
+                "description": "The sender's outbound address \u2014 E.164 phone number for phone-number senders. Null while the sender is still pending registration.",
+                "type": "string",
+                "example": "+18005551234",
+                "nullable": true
+              }
+            },
+            "required": [
+              "sender_type",
+              "sender_details",
+              "status",
+              "created_at"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "text-messaging-sender-registration": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TextMessagingSenderRegistrationEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "TollFreeSenderResponseDetails": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "description": "ISO 3166-1 alpha-2 country code the sender is provisioned in.",
+            "type": "string",
+            "example": "US"
+          }
+        },
+        "required": [
+          "country"
         ]
       }
     },

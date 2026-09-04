@@ -3741,6 +3741,28 @@
         "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a sender and submit its initial registration.\n\nA toll-free number is provisioned in all supported regions (US + CA), so\nthe response is the sender for the requested country and the\nsibling-region sender also appears in list/retrieve.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_text_messaging_sender_beta.json)",
         "parameters": [
           {
+            "name": "fields[text-messaging-sender-registration]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "decided_at",
+                  "failures",
+                  "id",
+                  "status",
+                  "submitted_at",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "fields[text-messaging-sender]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
@@ -9413,6 +9435,29 @@
             "explode": false
           },
           {
+            "name": "fields[text-messaging-sender]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "forwarding_number",
+                  "id",
+                  "sender_details",
+                  "sender_details.country",
+                  "sender_identifier",
+                  "sender_type",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "include",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
@@ -12907,85 +12952,6 @@
         "x-klaviyo-subtag": "Translations"
       }
     },
-    "/api/ksql-ask": {
-      "post": {
-        "operationId": "create_ksql_ask_beta",
-        "summary": "Create Ksql Ask",
-        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk K-SQL a natural-language question and get back an answer.\n\nNo public ``deadline_sec`` -- this layer owns the run budget\n(see ``KsqlPublicApiSettings.ask_deadline_sec``) rather than\nletting a caller hold a run open past this service's own\nceiling.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_ksql_ask_beta.json)",
-        "parameters": [
-          {
-            "name": "fields[ksql-ask]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "answer",
-                  "id",
-                  "result_sets",
-                  "status"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2026-07-15.pre"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "A natural-language question to ask k-sql.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/KsqlAskRequestRequestDataWrapper"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KsqlAskResponseDataWrapper"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Beta APIs"
-        ],
-        "x-klaviyo-pre-release": "BETA",
-        "x-klaviyo-ratelimit": {
-          "burst": "1/s",
-          "steady": "15/m"
-        },
-        "x-klaviyo-scopes": [
-          "events:read"
-        ],
-        "x-klaviyo-subtag": "Ksqls"
-      }
-    },
     "/api/agent-knowledge": {
       "get": {
         "operationId": "list_agent_knowledge_beta",
@@ -13528,6 +13494,214 @@
         "x-klaviyo-subtag": "Customer Agent"
       }
     },
+    "/api/customer-agent-conversations": {
+      "post": {
+        "operationId": "create_customer_agent_conversation_beta",
+        "summary": "Create Conversation",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new Customer Agent conversation with no messages.\n\nThe server generates and returns the conversation id. Continue\nit by sending a Customer Agent Response create call with this id\nas the ``conversation`` relationship.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_conversation_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[customer-agent-conversation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "id",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "JSON:API request to create a new Customer Agent conversation with no\nmessages.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConversationCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:write"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      },
+      "get": {
+        "operationId": "list_customer_agent_conversations_beta",
+        "summary": "List Conversations",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns Customer Agent conversations for the calling company.\n\nResults are ordered with newest conversations first. Supports\nfilters by ``status`` and ``created_at`` time window, plus\ncursor pagination for large pulls. Use to audit production\nbehavior, spot-check escalations, or feed conversation samples\nback into Configure decisions.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[customer-agent-conversation]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "id",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`created_at`: `greater-or-equal` (date-time)<br>`status`: `any`, `equals` (allowed values: `'open'`, `'routed-to-team'`, `'resolved-by-ai'`, `'closed'`)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "greater-or-equal(created_at,2024-01-01T00:00:00+00:00)"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-filters": {
+          "created_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "status": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "open",
+                "routed-to-team",
+                "resolved-by-ai",
+                "closed"
+              ]
+            }
+          }
+        },
+        "x-klaviyo-operation-aliases": [
+          "get_customer_agent_conversations"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    },
     "/api/customer-agent-conversations/{id}": {
       "get": {
         "operationId": "retrieve_customer_agent_conversation_beta",
@@ -13688,137 +13862,6 @@
         },
         "x-klaviyo-scopes": [
           "agents:write"
-        ],
-        "x-klaviyo-subtag": "Customer Agent"
-      }
-    },
-    "/api/customer-agent-conversations": {
-      "get": {
-        "operationId": "list_customer_agent_conversations_beta",
-        "summary": "List Conversations",
-        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns Customer Agent conversations for the calling company.\n\nResults are ordered with newest conversations first. Supports\nfilters by ``status`` and ``created_at`` time window, plus\ncursor pagination for large pulls. Use to audit production\nbehavior, spot-check escalations, or feed conversation samples\nback into Configure decisions.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
-        "parameters": [
-          {
-            "name": "fields[customer-agent-conversation]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "created_at",
-                  "id",
-                  "status",
-                  "updated_at"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`created_at`: `greater-or-equal` (date-time)<br>`status`: `any`, `equals` (allowed values: `'open'`, `'routed-to-team'`, `'resolved-by-ai'`, `'closed'`)",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "example": "greater-or-equal(created_at,2024-01-01T00:00:00+00:00)"
-            }
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "Page cursor",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 50. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 50,
-              "maximum": 100,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2026-07-15.pre"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConversationResponseDataWrapper"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Beta APIs"
-        ],
-        "x-klaviyo-filters": {
-          "created_at": {
-            "operators": {
-              "single": [
-                "greater-or-equal"
-              ]
-            },
-            "value": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          "status": {
-            "operators": {
-              "single": [
-                "equals"
-              ]
-            },
-            "value": {
-              "type": "string",
-              "enum": [
-                "open",
-                "routed-to-team",
-                "resolved-by-ai",
-                "closed"
-              ]
-            }
-          }
-        },
-        "x-klaviyo-operation-aliases": [
-          "get_customer_agent_conversations"
-        ],
-        "x-klaviyo-pre-release": "BETA",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "agents:read"
         ],
         "x-klaviyo-subtag": "Customer Agent"
       }
@@ -14198,7 +14241,7 @@
       "post": {
         "operationId": "create_customer_agent_response_beta",
         "summary": "Generate Customer Agent Response",
-        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one user message into Customer Agent and returns every public\nevent Customer Agent emits in response.\n\nEach call is one turn: the caller supplies the conversation\nhistory with the new user message as the last entry, and\nCustomer Agent runs one routing and response cycle against it.\nThe response is non-streaming; the caller receives the entire\nevent list at once and renders it in order. Continue an existing\nconversation by passing the optional ``conversation``\nrelationship; omit it to start a new one.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one user message into Customer Agent and returns every public\nevent Customer Agent emits in response.\n\nEach call is one turn: the caller supplies the conversation\nhistory with the new user message as the last entry, and\nCustomer Agent runs one routing and response cycle against it.\nThe response is non-streaming; the caller receives the entire\nevent list at once and renders it in order. Continue an existing\nconversation by passing the optional ``conversation``\nrelationship; omit it to start a new one. A closed conversation\ncannot be continued this way.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-response]",
@@ -16287,6 +16330,85 @@
           "agents:read"
         ],
         "x-klaviyo-subtag": "Customer Agent"
+      }
+    },
+    "/api/ksql-ask": {
+      "post": {
+        "operationId": "create_ksql_ask_beta",
+        "summary": "Create Ksql Ask",
+        "description": "\n            > 🚧 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk K-SQL a natural-language question and get back an answer.\n\nNo public ``deadline_sec`` -- this layer owns the run budget\n(see ``KsqlPublicApiSettings.ask_deadline_sec``) rather than\nletting a caller hold a run open past this service's own\nceiling.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_ksql_ask_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[ksql-ask]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "answer",
+                  "id",
+                  "result_sets",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A natural-language question to ask k-sql.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KsqlAskRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KsqlAskResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "events:read"
+        ],
+        "x-klaviyo-subtag": "Ksqls"
       }
     }
   },
@@ -23082,6 +23204,8 @@
                     "agents:write",
                     "applications:read",
                     "applications:write",
+                    "billing:read",
+                    "billing:write",
                     "brands:read",
                     "brands:write",
                     "campaigns:read",
@@ -23106,6 +23230,8 @@
                     "events:write",
                     "flows:read",
                     "flows:write",
+                    "folders:read",
+                    "folders:write",
                     "forms:read",
                     "forms:write",
                     "images:read",
@@ -30582,6 +30708,12 @@
               "links"
             ]
           },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderRegistrationResponseObjectResource"
+            }
+          },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
           },
@@ -30852,6 +30984,12 @@
               "attributes",
               "links"
             ]
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextMessagingSenderResponseObjectResource"
+            }
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -33674,6 +33812,8 @@
                         "agents:write",
                         "applications:read",
                         "applications:write",
+                        "billing:read",
+                        "billing:write",
                         "brands:read",
                         "brands:write",
                         "campaigns:read",
@@ -33698,6 +33838,8 @@
                         "events:write",
                         "flows:read",
                         "flows:write",
+                        "folders:read",
+                        "folders:write",
                         "forms:read",
                         "forms:write",
                         "images:read",
@@ -35527,201 +35669,6 @@
           }
         }
       },
-      "KsqlAskRequestRequest": {
-        "type": "object",
-        "properties": {
-          "question": {
-            "description": "The natural-language question to ask. 1-2000 characters.",
-            "type": "string",
-            "example": "How many orders were placed last week?"
-          },
-          "max_rows": {
-            "description": "Cap on rows per result set. 1-1000.",
-            "type": "integer",
-            "example": 100,
-            "default": 100
-          }
-        },
-        "required": [
-          "question"
-        ]
-      },
-      "KsqlAskRequestRequestData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/KsqlAskResourceName"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/KsqlAskRequestRequest"
-          }
-        },
-        "required": [
-          "type",
-          "attributes"
-        ]
-      },
-      "KsqlAskRequestRequestDataWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/KsqlAskRequestRequestData"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "KsqlAskResourceName": {
-        "type": "string",
-        "enum": [
-          "ksql-ask"
-        ]
-      },
-      "KsqlAskResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Whether this ask was answered or needs more input.",
-            "type": "string",
-            "enum": [
-              "success",
-              "clarification"
-            ]
-          },
-          "answer": {
-            "description": "Plain-language answer when `status` is `success`, or the clarifying question back to the caller when `status` is `clarification`.",
-            "type": "string"
-          },
-          "result_sets": {
-            "description": "The executed queries' typed result sets supporting `answer`. Always empty when `status` is `clarification`; may also be empty on `success` when the answer required no query execution.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KsqlResultSet"
-            },
-            "default": []
-          }
-        },
-        "required": [
-          "status",
-          "answer"
-        ]
-      },
-      "KsqlAskResponseData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/KsqlAskResourceName"
-          },
-          "id": {
-            "description": "Identifier for this ask, for joining logs across services.",
-            "type": "string"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/KsqlAskResponse"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "attributes",
-          "links"
-        ]
-      },
-      "KsqlAskResponseDataWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/KsqlAskResponseData"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "KsqlResultSet": {
-        "type": "object",
-        "properties": {
-          "columns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KsqlColumnSchema"
-            }
-          },
-          "rows": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "integer"
-                  },
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "boolean"
-                  }
-                ],
-                "nullable": true
-              }
-            }
-          },
-          "row_count": {
-            "type": "integer"
-          },
-          "rows_returned": {
-            "type": "integer"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "columns",
-          "rows",
-          "row_count",
-          "rows_returned"
-        ]
-      },
-      "KsqlColumnSchema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "$ref": "#/components/schemas/KsqlDataTypeKind"
-          }
-        },
-        "required": [
-          "name",
-          "type"
-        ]
-      },
-      "KsqlDataTypeKind": {
-        "description": "The kind of a k-sql result column's type.",
-        "type": "string",
-        "enum": [
-          "boolean",
-          "long",
-          "double",
-          "string",
-          "timestamptz",
-          "unknown"
-        ]
-      },
       "AgentKnowledgeResponse": {
         "type": "object",
         "properties": {
@@ -36108,6 +36055,96 @@
           "file"
         ]
       },
+      "ConversationCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "description": "Whether the conversation is for testing or a real shopper interaction. `preview` conversations are excluded from billing, Customer Agent conversations, and production metrics. `live` conversations count toward billing, Customer Agent conversations, and production metrics once a message is sent to them.",
+            "type": "string",
+            "enum": [
+              "preview",
+              "live"
+            ]
+          },
+          "channel": {
+            "description": "Channel this conversation is associated with. Determines response conventions once messages are sent. Optional; defaults to `web-chat`.",
+            "type": "string",
+            "example": "web-chat",
+            "default": "web-chat",
+            "enum": [
+              "web-chat",
+              "sms",
+              "email",
+              "whatsapp"
+            ]
+          },
+          "customer": {
+            "description": "Optional public customer identity for this conversation.",
+            "$ref": "#/components/schemas/CustomerRequest",
+            "nullable": true
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "ConversationCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ConversationCreateRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "ConversationCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ConversationCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CustomerAgentConversationResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent-conversation"
+        ]
+      },
+      "CustomerRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "profile_id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "ConversationResponse": {
         "type": "object",
         "properties": {
@@ -36220,12 +36257,6 @@
         "type": "string",
         "enum": [
           "customer-agent-message"
-        ]
-      },
-      "CustomerAgentConversationResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-conversation"
         ]
       },
       "ConversationUpdateRequestRequest": {
@@ -36799,31 +36830,6 @@
           "content",
           "role"
         ]
-      },
-      "CustomerRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "first_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "last_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone_number": {
-            "type": "string",
-            "nullable": true
-          },
-          "profile_id": {
-            "type": "string",
-            "nullable": true
-          }
-        }
       },
       "CustomerAgentResponseCreateResponse": {
         "type": "object",
@@ -39031,6 +39037,201 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "KsqlAskRequestRequest": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "description": "The natural-language question to ask. 1-2000 characters.",
+            "type": "string",
+            "example": "How many orders were placed last week?"
+          },
+          "max_rows": {
+            "description": "Cap on rows per result set. 1-1000.",
+            "type": "integer",
+            "example": 100,
+            "default": 100
+          }
+        },
+        "required": [
+          "question"
+        ]
+      },
+      "KsqlAskRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/KsqlAskResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/KsqlAskRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "KsqlAskRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/KsqlAskRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "KsqlAskResourceName": {
+        "type": "string",
+        "enum": [
+          "ksql-ask"
+        ]
+      },
+      "KsqlAskResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "Whether this ask was answered or needs more input.",
+            "type": "string",
+            "enum": [
+              "success",
+              "clarification"
+            ]
+          },
+          "answer": {
+            "description": "Plain-language answer when `status` is `success`, or the clarifying question back to the caller when `status` is `clarification`.",
+            "type": "string"
+          },
+          "result_sets": {
+            "description": "The executed queries' typed result sets supporting `answer`. Always empty when `status` is `clarification`; may also be empty on `success` when the answer required no query execution.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KsqlResultSet"
+            },
+            "default": []
+          }
+        },
+        "required": [
+          "status",
+          "answer"
+        ]
+      },
+      "KsqlAskResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/KsqlAskResourceName"
+          },
+          "id": {
+            "description": "Identifier for this ask, for joining logs across services.",
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/KsqlAskResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "KsqlAskResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/KsqlAskResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "KsqlResultSet": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KsqlColumnSchema"
+            }
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  }
+                ],
+                "nullable": true
+              }
+            }
+          },
+          "row_count": {
+            "type": "integer"
+          },
+          "rows_returned": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "columns",
+          "rows",
+          "row_count",
+          "rows_returned"
+        ]
+      },
+      "KsqlColumnSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/KsqlDataTypeKind"
+          }
+        },
+        "required": [
+          "name",
+          "type"
+        ]
+      },
+      "KsqlDataTypeKind": {
+        "description": "The kind of a k-sql result column's type.",
+        "type": "string",
+        "enum": [
+          "boolean",
+          "long",
+          "double",
+          "string",
+          "timestamptz",
+          "unknown"
         ]
       }
     },
