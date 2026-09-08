@@ -46,7 +46,8 @@
                   "answer",
                   "id",
                   "result_sets",
-                  "status"
+                  "status",
+                  "warnings"
                 ]
               }
             },
@@ -288,6 +289,17 @@
               "$ref": "#/components/schemas/KsqlResultSet"
             },
             "default": []
+          },
+          "warnings": {
+            "description": "Caveats that change how `answer` and `result_sets` should be read -- a sampled result set, row data elided by a cap, a table withheld from this ask. Several conditions are reported nowhere else, so surface these alongside the answer rather than discarding them.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Showing the first 100 of 4,182 matching orders."
+            ],
+            "default": []
           }
         },
         "required": [
@@ -398,6 +410,16 @@
           "rows_returned": {
             "type": "integer"
           },
+          "completeness": {
+            "description": "Whether the QUERY's result was complete -- it says nothing about this payload. `sample` means the query's row count equalled its own `LIMIT`, so the underlying result may be larger; `truncated` means it hit K-SQL's own result cap. Compare `rows_returned` to `row_count` for payload elision, which is separate: `complete` with `rows_returned` below `row_count` is a full query result only partially included here.",
+            "type": "string",
+            "example": "complete",
+            "enum": [
+              "complete",
+              "sample",
+              "truncated"
+            ]
+          },
           "description": {
             "type": "string",
             "nullable": true
@@ -407,7 +429,8 @@
           "columns",
           "rows",
           "row_count",
-          "rows_returned"
+          "rows_returned",
+          "completeness"
         ]
       },
       "ObjectLinks": {

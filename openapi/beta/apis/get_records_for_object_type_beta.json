@@ -27,22 +27,25 @@
     }
   ],
   "paths": {
-    "/api/customer-agent-conversations/{id}": {
-      "patch": {
-        "operationId": "update_customer_agent_conversation_beta",
-        "summary": "Update Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a Customer Agent conversation.\n\n``status`` is the only updatable attribute and only ``closed``\nis accepted.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_conversation_beta.json)",
+    "/api/object-types/{id}/object-records": {
+      "get": {
+        "operationId": "get_records_for_object_type_beta",
+        "summary": "Get Records for Object Type",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object records for a given object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_records_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ULID ID of the object type.",
             "required": true,
             "schema": {
-              "type": "string"
+              "description": "The ULID ID of the object type.",
+              "type": "string",
+              "example": "01K5YKKQKM819VVGCPZZKGE6D4"
             }
           },
           {
-            "name": "fields[customer-agent-conversation]",
+            "name": "fields[object-record]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -51,14 +54,33 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "created_at",
                   "id",
-                  "status",
-                  "updated_at"
+                  "record_properties"
                 ]
               }
             },
             "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
           },
           {
             "name": "revision",
@@ -71,24 +93,13 @@
             }
           }
         ],
-        "requestBody": {
-          "description": "Sparse request to update a Customer Agent conversation.\n\nOnly ``status: closed`` is accepted today \u2014 the public surface\nexposes a single allowed transition (open \u2192 closed). Future statuses\nwill require shared billing / event-emission plumbing currently\ncoupled to the upstream-state-driven PUT.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ConversationUpdateRequestRequestDataWrapper"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConversationResponseDataWrapper"
+                  "$ref": "#/components/schemas/GetObjectRecordResponseCollection"
                 }
               }
             }
@@ -103,15 +114,18 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-operation-aliases": [
+          "get_object_type_records"
+        ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
           "burst": "3/s",
           "steady": "60/m"
         },
         "x-klaviyo-scopes": [
-          "agents:write"
+          "custom-objects:read"
         ],
-        "x-klaviyo-subtag": "Customer Agent"
+        "x-klaviyo-subtag": "Custom Objects"
       }
     }
   },
@@ -223,169 +237,57 @@
       }
     },
     "schemas": {
-      "ClosedEnum": {
-        "type": "string",
-        "enum": [
-          "closed"
-        ]
-      },
-      "ConversationResponse": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
         "type": "object",
         "properties": {
-          "status": {
-            "description": "Current lifecycle status of the conversation.",
-            "type": "string",
-            "example": "resolved-by-ai",
-            "enum": [
-              "open",
-              "routed-to-team",
-              "resolved-by-ai",
-              "closed"
-            ]
-          },
-          "created_at": {
-            "description": "Date and time when the conversation was created.",
-            "type": "string",
-            "format": "date-time",
-            "example": "2026-05-13T12:00:00+00:00"
-          },
-          "updated_at": {
-            "description": "Date and time when the conversation was last updated.",
-            "type": "string",
-            "format": "date-time",
-            "example": "2026-05-13T12:05:00+00:00"
-          }
-        },
-        "required": [
-          "status",
-          "created_at",
-          "updated_at"
-        ]
-      },
-      "ConversationResponseData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
-          },
-          "id": {
-            "description": "Conversation identifier.",
-            "type": "string",
-            "example": "conv_abc123"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/ConversationResponse"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "customer-agent-messages": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/CustomerAgentMessageResourceName"
-                        },
-                        "id": {
-                          "description": "Message turns in this conversation.",
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "type",
-                        "id"
-                      ]
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/RelationshipLinks"
-                  }
-                }
-              }
-            },
-            "required": [
-              "customer-agent-messages"
-            ]
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "attributes",
-          "relationships",
-          "links"
-        ]
-      },
-      "ConversationResponseDataWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/ConversationResponseData"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "ConversationUpdateRequestRequest": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/ClosedEnum",
-            "nullable": true
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
-      "ConversationUpdateRequestRequestData": {
+      "CollectionLinks": {
         "type": "object",
         "properties": {
-          "type": {
-            "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
+          "self": {
+            "type": "string",
+            "format": "uri"
           },
-          "id": {
-            "type": "string"
+          "prev": {
+            "type": "string",
+            "format": "uri"
           },
-          "attributes": {
-            "$ref": "#/components/schemas/ConversationUpdateRequestRequest"
+          "next": {
+            "type": "string",
+            "format": "uri"
           }
         },
         "required": [
-          "type",
-          "id",
-          "attributes"
+          "self"
         ]
       },
-      "ConversationUpdateRequestRequestDataWrapper": {
+      "GetObjectRecordResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ConversationUpdateRequestRequestData"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObjectRecordResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
           "data"
-        ]
-      },
-      "CustomerAgentConversationResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-conversation"
-        ]
-      },
-      "CustomerAgentMessageResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-message"
         ]
       },
       "ObjectLinks": {
@@ -400,22 +302,54 @@
           "self"
         ]
       },
-      "RelationshipLinks": {
+      "ObjectRecordEnum": {
+        "type": "string",
+        "enum": [
+          "object-record"
+        ]
+      },
+      "ObjectRecordResponseObjectResource": {
         "type": "object",
         "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
+          "type": {
+            "$ref": "#/components/schemas/ObjectRecordEnum"
           },
-          "related": {
+          "id": {
+            "description": "The compound ID of the object record, formatted as object_type_id:::object_record_id",
             "type": "string",
-            "format": "uri"
+            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::sub-001"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "record_properties": {
+                "description": "The properties of this object record as defined by the object schema",
+                "type": "object"
+              }
+            },
+            "required": [
+              "record_properties"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
-          "self",
-          "related"
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
       }
     },
     "securitySchemes": {
