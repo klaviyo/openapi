@@ -31,7 +31,7 @@
       "post": {
         "operationId": "create_customer_agent_response_beta",
         "summary": "Generate Customer Agent Response",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one user message into Customer Agent and returns every public\nevent Customer Agent emits in response.\n\nEach call is one turn: the caller supplies the conversation\nhistory with the new user message as the last entry, and\nCustomer Agent runs one routing and response cycle against it.\nThe response is non-streaming; the caller receives the entire\nevent list at once and renders it in order. Continue an existing\nconversation by passing the optional ``conversation``\nrelationship; omit it to start a new one. A closed conversation\ncannot be continued this way.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one or more messages to Customer Agent and returns every\npublic event Customer Agent emits in response.\n\nMultiple messages can be attached, if the user has sent multiple\nor another agent's response should be included. The response is\nnon-streaming; the entire event list is returned at once.\n\nRequires an open `conversation`, created via `POST\n/api/customer-agent-conversations`. A closed or unknown\nconversation is rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-response]",
@@ -289,7 +289,7 @@
                         "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
                       },
                       "id": {
-                        "description": "Conversation to continue. Omit to start a new conversation; the server generates and returns a UUID.",
+                        "description": "Conversation to continue. Create one first via `POST /api/customer-agent-conversations`.",
                         "type": "string"
                       }
                     },
@@ -300,12 +300,16 @@
                   }
                 }
               }
-            }
+            },
+            "required": [
+              "conversation"
+            ]
           }
         },
         "required": [
           "type",
-          "attributes"
+          "attributes",
+          "relationships"
         ]
       },
       "CustomerAgentResponseCreateRequestRequestDataWrapper": {

@@ -27,14 +27,25 @@
     }
   ],
   "paths": {
-    "/api/customer-agent-conversations": {
-      "post": {
-        "operationId": "create_customer_agent_conversation_beta",
-        "summary": "Create Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new Customer Agent conversation with no messages.\n\nContinue this conversation using ``POST /api/customer-agent-\nresponses`` with the returned conversation attached.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_conversation_beta.json)",
+    "/api/object-types/{id}/current-schema": {
+      "get": {
+        "operationId": "get_current_schema_for_object_type_beta",
+        "summary": "Get Current Schema for Object Type",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet current schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_current_schema_for_object_type_beta.json)",
         "parameters": [
           {
-            "name": "fields[customer-agent-conversation]",
+            "name": "id",
+            "in": "path",
+            "description": "The ULID ID of the object type.",
+            "required": true,
+            "schema": {
+              "description": "The ULID ID of the object type.",
+              "type": "string",
+              "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+            }
+          },
+          {
+            "name": "fields[object-schema]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -43,10 +54,14 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "created_at",
+                  "description",
                   "id",
+                  "properties",
+                  "published_at",
+                  "required",
                   "status",
-                  "updated_at"
+                  "title",
+                  "visibility"
                 ]
               }
             },
@@ -63,24 +78,13 @@
             }
           }
         ],
-        "requestBody": {
-          "description": "JSON:API request to create a new Customer Agent conversation with no\nmessages.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ConversationCreateRequestRequestDataWrapper"
-              }
-            }
-          }
-        },
         "responses": {
-          "201": {
+          "200": {
             "description": "Success",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConversationResponseDataWrapper"
+                  "$ref": "#/components/schemas/GetObjectSchemaResponse"
                 }
               }
             }
@@ -95,15 +99,18 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-operation-aliases": [
+          "get_object_type_current_schema"
+        ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
           "burst": "3/s",
           "steady": "60/m"
         },
         "x-klaviyo-scopes": [
-          "agents:write"
+          "custom-objects:read"
         ],
-        "x-klaviyo-subtag": "Customer Agent"
+        "x-klaviyo-subtag": "Custom Objects"
       }
     }
   },
@@ -215,209 +222,78 @@
       }
     },
     "schemas": {
-      "ConversationCreateRequestRequest": {
+      "APISchemaProperty": {
         "type": "object",
         "properties": {
-          "mode": {
-            "description": "Whether the conversation is for testing or a real shopper interaction. `preview` conversations are excluded from billing, Customer Agent conversations, and production metrics. `live` conversations count toward billing, Customer Agent conversations, and production metrics once a message is sent to them.",
-            "type": "string",
-            "enum": [
-              "preview",
-              "live"
-            ]
-          },
-          "channel": {
-            "description": "Channel this conversation is associated with. Determines response conventions once messages are sent. Optional; defaults to `web-chat`.",
-            "type": "string",
-            "example": "web-chat",
-            "default": "web-chat",
-            "enum": [
-              "web-chat",
-              "sms",
-              "email",
-              "whatsapp"
-            ]
-          },
-          "customer": {
-            "description": "Optional public customer identity for this conversation.",
-            "$ref": "#/components/schemas/CustomerRequest",
-            "nullable": true
-          }
-        },
-        "required": [
-          "mode"
-        ]
-      },
-      "ConversationCreateRequestRequestData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/ConversationCreateRequestRequest"
-          }
-        },
-        "required": [
-          "type",
-          "attributes"
-        ]
-      },
-      "ConversationCreateRequestRequestDataWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/ConversationCreateRequestRequestData"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "ConversationResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Current lifecycle status of the conversation.",
-            "type": "string",
-            "example": "resolved-by-ai",
-            "enum": [
-              "open",
-              "routed-to-team",
-              "resolved-by-ai",
-              "closed"
-            ]
-          },
-          "created_at": {
-            "description": "Date and time when the conversation was created.",
-            "type": "string",
-            "format": "date-time",
-            "example": "2026-05-13T12:00:00+00:00"
-          },
-          "updated_at": {
-            "description": "Date and time when the conversation was last updated.",
-            "type": "string",
-            "format": "date-time",
-            "example": "2026-05-13T12:05:00+00:00"
-          }
-        },
-        "required": [
-          "status",
-          "created_at",
-          "updated_at"
-        ]
-      },
-      "ConversationResponseData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
-          },
           "id": {
-            "description": "Conversation identifier.",
+            "description": "The ID of the schema property. Must be a postive integer.",
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "description": "The name of the schema property",
             "type": "string",
-            "example": "conv_abc123"
+            "example": "service_plan"
           },
-          "attributes": {
-            "$ref": "#/components/schemas/ConversationResponse"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "customer-agent-messages": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/CustomerAgentMessageResourceName"
-                        },
-                        "id": {
-                          "description": "Message turns in this conversation.",
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "type",
-                        "id"
-                      ]
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/RelationshipLinks"
-                  }
-                }
-              }
-            },
-            "required": [
-              "customer-agent-messages"
+          "type": {
+            "description": "The type of the schema property",
+            "type": "string",
+            "enum": [
+              "boolean",
+              "float",
+              "int",
+              "list_str",
+              "string",
+              "timestamp"
             ]
           },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
+          "description": {
+            "description": "The description of the schema property",
+            "type": "string",
+            "default": "",
+            "nullable": true
           }
         },
         "required": [
-          "type",
           "id",
-          "attributes",
-          "relationships",
-          "links"
+          "name",
+          "type"
         ]
       },
-      "ConversationResponseDataWrapper": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
         "type": "object",
         "properties": {
-          "data": {
-            "$ref": "#/components/schemas/ConversationResponseData"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "CustomerAgentConversationResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-conversation"
-        ]
-      },
-      "CustomerAgentMessageResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-message"
-        ]
-      },
-      "CustomerRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "first_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "last_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone_number": {
-            "type": "string",
-            "nullable": true
-          },
-          "profile_id": {
-            "type": "string",
-            "nullable": true
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
+      },
+      "GetObjectSchemaResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
+              }
+            ],
+            "nullable": true
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
       },
       "ObjectLinks": {
         "type": "object",
@@ -429,6 +305,183 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "ObjectSchemaEnum": {
+        "type": "string",
+        "enum": [
+          "object-schema"
+        ]
+      },
+      "ObjectSchemaResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ObjectSchemaEnum"
+          },
+          "id": {
+            "description": "The ULID ID of the object schema",
+            "type": "string",
+            "example": "01K61DKJ7EKJ0ES9VE456XF5JG"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "description": "The title for this object schema",
+                "type": "string"
+              },
+              "description": {
+                "description": "The description of this object schema",
+                "type": "string"
+              },
+              "status": {
+                "description": "The status of this object schema",
+                "type": "string",
+                "enum": [
+                  "active",
+                  "draft",
+                  "publishing",
+                  "undefined"
+                ]
+              },
+              "properties": {
+                "description": "Properties of the object schema",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/APISchemaProperty"
+                }
+              },
+              "required": {
+                "description": "Properties that are required on the object schema",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "published_at": {
+                "description": "The datetime when this object schema was activated",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "visibility": {
+                "description": "The visibility of this object schema",
+                "type": "string",
+                "enum": [
+                  "private",
+                  "shared"
+                ]
+              }
+            },
+            "required": [
+              "title",
+              "description",
+              "status",
+              "properties",
+              "required",
+              "visibility"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "source-mapping": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SourceMappingEnum"
+                      },
+                      "id": {
+                        "description": "The source mapping for this object schema",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "object-schemas": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ObjectSchemaEnum"
+                        },
+                        "id": {
+                          "description": "The object schema relationships for this object schema",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "profile-object-schemas": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ProfileObjectSchemaEnum"
+                        },
+                        "id": {
+                          "description": "The profile object schema relationships for this object schema",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ProfileObjectSchemaEnum": {
+        "type": "string",
+        "enum": [
+          "profile-object-schema"
         ]
       },
       "RelationshipLinks": {
@@ -446,6 +499,21 @@
         "required": [
           "self",
           "related"
+        ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
+      },
+      "SourceMappingEnum": {
+        "type": "string",
+        "enum": [
+          "source-mapping"
         ]
       }
     },
