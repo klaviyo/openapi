@@ -1140,6 +1140,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -2177,6 +2178,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -2790,6 +2792,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -16461,6 +16464,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -18034,6 +18038,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -32549,6 +32554,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -32753,6 +32759,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -32873,6 +32880,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -32981,6 +32989,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -33790,6 +33799,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -33874,6 +33884,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -51197,6 +51208,31 @@
           "type"
         ]
       },
+      "ProfileNotInFlowCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-not-in-flow"
+            ]
+          },
+          "timeframe_filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AlltimeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/InTheLastBaseRelativeDateFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "timeframe_filter"
+        ]
+      },
       "MultiBranchSplitBranch": {
         "type": "object",
         "properties": {
@@ -51277,6 +51313,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/ProfileHasNotReceivedPushMessageCondition"
+                          },
+                          {
+                            "$ref": "#/components/schemas/ProfileNotInFlowCondition"
                           },
                           {
                             "$ref": "#/components/schemas/MetricPropertyCondition"
@@ -52920,31 +52959,6 @@
           "audience"
         ]
       },
-      "ProfileNotInFlowCondition": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "profile-not-in-flow"
-            ]
-          },
-          "timeframe_filter": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/AlltimeDateFilter"
-              },
-              {
-                "$ref": "#/components/schemas/InTheLastBaseRelativeDateFilter"
-              }
-            ]
-          }
-        },
-        "required": [
-          "type",
-          "timeframe_filter"
-        ]
-      },
       "ReentryCriteria": {
         "type": "object",
         "properties": {
@@ -53744,6 +53758,11 @@
                 "type": "string",
                 "format": "date-time",
                 "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "screenshot_url": {
+                "description": "A presigned URL to an image of the rendered template, valid for 24 hours. `null` when no screenshot is currently available for the template.",
+                "type": "string",
                 "nullable": true
               }
             },
@@ -60047,6 +60066,11 @@
                 "format": "date-time",
                 "example": "2022-11-08T00:00:00+00:00",
                 "nullable": true
+              },
+              "screenshot_url": {
+                "description": "A presigned URL to an image of the rendered template, valid for 24 hours. `null` when no screenshot is currently available for the template.",
+                "type": "string",
+                "nullable": true
               }
             },
             "required": [
@@ -65559,6 +65583,10 @@
               "fill",
               "fit"
             ]
+          },
+          "inner_padding": {
+            "$ref": "#/components/schemas/Padding",
+            "nullable": true
           },
           "height": {
             "example": 50,
@@ -80989,6 +81017,11 @@
                     "example": "2022-11-08T00:00:00+00:00",
                     "nullable": true
                   },
+                  "screenshot_url": {
+                    "description": "A presigned URL to an image of the rendered template, valid for 24 hours. `null` when no screenshot is currently available for the template.",
+                    "type": "string",
+                    "nullable": true
+                  },
                   "definition": {
                     "description": "Template definition for SYSTEM_DRAGGABLE templates. Omitted for CODE/USER_DRAGGABLE. Use additional-fields[template]=definition to include in list responses.",
                     "$ref": "#/components/schemas/TemplateDefinition",
@@ -81117,6 +81150,11 @@
                     "type": "string",
                     "format": "date-time",
                     "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "screenshot_url": {
+                    "description": "A presigned URL to an image of the rendered template, valid for 24 hours. `null` when no screenshot is currently available for the template.",
+                    "type": "string",
                     "nullable": true
                   }
                 },
@@ -92390,6 +92428,11 @@
                     "type": "string",
                     "format": "date-time",
                     "example": "2022-11-08T00:00:00+00:00",
+                    "nullable": true
+                  },
+                  "screenshot_url": {
+                    "description": "A presigned URL to an image of the rendered template, valid for 24 hours. `null` when no screenshot is currently available for the template.",
+                    "type": "string",
                     "nullable": true
                   },
                   "definition": {
