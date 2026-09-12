@@ -295,6 +295,7 @@
                   "html",
                   "id",
                   "name",
+                  "screenshot_url",
                   "text",
                   "updated"
                 ]
@@ -5225,6 +5226,9 @@
                             "$ref": "#/components/schemas/ProfileHasNotReceivedPushMessageCondition"
                           },
                           {
+                            "$ref": "#/components/schemas/ProfileNotInFlowCondition"
+                          },
+                          {
                             "$ref": "#/components/schemas/MetricPropertyCondition"
                           },
                           {
@@ -6217,6 +6221,31 @@
           "type",
           "is_member",
           "group_ids"
+        ]
+      },
+      "ProfileNotInFlowCondition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "profile-not-in-flow"
+            ]
+          },
+          "timeframe_filter": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AlltimeDateFilter"
+              },
+              {
+                "$ref": "#/components/schemas/InTheLastBaseRelativeDateFilter"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "timeframe_filter"
         ]
       },
       "ProfileOperationDelete": {
@@ -8692,6 +8721,11 @@
                 "type": "string",
                 "format": "date-time",
                 "example": "2022-11-08T00:00:00+00:00",
+                "nullable": true
+              },
+              "screenshot_url": {
+                "description": "A presigned URL to an image of the rendered template, valid for 24 hours. `null` when no screenshot is currently available for the template.",
+                "type": "string",
                 "nullable": true
               }
             },
