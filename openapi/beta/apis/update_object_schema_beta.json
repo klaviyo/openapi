@@ -54,6 +54,12 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "configuration",
+                  "configuration.primary_image_url_property_id",
+                  "configuration.record_explorer_display_property_ids",
+                  "configuration.searchable_property_ids",
+                  "configuration.thumbnail_image_url_property_id",
+                  "configuration.title_property_id",
                   "description",
                   "id",
                   "properties",
@@ -79,12 +85,12 @@
           }
         ],
         "requestBody": {
-          "description": "Update a object schema by ID",
+          "description": "Update an object schema by ID (beta V2 revision with configuration).",
           "required": true,
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/ObjectSchemaPartialUpdateQuery"
+                "$ref": "#/components/schemas/ObjectSchemaPartialUpdateQueryV2"
               }
             }
           }
@@ -95,7 +101,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PatchObjectSchemaResponse"
+                  "$ref": "#/components/schemas/PatchObjectSchemaResponseV2"
                 }
               }
             }
@@ -293,24 +299,62 @@
           "self"
         ]
       },
+      "ObjectSchemaConfigurationSubObject": {
+        "type": "object",
+        "properties": {
+          "searchable_property_ids": {
+            "description": "Property IDs whose values are indexed for full-text search.",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "primary_image_url_property_id": {
+            "description": "Property ID whose value is the primary image URL for a record.",
+            "type": "integer",
+            "nullable": true
+          },
+          "thumbnail_image_url_property_id": {
+            "description": "Property ID whose value is the thumbnail image URL for a record.",
+            "type": "integer",
+            "nullable": true
+          },
+          "record_explorer_display_property_ids": {
+            "description": "Ordered list of property IDs to display in the record explorer.",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "title_property_id": {
+            "description": "The property ID to use as the Object Record title.",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "searchable_property_ids",
+          "record_explorer_display_property_ids",
+          "title_property_id"
+        ]
+      },
       "ObjectSchemaEnum": {
         "type": "string",
         "enum": [
           "object-schema"
         ]
       },
-      "ObjectSchemaPartialUpdateQuery": {
+      "ObjectSchemaPartialUpdateQueryV2": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ObjectSchemaPartialUpdateQueryResourceObject"
+            "$ref": "#/components/schemas/ObjectSchemaPartialUpdateQueryV2ResourceObject"
           }
         },
         "required": [
           "data"
         ]
       },
-      "ObjectSchemaPartialUpdateQueryResourceObject": {
+      "ObjectSchemaPartialUpdateQueryV2ResourceObject": {
         "type": "object",
         "properties": {
           "type": {
@@ -358,6 +402,11 @@
                   "type": "string"
                 },
                 "nullable": true
+              },
+              "configuration": {
+                "description": "Display and search configuration. Full-replace: all fields must be provided.",
+                "$ref": "#/components/schemas/ObjectSchemaConfigurationSubObject",
+                "nullable": true
               }
             }
           }
@@ -368,7 +417,7 @@
           "attributes"
         ]
       },
-      "PatchObjectSchemaResponse": {
+      "PatchObjectSchemaResponseV2": {
         "type": "object",
         "properties": {
           "data": {
@@ -431,6 +480,10 @@
                       "private",
                       "shared"
                     ]
+                  },
+                  "configuration": {
+                    "description": "Display and search configuration for this object schema.",
+                    "$ref": "#/components/schemas/ObjectSchemaConfigurationSubObject"
                   }
                 },
                 "required": [
@@ -439,7 +492,8 @@
                   "status",
                   "properties",
                   "required",
-                  "visibility"
+                  "visibility",
+                  "configuration"
                 ]
               },
               "relationships": {

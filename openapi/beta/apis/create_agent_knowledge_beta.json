@@ -31,7 +31,7 @@
       "post": {
         "operationId": "create_agent_knowledge_beta",
         "summary": "Create Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds an Agent Knowledge item from either a text snippet\n(``source.source_type: snippet``, requires ``title`` and\n``content``) or a single URL (``source.source_type: webpage``,\nrequires ``url``). The URL is normalized before the uniqueness\ncheck; duplicate normalized URLs return ``409 Conflict``. The\nresource is fetchable immediately; clients can poll its ``status``\nuntil indexing completes. For files, use\n``POST /agent-knowledge-files``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds an Agent Knowledge item from a text snippet (``source.source_type: snippet``, requires ``title`` and ``content``), a single URL (``source.source_type: webpage``, requires ``url``), or a Q&A pair (``source.source_type: qa``, requires ``question`` and ``answer``).\n\nThe URL is normalized before the uniqueness check; duplicate normalized URLs or duplicate Q&A questions return ``409 Conflict``. The resource is fetchable immediately; clients can poll its ``status`` until indexing completes. For files, use ``POST /agent-knowledge-files``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-knowledge]",
@@ -48,9 +48,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -74,7 +76,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request to create snippet-backed or webpage-backed Agent Knowledge.",
+          "description": "Request to create snippet-, webpage-, or Q&A-backed Agent Knowledge.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -229,13 +231,16 @@
         "type": "object",
         "properties": {
           "source": {
-            "description": "Source payload for the new item. `snippet` requires `title` and `content`; `webpage` requires `url` and does not accept caller-provided content. To upload a file, use `POST /agent-knowledge-files`.",
+            "description": "Source payload for the new item. `snippet` requires `title` and `content`; `webpage` requires `url` and does not accept caller-provided content; `qa` requires `question` and `answer`. To upload a file, use `POST /agent-knowledge-files`.",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/AgentKnowledgeSnippetCreateSourceRequest"
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeWebpageCreateSourceRequest"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeQaCreateSourceRequest"
               }
             ]
           }
@@ -309,6 +314,50 @@
           "source_type"
         ]
       },
+      "AgentKnowledgeQaCreateSourceRequest": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "Create a question-and-answer knowledge pair.",
+            "$ref": "#/components/schemas/QaEnum"
+          },
+          "question": {
+            "description": "Question text for the Q&A pair.",
+            "type": "string"
+          },
+          "answer": {
+            "description": "Answer text for the Q&A pair.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_type",
+          "question",
+          "answer"
+        ]
+      },
+      "AgentKnowledgeQaResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item is a question-and-answer pair.",
+            "$ref": "#/components/schemas/QaEnum"
+          },
+          "question": {
+            "description": "Question text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          },
+          "answer": {
+            "description": "Answer text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
       "AgentKnowledgeResourceName": {
         "type": "string",
         "enum": [
@@ -332,6 +381,9 @@
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeFolderResponseSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeQaResponseSource"
               }
             ]
           },
@@ -545,6 +597,12 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "QaEnum": {
+        "type": "string",
+        "enum": [
+          "qa"
         ]
       },
       "SnippetEnum": {

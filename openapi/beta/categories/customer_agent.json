@@ -31,7 +31,7 @@
       "get": {
         "operationId": "list_agent_knowledge_beta",
         "summary": "List Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every Agent Knowledge item for the calling company,\nincluding items that are pending, indexing, indexed, failed, or\nrejected.\n\nReturns only top-level items by default. Filter by ``folder_id``\nto instead list one folder's immediate contents (one level deep,\nnot recursive).\n\nTo add a snippet or webpage, POST to this endpoint with the\nappropriate nested ``source.source_type``; upload files with the\nfile upload endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every Agent Knowledge item for the calling company, including items that are pending, indexing, indexed, failed, or rejected.\n\nReturns only top-level items by default. Filter by ``folder_id`` to instead list one folder's immediate contents (one level deep, not recursive).\n\nTo add a snippet, webpage, or Q&A pair, POST to this endpoint with the appropriate nested ``source.source_type``; upload files with the file upload endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-knowledge]",
@@ -48,9 +48,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -166,7 +168,7 @@
       "post": {
         "operationId": "create_agent_knowledge_beta",
         "summary": "Create Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds an Agent Knowledge item from either a text snippet\n(``source.source_type: snippet``, requires ``title`` and\n``content``) or a single URL (``source.source_type: webpage``,\nrequires ``url``). The URL is normalized before the uniqueness\ncheck; duplicate normalized URLs return ``409 Conflict``. The\nresource is fetchable immediately; clients can poll its ``status``\nuntil indexing completes. For files, use\n``POST /agent-knowledge-files``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds an Agent Knowledge item from a text snippet (``source.source_type: snippet``, requires ``title`` and ``content``), a single URL (``source.source_type: webpage``, requires ``url``), or a Q&A pair (``source.source_type: qa``, requires ``question`` and ``answer``).\n\nThe URL is normalized before the uniqueness check; duplicate normalized URLs or duplicate Q&A questions return ``409 Conflict``. The resource is fetchable immediately; clients can poll its ``status`` until indexing completes. For files, use ``POST /agent-knowledge-files``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-knowledge]",
@@ -183,9 +185,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -209,7 +213,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request to create snippet-backed or webpage-backed Agent Knowledge.",
+          "description": "Request to create snippet-, webpage-, or Q&A-backed Agent Knowledge.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -255,7 +259,7 @@
       "get": {
         "operationId": "get_agent_knowledge_beta",
         "summary": "Get Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Agent Knowledge resource by id.\n\nResources are fetchable immediately after creation, including\nwhile pending, indexing, failed, or rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Agent Knowledge resource by id.\n\nResources are fetchable immediately after creation, including while pending, indexing, failed, or rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -280,9 +284,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -339,7 +345,7 @@
       "patch": {
         "operationId": "update_agent_knowledge_beta",
         "summary": "Update Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches editable fields on an Agent Knowledge item.\n\nFor snippets, you can update ``title`` and ``content``. Re-\nindexing on content change is automatic.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches editable fields on an Agent Knowledge item.\n\nFor snippets, update ``title`` and/or ``content``. For Q&A pairs, update ``question`` and/or ``answer``. Re-indexing on content or answer change is automatic.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -364,9 +370,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -390,7 +398,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request to update snippet-backed Agent Knowledge.",
+          "description": "Request to update snippet- or Q&A-backed Agent Knowledge.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -434,7 +442,7 @@
       "delete": {
         "operationId": "delete_agent_knowledge_beta",
         "summary": "Delete Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the Agent Knowledge item and its indexed\ncontent.\n\nThe agent will stop retrieving from it on the next turn.\nConversations that previously cited this item remain unchanged.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the Agent Knowledge item and its indexed content.\n\nThe agent will stop retrieving from it on the next turn. Conversations that previously cited this item remain unchanged.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -484,7 +492,7 @@
       "post": {
         "operationId": "create_agent_knowledge_file_beta",
         "summary": "Create Agent Knowledge File",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUploads a file (PDF, DOCX, TXT, etc.) and indexes its contents as\nAgent Knowledge with ``source_type: file``.\n\nReturns the new Agent Knowledge resource immediately; clients\ncan poll its ``status`` until indexing completes.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_knowledge_file_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUploads a file (PDF, DOCX, TXT, etc.) and indexes its contents as Agent Knowledge with ``source_type: file``.\n\nReturns the new Agent Knowledge resource immediately; clients can poll its ``status`` until indexing completes.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_knowledge_file_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-knowledge]",
@@ -501,9 +509,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -573,7 +583,7 @@
       "post": {
         "operationId": "create_customer_agent_conversation_beta",
         "summary": "Create Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new Customer Agent conversation with no messages.\n\nContinue this conversation using ``POST /api/customer-agent-\nresponses`` with the returned conversation attached.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a new Customer Agent conversation with no messages.\n\nContinue this conversation using ``POST /api/customer-agent-responses`` with the returned conversation attached.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-conversation]",
@@ -606,7 +616,7 @@
           }
         ],
         "requestBody": {
-          "description": "JSON:API request to create a new Customer Agent conversation with no\nmessages.",
+          "description": "JSON:API request to create a new Customer Agent conversation with no messages.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -650,7 +660,7 @@
       "get": {
         "operationId": "list_customer_agent_conversations_beta",
         "summary": "List Conversations",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns all Customer Agent conversations.\n\nResults are ordered by newest conversations first. Supports\nfilters by ``status`` and ``created_at`` time window, plus\ncursor pagination for large conversations.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns all Customer Agent conversations.\n\nResults are ordered by newest conversations first. Supports filters by ``status`` and ``created_at`` time window, plus cursor pagination for large conversations.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-conversation]",
@@ -781,7 +791,7 @@
       "get": {
         "operationId": "retrieve_customer_agent_conversation_beta",
         "summary": "Retrieve Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Customer Agent conversation with its status and message\nturns.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/retrieve_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Customer Agent conversation with its status and message turns.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/retrieve_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -858,7 +868,7 @@
       "patch": {
         "operationId": "update_customer_agent_conversation_beta",
         "summary": "Update Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a Customer Agent conversation.\n\n``status`` is the only updatable attribute and only ``closed``\nis accepted.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a Customer Agent conversation.\n\n``status`` is the only updatable attribute and only ``closed`` is accepted.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -899,7 +909,7 @@
           }
         ],
         "requestBody": {
-          "description": "Sparse request to update a Customer Agent conversation.\n\nOnly ``status: closed`` is accepted today \u2014 the public surface\nexposes a single allowed transition (open \u2192 closed). Future statuses\nwill require shared billing / event-emission plumbing currently\ncoupled to the upstream-state-driven PUT.",
+          "description": "Sparse request to update a Customer Agent conversation.\n\nOnly ``status: closed`` is accepted today \u2014 the public surface exposes a single allowed transition (open \u2192 closed). Future statuses will require shared billing / event-emission plumbing currently coupled to the upstream-state-driven PUT.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -945,7 +955,7 @@
       "get": {
         "operationId": "get_agent_message_ids_for_customer_agent_conversation_beta",
         "summary": "Get Agent Message IDs for Customer Agent Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList message linkage or full message resources for a\nconversation.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_message_ids_for_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList message linkage or full message resources for a conversation.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_message_ids_for_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1046,7 +1056,7 @@
       "get": {
         "operationId": "get_agent_messages_for_customer_agent_conversation_beta",
         "summary": "Get Agent Messages for Customer Agent Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList message linkage or full message resources for a\nconversation.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_messages_for_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList message linkage or full message resources for a conversation.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_messages_for_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1143,11 +1153,245 @@
         "x-klaviyo-subtag": "Customer Agent"
       }
     },
+    "/api/customer-agent-conversation-contexts": {
+      "post": {
+        "operationId": "create_customer_agent_conversation_context_beta",
+        "summary": "Create Conversation Context",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAttach background the caller already has to an existing conversation.\n\nUnlike `POST /api/customer-agent-responses`, this never runs the agent or produces a reply -- it only records the context. Requires an open `conversation`, created via `POST /api/customer-agent-conversations`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_conversation_context_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[customer-agent-conversation-context]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "entries",
+                  "event_type",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "JSON:API request to attach a survey-response context to an existing conversation.\n\nUnlike ``POST /api/customer-agent-responses``, this never produces a reply -- it only records background the caller already has.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurveyResponseContextCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationContextCreateResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:write"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    },
+    "/api/customer-agent-conversations/{id}/relationships/customer-agent-conversation-contexts": {
+      "get": {
+        "operationId": "get_agent_conversation_context_ids_for_customer_agent_conversation_beta",
+        "summary": "Get Agent Conversation Context IDs for Customer Agent Conversation",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList conversation-context resources attached to a conversation, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_conversation_context_ids_for_customer_agent_conversation_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[customer-agent-conversation-context]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "entries",
+                  "event_type",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationContextCreateResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_customer_agent_conversation_relationships_agent_conversation_contexts"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    },
+    "/api/customer-agent-conversations/{id}/customer-agent-conversation-contexts": {
+      "get": {
+        "operationId": "get_agent_conversation_contexts_for_customer_agent_conversation_beta",
+        "summary": "Get Agent Conversation Contexts for Customer Agent Conversation",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList conversation-context resources attached to a conversation, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_conversation_contexts_for_customer_agent_conversation_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[customer-agent-conversation-context]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "entries",
+                  "event_type",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationContextCreateResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_customer_agent_conversation_agent_conversation_contexts"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    },
     "/api/customer-agents/{id}": {
       "get": {
         "operationId": "get_customer_agent_beta",
         "summary": "Get Customer Agent",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Customer Agent resource for the calling company.\n\nIncludes ``name``, ``tone_of_voice`` with preset, optional\ncustom instruction, and updated timestamp, ``escalation_rules``,\nand ``communication_styles``. There is one Customer Agent per\ncompany.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_customer_agent_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Customer Agent resource for the calling company.\n\nIncludes ``name``, ``tone_of_voice`` with preset, optional custom instruction, and updated timestamp, ``escalation_rules``, and ``communication_styles``. There is one Customer Agent per company.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_customer_agent_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1225,7 +1469,7 @@
       "patch": {
         "operationId": "update_customer_agent_beta",
         "summary": "Update Customer Agent",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches the Customer Agent resource for the calling company.\n\nThe request body ``data.id`` must match the path parameter.\nSupports ``name``, ``tone_of_voice``, ``escalation_rules``, and\n``communication_styles``. For tone, provide\n``tone_of_voice.preset`` from the supported enum, or\n``preset: \"custom\"`` together with ``custom_instruction``. For\n``escalation_rules`` and ``communication_styles``, the supplied\narray replaces the existing list; omit the field to leave the\nexisting list unchanged. Takes effect on the next turn.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches the Customer Agent resource for the calling company.\n\nThe request body ``data.id`` must match the path parameter. Supports ``name``, ``tone_of_voice``, ``escalation_rules``, and ``communication_styles``. For tone, provide ``tone_of_voice.preset`` from the supported enum, or ``preset: \"custom\"`` together with ``custom_instruction``. For ``escalation_rules`` and ``communication_styles``, the supplied array replaces the existing list; omit the field to leave the existing list unchanged. Takes effect on the next turn.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1316,7 +1560,7 @@
       "post": {
         "operationId": "create_customer_agent_response_beta",
         "summary": "Generate Customer Agent Response",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one or more messages to Customer Agent and returns every\npublic event Customer Agent emits in response.\n\nMultiple messages can be attached, if the user has sent multiple\nor another agent's response should be included. The response is\nnon-streaming; the entire event list is returned at once.\n\nRequires an open `conversation`, created via `POST\n/api/customer-agent-conversations`. A closed or unknown\nconversation is rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one or more messages to Customer Agent and returns every public event Customer Agent emits in response.\n\nMultiple messages can be attached, if the user has sent multiple or another agent's response should be included. The response is non-streaming; the entire event list is returned at once.\n\nRequires an open `conversation`, created via `POST /api/customer-agent-conversations`. Conversations can only be interacted with that were created via the API. A closed or unknown conversation is also rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-response]",
@@ -1348,7 +1592,7 @@
           }
         ],
         "requestBody": {
-          "description": "JSON:API request for running Customer Agent for one conversation\nturn.",
+          "description": "JSON:API request for running Customer Agent for one conversation turn.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -1394,7 +1638,7 @@
       "get": {
         "operationId": "get_agent_secrets_beta",
         "summary": "Get Agent Secrets",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nLists every secret configured for the calling company.\n\nReturns secret metadata (name, mask, timestamps) and never the\nplaintext value, which cannot be read back after creation.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_secrets_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nLists every secret configured for the calling company.\n\nReturns secret metadata (name, mask, timestamps) and never the plaintext value, which cannot be read back after creation.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_secrets_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-secret]",
@@ -1461,7 +1705,7 @@
       "post": {
         "operationId": "create_agent_secret_beta",
         "summary": "Create Agent Secret",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreates a secret for use by one or more Customer Agent tools.\n\nThe provided plaintext ``value`` is encrypted before persistence\nand is never exposed after creation. Subsequent responses return\nonly the ``mask`` (last 3 characters) and non-sensitive\nmetadata. Secret names are trimmed of leading and trailing\nwhitespace before validation, and both the resulting ``name``\nand provided ``value`` must be non-empty. If another secret\nalready exists with the same name for the calling company, the\nAPI returns ``409 Conflict``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_secret_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreates a secret for use by one or more Customer Agent tools.\n\nThe provided plaintext ``value`` is encrypted before persistence and is never exposed after creation. Subsequent responses return only the ``mask`` (last 3 characters) and non-sensitive metadata. Secret names are trimmed of leading and trailing whitespace before validation, and both the resulting ``name`` and provided ``value`` must be non-empty. If another secret already exists with the same name for the calling company, the API returns ``409 Conflict``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_secret_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-secret]",
@@ -1616,7 +1860,7 @@
       "patch": {
         "operationId": "update_agent_secret_beta",
         "summary": "Update Agent Secret",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRenames the secret and/or rotates its ``value``.\n\nRotating the value re-encrypts the secret at rest; every tool\nthat references this secret picks up the new value automatically\nwithout per-tool reconfiguration.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_secret_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRenames the secret and/or rotates its ``value``.\n\nRotating the value re-encrypts the secret at rest; every tool that references this secret picks up the new value automatically without per-tool reconfiguration.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_secret_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1702,7 +1946,7 @@
       "delete": {
         "operationId": "delete_agent_secret_beta",
         "summary": "Delete Agent Secret",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the secret.\n\nTools that reference this secret by alias will fail to\nauthenticate on their next call until the alias is rebound to a\ndifferent secret.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_secret_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the secret.\n\nTools that reference this secret by alias will fail to authenticate on their next call until the alias is rebound to a different secret.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_secret_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1752,7 +1996,7 @@
       "get": {
         "operationId": "get_tool_ids_for_agent_secret_beta",
         "summary": "Get Tool IDs for Agent Secret",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList agent tool resource identifiers or full resources for a\nsecret.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tool_ids_for_agent_secret_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList agent tool resource identifiers or full resources for a secret.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tool_ids_for_agent_secret_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1862,7 +2106,7 @@
       "get": {
         "operationId": "get_tools_for_agent_secret_beta",
         "summary": "Get Tools for Agent Secret",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList agent tool resource identifiers or full resources for a\nsecret.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tools_for_agent_secret_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList agent tool resource identifiers or full resources for a secret.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tools_for_agent_secret_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1972,7 +2216,7 @@
       "get": {
         "operationId": "get_agent_skills_beta",
         "summary": "Get Agent Skills",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every skill configured for the calling company's Customer\nAgent.\n\nUse this to inspect Customer Agent's current skills before\nadding or modifying a custom skill. Each item carries a prefixed\n``id``, ``source``, ``name``, ``display_name``, ``description``,\n``instructions``, bound ``agent-tools`` relationship data,\n``status``, and ``handoff``. Use retrieve to inspect any one\nskill in detail.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skills_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every skill configured for the calling company's Customer Agent.\n\nUse this to inspect Customer Agent's current skills before adding or modifying a custom skill. Each item carries a prefixed ``id``, ``source``, ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, and ``handoff``. Use retrieve to inspect any one skill in detail.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skills_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-skill]",
@@ -2046,7 +2290,7 @@
       "post": {
         "operationId": "create_agent_skill_beta",
         "summary": "Create Agent Skill",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds a skill to Customer Agent.\n\nCustomer Agent will invoke this skill when the customer message\nmatches its ``description``. Provide ``display_name``,\n``description`` (summary of the skill's capabilities and when it\nshould be used), ``instructions`` (the system prompt the skill\nuses to handle a turn), optional ``handoff`` (escalation\nbehavior), optional ``references`` for named tools used as\n``{{tool ref=<name>}}`` in instructions, optional ``agent-\ntools`` relationship data, and ``status``. Set ``status: draft``\nto stage without going live, ``live`` to activate immediately.\nCustomer Agent generates the skill name and returns a prefixed\ncustom id plus the generated ``name`` attribute.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_skill_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds a skill to Customer Agent.\n\nCustomer Agent will invoke this skill when the customer message matches its ``description``. Provide ``display_name``, ``description`` (summary of the skill's capabilities and when it should be used), ``instructions`` (the system prompt the skill uses to handle a turn), optional ``handoff`` (escalation behavior), optional ``references`` for named tools used as ``{{tool ref=<name>}}`` in instructions, optional ``agent-tools`` relationship data, and ``status``. Set ``status: draft`` to stage without going live, ``live`` to activate immediately. Customer Agent generates the skill name and returns a prefixed custom id plus the generated ``name`` attribute.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_skill_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-skill]",
@@ -2133,7 +2377,7 @@
       "get": {
         "operationId": "get_agent_skill_beta",
         "summary": "Get Agent Skill",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns full detail for a single skill: ``name``, ``display_name``,\n``description``, ``instructions``, bound ``agent-tools`` relationship\ndata, ``status``, and ``handoff``.\n\nSkills are looked up by prefixed ``id``. To list all skills, use\n``GET /agent-skills``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skill_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns full detail for a single skill: ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, and ``handoff``.\n\nSkills are looked up by prefixed ``id``. To list all skills, use ``GET /agent-skills``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skill_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2215,7 +2459,7 @@
       "patch": {
         "operationId": "update_agent_skill_beta",
         "summary": "Update Agent Skill",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches one or more fields on an existing skill: ``display_name``,\n``description``, ``instructions``, ``status``, ``handoff``, and the\n``agent-tools`` relationship or named ``references`` used as ``{{tool\nref=<name>}}`` in instructions.\n\nSend ``instructions`` and ``references`` together when changing either\none. They form one replacement document and are validated together.\nTo rebind tools, send a new\n``agent-tools`` relationship list; this is a full replacement, not\nmerged. Skills are looked up by prefixed ``id``. Use\n``status: draft`` to pause a custom skill.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_skill_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches one or more fields on an existing skill: ``display_name``, ``description``, ``instructions``, ``status``, ``handoff``, and the ``agent-tools`` relationship or named ``references`` used as ``{{tool ref=<name>}}`` in instructions.\n\nSend ``instructions`` and ``references`` together when changing either one. They form one replacement document and are validated together. To rebind tools, send a new ``agent-tools`` relationship list; this is a full replacement, not merged. Skills are looked up by prefixed ``id``. Use ``status: draft`` to pause a custom skill.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_skill_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2308,7 +2552,7 @@
       "delete": {
         "operationId": "delete_agent_skill_beta",
         "summary": "Delete Agent Skill",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the skill from Customer Agent.\n\nPast conversations routed to this skill are unchanged; future\nconversations cannot route to it. To disable without deletion,\nuse ``PATCH /agent-skills/{id}`` with ``status: draft``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_skill_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the skill from Customer Agent.\n\nPast conversations routed to this skill are unchanged; future conversations cannot route to it. To disable without deletion, use ``PATCH /agent-skills/{id}`` with ``status: draft``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_skill_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2358,7 +2602,7 @@
       "post": {
         "operationId": "query_customer_agent_skill_values_beta",
         "summary": "Query Customer Agent Skill Values",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns per-skill aggregates across the requested timeframe.\n\nEach row of ``results`` is one skill bucket with a computed\n``volume`` statistic. Counts are at the invocation level: one\nconversation that runs multiple skills contributes to multiple\nbuckets.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_skill_values_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns per-skill aggregates across the requested timeframe.\n\nEach row of ``results`` is one skill bucket with a computed ``volume`` statistic. Counts are at the invocation level: one conversation that runs multiple skills contributes to multiple buckets.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_skill_values_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-skill-values-report]",
@@ -2438,7 +2682,7 @@
       "post": {
         "operationId": "create_agent_tool_beta",
         "summary": "Create Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds a new external HTTP tool Customer Agent skills can call.\n\nProvide protocol details (method, URL, query parameter, header,\nand body templates using Jinja-style ``{{variable_name}}``\nsyntax) and declare the variables those templates reference. The\nruntime uses ``variables`` to determine which values are\nsupplied at call time. To reference a secret, include a variable\nwith ``source: secret`` and ``value`` set to the ``agent-\nsecret`` id. The tool isn't directly callable until bound to a\nskill with ``PATCH /agent-skills/{id}``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_tool_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds a new external HTTP tool Customer Agent skills can call.\n\nProvide protocol details (method, URL, query parameter, header, and body templates using Jinja-style ``{{variable_name}}`` syntax) and declare the variables those templates reference. The runtime uses ``variables`` to determine which values are supplied at call time. To reference a secret, include a variable with ``source: secret`` and ``value`` set to the ``agent-secret`` id. The tool isn't directly callable until bound to a skill with ``PATCH /agent-skills/{id}``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_tool_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-tool]",
@@ -2481,7 +2725,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request to create an external HTTP tool Customer Agent skills can\ncall.",
+          "description": "Request to create an external HTTP tool Customer Agent skills can call.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -2525,7 +2769,7 @@
       "get": {
         "operationId": "get_agent_tools_beta",
         "summary": "Get Agent Tools",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every external tool (HTTP API endpoint) Customer Agent\nskills can call.\n\nEach tool has an id, display name, protocol details (method, URL\ntemplate), authentication setup, and any referenced secrets. Use\nthis before creating a new tool to avoid duplicates, or before\nbinding a tool to a skill to confirm the tool exists.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_tools_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every external tool (HTTP API endpoint) Customer Agent skills can call.\n\nEach tool has an id, display name, protocol details (method, URL template), authentication setup, and any referenced secrets. Use this before creating a new tool to avoid duplicates, or before binding a tool to a skill to confirm the tool exists.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_tools_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-tool]",
@@ -2686,7 +2930,7 @@
       "get": {
         "operationId": "get_agent_tool_beta",
         "summary": "Get Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns full configuration for a single tool: protocol, auth method,\ntemplated request configuration, variables, and referenced secrets.\n\nUse to inspect a tool's setup before referencing it from a skill\nor modifying its config.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_tool_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns full configuration for a single tool: protocol, auth method, templated request configuration, variables, and referenced secrets.\n\nUse to inspect a tool's setup before referencing it from a skill or modifying its config.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_tool_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2770,7 +3014,7 @@
       "patch": {
         "operationId": "update_agent_tool_beta",
         "summary": "Update Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches the tool's config in place: protocol, templated request\nconfiguration, variables, auth, and referenced secrets.\n\nAll skills bound to this tool pick up the new behavior\nimmediately on next call.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_tool_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches the tool's config in place: protocol, templated request configuration, variables, auth, and referenced secrets.\n\nAll skills bound to this tool pick up the new behavior immediately on next call.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_tool_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2865,7 +3109,7 @@
       "delete": {
         "operationId": "delete_agent_tool_beta",
         "summary": "Delete Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the tool.\n\nSkills that referenced it lose the binding; Customer Agent will\nnot be able to use that tool with those skills until it is\nrebound.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_tool_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the tool.\n\nSkills that referenced it lose the binding; Customer Agent will not be able to use that tool with those skills until it is rebound.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_tool_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3251,7 +3495,7 @@
       "post": {
         "operationId": "query_customer_agent_tool_values_beta",
         "summary": "Query Customer Agent Tool Values",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns per-tool aggregates across the requested timeframe.\n\nEach row of ``results`` is one tool bucket with the requested\nstatistics. Counts are at the invocation level: one conversation\nthat calls a tool multiple times contributes multiple\ninvocations to that tool's bucket.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_tool_values_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns per-tool aggregates across the requested timeframe.\n\nEach row of ``results`` is one tool bucket with the requested statistics. Counts are at the invocation level: one conversation that calls a tool multiple times contributes multiple invocations to that tool's bucket.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_tool_values_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-tool-values-report]",
@@ -3331,7 +3575,7 @@
       "post": {
         "operationId": "query_customer_agent_values_beta",
         "summary": "Query Customer Agent Conversation Metrics",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns conversation-level aggregates across the requested\ntimeframe.\n\nA single call may request multiple ``statistics`` (``volume``\nand/or ``resolution-rate``); each row of ``results`` carries the\nbucket-identifying ``groupings`` values and computed\n``statistics`` for that bucket. Optionally group by ``channel``\nor ``status``, or omit ``groupings`` for a single overall row.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_values_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns conversation-level aggregates across the requested timeframe.\n\nA single call may request multiple ``statistics`` (``volume`` and/or ``resolution-rate``); each row of ``results`` carries the bucket-identifying ``groupings`` values and computed ``statistics`` for that bucket. Optionally group by ``channel`` or ``status``, or omit ``groupings`` for a single overall row.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_customer_agent_values_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-values-report]",
@@ -3526,13 +3770,16 @@
         "type": "object",
         "properties": {
           "source": {
-            "description": "Source payload for the new item. `snippet` requires `title` and `content`; `webpage` requires `url` and does not accept caller-provided content. To upload a file, use `POST /agent-knowledge-files`.",
+            "description": "Source payload for the new item. `snippet` requires `title` and `content`; `webpage` requires `url` and does not accept caller-provided content; `qa` requires `question` and `answer`. To upload a file, use `POST /agent-knowledge-files`.",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/AgentKnowledgeSnippetCreateSourceRequest"
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeWebpageCreateSourceRequest"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeQaCreateSourceRequest"
               }
             ]
           }
@@ -3606,6 +3853,50 @@
           "source_type"
         ]
       },
+      "AgentKnowledgeQaCreateSourceRequest": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "Create a question-and-answer knowledge pair.",
+            "$ref": "#/components/schemas/QaEnum"
+          },
+          "question": {
+            "description": "Question text for the Q&A pair.",
+            "type": "string"
+          },
+          "answer": {
+            "description": "Answer text for the Q&A pair.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_type",
+          "question",
+          "answer"
+        ]
+      },
+      "AgentKnowledgeQaResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item is a question-and-answer pair.",
+            "$ref": "#/components/schemas/QaEnum"
+          },
+          "question": {
+            "description": "Question text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          },
+          "answer": {
+            "description": "Answer text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
       "AgentKnowledgeResourceName": {
         "type": "string",
         "enum": [
@@ -3629,6 +3920,9 @@
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeFolderResponseSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeQaResponseSource"
               }
             ]
           },
@@ -3769,6 +4063,16 @@
             "description": "Text body for the snippet. Re-indexing is automatic when changed.",
             "nullable": true,
             "type": "string"
+          },
+          "question": {
+            "description": "Question text for a Q&A knowledge item.",
+            "type": "string",
+            "nullable": true
+          },
+          "answer": {
+            "description": "Answer text for a Q&A knowledge item. Re-indexing is automatic when changed.",
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -5427,6 +5731,130 @@
           "self"
         ]
       },
+      "ConversationContextCreateResponse": {
+        "type": "object",
+        "properties": {
+          "event_type": {
+            "$ref": "#/components/schemas/SurveyResponseEnum"
+          },
+          "entries": {
+            "description": "Question/answer pairs already collected from the customer.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SurveyResponseEntry"
+            }
+          }
+        },
+        "required": [
+          "event_type",
+          "entries"
+        ]
+      },
+      "ConversationContextCreateResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentConversationContextResourceName"
+          },
+          "id": {
+            "description": "Conversation context id, unique per submission.",
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ConversationContextCreateResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "conversation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
+                      },
+                      "id": {
+                        "description": "Conversation this context was attached to.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            },
+            "required": [
+              "conversation"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
+        ]
+      },
+      "ConversationContextCreateResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ConversationContextCreateResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ConversationContextCreateResponseIdOnlyData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentConversationContextResourceName"
+          },
+          "id": {
+            "description": "Conversation context id, unique per submission.",
+            "type": "string"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "ConversationContextCreateResponseIdOnlyDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ConversationContextCreateResponseIdOnlyData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "ConversationCreateRequestRequest": {
         "type": "object",
         "properties": {
@@ -5689,6 +6117,12 @@
           "title",
           "description",
           "status"
+        ]
+      },
+      "CustomerAgentConversationContextResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent-conversation-context"
         ]
       },
       "CustomerAgentConversationResourceName": {
@@ -6788,6 +7222,12 @@
           "self"
         ]
       },
+      "QaEnum": {
+        "type": "string",
+        "enum": [
+          "qa"
+        ]
+      },
       "RelationshipLinks": {
         "type": "object",
         "properties": {
@@ -6864,6 +7304,125 @@
         "type": "string",
         "enum": [
           "snippet"
+        ]
+      },
+      "SurveyResponseContextCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "event_type": {
+            "$ref": "#/components/schemas/SurveyResponseEnum"
+          },
+          "entries": {
+            "description": "Question/answer pairs already collected from the customer.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SurveyResponseEntryRequest"
+            }
+          }
+        },
+        "required": [
+          "event_type",
+          "entries"
+        ]
+      },
+      "SurveyResponseContextCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentConversationContextResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/SurveyResponseContextCreateRequestRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "conversation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
+                      },
+                      "id": {
+                        "description": "Conversation to attach this context to. Create one first via `POST /api/customer-agent-conversations`.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "conversation"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "SurveyResponseContextCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SurveyResponseContextCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SurveyResponseEntry": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "description": "The question asked.",
+            "type": "string",
+            "example": "What's your budget?"
+          },
+          "answer": {
+            "description": "The customer's answer.",
+            "type": "string",
+            "example": "Under $50"
+          }
+        },
+        "required": [
+          "question",
+          "answer"
+        ]
+      },
+      "SurveyResponseEntryRequest": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "description": "The question asked.",
+            "type": "string",
+            "example": "What's your budget?"
+          },
+          "answer": {
+            "description": "The customer's answer.",
+            "type": "string",
+            "example": "Under $50"
+          }
+        },
+        "required": [
+          "question",
+          "answer"
+        ]
+      },
+      "SurveyResponseEnum": {
+        "type": "string",
+        "enum": [
+          "survey-response"
         ]
       },
       "ToolGrouping": {

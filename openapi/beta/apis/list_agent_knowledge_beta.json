@@ -31,7 +31,7 @@
       "get": {
         "operationId": "list_agent_knowledge_beta",
         "summary": "List Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every Agent Knowledge item for the calling company,\nincluding items that are pending, indexing, indexed, failed, or\nrejected.\n\nReturns only top-level items by default. Filter by ``folder_id``\nto instead list one folder's immediate contents (one level deep,\nnot recursive).\n\nTo add a snippet or webpage, POST to this endpoint with the\nappropriate nested ``source.source_type``; upload files with the\nfile upload endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every Agent Knowledge item for the calling company, including items that are pending, indexing, indexed, failed, or rejected.\n\nReturns only top-level items by default. Filter by ``folder_id`` to instead list one folder's immediate contents (one level deep, not recursive).\n\nTo add a snippet, webpage, or Q&A pair, POST to this endpoint with the appropriate nested ``source.source_type``; upload files with the file upload endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-knowledge]",
@@ -48,9 +48,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -312,6 +314,28 @@
           "source_type"
         ]
       },
+      "AgentKnowledgeQaResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item is a question-and-answer pair.",
+            "$ref": "#/components/schemas/QaEnum"
+          },
+          "question": {
+            "description": "Question text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          },
+          "answer": {
+            "description": "Answer text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
       "AgentKnowledgeResourceName": {
         "type": "string",
         "enum": [
@@ -335,6 +359,9 @@
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeFolderResponseSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeQaResponseSource"
               }
             ]
           },
@@ -494,6 +521,12 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "QaEnum": {
+        "type": "string",
+        "enum": [
+          "qa"
         ]
       },
       "SnippetEnum": {

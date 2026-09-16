@@ -31,7 +31,7 @@
       "patch": {
         "operationId": "update_agent_knowledge_beta",
         "summary": "Update Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches editable fields on an Agent Knowledge item.\n\nFor snippets, you can update ``title`` and ``content``. Re-\nindexing on content change is automatic.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches editable fields on an Agent Knowledge item.\n\nFor snippets, update ``title`` and/or ``content``. For Q&A pairs, update ``question`` and/or ``answer``. Re-indexing on content or answer change is automatic.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -56,9 +56,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -82,7 +84,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request to update snippet-backed Agent Knowledge.",
+          "description": "Request to update snippet- or Q&A-backed Agent Knowledge.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -272,6 +274,28 @@
           "source_type"
         ]
       },
+      "AgentKnowledgeQaResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item is a question-and-answer pair.",
+            "$ref": "#/components/schemas/QaEnum"
+          },
+          "question": {
+            "description": "Question text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          },
+          "answer": {
+            "description": "Answer text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
       "AgentKnowledgeResourceName": {
         "type": "string",
         "enum": [
@@ -295,6 +319,9 @@
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeFolderResponseSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeQaResponseSource"
               }
             ]
           },
@@ -413,6 +440,16 @@
             "description": "Text body for the snippet. Re-indexing is automatic when changed.",
             "nullable": true,
             "type": "string"
+          },
+          "question": {
+            "description": "Question text for a Q&A knowledge item.",
+            "type": "string",
+            "nullable": true
+          },
+          "answer": {
+            "description": "Answer text for a Q&A knowledge item. Re-indexing is automatic when changed.",
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -500,6 +537,12 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "QaEnum": {
+        "type": "string",
+        "enum": [
+          "qa"
         ]
       },
       "SnippetEnum": {

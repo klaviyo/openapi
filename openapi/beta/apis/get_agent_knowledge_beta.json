@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_agent_knowledge_beta",
         "summary": "Get Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Agent Knowledge resource by id.\n\nResources are fetchable immediately after creation, including\nwhile pending, indexing, failed, or rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Agent Knowledge resource by id.\n\nResources are fetchable immediately after creation, including while pending, indexing, failed, or rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -56,9 +56,11 @@
                   "id",
                   "indexed_at",
                   "source",
+                  "source.answer",
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.question",
                   "source.scope",
                   "source.source_type",
                   "source.title",
@@ -261,6 +263,28 @@
           "source_type"
         ]
       },
+      "AgentKnowledgeQaResponseSource": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "The knowledge item is a question-and-answer pair.",
+            "$ref": "#/components/schemas/QaEnum"
+          },
+          "question": {
+            "description": "Question text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          },
+          "answer": {
+            "description": "Answer text for the Q&A pair.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source_type"
+        ]
+      },
       "AgentKnowledgeResourceName": {
         "type": "string",
         "enum": [
@@ -284,6 +308,9 @@
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeFolderResponseSource"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeQaResponseSource"
               }
             ]
           },
@@ -443,6 +470,12 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "QaEnum": {
+        "type": "string",
+        "enum": [
+          "qa"
         ]
       },
       "SnippetEnum": {

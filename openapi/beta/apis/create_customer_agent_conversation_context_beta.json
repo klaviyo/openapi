@@ -27,14 +27,14 @@
     }
   ],
   "paths": {
-    "/api/ksql-ask": {
+    "/api/customer-agent-conversation-contexts": {
       "post": {
-        "operationId": "create_ksql_ask_beta",
-        "summary": "Create Ksql Ask",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk K-SQL a natural-language question and get back an answer.\n\nNo public ``deadline_sec`` -- this layer owns the run budget (see ``KsqlPublicApiSettings.ask_deadline_sec``) rather than letting a caller hold a run open past this service's own ceiling.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_ksql_ask_beta.json)",
+        "operationId": "create_customer_agent_conversation_context_beta",
+        "summary": "Create Conversation Context",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAttach background the caller already has to an existing conversation.\n\nUnlike `POST /api/customer-agent-responses`, this never runs the agent or produces a reply -- it only records the context. Requires an open `conversation`, created via `POST /api/customer-agent-conversations`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_conversation_context_beta.json)",
         "parameters": [
           {
-            "name": "fields[ksql-ask]",
+            "name": "fields[customer-agent-conversation-context]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -43,11 +43,9 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "answer",
-                  "id",
-                  "result_sets",
-                  "status",
-                  "warnings"
+                  "entries",
+                  "event_type",
+                  "id"
                 ]
               }
             },
@@ -65,12 +63,12 @@
           }
         ],
         "requestBody": {
-          "description": "A natural-language question to ask k-sql.",
+          "description": "JSON:API request to attach a survey-response context to an existing conversation.\n\nUnlike ``POST /api/customer-agent-responses``, this never produces a reply -- it only records background the caller already has.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/KsqlAskRequestRequestDataWrapper"
+                "$ref": "#/components/schemas/SurveyResponseContextCreateRequestRequestDataWrapper"
               }
             }
           }
@@ -81,7 +79,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/KsqlAskResponseDataWrapper"
+                  "$ref": "#/components/schemas/ConversationContextCreateResponseDataWrapper"
                 }
               }
             }
@@ -98,13 +96,13 @@
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
-          "burst": "1/s",
-          "steady": "15/m"
+          "burst": "10/s",
+          "steady": "150/m"
         },
         "x-klaviyo-scopes": [
-          "events:read"
+          "agents:write"
         ],
-        "x-klaviyo-subtag": "Ksqls"
+        "x-klaviyo-subtag": "Customer Agent"
       }
     }
   },
@@ -216,109 +214,69 @@
       }
     },
     "schemas": {
-      "KsqlAskRequestRequest": {
+      "ConversationContextCreateResponse": {
         "type": "object",
         "properties": {
-          "question": {
-            "description": "The natural-language question to ask. 1-2000 characters.",
-            "type": "string",
-            "example": "How many orders were placed last week?"
+          "event_type": {
+            "$ref": "#/components/schemas/SurveyResponseEnum"
           },
-          "max_rows": {
-            "description": "Cap on rows per result set. 1-1000.",
-            "type": "integer",
-            "example": 100,
-            "default": 100
+          "entries": {
+            "description": "Question/answer pairs already collected from the customer.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SurveyResponseEntry"
+            }
           }
         },
         "required": [
-          "question"
+          "event_type",
+          "entries"
         ]
       },
-      "KsqlAskRequestRequestData": {
+      "ConversationContextCreateResponseData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/KsqlAskResourceName"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/KsqlAskRequestRequest"
-          }
-        },
-        "required": [
-          "type",
-          "attributes"
-        ]
-      },
-      "KsqlAskRequestRequestDataWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/KsqlAskRequestRequestData"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "KsqlAskResourceName": {
-        "type": "string",
-        "enum": [
-          "ksql-ask"
-        ]
-      },
-      "KsqlAskResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "description": "Whether this ask was answered or needs more input.",
-            "type": "string",
-            "enum": [
-              "success",
-              "clarification"
-            ]
-          },
-          "answer": {
-            "description": "Plain-language answer when `status` is `success`, or the clarifying question back to the caller when `status` is `clarification`.",
-            "type": "string"
-          },
-          "result_sets": {
-            "description": "The executed queries' typed result sets supporting `answer`. Always empty when `status` is `clarification`; may also be empty on `success` when the answer required no query execution.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KsqlResultSet"
-            },
-            "default": []
-          },
-          "warnings": {
-            "description": "Caveats that change how `answer` and `result_sets` should be read -- a sampled result set, row data elided by a cap, a table withheld from this ask. Several conditions are reported nowhere else, so surface these alongside the answer rather than discarding them.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "example": [
-              "Showing the first 100 of 4,182 matching orders."
-            ],
-            "default": []
-          }
-        },
-        "required": [
-          "status",
-          "answer"
-        ]
-      },
-      "KsqlAskResponseData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/KsqlAskResourceName"
+            "$ref": "#/components/schemas/CustomerAgentConversationContextResourceName"
           },
           "id": {
-            "description": "Identifier for this ask, for joining logs across services.",
+            "description": "Conversation context id, unique per submission.",
             "type": "string"
           },
           "attributes": {
-            "$ref": "#/components/schemas/KsqlAskResponse"
+            "$ref": "#/components/schemas/ConversationContextCreateResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "conversation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
+                      },
+                      "id": {
+                        "description": "Conversation this context was attached to.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            },
+            "required": [
+              "conversation"
+            ]
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -328,14 +286,15 @@
           "type",
           "id",
           "attributes",
+          "relationships",
           "links"
         ]
       },
-      "KsqlAskResponseDataWrapper": {
+      "ConversationContextCreateResponseDataWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/KsqlAskResponseData"
+            "$ref": "#/components/schemas/ConversationContextCreateResponseData"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -345,92 +304,16 @@
           "data"
         ]
       },
-      "KsqlColumnSchema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "$ref": "#/components/schemas/KsqlDataTypeKind"
-          }
-        },
-        "required": [
-          "name",
-          "type"
-        ]
-      },
-      "KsqlDataTypeKind": {
-        "description": "The kind of a k-sql result column's type.",
+      "CustomerAgentConversationContextResourceName": {
         "type": "string",
         "enum": [
-          "boolean",
-          "long",
-          "double",
-          "string",
-          "timestamptz",
-          "unknown"
+          "customer-agent-conversation-context"
         ]
       },
-      "KsqlResultSet": {
-        "type": "object",
-        "properties": {
-          "columns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/KsqlColumnSchema"
-            }
-          },
-          "rows": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "integer"
-                  },
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "boolean"
-                  }
-                ],
-                "nullable": true
-              }
-            }
-          },
-          "row_count": {
-            "type": "integer"
-          },
-          "rows_returned": {
-            "type": "integer"
-          },
-          "completeness": {
-            "description": "Whether the QUERY's result was complete -- it says nothing about this payload. `sample` means the query's row count equalled its own `LIMIT`, so the underlying result may be larger; `truncated` means it hit K-SQL's own result cap. Compare `rows_returned` to `row_count` for payload elision, which is separate: `complete` with `rows_returned` below `row_count` is a full query result only partially included here.",
-            "type": "string",
-            "example": "complete",
-            "enum": [
-              "complete",
-              "sample",
-              "truncated"
-            ]
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "columns",
-          "rows",
-          "row_count",
-          "rows_returned",
-          "completeness"
+      "CustomerAgentConversationResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent-conversation"
         ]
       },
       "ObjectLinks": {
@@ -443,6 +326,142 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SurveyResponseContextCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "event_type": {
+            "$ref": "#/components/schemas/SurveyResponseEnum"
+          },
+          "entries": {
+            "description": "Question/answer pairs already collected from the customer.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SurveyResponseEntryRequest"
+            }
+          }
+        },
+        "required": [
+          "event_type",
+          "entries"
+        ]
+      },
+      "SurveyResponseContextCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentConversationContextResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/SurveyResponseContextCreateRequestRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "conversation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
+                      },
+                      "id": {
+                        "description": "Conversation to attach this context to. Create one first via `POST /api/customer-agent-conversations`.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "conversation"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "SurveyResponseContextCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SurveyResponseContextCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SurveyResponseEntry": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "description": "The question asked.",
+            "type": "string",
+            "example": "What's your budget?"
+          },
+          "answer": {
+            "description": "The customer's answer.",
+            "type": "string",
+            "example": "Under $50"
+          }
+        },
+        "required": [
+          "question",
+          "answer"
+        ]
+      },
+      "SurveyResponseEntryRequest": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "description": "The question asked.",
+            "type": "string",
+            "example": "What's your budget?"
+          },
+          "answer": {
+            "description": "The customer's answer.",
+            "type": "string",
+            "example": "Under $50"
+          }
+        },
+        "required": [
+          "question",
+          "answer"
+        ]
+      },
+      "SurveyResponseEnum": {
+        "type": "string",
+        "enum": [
+          "survey-response"
         ]
       }
     },
