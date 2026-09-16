@@ -43,6 +43,12 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "configuration",
+                  "configuration.primary_image_url_property_id",
+                  "configuration.record_explorer_display_property_ids",
+                  "configuration.searchable_property_ids",
+                  "configuration.thumbnail_image_url_property_id",
+                  "configuration.title_property_id",
                   "description",
                   "id",
                   "properties",
@@ -70,6 +76,8 @@
                   "description",
                   "id",
                   "namespace",
+                  "search_indexed_property_ids",
+                  "search_indexing_property_ids",
                   "status",
                   "title",
                   "updated_at"
@@ -120,7 +128,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetObjectTypeResponseCollectionCompoundDocument"
+                  "$ref": "#/components/schemas/GetObjectTypeResponseV2CollectionCompoundDocument"
                 }
               }
             }
@@ -338,13 +346,13 @@
           "self"
         ]
       },
-      "GetObjectTypeResponseCollectionCompoundDocument": {
+      "GetObjectTypeResponseV2CollectionCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ObjectTypeResponseObjectResource"
+              "$ref": "#/components/schemas/ObjectTypeResponseV2ObjectResource"
             }
           },
           "links": {
@@ -356,7 +364,7 @@
           "included": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ObjectSchemaResponseObjectResource"
+              "$ref": "#/components/schemas/ObjectSchemaResponseV2ObjectResource"
             }
           }
         },
@@ -376,13 +384,51 @@
           "self"
         ]
       },
+      "ObjectSchemaConfigurationSubObject": {
+        "type": "object",
+        "properties": {
+          "searchable_property_ids": {
+            "description": "Property IDs whose values are indexed for full-text search.",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "primary_image_url_property_id": {
+            "description": "Property ID whose value is the primary image URL for a record.",
+            "type": "integer",
+            "nullable": true
+          },
+          "thumbnail_image_url_property_id": {
+            "description": "Property ID whose value is the thumbnail image URL for a record.",
+            "type": "integer",
+            "nullable": true
+          },
+          "record_explorer_display_property_ids": {
+            "description": "Ordered list of property IDs to display in the record explorer.",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "title_property_id": {
+            "description": "The property ID to use as the Object Record title.",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "searchable_property_ids",
+          "record_explorer_display_property_ids",
+          "title_property_id"
+        ]
+      },
       "ObjectSchemaEnum": {
         "type": "string",
         "enum": [
           "object-schema"
         ]
       },
-      "ObjectSchemaResponseObjectResource": {
+      "ObjectSchemaResponseV2ObjectResource": {
         "type": "object",
         "properties": {
           "type": {
@@ -442,6 +488,10 @@
                   "private",
                   "shared"
                 ]
+              },
+              "configuration": {
+                "description": "Display and search configuration for this object schema.",
+                "$ref": "#/components/schemas/ObjectSchemaConfigurationSubObject"
               }
             },
             "required": [
@@ -450,7 +500,8 @@
               "status",
               "properties",
               "required",
-              "visibility"
+              "visibility",
+              "configuration"
             ]
           },
           "relationships": {
@@ -553,7 +604,7 @@
           "object-type"
         ]
       },
-      "ObjectTypeResponseObjectResource": {
+      "ObjectTypeResponseV2ObjectResource": {
         "type": "object",
         "properties": {
           "type": {
@@ -601,6 +652,20 @@
                 "type": "string",
                 "format": "date-time",
                 "example": "2022-11-08T00:00:00+00:00"
+              },
+              "search_indexed_property_ids": {
+                "description": "Property IDs currently indexed for search.",
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "search_indexing_property_ids": {
+                "description": "Property IDs with a search index backfill in progress.",
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
               }
             },
             "required": [
@@ -609,7 +674,9 @@
               "status",
               "namespace",
               "created_at",
-              "updated_at"
+              "updated_at",
+              "search_indexed_property_ids",
+              "search_indexing_property_ids"
             ]
           },
           "relationships": {

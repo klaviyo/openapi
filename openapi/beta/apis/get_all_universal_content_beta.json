@@ -899,7 +899,11 @@
           "self"
         ]
       },
-      "Column": {
+      "ColumnData": {
+        "type": "object",
+        "maxProperties": 0
+      },
+      "ColumnV1": {
         "type": "object",
         "properties": {
           "id": {
@@ -970,10 +974,6 @@
             "nullable": true
           }
         }
-      },
-      "ColumnData": {
-        "type": "object",
-        "maxProperties": 0
       },
       "ContentRepeatV1": {
         "type": "object",
@@ -2309,6 +2309,10 @@
             "type": "integer",
             "nullable": true
           },
+          "border_radius": {
+            "type": "integer",
+            "nullable": true
+          },
           "full_width_mobile": {
             "type": "boolean",
             "nullable": true
@@ -3329,34 +3333,6 @@
           "data"
         ]
       },
-      "Row": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "data_id": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/RowData"
-          },
-          "columns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Column"
-            },
-            "nullable": true
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "RowData": {
         "type": "object",
         "properties": {
@@ -3390,6 +3366,34 @@
             "nullable": true
           }
         }
+      },
+      "RowV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data_id": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/RowData"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ColumnV1"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "data"
+        ]
       },
       "SectionData": {
         "type": "object",
@@ -3590,7 +3594,7 @@
           "rows": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Row"
+              "$ref": "#/components/schemas/RowV1"
             },
             "nullable": true
           }
