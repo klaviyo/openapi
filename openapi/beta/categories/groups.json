@@ -27,25 +27,38 @@
     }
   ],
   "paths": {
-    "/api/object-types/{id}/object-records": {
+    "/api/segments/{id}": {
       "get": {
-        "operationId": "get_records_for_object_type_beta",
-        "summary": "Get Records for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object records for a given object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_records_for_object_type_beta.json)",
+        "operationId": "get_segment",
+        "summary": "Get Segment",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2024-06-15) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet a segment with the given segment ID.<br><br>*Rate limits*:<br>Burst: `75/s`<br>Steady: `750/m`<br><br>Rate limits when using the `additional-fields[segment]=profile_count` parameter in your API request:<br>Burst: `1/s`<br>Steady: `15/m`<br><br>To learn more about how the `additional-fields` parameter impacts rate limits, check out our [Rate limits, status codes, and errors](https://developers.klaviyo.com/en/v2026-07-15.pre/docs/rate_limits_and_error_handling) guide.\n\n**Scopes:**\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_segment.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "The ULID ID of the object type.",
             "required": true,
             "schema": {
-              "description": "The ULID ID of the object type.",
-              "type": "string",
-              "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+              "type": "string"
             }
           },
           {
-            "name": "fields[object-record]",
+            "name": "additional-fields[segment]",
+            "in": "query",
+            "description": "Request additional fields not included by default in the response. Supported values: 'profile_count'",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "profile_count"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[segment]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -54,44 +67,19 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "created",
+                  "definition",
                   "id",
-                  "record_properties"
+                  "is_active",
+                  "is_processing",
+                  "is_starred",
+                  "name",
+                  "profile_count",
+                  "updated"
                 ]
               }
             },
             "explode": false
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 20. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 20,
-              "maximum": 100,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "search",
-            "in": "query",
-            "description": "Search query to filter object records by indexed properties.",
-            "required": false,
-            "schema": {
-              "description": "Search query to filter object records by indexed properties.",
-              "type": "string",
-              "nullable": true
-            }
           },
           {
             "name": "revision",
@@ -110,7 +98,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetObjectRecordResponseCollection"
+                  "$ref": "#/components/schemas/SegmentResponseDataWrapper"
                 }
               }
             }
@@ -123,20 +111,63 @@
           }
         },
         "tags": [
-          "Beta APIs"
+          "groups"
         ],
-        "x-klaviyo-operation-aliases": [
-          "get_object_type_records"
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "75/s",
+          "steady": "750/m"
+        },
+        "x-klaviyo-scopes": [
+          "segments:read"
+        ]
+      },
+      "delete": {
+        "operationId": "delete_segment",
+        "summary": "Delete Segment",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2024-06-15) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete a segment with the given segment ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`segments:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_segment.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
         ],
-        "x-klaviyo-pre-release": "BETA",
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "groups"
+        ],
+        "x-klaviyo-pre-release": "None",
         "x-klaviyo-ratelimit": {
           "burst": "3/s",
           "steady": "60/m"
         },
         "x-klaviyo-scopes": [
-          "custom-objects:read"
-        ],
-        "x-klaviyo-subtag": "Custom Objects"
+          "segments:write"
+        ]
       }
     }
   },
@@ -248,59 +279,6 @@
       }
     },
     "schemas": {
-      "AgentHints": {
-        "description": "Optional hints emitted by the API for agent callers",
-        "type": "object",
-        "properties": {
-          "next_steps": {
-            "description": "Suggested follow-up actions for agents to take after this response",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "CollectionLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "prev": {
-            "type": "string",
-            "format": "uri"
-          },
-          "next": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self"
-        ]
-      },
-      "GetObjectRecordResponseCollection": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ObjectRecordResponseObjectResource"
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
-          },
-          "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "ObjectLinks": {
         "type": "object",
         "properties": {
@@ -313,34 +291,75 @@
           "self"
         ]
       },
-      "ObjectRecordEnum": {
+      "SegmentResourceName": {
         "type": "string",
         "enum": [
-          "object-record"
+          "segment"
         ]
       },
-      "ObjectRecordResponseObjectResource": {
+      "SegmentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the segment",
+            "type": "string"
+          },
+          "definition": {
+            "description": "The segment's filtering criteria",
+            "type": "object",
+            "nullable": true
+          },
+          "created": {
+            "description": "Date the segment was created",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          },
+          "updated": {
+            "description": "Date the segment was last updated",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          },
+          "is_active": {
+            "description": "Whether the segment is active",
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "is_processing": {
+            "description": "Whether the segment is still processing its initial members",
+            "type": "boolean",
+            "default": false
+          },
+          "is_starred": {
+            "description": "Whether the segment is starred",
+            "type": "boolean",
+            "default": false
+          },
+          "profile_count": {
+            "description": "Number of profiles in the segment. Only present with ?additional-fields[segment]=profile_count",
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "SegmentResponseData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/ObjectRecordEnum"
+            "$ref": "#/components/schemas/SegmentResourceName"
           },
           "id": {
-            "description": "The compound ID of the object record, formatted as object_type_id:::object_record_id",
-            "type": "string",
-            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::sub-001"
+            "type": "string"
           },
           "attributes": {
-            "type": "object",
-            "properties": {
-              "record_properties": {
-                "description": "The properties of this object record as defined by the object schema",
-                "type": "object"
-              }
-            },
-            "required": [
-              "record_properties"
-            ]
+            "$ref": "#/components/schemas/SegmentResponse"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -353,14 +372,19 @@
           "links"
         ]
       },
-      "ResponseMeta": {
-        "description": "Response-level metadata",
+      "SegmentResponseDataWrapper": {
         "type": "object",
         "properties": {
-          "agent_hints": {
-            "$ref": "#/components/schemas/AgentHints"
+          "data": {
+            "$ref": "#/components/schemas/SegmentResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
-        }
+        },
+        "required": [
+          "data"
+        ]
       }
     },
     "securitySchemes": {
@@ -375,8 +399,8 @@
   },
   "tags": [
     {
-      "name": "Beta APIs",
-      "description": "beta apis"
+      "name": "groups",
+      "description": "groups"
     }
   ]
 }
