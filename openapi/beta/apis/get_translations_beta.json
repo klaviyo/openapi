@@ -119,7 +119,9 @@
                   "content.media_url",
                   "content.on_open",
                   "content.preview_text",
+                  "content.push_platform_target",
                   "content.reply_to_email",
+                  "content.send_to_primary",
                   "content.sound",
                   "content.subject",
                   "content.title",
@@ -1378,6 +1380,15 @@
             "items": {
               "$ref": "#/components/schemas/PushActionButtonDefinition"
             }
+          },
+          "send_to_primary": {
+            "type": "boolean",
+            "default": false
+          },
+          "push_platform_target": {
+            "type": "string",
+            "example": "all",
+            "default": "all"
           }
         },
         "required": [
@@ -1436,7 +1447,44 @@
           "data"
         ]
       },
-      "PushActionButton": {
+      "PushActionButtonDefinition": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "description": "The button label (max 40 characters)",
+            "type": "string"
+          },
+          "action_type": {
+            "description": "The action type: open_app, deep_link, open_url, or dismiss",
+            "type": "string"
+          },
+          "position": {
+            "description": "The display order of the button (0-indexed). If omitted, inferred from the button's order in the list.",
+            "type": "integer",
+            "nullable": true
+          },
+          "url": {
+            "description": "URL for deep_link or open_url action types (max 2048 characters). Used as a fallback on platforms without a more specific ios_deep_link or android_deep_link.",
+            "type": "string",
+            "nullable": true
+          },
+          "ios_deep_link": {
+            "description": "iOS-specific URL for deep_link or open_url action types (max 2048 characters). Overrides url on iOS.",
+            "type": "string",
+            "nullable": true
+          },
+          "android_deep_link": {
+            "description": "Android-specific URL for deep_link or open_url action types (max 2048 characters). Overrides url on Android.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "label",
+          "action_type"
+        ]
+      },
+      "PushActionButtonV0": {
         "type": "object",
         "properties": {
           "label": {
@@ -1469,43 +1517,6 @@
             "nullable": true
           },
           "android_deep_link": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "label",
-          "action_type"
-        ]
-      },
-      "PushActionButtonDefinition": {
-        "type": "object",
-        "properties": {
-          "label": {
-            "description": "The button label (max 40 characters)",
-            "type": "string"
-          },
-          "action_type": {
-            "description": "The action type: open_app, deep_link, open_url, or dismiss",
-            "type": "string"
-          },
-          "position": {
-            "description": "The display order of the button (0-indexed). If omitted, inferred from the button's order in the list.",
-            "type": "integer",
-            "nullable": true
-          },
-          "url": {
-            "description": "URL for deep_link or open_url action types (max 2048 characters). Used as a fallback on platforms without a more specific ios_deep_link or android_deep_link.",
-            "type": "string",
-            "nullable": true
-          },
-          "ios_deep_link": {
-            "description": "iOS-specific URL for deep_link or open_url action types (max 2048 characters). Overrides url on iOS.",
-            "type": "string",
-            "nullable": true
-          },
-          "android_deep_link": {
-            "description": "Android-specific URL for deep_link or open_url action types (max 2048 characters). Overrides url on Android.",
             "type": "string",
             "nullable": true
           }
@@ -1615,7 +1626,7 @@
           "action_buttons": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PushActionButton"
+              "$ref": "#/components/schemas/PushActionButtonV0"
             },
             "nullable": true
           },
