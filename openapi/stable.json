@@ -245,6 +245,8 @@
                   "definition.options.on_open.type",
                   "definition.options.on_open.web_url",
                   "definition.options.play_sound",
+                  "definition.options.push_platform_target",
+                  "definition.options.send_to_primary",
                   "definition.render_options",
                   "definition.render_options.add_info_link",
                   "definition.render_options.add_opt_out_language",
@@ -704,6 +706,8 @@
                   "definition.options.on_open.type",
                   "definition.options.on_open.web_url",
                   "definition.options.play_sound",
+                  "definition.options.push_platform_target",
+                  "definition.options.send_to_primary",
                   "definition.render_options",
                   "definition.render_options.add_info_link",
                   "definition.render_options.add_opt_out_language",
@@ -1048,6 +1052,8 @@
                   "definition.options.on_open.type",
                   "definition.options.on_open.web_url",
                   "definition.options.play_sound",
+                  "definition.options.push_platform_target",
+                  "definition.options.send_to_primary",
                   "definition.render_options",
                   "definition.render_options.add_info_link",
                   "definition.render_options.add_opt_out_language",
@@ -1264,6 +1270,8 @@
                   "definition.options.on_open.type",
                   "definition.options.on_open.web_url",
                   "definition.options.play_sound",
+                  "definition.options.push_platform_target",
+                  "definition.options.send_to_primary",
                   "definition.render_options",
                   "definition.render_options.add_info_link",
                   "definition.render_options.add_opt_out_language",
@@ -2700,6 +2708,8 @@
                   "definition.options.on_open.type",
                   "definition.options.on_open.web_url",
                   "definition.options.play_sound",
+                  "definition.options.push_platform_target",
+                  "definition.options.send_to_primary",
                   "definition.render_options",
                   "definition.render_options.add_info_link",
                   "definition.render_options.add_opt_out_language",
@@ -54693,6 +54703,19 @@
             "type": "boolean",
             "default": false,
             "nullable": true
+          },
+          "send_to_primary": {
+            "description": "Whether to send only to the profile's primary device.",
+            "type": "boolean",
+            "default": false,
+            "nullable": true
+          },
+          "push_platform_target": {
+            "description": "Which device platform(s) to send to: all, ios, or android.",
+            "type": "string",
+            "example": "all",
+            "default": "all",
+            "nullable": true
           }
         }
       },
@@ -68651,6 +68674,17 @@
             ],
             "nullable": true
           },
+          "label_format": {
+            "description": "Label lengths for countdown timer units.",
+            "type": "string",
+            "enum": [
+              "double_char",
+              "full",
+              "shortened",
+              "single_char"
+            ],
+            "nullable": true
+          },
           "configuration": {
             "oneOf": [
               {
@@ -69484,6 +69518,27 @@
           }
         }
       },
+      "VerifiedBadgeStyle": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "example": 10,
+            "default": 10
+          },
+          "color_asset": {
+            "description": "Available review verified-badge assets.",
+            "type": "string",
+            "example": "blue",
+            "default": "blue",
+            "enum": [
+              "blue",
+              "dark",
+              "light"
+            ]
+          }
+        }
+      },
       "ReviewStyles": {
         "type": "object",
         "properties": {
@@ -69502,6 +69557,10 @@
           },
           "reviewer_name_style": {
             "$ref": "#/components/schemas/ReviewerNameStyle"
+          },
+          "verified_badge_style": {
+            "$ref": "#/components/schemas/VerifiedBadgeStyle",
+            "nullable": true
           },
           "block_background_color": {
             "type": "string",
@@ -69823,6 +69882,140 @@
           "type"
         ]
       },
+      "MarketingTrackingConsentCheckboxStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "horizontal_alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "left",
+            "default": "left",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        }
+      },
+      "MarketingTrackingConsentConfiguration": {
+        "type": "object",
+        "properties": {
+          "selected_model": {
+            "description": "Supported marketing and email-tracking consent models.",
+            "type": "string",
+            "enum": [
+              "ALL_TRACKING_COMBINED_CONSENT",
+              "MARKETING_AND_ALL_EMAIL_TRACKING",
+              "MARKETING_AND_OPEN_TRACKING",
+              "OPEN_TRACKING_COMBINED_CONSENT"
+            ]
+          },
+          "content_by_model": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "selected_model",
+          "content_by_model"
+        ]
+      },
+      "MarketingTrackingConsentCheckboxProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_animation": {
+            "$ref": "#/components/schemas/Animation",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          },
+          "property_name": {
+            "type": "string",
+            "example": "opt_in_marketing_tracking_consent",
+            "default": "opt_in_marketing_tracking_consent",
+            "enum": [
+              "opt_in_marketing_tracking_consent"
+            ]
+          },
+          "placeholder": {
+            "enum": [
+              null
+            ]
+          },
+          "marketing_tracking_consent": {
+            "$ref": "#/components/schemas/MarketingTrackingConsentConfiguration"
+          }
+        },
+        "required": [
+          "marketing_tracking_consent"
+        ]
+      },
+      "MarketingTrackingConsentCheckbox": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "marketing_tracking_consent_checkbox"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/MarketingTrackingConsentCheckboxStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/MarketingTrackingConsentCheckboxProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
       "RowV1": {
         "type": "object",
         "properties": {
@@ -69928,6 +70121,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ContinueWithShop"
+                },
+                {
+                  "$ref": "#/components/schemas/MarketingTrackingConsentCheckbox"
                 }
               ]
             }
@@ -71201,6 +71397,10 @@
               "$ref": "#/components/schemas/PropertyFilter"
             },
             "nullable": true
+          },
+          "delay_seconds": {
+            "type": "integer",
+            "nullable": true
           }
         }
       },
@@ -71432,6 +71632,15 @@
           },
           "margin": {
             "$ref": "#/components/schemas/Margin"
+          },
+          "position": {
+            "description": "Horizontal position of the close button.",
+            "type": "string",
+            "enum": [
+              "left",
+              "right"
+            ],
+            "nullable": true
           }
         }
       },
