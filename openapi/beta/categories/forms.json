@@ -31,7 +31,7 @@
       "patch": {
         "operationId": "update_form_beta",
         "summary": "Update Form",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a form.\n\nOnly submitted attributes change, and `definition` replaces the stored\ndefinition. Live versions and form lifecycle fields cannot be edited.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`forms:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_form_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a form.\n\nOnly submitted attributes change, and `definition` replaces the stored definition. Live versions and form lifecycle fields cannot be edited.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`forms:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_form_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1545,6 +1545,15 @@
           },
           "margin": {
             "$ref": "#/components/schemas/Margin"
+          },
+          "position": {
+            "description": "Horizontal position of the close button.",
+            "type": "string",
+            "enum": [
+              "left",
+              "right"
+            ],
+            "nullable": true
           }
         }
       },
@@ -1826,6 +1835,17 @@
               "flash",
               "heartbeat",
               "pulse"
+            ],
+            "nullable": true
+          },
+          "label_format": {
+            "description": "Label lengths for countdown timer units.",
+            "type": "string",
+            "enum": [
+              "double_char",
+              "full",
+              "shortened",
+              "single_char"
             ],
             "nullable": true
           },
@@ -4292,6 +4312,140 @@
           }
         }
       },
+      "MarketingTrackingConsentCheckbox": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "marketing_tracking_consent_checkbox"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/MarketingTrackingConsentCheckboxStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/MarketingTrackingConsentCheckboxProperties"
+          }
+        },
+        "required": [
+          "type",
+          "properties"
+        ]
+      },
+      "MarketingTrackingConsentCheckboxProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_animation": {
+            "$ref": "#/components/schemas/Animation",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "show_label": {
+            "type": "boolean",
+            "default": false
+          },
+          "error_messages": {
+            "$ref": "#/components/schemas/ErrorMessages",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "enum": [
+              false
+            ]
+          },
+          "property_name": {
+            "type": "string",
+            "example": "opt_in_marketing_tracking_consent",
+            "default": "opt_in_marketing_tracking_consent",
+            "enum": [
+              "opt_in_marketing_tracking_consent"
+            ]
+          },
+          "placeholder": {
+            "enum": [
+              null
+            ]
+          },
+          "marketing_tracking_consent": {
+            "$ref": "#/components/schemas/MarketingTrackingConsentConfiguration"
+          }
+        },
+        "required": [
+          "marketing_tracking_consent"
+        ]
+      },
+      "MarketingTrackingConsentCheckboxStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "horizontal_alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "left",
+            "default": "left",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          }
+        }
+      },
+      "MarketingTrackingConsentConfiguration": {
+        "type": "object",
+        "properties": {
+          "selected_model": {
+            "description": "Supported marketing and email-tracking consent models.",
+            "type": "string",
+            "enum": [
+              "ALL_TRACKING_COMBINED_CONSENT",
+              "MARKETING_AND_ALL_EMAIL_TRACKING",
+              "MARKETING_AND_OPEN_TRACKING",
+              "OPEN_TRACKING_COMBINED_CONSENT"
+            ]
+          },
+          "content_by_model": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "selected_model",
+          "content_by_model"
+        ]
+      },
       "MobileOverlay": {
         "type": "object",
         "properties": {
@@ -4816,6 +4970,10 @@
               "$ref": "#/components/schemas/PropertyFilter"
             },
             "nullable": true
+          },
+          "delay_seconds": {
+            "type": "integer",
+            "nullable": true
           }
         }
       },
@@ -5288,6 +5446,10 @@
           "reviewer_name_style": {
             "$ref": "#/components/schemas/ReviewerNameStyle"
           },
+          "verified_badge_style": {
+            "$ref": "#/components/schemas/VerifiedBadgeStyle",
+            "nullable": true
+          },
           "block_background_color": {
             "type": "string",
             "example": "rgba(255, 255, 255, 0)",
@@ -5594,6 +5756,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ContinueWithShop"
+                },
+                {
+                  "$ref": "#/components/schemas/MarketingTrackingConsentCheckbox"
                 }
               ]
             }
@@ -6992,6 +7157,27 @@
           "hours",
           "minutes"
         ]
+      },
+      "VerifiedBadgeStyle": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "example": 10,
+            "default": 10
+          },
+          "color_asset": {
+            "description": "Available review verified-badge assets.",
+            "type": "string",
+            "example": "blue",
+            "default": "blue",
+            "enum": [
+              "blue",
+              "dark",
+              "light"
+            ]
+          }
+        }
       },
       "Version": {
         "type": "object",
