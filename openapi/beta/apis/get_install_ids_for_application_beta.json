@@ -27,11 +27,11 @@
     }
   ],
   "paths": {
-    "/api/agent-secrets/{id}/relationships/agent-tools": {
+    "/api/applications/{id}/relationships/application-installs": {
       "get": {
-        "operationId": "get_tool_ids_for_agent_secret_beta",
-        "summary": "Get Tool IDs for Agent Secret",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList agent tool resource identifiers or full resources for a secret.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tool_ids_for_agent_secret_beta.json)",
+        "operationId": "get_install_ids_for_application_beta",
+        "summary": "Get Install IDs for Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList installs of an application you own, newest first.\n\nOAuth apps can list only their own installs, without ``applications:read``; one OAuth app cannot manage another.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_install_ids_for_application_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -42,24 +42,24 @@
             }
           },
           {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 50. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 50,
-              "maximum": 100,
-              "minimum": 1
-            }
-          },
-          {
             "name": "page[cursor]",
             "in": "query",
             "description": "Page cursor",
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
             }
           },
           {
@@ -79,7 +79,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentToolResponseIdOnlyDataWrapper"
+                  "$ref": "#/components/schemas/ApplicationInstallResponseIdOnlyDataWrapper"
                 }
               }
             }
@@ -95,7 +95,10 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_agent_secret_relationships_tools"
+          "get_application_relationships_installs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -103,9 +106,9 @@
           "steady": "150/m"
         },
         "x-klaviyo-scopes": [
-          "agents:read"
+          "applications:read"
         ],
-        "x-klaviyo-subtag": "Customer Agent"
+        "x-klaviyo-subtag": "Applications"
       }
     }
   },
@@ -217,21 +220,22 @@
       }
     },
     "schemas": {
-      "AgentToolResourceName": {
+      "ApplicationInstallResourceName": {
         "type": "string",
         "enum": [
-          "agent-tool"
+          "application-install"
         ]
       },
-      "AgentToolResponseIdOnlyData": {
+      "ApplicationInstallResponseIdOnlyData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/AgentToolResourceName"
+            "$ref": "#/components/schemas/ApplicationInstallResourceName"
           },
           "id": {
-            "description": "Agent Tool identifier.",
-            "type": "string"
+            "description": "The ID of the application install: the application ID and the account ID joined by a colon.",
+            "type": "string",
+            "example": "01HQXYZAPPULID000000000000:abc123"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -243,11 +247,11 @@
           "links"
         ]
       },
-      "AgentToolResponseIdOnlyDataWrapper": {
+      "ApplicationInstallResponseIdOnlyDataWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/AgentToolResponseIdOnlyData"
+            "$ref": "#/components/schemas/ApplicationInstallResponseIdOnlyData"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"

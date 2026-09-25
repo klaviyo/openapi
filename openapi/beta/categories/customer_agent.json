@@ -868,7 +868,7 @@
       "patch": {
         "operationId": "update_customer_agent_conversation_beta",
         "summary": "Update Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a Customer Agent conversation.\n\n``status`` is the only updatable attribute and only ``closed`` is accepted.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a Customer Agent conversation.\n\n``status`` and ``customer`` are the only updatable attributes, and at least one must be provided. Only ``status: closed`` is accepted. ``customer`` can only be set once \u2014 a conversation that already has customer data rejects further updates.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -909,7 +909,7 @@
           }
         ],
         "requestBody": {
-          "description": "Sparse request to update a Customer Agent conversation.\n\nOnly ``status: closed`` is accepted today \u2014 the public surface exposes a single allowed transition (open \u2192 closed). Future statuses will require shared billing / event-emission plumbing currently coupled to the upstream-state-driven PUT.",
+          "description": "Sparse request to update a Customer Agent conversation.\n\n``status`` and ``customer`` are the only updatable attributes, and at least one must be provided. Only ``status: closed`` is accepted today \u2014 the public surface exposes a single allowed transition (open \u2192 closed). Future statuses will require shared billing / event-emission plumbing currently coupled to the upstream-state-driven PUT. ``customer`` can only be set once: a conversation that already has customer identity data rejects further updates.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -964,26 +964,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "fields[customer-agent-message]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "content",
-                  "created_at",
-                  "id",
-                  "role",
-                  "updated_at"
-                ]
-              }
-            },
-            "explode": false
           },
           {
             "name": "page[cursor]",
@@ -1244,24 +1224,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "fields[customer-agent-conversation-context]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "entries",
-                  "event_type",
-                  "id"
-                ]
-              }
-            },
-            "explode": false
           },
           {
             "name": "revision",
@@ -2005,35 +1967,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "fields[agent-tool]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "details",
-                  "details.config_params",
-                  "details.created_at",
-                  "details.max_retries",
-                  "details.protocol",
-                  "details.request_template",
-                  "details.timeout_seconds",
-                  "details.type",
-                  "details.updated_at",
-                  "details.variables",
-                  "id",
-                  "name",
-                  "public_description",
-                  "public_name"
-                ]
-              }
-            },
-            "explode": false
           },
           {
             "name": "page[size]",
@@ -3168,33 +3101,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "fields[agent-skill]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "created_at",
-                  "description",
-                  "display_name",
-                  "handoff",
-                  "id",
-                  "instructions",
-                  "name",
-                  "references",
-                  "references.tools",
-                  "source",
-                  "status",
-                  "updated_at"
-                ]
-              }
-            },
-            "explode": false
           },
           {
             "name": "page[size]",
@@ -6028,6 +5934,11 @@
           "status": {
             "$ref": "#/components/schemas/ClosedEnum",
             "nullable": true
+          },
+          "customer": {
+            "description": "Optional public customer identity to set on this conversation. Can only be set once; a conversation that already has customer data rejects further updates.",
+            "$ref": "#/components/schemas/CustomerRequest",
+            "nullable": true
           }
         }
       },
@@ -6257,11 +6168,6 @@
             "items": {
               "$ref": "#/components/schemas/MessageRequest"
             }
-          },
-          "customer": {
-            "description": "Optional public customer identity for this conversation.",
-            "$ref": "#/components/schemas/CustomerRequest",
-            "nullable": true
           }
         },
         "required": [
@@ -6291,7 +6197,7 @@
                         "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
                       },
                       "id": {
-                        "description": "Conversation to continue. Create one first via `POST /api/customer-agent-conversations`.",
+                        "description": "Conversation to continue. Create one first via `POST /api/customer-agent-conversations`. Customer identity can only be set on the conversation itself, via that create call or a subsequent `PATCH /api/customer-agent-conversations/{id}`.",
                         "type": "string"
                       }
                     },

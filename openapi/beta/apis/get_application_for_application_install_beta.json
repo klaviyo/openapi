@@ -27,12 +27,20 @@
     }
   ],
   "paths": {
-    "/api/applications": {
+    "/api/application-installs/{id}/application": {
       "get": {
-        "operationId": "get_applications_beta",
-        "summary": "Get Applications",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList marketplace applications, newest first.\n\nIncludes the published version of every published application. Private-key callers also see their own applications at any status. OAuth apps instead see only themselves at any status, and do not need ``applications:read``.\n\nFilter by ``name``, ``categories``, or ``developed_by``. Wrap a ``developed_by`` filter in ``not()`` to exclude a developer.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_applications_beta.json)",
+        "operationId": "get_application_for_application_install_beta",
+        "summary": "Get Application for Application Install",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the application for an install.\n\nOAuth apps only see their own application and do not need ``applications:read``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_application_for_application_install_beta.json)",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "fields[application]",
             "in": "query",
@@ -90,16 +98,6 @@
             "explode": false
           },
           {
-            "name": "filter",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`name`: `contains` (string)<br>`categories`: `equals` (allowed values: `'accounting'`, `'advertising'`, `'cdp'`, `'crm'`, `'data_warehouse'`, `'design_and_content'`, `'direct_mail'`, `'donations'`, `'ecommerce_platform'`, `'email_service_provider'`, `'event_management'`, `'fundraising'`, `'health_and_wellness'`, `'journey_optimization'`, `'landing_pages_and_forms'`, `'payments'`, `'personalization'`, `'pos'`, `'project_management'`, `'quizzes_and_surveys'`, `'restaurants'`, `'reviews'`, `'rewards'`, `'shipping'`, `'smtp'`, `'subscriptions'`, `'support_and_help_desk'`, `'travel'`, `'workflow_automation'`)<br>`developed_by`: `equals` (string) (supports `not()`)",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "example": "contains(name,'klaviyo')"
-            }
-          },
-          {
             "name": "include",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
@@ -114,27 +112,6 @@
               }
             },
             "explode": false
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "Page cursor",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 25. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 25,
-              "maximum": 100,
-              "minimum": 1
-            }
           },
           {
             "name": "revision",
@@ -168,70 +145,9 @@
         "tags": [
           "Beta APIs"
         ],
-        "x-klaviyo-filters": {
-          "name": {
-            "operators": {
-              "single": [
-                "contains"
-              ]
-            },
-            "value": {
-              "type": "string"
-            }
-          },
-          "categories": {
-            "operators": {
-              "single": [
-                "equals"
-              ]
-            },
-            "value": {
-              "type": "string",
-              "enum": [
-                "accounting",
-                "advertising",
-                "cdp",
-                "crm",
-                "data_warehouse",
-                "design_and_content",
-                "direct_mail",
-                "donations",
-                "ecommerce_platform",
-                "email_service_provider",
-                "event_management",
-                "fundraising",
-                "health_and_wellness",
-                "journey_optimization",
-                "landing_pages_and_forms",
-                "payments",
-                "personalization",
-                "pos",
-                "project_management",
-                "quizzes_and_surveys",
-                "restaurants",
-                "reviews",
-                "rewards",
-                "shipping",
-                "smtp",
-                "subscriptions",
-                "support_and_help_desk",
-                "travel",
-                "workflow_automation"
-              ]
-            }
-          },
-          "developed_by": {
-            "operators": {
-              "single": [
-                "equals"
-              ]
-            },
-            "value": {
-              "type": "string"
-            },
-            "negatable": true
-          }
-        },
+        "x-klaviyo-operation-aliases": [
+          "get_application_install_application"
+        ],
         "x-klaviyo-optional-scopes": [
           "applications:read"
         ],

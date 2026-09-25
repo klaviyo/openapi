@@ -27,12 +27,23 @@
     }
   ],
   "paths": {
-    "/api/applications": {
+    "/client/applications": {
       "get": {
-        "operationId": "get_applications_beta",
-        "summary": "Get Applications",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList installable marketplace applications.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_applications_beta.json)",
+        "operationId": "get_client_applications_beta",
+        "summary": "Get Client Applications",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList published marketplace applications, newest first.\n\nFilter by ``name``, ``categories``, or ``developed_by``. Wrap a ``developed_by`` filter in ``not()`` to exclude a developer.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_client_applications_beta.json)",
         "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
           {
             "name": "fields[application]",
             "in": "query",
@@ -46,6 +57,7 @@
                   "articles",
                   "banner_image_url",
                   "categories",
+                  "client_id",
                   "created_at",
                   "description",
                   "developed_by",
@@ -55,10 +67,13 @@
                   "id",
                   "install_url",
                   "name",
+                  "oauth_callback_urls",
                   "preferences_link",
                   "pricing_information_link",
                   "privacy_policy_link",
+                  "scopes",
                   "short_description",
+                  "status",
                   "support_link",
                   "video",
                   "video.video_id",
@@ -71,7 +86,8 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`name`: `contains` (string)<br>`category`: `equals` (allowed values: `'Accounting'`, `'Advertising'`, `'CDP'`, `'CRM'`, `'Data Warehouse'`, `'Design & Content'`, `'Direct Mail'`, `'Donations'`, `'eCommerce Platform'`, `'Email Service Provider'`, `'Event Management'`, `'Fundraising'`, `'Health & Wellness'`, `'Journey Optimization'`, `'Landing Pages & Forms'`, `'Payments'`, `'Personalization'`, `'POS'`, `'Project Management'`, `'Quizzes & Surveys'`, `'Restaurants'`, `'Reviews'`, `'Rewards'`, `'Shipping'`, `'SMTP'`, `'Subscriptions'`, `'Support & Help Desk'`, `'Travel'`, `'Workflow Automation'`)<br>`built_by`: `equals` (allowed values: `'KLAVIYO'`, `'KLAVIYO_PARTNERS'`)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`name`: `contains` (string)<br>`categories`: `equals` (allowed values: `'accounting'`, `'advertising'`, `'cdp'`, `'crm'`, `'data_warehouse'`, `'design_and_content'`, `'direct_mail'`, `'donations'`, `'ecommerce_platform'`, `'email_service_provider'`, `'event_management'`, `'fundraising'`, `'health_and_wellness'`, `'journey_optimization'`, `'landing_pages_and_forms'`, `'payments'`, `'personalization'`, `'pos'`, `'project_management'`, `'quizzes_and_surveys'`, `'restaurants'`, `'reviews'`, `'rewards'`, `'shipping'`, `'smtp'`, `'subscriptions'`, `'support_and_help_desk'`, `'travel'`, `'workflow_automation'`)<br>`developed_by`: `equals` (string) (supports `not()`)",
+            "required": false,
             "schema": {
               "type": "string",
               "example": "contains(name,'klaviyo')"
@@ -80,7 +96,7 @@
           {
             "name": "page[cursor]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "description": "Page cursor",
             "required": false,
             "schema": {
               "type": "string"
@@ -115,7 +131,1073 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetApplicationResponseCollection"
+                  "$ref": "#/components/schemas/ApplicationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-filters": {
+          "name": {
+            "operators": {
+              "single": [
+                "contains"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "categories": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "accounting",
+                "advertising",
+                "cdp",
+                "crm",
+                "data_warehouse",
+                "design_and_content",
+                "direct_mail",
+                "donations",
+                "ecommerce_platform",
+                "email_service_provider",
+                "event_management",
+                "fundraising",
+                "health_and_wellness",
+                "journey_optimization",
+                "landing_pages_and_forms",
+                "payments",
+                "personalization",
+                "pos",
+                "project_management",
+                "quizzes_and_surveys",
+                "restaurants",
+                "reviews",
+                "rewards",
+                "shipping",
+                "smtp",
+                "subscriptions",
+                "support_and_help_desk",
+                "travel",
+                "workflow_automation"
+              ]
+            }
+          },
+          "developed_by": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            },
+            "negatable": true
+          }
+        },
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/client/applications/{id}": {
+      "get": {
+        "operationId": "get_client_application_beta",
+        "summary": "Get Client Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet a published marketplace application.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_client_application_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+            "required": true,
+            "schema": {
+              "description": "Your Public API Key / Site ID. See [this article](https://help.klaviyo.com/hc/en-us/articles/115005062267) for more details.",
+              "type": "string",
+              "example": "PUBLIC_API_KEY"
+            }
+          },
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "client_id",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "oauth_callback_urls",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "scopes",
+                  "short_description",
+                  "status",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/application-installs": {
+      "get": {
+        "operationId": "get_application_installs_beta",
+        "summary": "Get Application Installs",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList application installs for your account.\n\nOAuth apps only see their own install and do not need ``applications:read``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_application_installs_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[application-install]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "installed_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "client_id",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "oauth_callback_urls",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "scopes",
+                  "short_description",
+                  "status",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "application"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationInstallResponseDataListWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/application-installs/{id}": {
+      "get": {
+        "operationId": "get_application_install_beta",
+        "summary": "Get Application Install",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet details for an application install.\n\nOAuth apps only see their own install and do not need ``applications:read``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_application_install_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[application-install]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "installed_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "client_id",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "oauth_callback_urls",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "scopes",
+                  "short_description",
+                  "status",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "application"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationInstallResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      },
+      "delete": {
+        "operationId": "delete_application_install_beta",
+        "summary": "Delete Application Install",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUninstall an application from your account.\n\nOAuth apps can only uninstall themselves and do not need ``applications:write``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_application_install_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:write"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:write"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/applications/{id}/relationships/application-install": {
+      "get": {
+        "operationId": "get_install_id_for_application_beta",
+        "summary": "Get Install ID for Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet your account's install of an application.\n\nOAuth apps only see their own install and do not need ``applications:read``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_install_id_for_application_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationInstallResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_application_relationships_install"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/applications/{id}/application-install": {
+      "get": {
+        "operationId": "get_install_for_application_beta",
+        "summary": "Get Install for Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet your account's install of an application.\n\nOAuth apps only see their own install and do not need ``applications:read``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_install_for_application_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[application-install]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "installed_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "client_id",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "oauth_callback_urls",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "scopes",
+                  "short_description",
+                  "status",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "application"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationInstallResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_application_install"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/applications/{id}/relationships/application-installs": {
+      "get": {
+        "operationId": "get_install_ids_for_application_beta",
+        "summary": "Get Install IDs for Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList installs of an application you own, newest first.\n\nOAuth apps can list only their own installs, without ``applications:read``; one OAuth app cannot manage another.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_install_ids_for_application_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationInstallResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_application_relationships_installs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/applications/{id}/application-installs": {
+      "get": {
+        "operationId": "get_installs_for_application_beta",
+        "summary": "Get Installs for Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList installs of an application you own, newest first.\n\nOAuth apps can list only their own installs, without ``applications:read``; one OAuth app cannot manage another.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_installs_for_application_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[application-install]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "installed_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "client_id",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "oauth_callback_urls",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "scopes",
+                  "short_description",
+                  "status",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "application"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationInstallResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_application_installs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/applications": {
+      "get": {
+        "operationId": "get_applications_beta",
+        "summary": "Get Applications",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList marketplace applications, newest first.\n\nIncludes the published version of every published application. Private-key callers also see their own applications at any status. OAuth apps instead see only themselves at any status, and do not need ``applications:read``.\n\nFilter by ``name``, ``categories``, or ``developed_by``. Wrap a ``developed_by`` filter in ``not()`` to exclude a developer.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_applications_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "client_id",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "oauth_callback_urls",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "scopes",
+                  "short_description",
+                  "status",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[application-install]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "installed_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`name`: `contains` (string)<br>`categories`: `equals` (allowed values: `'accounting'`, `'advertising'`, `'cdp'`, `'crm'`, `'data_warehouse'`, `'design_and_content'`, `'direct_mail'`, `'donations'`, `'ecommerce_platform'`, `'email_service_provider'`, `'event_management'`, `'fundraising'`, `'health_and_wellness'`, `'journey_optimization'`, `'landing_pages_and_forms'`, `'payments'`, `'personalization'`, `'pos'`, `'project_management'`, `'quizzes_and_surveys'`, `'restaurants'`, `'reviews'`, `'rewards'`, `'shipping'`, `'smtp'`, `'subscriptions'`, `'support_and_help_desk'`, `'travel'`, `'workflow_automation'`)<br>`developed_by`: `equals` (string) (supports `not()`)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "contains(name,'klaviyo')"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "application-install"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponseDataWrapper"
                 }
               }
             }
@@ -141,7 +1223,7 @@
               "type": "string"
             }
           },
-          "category": {
+          "categories": {
             "operators": {
               "single": [
                 "equals"
@@ -150,57 +1232,615 @@
             "value": {
               "type": "string",
               "enum": [
-                "Accounting",
-                "Advertising",
-                "CDP",
-                "CRM",
-                "Data Warehouse",
-                "Design & Content",
-                "Direct Mail",
-                "Donations",
-                "eCommerce Platform",
-                "Email Service Provider",
-                "Event Management",
-                "Fundraising",
-                "Health & Wellness",
-                "Journey Optimization",
-                "Landing Pages & Forms",
-                "Payments",
-                "Personalization",
-                "POS",
-                "Project Management",
-                "Quizzes & Surveys",
-                "Restaurants",
-                "Reviews",
-                "Rewards",
-                "Shipping",
-                "SMTP",
-                "Subscriptions",
-                "Support & Help Desk",
-                "Travel",
-                "Workflow Automation"
+                "accounting",
+                "advertising",
+                "cdp",
+                "crm",
+                "data_warehouse",
+                "design_and_content",
+                "direct_mail",
+                "donations",
+                "ecommerce_platform",
+                "email_service_provider",
+                "event_management",
+                "fundraising",
+                "health_and_wellness",
+                "journey_optimization",
+                "landing_pages_and_forms",
+                "payments",
+                "personalization",
+                "pos",
+                "project_management",
+                "quizzes_and_surveys",
+                "restaurants",
+                "reviews",
+                "rewards",
+                "shipping",
+                "smtp",
+                "subscriptions",
+                "support_and_help_desk",
+                "travel",
+                "workflow_automation"
               ]
             }
           },
-          "built_by": {
+          "developed_by": {
             "operators": {
               "single": [
                 "equals"
               ]
             },
             "value": {
+              "type": "string"
+            },
+            "negatable": true
+          }
+        },
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      },
+      "post": {
+        "operationId": "create_application_beta",
+        "summary": "Create Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a draft application.\n\nThe response includes the client secret, which is only returned once.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`applications:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_application_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "client_id",
+                  "client_secret_jwe",
+                  "created_at",
+                  "description",
+                  "id",
+                  "install_url",
+                  "oauth_callback_urls",
+                  "scopes",
+                  "status",
+                  "title"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
               "type": "string",
-              "enum": [
-                "KLAVIYO",
-                "KLAVIYO_PARTNERS"
-              ]
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to create a draft OAuth application.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationCreateRequestRequestDataWrapper"
+              }
             }
           }
         },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationManagementResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:write"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/applications/{id}": {
+      "get": {
+        "operationId": "get_application_beta",
+        "summary": "Get Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet an application.\n\nOwners see the latest saved version. Everyone else sees the published version, or only basic identifying fields if the application is not published.\n\nOAuth apps can read themselves without ``applications:read``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_application_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "client_id",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "oauth_callback_urls",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "scopes",
+                  "short_description",
+                  "status",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[application-install]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "installed_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "application-install"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      },
+      "patch": {
+        "operationId": "update_application_beta",
+        "summary": "Update Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate an application you own.\n\nUse this to update application details, such as the application's marketplace listing. Also use this to submit an application for review, withdraw it from review, or unpublish it.\n\nOAuth apps can update only themselves, without ``applications:write``; one OAuth app cannot manage another.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_application_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "client_id",
+                  "client_secret_jwe",
+                  "created_at",
+                  "description",
+                  "id",
+                  "install_url",
+                  "oauth_callback_urls",
+                  "scopes",
+                  "status",
+                  "title"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to update an application (details and lifecycle).",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationUpdateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationManagementResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:write"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:write"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      },
+      "delete": {
+        "operationId": "delete_application_beta",
+        "summary": "Delete Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete an application you own.\n\nPublished applications and applications installed by other accounts cannot be deleted. Unpublish the application and have those accounts uninstall it first.\n\nOAuth apps can delete only themselves, without ``applications:write``; one OAuth app cannot manage another.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_application_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:write"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:write"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/application-installs/{id}/relationships/application": {
+      "get": {
+        "operationId": "get_application_id_for_application_install_beta",
+        "summary": "Get Application ID for Application Install",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the application for an install.\n\nOAuth apps only see their own application and do not need ``applications:read``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_application_id_for_application_install_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_application_install_relationships_application"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-subtag": "Applications"
+      }
+    },
+    "/api/application-installs/{id}/application": {
+      "get": {
+        "operationId": "get_application_for_application_install_beta",
+        "summary": "Get Application for Application Install",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the application for an install.\n\nOAuth apps only see their own application and do not need ``applications:read``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_application_for_application_install_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[application]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "articles",
+                  "banner_image_url",
+                  "categories",
+                  "client_id",
+                  "created_at",
+                  "description",
+                  "developed_by",
+                  "features",
+                  "gallery_items",
+                  "icon_url",
+                  "id",
+                  "install_url",
+                  "name",
+                  "oauth_callback_urls",
+                  "preferences_link",
+                  "pricing_information_link",
+                  "privacy_policy_link",
+                  "scopes",
+                  "short_description",
+                  "status",
+                  "support_link",
+                  "video",
+                  "video.video_id",
+                  "website_link"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[application-install]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "installed_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "application-install"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_application_install_application"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "applications:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
         },
         "x-klaviyo-scopes": [
           "applications:read"
@@ -317,23 +1957,105 @@
       }
     },
     "schemas": {
-      "AgentHints": {
-        "description": "Optional hints emitted by the API for agent callers",
+      "AccountResourceName": {
+        "type": "string",
+        "enum": [
+          "account"
+        ]
+      },
+      "ApplicationCategoryEnum": {
+        "description": "The marketplace category an application is listed under.\n\nEach member pairs its public value with the value the applications\n    backend stores for that category, so the two cannot drift apart.",
+        "type": "string",
+        "enum": [
+          "accounting",
+          "advertising",
+          "cdp",
+          "crm",
+          "data_warehouse",
+          "design_and_content",
+          "direct_mail",
+          "donations",
+          "ecommerce_platform",
+          "email_service_provider",
+          "event_management",
+          "fundraising",
+          "health_and_wellness",
+          "journey_optimization",
+          "landing_pages_and_forms",
+          "payments",
+          "personalization",
+          "pos",
+          "project_management",
+          "quizzes_and_surveys",
+          "restaurants",
+          "reviews",
+          "rewards",
+          "shipping",
+          "smtp",
+          "subscriptions",
+          "support_and_help_desk",
+          "travel",
+          "workflow_automation"
+        ]
+      },
+      "ApplicationCreateRequestRequest": {
         "type": "object",
         "properties": {
-          "next_steps": {
-            "description": "Suggested follow-up actions for agents to take after this response",
+          "title": {
+            "type": "string"
+          },
+          "client_jwk": {
+            "description": "RSA public JWK object. Used to wrap the one-time client_secret as a compact JWE (RSA-OAEP-256 / A256GCM).",
+            "type": "object"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "oauth_callback_urls": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "nullable": true
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           }
-        }
+        },
+        "required": [
+          "title",
+          "client_jwk"
+        ]
       },
-      "ApplicationEnum": {
-        "type": "string",
-        "enum": [
-          "application"
+      "ApplicationCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ApplicationResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ApplicationCreateRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "ApplicationCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ApplicationCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
         ]
       },
       "ApplicationFeature": {
@@ -355,196 +2077,250 @@
           "short_description"
         ]
       },
-      "ApplicationResponseObjectResource": {
+      "ApplicationInstallResourceName": {
+        "type": "string",
+        "enum": [
+          "application-install"
+        ]
+      },
+      "ApplicationInstallResponse": {
+        "type": "object",
+        "properties": {
+          "installed_at": {
+            "description": "ISO 8601 timestamp when the application was installed.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-04T00:00:00Z"
+          }
+        },
+        "required": [
+          "installed_at"
+        ]
+      },
+      "ApplicationInstallResponseData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/ApplicationEnum"
+            "$ref": "#/components/schemas/ApplicationInstallResourceName"
           },
           "id": {
-            "description": "The ID of the application.",
+            "description": "The ID of the application install: the application ID and the account ID joined by a colon.",
             "type": "string",
-            "example": "01HQXYZAAAAAAAAAAAAAAAAAAAAA"
+            "example": "01HQXYZAPPULID000000000000:abc123"
           },
           "attributes": {
+            "$ref": "#/components/schemas/ApplicationInstallResponse"
+          },
+          "relationships": {
             "type": "object",
             "properties": {
-              "name": {
-                "description": "Display name of the application.",
-                "type": "string",
-                "example": "29 Next"
-              },
-              "developed_by": {
-                "description": "Display name of the developer that built the application.",
-                "type": "string",
-                "example": "29 Next"
-              },
-              "short_description": {
-                "description": "One-line description of the application.",
-                "type": "string",
-                "example": "DTC ecommerce platform designed for performance-obsessed brands."
-              },
-              "description": {
-                "description": "Long-form description of the application.",
-                "type": "string",
-                "example": "29 Next helps DTC merchants unlock profitable growth \u2026"
-              },
-              "icon_url": {
-                "description": "URL of the application's icon image.",
-                "type": "string",
-                "example": "https://static-app.klaviyo.com/applications/01HQXYZ.../icon.svg"
-              },
-              "banner_image_url": {
-                "description": "URL of the application's banner image. Set on featured tiles.",
-                "type": "string",
-                "example": "https://static-app.klaviyo.com/applications/01HQXYZ.../banner.png"
-              },
-              "categories": {
-                "description": "Marketplace categories the application is listed under.",
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "Accounting",
-                    "Advertising",
-                    "CDP",
-                    "CRM",
-                    "Data Warehouse",
-                    "Design & Content",
-                    "Direct Mail",
-                    "Donations",
-                    "Email Service Provider",
-                    "Event Management",
-                    "Fundraising",
-                    "Health & Wellness",
-                    "Journey Optimization",
-                    "Landing Pages & Forms",
-                    "POS",
-                    "Payments",
-                    "Personalization",
-                    "Project Management",
-                    "Quizzes & Surveys",
-                    "Restaurants",
-                    "Reviews",
-                    "Rewards",
-                    "SMTP",
-                    "Shipping",
-                    "Subscriptions",
-                    "Support & Help Desk",
-                    "Travel",
-                    "Workflow Automation",
-                    "eCommerce Platform"
-                  ],
-                  "description": "The marketplace category an application is listed under."
-                },
-                "example": [
-                  "eCommerce Platform"
-                ]
-              },
-              "features": {
-                "description": "Highlighted features of the application.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ApplicationFeature"
-                },
-                "example": [
-                  {
-                    "title": "Grow Your Email and SMS Lists",
-                    "short_description": "Automatically sync customers and their purchases to Klaviyo."
+              "application": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ApplicationResourceName"
+                      },
+                      "id": {
+                        "description": "The application that is installed.",
+                        "type": "string",
+                        "example": "01HQXYZAPPULID000000000000"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
                   }
-                ]
+                }
               },
-              "gallery_items": {
-                "description": "Images shown in the application's media gallery.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/GalleryItem"
-                },
-                "example": [
-                  {
-                    "image_url": "https://static-app.klaviyo.com/applications/01HQXYZ.../gallery1.png"
+              "account": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/AccountResourceName"
+                      },
+                      "id": {
+                        "description": "The account the application is installed in.",
+                        "type": "string",
+                        "example": "abc123"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
                   }
-                ]
-              },
-              "video": {
-                "description": "YouTube video shown in the media gallery, when set.",
-                "example": {
-                  "video_id": "dQw4w9WgXcQ"
-                },
-                "$ref": "#/components/schemas/VideoLink",
-                "nullable": true
-              },
-              "articles": {
-                "description": "User guides and case studies attached to the application.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Article"
-                },
-                "example": [
-                  {
-                    "type": "USER_GUIDE",
-                    "title": "Getting started",
-                    "link": "https://example.com/docs/getting-started",
-                    "description": "Step-by-step setup walkthrough."
-                  }
-                ]
-              },
-              "install_url": {
-                "description": "URL that begins the install flow for this application.",
-                "type": "string",
-                "example": "https://accounts.example.com/oauth/marketing/klaviyo"
-              },
-              "preferences_link": {
-                "description": "URL where end users manage the installed application.",
-                "type": "string",
-                "example": "https://example.com/manage"
-              },
-              "pricing_information_link": {
-                "description": "URL of the application's pricing information.",
-                "type": "string",
-                "example": "https://example.com/pricing",
-                "nullable": true
-              },
-              "support_link": {
-                "description": "URL or email to contact the application's support team.",
-                "type": "string",
-                "example": "https://example.com/support"
-              },
-              "website_link": {
-                "description": "URL of the developer's website.",
-                "type": "string",
-                "example": "https://example.com"
-              },
-              "privacy_policy_link": {
-                "description": "URL of the application's privacy policy.",
-                "type": "string",
-                "example": "https://example.com/privacy"
-              },
-              "created_at": {
-                "description": "ISO 8601 timestamp when the application was created.",
-                "type": "string",
-                "format": "date-time",
-                "example": "2024-03-04T00:00:00Z",
-                "nullable": true
+                }
               }
             },
             "required": [
-              "name",
-              "developed_by",
-              "short_description",
-              "description",
-              "icon_url",
-              "banner_image_url",
-              "categories",
-              "features",
-              "gallery_items",
-              "articles",
-              "install_url",
-              "preferences_link",
-              "support_link",
-              "website_link",
-              "privacy_policy_link"
+              "application",
+              "account"
             ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
+        ]
+      },
+      "ApplicationInstallResponseDataListWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationInstallResponseData"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationResponseData"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ApplicationInstallResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ApplicationInstallResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationResponseData"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ApplicationInstallResponseIdOnlyData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ApplicationInstallResourceName"
+          },
+          "id": {
+            "description": "The ID of the application install: the application ID and the account ID joined by a colon.",
+            "type": "string",
+            "example": "01HQXYZAPPULID000000000000:abc123"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "ApplicationInstallResponseIdOnlyDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ApplicationInstallResponseIdOnlyData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ApplicationManagementResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ApplicationStatus"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "oauth_callback_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "client_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "client_secret_jwe": {
+            "description": "Compact JWE of the plaintext client secret (RSA-OAEP-256 / A256GCM). Returned only on create; never logged in plaintext.",
+            "type": "string",
+            "nullable": true
+          },
+          "install_url": {
+            "description": "OAuth authorize URL that begins the install flow for this application. Populated on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          }
+        },
+        "required": [
+          "title",
+          "status"
+        ]
+      },
+      "ApplicationManagementResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ApplicationResourceName"
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ApplicationManagementResponse"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -557,16 +2333,434 @@
           "links"
         ]
       },
+      "ApplicationManagementResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ApplicationManagementResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ApplicationResourceName": {
+        "type": "string",
+        "enum": [
+          "application"
+        ]
+      },
+      "ApplicationResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Display name of the application.",
+            "type": "string",
+            "example": "29 Next"
+          },
+          "developed_by": {
+            "description": "Display name of the developer that built the application.",
+            "type": "string",
+            "example": "29 Next"
+          },
+          "status": {
+            "description": "Where the application sits in the marketplace listing lifecycle.",
+            "type": "string",
+            "example": "published",
+            "enum": [
+              "draft",
+              "submitted_for_review",
+              "published",
+              "unpublished"
+            ]
+          },
+          "icon_url": {
+            "description": "URL of the application's icon image.",
+            "type": "string",
+            "example": "https://static.klaviyo.com/applications/01HQXYZ/icon.svg"
+          },
+          "install_url": {
+            "description": "URL that begins the install flow for this application. Null when none has been set.",
+            "type": "string",
+            "example": "https://accounts.example.com/oauth/marketing/klaviyo",
+            "nullable": true
+          },
+          "privacy_policy_link": {
+            "description": "URL of the application's privacy policy.",
+            "type": "string",
+            "example": "https://example.com/privacy"
+          },
+          "categories": {
+            "description": "Marketplace categories the application is listed under.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationCategoryEnum"
+            },
+            "example": [
+              "ecommerce_platform"
+            ]
+          },
+          "features": {
+            "description": "Highlighted features of the application.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationFeature"
+            },
+            "example": [
+              {
+                "title": "Grow Your Email and SMS Lists",
+                "short_description": "Automatically sync customers and their purchases to Klaviyo."
+              }
+            ]
+          },
+          "gallery_items": {
+            "description": "Images shown in the application's media gallery.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GalleryItem"
+            },
+            "example": [
+              {
+                "image_url": "https://static.klaviyo.com/applications/01HQXYZ/gallery1.png"
+              }
+            ]
+          },
+          "articles": {
+            "description": "User guides and case studies attached to the application.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Article"
+            },
+            "example": [
+              {
+                "type": "user_guide",
+                "title": "Getting started",
+                "link": "https://example.com/docs/getting-started",
+                "description": "Step-by-step setup walkthrough."
+              }
+            ]
+          },
+          "client_id": {
+            "description": "OAuth client ID of the application. Null when the application does not install through OAuth.",
+            "type": "string",
+            "example": "8b1a9953-c461-4a3f-9d2e-7c5f0e4b6a17",
+            "nullable": true
+          },
+          "scopes": {
+            "description": "API scopes the application requests when an account installs it. Empty when the application does not install through OAuth.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "events:read",
+              "profiles:read"
+            ],
+            "default": []
+          },
+          "oauth_callback_urls": {
+            "description": "OAuth redirect URIs registered for the application. Returned only to the account that owns the application, and null otherwise.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "https://example.com/oauth/callback"
+            ],
+            "nullable": true
+          },
+          "short_description": {
+            "description": "One-line description of the application.",
+            "type": "string",
+            "example": "DTC ecommerce platform designed for performance-obsessed brands.",
+            "nullable": true
+          },
+          "description": {
+            "description": "Long-form description of the application.",
+            "type": "string",
+            "example": "29 Next helps DTC merchants unlock profitable growth.",
+            "nullable": true
+          },
+          "banner_image_url": {
+            "description": "URL of the application's banner image. Set on featured tiles.",
+            "type": "string",
+            "example": "https://static.klaviyo.com/applications/01HQXYZ/banner.png",
+            "nullable": true
+          },
+          "preferences_link": {
+            "description": "URL where end users manage the installed application.",
+            "type": "string",
+            "example": "https://example.com/manage",
+            "nullable": true
+          },
+          "support_link": {
+            "description": "How to contact the application's support team. Either an `https://` URL or a `mailto:` address.",
+            "type": "string",
+            "example": "https://example.com/support",
+            "nullable": true
+          },
+          "website_link": {
+            "description": "URL of the developer's website.",
+            "type": "string",
+            "example": "https://example.com",
+            "nullable": true
+          },
+          "video": {
+            "description": "YouTube video shown in the media gallery, when set.",
+            "example": {
+              "video_id": "dQw4w9WgXcQ"
+            },
+            "$ref": "#/components/schemas/VideoLink",
+            "nullable": true
+          },
+          "pricing_information_link": {
+            "description": "URL of the application's pricing information.",
+            "type": "string",
+            "example": "https://example.com/pricing",
+            "nullable": true
+          },
+          "created_at": {
+            "description": "ISO 8601 timestamp when the application was created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-03-04T00:00:00Z",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "developed_by",
+          "status",
+          "icon_url",
+          "privacy_policy_link",
+          "categories",
+          "features",
+          "gallery_items",
+          "articles"
+        ]
+      },
+      "ApplicationResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ApplicationResourceName"
+          },
+          "id": {
+            "description": "The ID of the application.",
+            "type": "string",
+            "example": "01HQXYZAAAAAAAAAAAAAAAAAAA"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ApplicationResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "account": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/AccountResourceName"
+                      },
+                      "id": {
+                        "description": "The account that owns the application.",
+                        "type": "string",
+                        "example": "abc123"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "application-install": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ApplicationInstallResourceName"
+                      },
+                      "id": {
+                        "description": "The caller's install of this application, if any.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ApplicationResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ApplicationResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationInstallResponseData"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ApplicationResponseIdOnlyData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ApplicationResourceName"
+          },
+          "id": {
+            "description": "The ID of the application.",
+            "type": "string",
+            "example": "01HQXYZAAAAAAAAAAAAAAAAAAA"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "ApplicationResponseIdOnlyDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ApplicationResponseIdOnlyData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ApplicationStatus": {
+        "description": "Where an application sits in the marketplace listing lifecycle.",
+        "type": "string",
+        "enum": [
+          "draft",
+          "submitted_for_review",
+          "published",
+          "unpublished"
+        ]
+      },
+      "ApplicationUpdateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "oauth_callback_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "status": {
+            "description": "Listing lifecycle status. Public API may move DRAFT \u2194 SUBMITTED_FOR_REVIEW and PUBLISHED \u2192 UNPUBLISHED only.",
+            "type": "string",
+            "enum": [
+              "draft",
+              "submitted_for_review",
+              "published",
+              "unpublished"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "ApplicationUpdateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ApplicationResourceName"
+          },
+          "id": {
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ApplicationUpdateRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "ApplicationUpdateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ApplicationUpdateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "Article": {
         "type": "object",
         "properties": {
           "type": {
             "description": "Article type.",
             "type": "string",
-            "example": "USER_GUIDE",
+            "example": "user_guide",
             "enum": [
-              "CASE_STUDY",
-              "USER_GUIDE"
+              "user_guide",
+              "case_study"
             ]
           },
           "title": {
@@ -588,7 +2782,7 @@
           "image_url": {
             "description": "URL of the article's cover image. Set on case-study articles.",
             "type": "string",
-            "example": "https://static-app.klaviyo.com/applications/01HQXYZ.../article1.png",
+            "example": "https://static.klaviyo.com/applications/01HQXYZ/article1.png",
             "nullable": true
           }
         },
@@ -624,31 +2818,11 @@
           "image_url": {
             "description": "URL of the gallery image.",
             "type": "string",
-            "example": "https://static-app.klaviyo.com/applications/01HQXYZ.../gallery1.png"
+            "example": "https://static.klaviyo.com/applications/01HQXYZ/gallery1.png"
           }
         },
         "required": [
           "image_url"
-        ]
-      },
-      "GetApplicationResponseCollection": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ApplicationResponseObjectResource"
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
-          },
-          "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
-          }
-        },
-        "required": [
-          "data"
         ]
       },
       "ObjectLinks": {
@@ -663,14 +2837,22 @@
           "self"
         ]
       },
-      "ResponseMeta": {
-        "description": "Response-level metadata",
+      "RelationshipLinks": {
         "type": "object",
         "properties": {
-          "agent_hints": {
-            "$ref": "#/components/schemas/AgentHints"
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
           }
-        }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
       },
       "VideoLink": {
         "type": "object",

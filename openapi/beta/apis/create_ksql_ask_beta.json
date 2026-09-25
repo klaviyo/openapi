@@ -31,7 +31,7 @@
       "post": {
         "operationId": "create_ksql_ask_beta",
         "summary": "Create Ksql Ask",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk K-SQL a natural-language question and get back an answer.\n\nNo public ``deadline_sec`` -- this layer owns the run budget (see ``KsqlPublicApiSettings.ask_deadline_sec``) rather than letting a caller hold a run open past this service's own ceiling.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_ksql_ask_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk K-SQL a natural-language question and get back an answer.\n\nNo public ``deadline_sec`` -- this layer owns the run budget (see ``KsqlPublicApiSettings.ask_deadline_sec``) rather than letting a caller hold a run open past this service's own ceiling.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_ksql_ask_beta.json)",
         "parameters": [
           {
             "name": "fields[ksql-ask]",
@@ -96,13 +96,28 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-optional-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
           "burst": "1/s",
           "steady": "15/m"
         },
         "x-klaviyo-scopes": [
-          "events:read"
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
         ],
         "x-klaviyo-subtag": "Ksqls"
       }
@@ -422,6 +437,12 @@
           },
           "description": {
             "type": "string",
+            "nullable": true
+          },
+          "sql": {
+            "description": "The K-SQL query that produced this result set, so you can see how the numbers were derived. Read-only and for explanation only: K-SQL is an internal dialect with no endpoint that runs it, and it is not a stable interface -- do not parse it, store it, or build on its syntax.",
+            "type": "string",
+            "example": "SELECT count(*) FROM orders WHERE placed_at >= '2026-09-01'",
             "nullable": true
           },
           "caveats": {

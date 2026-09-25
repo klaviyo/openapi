@@ -27,37 +27,16 @@
     }
   ],
   "paths": {
-    "/api/agent-secrets/{id}/relationships/agent-tools": {
-      "get": {
-        "operationId": "get_tool_ids_for_agent_secret_beta",
-        "summary": "Get Tool IDs for Agent Secret",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList agent tool resource identifiers or full resources for a secret.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tool_ids_for_agent_secret_beta.json)",
+    "/api/applications/{id}": {
+      "delete": {
+        "operationId": "delete_application_beta",
+        "summary": "Delete Application",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete an application you own.\n\nPublished applications and applications installed by other accounts cannot be deleted. Unpublish the application and have those accounts uninstall it first.\n\nOAuth apps can delete only themselves, without ``applications:write``; one OAuth app cannot manage another.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`applications:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_application_beta.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 50. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 50,
-              "maximum": 100,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "Page cursor",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -74,15 +53,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AgentToolResponseIdOnlyDataWrapper"
-                }
-              }
-            }
+          "204": {
+            "description": "Success"
           },
           "4XX": {
             "$ref": "#/components/responses/ClientError"
@@ -94,8 +66,8 @@
         "tags": [
           "Beta APIs"
         ],
-        "x-klaviyo-operation-aliases": [
-          "get_agent_secret_relationships_tools"
+        "x-klaviyo-optional-scopes": [
+          "applications:write"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -103,9 +75,9 @@
           "steady": "150/m"
         },
         "x-klaviyo-scopes": [
-          "agents:read"
+          "applications:write"
         ],
-        "x-klaviyo-subtag": "Customer Agent"
+        "x-klaviyo-subtag": "Applications"
       }
     }
   },
@@ -214,60 +186,6 @@
             }
           }
         }
-      }
-    },
-    "schemas": {
-      "AgentToolResourceName": {
-        "type": "string",
-        "enum": [
-          "agent-tool"
-        ]
-      },
-      "AgentToolResponseIdOnlyData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/AgentToolResourceName"
-          },
-          "id": {
-            "description": "Agent Tool identifier.",
-            "type": "string"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "links"
-        ]
-      },
-      "AgentToolResponseIdOnlyDataWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/AgentToolResponseIdOnlyData"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "ObjectLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self"
-        ]
       }
     },
     "securitySchemes": {
