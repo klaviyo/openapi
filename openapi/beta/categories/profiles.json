@@ -189,6 +189,293 @@
         "x-klaviyo-subtag": "Profiles"
       }
     },
+    "/api/profiles/{id}/object-records": {
+      "get": {
+        "operationId": "get_object_records_for_profile_beta",
+        "summary": "Get Object Records for Profile",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet object records related to a profile.\n\nBoth an `object_type_id` and an `object_type_relationship_id` filter are required, combined in a single `filter` parameter, e.g. `?filter=and(equals(object_type_id,'<object_type_id>'),equals(object_type_relationship_id,'<object_type_relationship_id>'))`.\n\nRetrieve these IDs from `GET /api/object-types/` and `GET /api/object-types/{id}/relationships/profile-object-types/`.\n\nRecords can be sorted by `date_added` in ascending and descending order, e.g. `?sort=date_added` or `?sort=-date_added`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`custom-objects:read`\n`profiles:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_records_for_profile_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the profile.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the profile.",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[object-record]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "record_properties"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`object_type_id`: `equals` (string)<br>`object_type_relationship_id`: `equals` (string)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "and(equals(object_type_id,'example'),equals(object_type_relationship_id,'example'))"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "date_added",
+                "-date_added"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetObjectRecordResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-filters": {
+          "object_type_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "object_type_relationship_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        "x-klaviyo-operation-aliases": [
+          "get_profile_object_records"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "custom-objects:read",
+          "profiles:read"
+        ],
+        "x-klaviyo-subtag": "Profiles"
+      }
+    },
+    "/api/profiles/{id}/profile-object-types": {
+      "get": {
+        "operationId": "get_object_types_for_profile_beta",
+        "summary": "Get Object Types for Profile",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object-type relationships available for a profile.\n\nEach entry carries the `object_type_id` and `relationship_id` needed to fetch related records via `GET /api/profiles/{id}/object-records/`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`custom-objects:read`\n`profiles:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_types_for_profile_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the profile.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the profile.",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[profile-object-type]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProfileObjectTypeRelationshipResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_profile_object_types"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "custom-objects:read",
+          "profiles:read"
+        ],
+        "x-klaviyo-subtag": "Profiles"
+      }
+    },
+    "/api/profiles/{id}/relationships/profile-object-types": {
+      "get": {
+        "operationId": "get_object_type_ids_for_profile_beta",
+        "summary": "Get Object Type IDs for Profile",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object-type relationships available for a profile with the given profile ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`custom-objects:read`\n`profiles:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_type_ids_for_profile_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the profile.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the profile.",
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProfileObjectTypesRelationshipsResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_profile_relationships_object_types"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "custom-objects:read",
+          "profiles:read"
+        ],
+        "x-klaviyo-subtag": "Profiles"
+      }
+    },
     "/api/profile-bulk-export-jobs/{id}/download": {
       "get": {
         "operationId": "get_download_for_profile_bulk_export_job_beta",
@@ -390,6 +677,26 @@
           }
         }
       },
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
       "DownloadEnum": {
         "type": "string",
         "enum": [
@@ -408,6 +715,26 @@
         },
         "required": [
           "expires_at"
+        ]
+      },
+      "GetObjectRecordResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObjectRecordResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
         ]
       },
       "GetProfileBulkExportDownloadListResponse": {
@@ -449,6 +776,60 @@
           "data"
         ]
       },
+      "GetProfileObjectTypeRelationshipResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileObjectTypeRelationshipResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetProfileObjectTypesRelationshipsResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/ProfileObjectTypeEnum"
+                },
+                "id": {
+                  "description": "A compound ID uniquely identifying this relationship, in the format '{object_type_id}:::profile:::{relationship_name}'.",
+                  "type": "string",
+                  "example": "01K5YKKQKM819VVGCPZZKGE6D4:::profile:::related_items"
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "ListEnum": {
         "type": "string",
         "enum": [
@@ -465,6 +846,59 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "ObjectLinksWithCustom": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "ObjectRecordEnum": {
+        "type": "string",
+        "enum": [
+          "object-record"
+        ]
+      },
+      "ObjectRecordResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ObjectRecordEnum"
+          },
+          "id": {
+            "description": "The compound ID of the object record, formatted as object_type_id:::object_record_id",
+            "type": "string",
+            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::sub-001"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "record_properties": {
+                "description": "The properties of this object record as defined by the object schema",
+                "type": "object"
+              }
+            },
+            "required": [
+              "record_properties"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
       },
       "PostProfileBulkExportJobCreateResponse": {
@@ -798,6 +1232,68 @@
           "type",
           "id",
           "attributes",
+          "links"
+        ]
+      },
+      "ProfileObjectTypeEnum": {
+        "type": "string",
+        "enum": [
+          "profile-object-type"
+        ]
+      },
+      "ProfileObjectTypeRelationshipMeta": {
+        "type": "object",
+        "properties": {
+          "object_type_id": {
+            "description": "The ULID ID of the object type this relationship belongs to.",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+          },
+          "relationship_id": {
+            "description": "The ULID ID of the relationship.",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4"
+          },
+          "name": {
+            "description": "The name of the relationship.",
+            "type": "string",
+            "example": "related_items"
+          },
+          "description": {
+            "description": "The description of the relationship.",
+            "type": "string",
+            "example": "Items related to this profile",
+            "nullable": true
+          }
+        },
+        "required": [
+          "object_type_id",
+          "relationship_id",
+          "name"
+        ]
+      },
+      "ProfileObjectTypeRelationshipResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProfileObjectTypeEnum"
+          },
+          "id": {
+            "description": "A compound ID uniquely identifying this relationship, in the format '{object_type_id}:::profile:::{relationship_name}'.",
+            "type": "string",
+            "example": "01K5YKKQKM819VVGCPZZKGE6D4:::profile:::related_items"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinksWithCustom"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ProfileObjectTypeRelationshipMeta",
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "id",
           "links"
         ]
       },

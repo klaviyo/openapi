@@ -27,37 +27,21 @@
     }
   ],
   "paths": {
-    "/api/customer-agent-conversations/{id}/customer-agent-conversation-contexts": {
+    "/api/profiles/{id}/relationships/profile-object-types": {
       "get": {
-        "operationId": "get_agent_conversation_contexts_for_customer_agent_conversation_beta",
-        "summary": "Get Agent Conversation Contexts for Customer Agent Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList conversation-context resources attached to a conversation, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_conversation_contexts_for_customer_agent_conversation_beta.json)",
+        "operationId": "get_object_type_ids_for_profile_beta",
+        "summary": "Get Object Type IDs for Profile",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object-type relationships available for a profile with the given profile ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`custom-objects:read`\n`profiles:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_type_ids_for_profile_beta.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the profile.",
             "required": true,
             "schema": {
+              "description": "The ID of the profile.",
               "type": "string"
             }
-          },
-          {
-            "name": "fields[customer-agent-conversation-context]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "entries",
-                  "event_type",
-                  "id"
-                ]
-              }
-            },
-            "explode": false
           },
           {
             "name": "revision",
@@ -76,7 +60,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConversationContextCreateResponseDataWrapper"
+                  "$ref": "#/components/schemas/GetProfileObjectTypesRelationshipsResponseCollection"
                 }
               }
             }
@@ -92,7 +76,7 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "get_customer_agent_conversation_agent_conversation_contexts"
+          "get_profile_relationships_object_types"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -100,9 +84,10 @@
           "steady": "150/m"
         },
         "x-klaviyo-scopes": [
-          "agents:read"
+          "custom-objects:read",
+          "profiles:read"
         ],
-        "x-klaviyo-subtag": "Customer Agent"
+        "x-klaviyo-subtag": "Profiles"
       }
     }
   },
@@ -214,109 +199,31 @@
       }
     },
     "schemas": {
-      "ConversationContextCreateResponse": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
         "type": "object",
         "properties": {
-          "event_type": {
-            "$ref": "#/components/schemas/SurveyResponseEnum"
-          },
-          "entries": {
-            "description": "Question/answer pairs already collected from the customer.",
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SurveyResponseEntry"
+              "type": "string"
             }
           }
-        },
-        "required": [
-          "event_type",
-          "entries"
-        ]
+        }
       },
-      "ConversationContextCreateResponseData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/CustomerAgentConversationContextResourceName"
-          },
-          "id": {
-            "description": "Conversation context id, unique per submission.",
-            "type": "string"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/ConversationContextCreateResponse"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "conversation": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
-                      },
-                      "id": {
-                        "description": "Conversation this context was attached to.",
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "id"
-                    ]
-                  }
-                }
-              }
-            },
-            "required": [
-              "conversation"
-            ]
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "attributes",
-          "relationships",
-          "links"
-        ]
-      },
-      "ConversationContextCreateResponseDataWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/ConversationContextCreateResponseData"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "CustomerAgentConversationContextResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-conversation-context"
-        ]
-      },
-      "CustomerAgentConversationResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-conversation"
-        ]
-      },
-      "ObjectLinks": {
+      "CollectionLinks": {
         "type": "object",
         "properties": {
           "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
             "type": "string",
             "format": "uri"
           }
@@ -325,30 +232,54 @@
           "self"
         ]
       },
-      "SurveyResponseEntry": {
+      "GetProfileObjectTypesRelationshipsResponseCollection": {
         "type": "object",
         "properties": {
-          "question": {
-            "description": "The question asked.",
-            "type": "string",
-            "example": "What's your budget?"
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "id"
+              ],
+              "properties": {
+                "type": {
+                  "$ref": "#/components/schemas/ProfileObjectTypeEnum"
+                },
+                "id": {
+                  "description": "A compound ID uniquely identifying this relationship, in the format '{object_type_id}:::profile:::{relationship_name}'.",
+                  "type": "string",
+                  "example": "01K5YKKQKM819VVGCPZZKGE6D4:::profile:::related_items"
+                }
+              }
+            }
           },
-          "answer": {
-            "description": "The customer's answer.",
-            "type": "string",
-            "example": "Under $50"
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
-          "question",
-          "answer"
+          "data"
         ]
       },
-      "SurveyResponseEnum": {
+      "ProfileObjectTypeEnum": {
         "type": "string",
         "enum": [
-          "survey-response"
+          "profile-object-type"
         ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
       }
     },
     "securitySchemes": {

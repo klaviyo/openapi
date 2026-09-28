@@ -27,22 +27,24 @@
     }
   ],
   "paths": {
-    "/api/customer-agent-conversations/{id}/customer-agent-conversation-contexts": {
+    "/api/profiles/{id}/object-records": {
       "get": {
-        "operationId": "get_agent_conversation_contexts_for_customer_agent_conversation_beta",
-        "summary": "Get Agent Conversation Contexts for Customer Agent Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList conversation-context resources attached to a conversation, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_conversation_contexts_for_customer_agent_conversation_beta.json)",
+        "operationId": "get_object_records_for_profile_beta",
+        "summary": "Get Object Records for Profile",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet object records related to a profile.\n\nBoth an `object_type_id` and an `object_type_relationship_id` filter are required, combined in a single `filter` parameter, e.g. `?filter=and(equals(object_type_id,'<object_type_id>'),equals(object_type_relationship_id,'<object_type_relationship_id>'))`.\n\nRetrieve these IDs from `GET /api/object-types/` and `GET /api/object-types/{id}/relationships/profile-object-types/`.\n\nRecords can be sorted by `date_added` in ascending and descending order, e.g. `?sort=date_added` or `?sort=-date_added`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`custom-objects:read`\n`profiles:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_records_for_profile_beta.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the profile.",
             "required": true,
             "schema": {
+              "description": "The ID of the profile.",
               "type": "string"
             }
           },
           {
-            "name": "fields[customer-agent-conversation-context]",
+            "name": "fields[object-record]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -51,13 +53,55 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "entries",
-                  "event_type",
-                  "id"
+                  "id",
+                  "record_properties"
                 ]
               }
             },
             "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`object_type_id`: `equals` (string)<br>`object_type_relationship_id`: `equals` (string)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "and(equals(object_type_id,'example'),equals(object_type_relationship_id,'example'))"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sorting",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "date_added",
+                "-date_added"
+              ]
+            }
           },
           {
             "name": "revision",
@@ -76,7 +120,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConversationContextCreateResponseDataWrapper"
+                  "$ref": "#/components/schemas/GetObjectRecordResponseCollection"
                 }
               }
             }
@@ -91,8 +135,30 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-filters": {
+          "object_type_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "object_type_relationship_id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
         "x-klaviyo-operation-aliases": [
-          "get_customer_agent_conversation_agent_conversation_contexts"
+          "get_profile_object_records"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -100,9 +166,10 @@
           "steady": "150/m"
         },
         "x-klaviyo-scopes": [
-          "agents:read"
+          "custom-objects:read",
+          "profiles:read"
         ],
-        "x-klaviyo-subtag": "Customer Agent"
+        "x-klaviyo-subtag": "Profiles"
       }
     }
   },
@@ -214,103 +281,57 @@
       }
     },
     "schemas": {
-      "ConversationContextCreateResponse": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
         "type": "object",
         "properties": {
-          "event_type": {
-            "$ref": "#/components/schemas/SurveyResponseEnum"
-          },
-          "entries": {
-            "description": "Question/answer pairs already collected from the customer.",
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SurveyResponseEntry"
+              "type": "string"
             }
           }
-        },
-        "required": [
-          "event_type",
-          "entries"
-        ]
+        }
       },
-      "ConversationContextCreateResponseData": {
+      "CollectionLinks": {
         "type": "object",
         "properties": {
-          "type": {
-            "$ref": "#/components/schemas/CustomerAgentConversationContextResourceName"
+          "self": {
+            "type": "string",
+            "format": "uri"
           },
-          "id": {
-            "description": "Conversation context id, unique per submission.",
-            "type": "string"
+          "prev": {
+            "type": "string",
+            "format": "uri"
           },
-          "attributes": {
-            "$ref": "#/components/schemas/ConversationContextCreateResponse"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "conversation": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
-                      },
-                      "id": {
-                        "description": "Conversation this context was attached to.",
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "id"
-                    ]
-                  }
-                }
-              }
-            },
-            "required": [
-              "conversation"
-            ]
-          },
-          "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
+          "next": {
+            "type": "string",
+            "format": "uri"
           }
         },
         "required": [
-          "type",
-          "id",
-          "attributes",
-          "relationships",
-          "links"
+          "self"
         ]
       },
-      "ConversationContextCreateResponseDataWrapper": {
+      "GetObjectRecordResponseCollection": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ConversationContextCreateResponseData"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObjectRecordResponseObjectResource"
+            }
           },
           "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
           }
         },
         "required": [
           "data"
-        ]
-      },
-      "CustomerAgentConversationContextResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-conversation-context"
-        ]
-      },
-      "CustomerAgentConversationResourceName": {
-        "type": "string",
-        "enum": [
-          "customer-agent-conversation"
         ]
       },
       "ObjectLinks": {
@@ -325,30 +346,54 @@
           "self"
         ]
       },
-      "SurveyResponseEntry": {
+      "ObjectRecordEnum": {
+        "type": "string",
+        "enum": [
+          "object-record"
+        ]
+      },
+      "ObjectRecordResponseObjectResource": {
         "type": "object",
         "properties": {
-          "question": {
-            "description": "The question asked.",
-            "type": "string",
-            "example": "What's your budget?"
+          "type": {
+            "$ref": "#/components/schemas/ObjectRecordEnum"
           },
-          "answer": {
-            "description": "The customer's answer.",
+          "id": {
+            "description": "The compound ID of the object record, formatted as object_type_id:::object_record_id",
             "type": "string",
-            "example": "Under $50"
+            "example": "01JXKYCN9A5M3QPVR8T2WE4BLD:::sub-001"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "record_properties": {
+                "description": "The properties of this object record as defined by the object schema",
+                "type": "object"
+              }
+            },
+            "required": [
+              "record_properties"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
-          "question",
-          "answer"
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
       },
-      "SurveyResponseEnum": {
-        "type": "string",
-        "enum": [
-          "survey-response"
-        ]
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
       }
     },
     "securitySchemes": {
