@@ -1137,7 +1137,7 @@
       "post": {
         "operationId": "create_customer_agent_conversation_context_beta",
         "summary": "Create Conversation Context",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAttach background the caller already has to an existing conversation.\n\nUnlike `POST /api/customer-agent-responses`, this never runs the agent or produces a reply -- it only records the context. Requires an open `conversation`, created via `POST /api/customer-agent-conversations`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_conversation_context_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAttach background the caller already has to an existing conversation.\n\nUnlike `POST /api/customer-agent-responses`, this never runs the agent or produces a reply -- it only records the context. Requires an open `conversation`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_conversation_context_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-conversation-context]",
@@ -1215,12 +1215,33 @@
       "get": {
         "operationId": "get_agent_conversation_context_ids_for_customer_agent_conversation_beta",
         "summary": "Get Agent Conversation Context IDs for Customer Agent Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList conversation-context resources attached to a conversation, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_conversation_context_ids_for_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList conversation-context resources attached to a conversation, oldest first, one page at a time.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_conversation_context_ids_for_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -1275,7 +1296,7 @@
       "get": {
         "operationId": "get_agent_conversation_contexts_for_customer_agent_conversation_beta",
         "summary": "Get Agent Conversation Contexts for Customer Agent Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList conversation-context resources attached to a conversation, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_conversation_contexts_for_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList conversation-context resources attached to a conversation, oldest first, one page at a time.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_conversation_contexts_for_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1302,6 +1323,27 @@
               }
             },
             "explode": false
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "revision",
@@ -1349,11 +1391,82 @@
         "x-klaviyo-subtag": "Customer Agent"
       }
     },
+    "/api/customer-agents": {
+      "get": {
+        "operationId": "get_customer_agents_beta",
+        "summary": "Get Customer Agents",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Customer Agent for the calling company.\n\nThere is at most one Customer Agent per company, so the array holds one Customer Agent, or is empty if Customer Agent is not enabled for the account. Use this to look up the Customer Agent's ``id`` before calling Get or Update Customer Agent.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_customer_agents_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[customer-agent]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "communication_styles",
+                  "escalation_rules",
+                  "id",
+                  "name",
+                  "tone_of_voice",
+                  "tone_of_voice.custom_instruction",
+                  "tone_of_voice.preset"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAgentResponseDataListWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    },
     "/api/customer-agents/{id}": {
       "get": {
         "operationId": "get_customer_agent_beta",
         "summary": "Get Customer Agent",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Customer Agent resource for the calling company.\n\nIncludes ``name``, ``tone_of_voice`` with preset, optional custom instruction, and updated timestamp, ``escalation_rules``, and ``communication_styles``. There is one Customer Agent per company.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_customer_agent_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Customer Agent resource for the calling company.\n\nIncludes ``name``, ``tone_of_voice`` with preset and optional custom instruction, ``escalation_rules``, and ``communication_styles``. There is one Customer Agent per company; its ``id`` is the account's ID, which Get Customer Agents returns.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_customer_agent_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1379,8 +1492,7 @@
                   "name",
                   "tone_of_voice",
                   "tone_of_voice.custom_instruction",
-                  "tone_of_voice.preset",
-                  "tone_of_voice.updated_at"
+                  "tone_of_voice.preset"
                 ]
               }
             },
@@ -1457,8 +1569,7 @@
                   "name",
                   "tone_of_voice",
                   "tone_of_voice.custom_instruction",
-                  "tone_of_voice.preset",
-                  "tone_of_voice.updated_at"
+                  "tone_of_voice.preset"
                 ]
               }
             },
@@ -1522,7 +1633,7 @@
       "post": {
         "operationId": "create_customer_agent_response_beta",
         "summary": "Generate Customer Agent Response",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one or more messages to Customer Agent and returns every public event Customer Agent emits in response.\n\nMultiple messages can be attached, if the user has sent multiple or another agent's response should be included. The response is non-streaming; the entire event list is returned at once.\n\nRequires an open `conversation`, created via `POST /api/customer-agent-conversations`. Conversations can only be interacted with that were created via the API. A closed or unknown conversation is also rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one or more messages to Customer Agent and returns every public event it emits in response, including structured data such as orders and products.\n\nMultiple messages can be attached, if the user has sent multiple or another agent's response should be included. The response is non-streaming; the entire event list is returned at once.\n\nRequires an open `conversation`, created via `POST /api/customer-agent-conversations`. Conversations can only be interacted with that were created via the API. A closed or unknown conversation is also rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-response]",
@@ -1599,7 +1710,7 @@
       "get": {
         "operationId": "get_agent_secrets_beta",
         "summary": "Get Agent Secrets",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nLists every secret configured for the calling company.\n\nReturns secret metadata (name, mask, timestamps) and never the plaintext value, which cannot be read back after creation.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_secrets_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nLists the secrets configured for the calling company, one page at a time.\n\nReturns secret metadata (name, mask, timestamps) and never the plaintext value, which cannot be read back after creation. Follow ``links.next`` to fetch the next page. Results are sorted by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_secrets_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-secret]",
@@ -1622,6 +1733,27 @@
             "explode": false
           },
           {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -1638,7 +1770,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentSecretResponseDataListWrapper"
+                  "$ref": "#/components/schemas/AgentSecretResponseDataWrapper"
                 }
               }
             }
@@ -2148,7 +2280,7 @@
       "get": {
         "operationId": "get_agent_skills_beta",
         "summary": "Get Agent Skills",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every skill configured for the calling company's Customer Agent.\n\nUse this to inspect Customer Agent's current skills before adding or modifying a custom skill. Each item carries a prefixed ``id``, ``source``, ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, and ``handoff``. Use retrieve to inspect any one skill in detail.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skills_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the skills configured for the calling company's Customer Agent, one page at a time.\n\nUse this to inspect Customer Agent's current skills before adding or modifying a custom skill. Each item carries a prefixed ``id``, ``source``, ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, and ``handoff``. Use retrieve to inspect any one skill in detail. Follow ``links.next`` to fetch the next page. Results are sorted by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skills_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-skill]",
@@ -2178,6 +2310,27 @@
             "explode": false
           },
           {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -2194,7 +2347,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentSkillResponseDataListWrapper"
+                  "$ref": "#/components/schemas/AgentSkillResponseDataWrapper"
                 }
               }
             }
@@ -2701,7 +2854,7 @@
       "get": {
         "operationId": "get_agent_tools_beta",
         "summary": "Get Agent Tools",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every external tool (HTTP API endpoint) Customer Agent skills can call.\n\nEach tool has an id, display name, protocol details (method, URL template), authentication setup, and any referenced secrets. Use this before creating a new tool to avoid duplicates, or before binding a tool to a skill to confirm the tool exists.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_tools_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every external tool (HTTP API endpoint) Customer Agent skills can call.\n\nEach tool has an id, display name, protocol details (method, URL template), authentication setup, and any referenced secrets. Use this before creating a new tool to avoid duplicates, or before binding a tool to a skill to confirm the tool exists. Results are sorted by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_tools_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-tool]",
@@ -3280,12 +3433,33 @@
       "get": {
         "operationId": "get_secret_ids_for_agent_tool_beta",
         "summary": "Get Secret IDs for Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList Agent Secret IDs referenced by an Agent Tool.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_secret_ids_for_agent_tool_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList Agent Secrets referenced by an Agent Tool.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_secret_ids_for_agent_tool_beta.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -3307,7 +3481,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentSecretResponseIdOnlyIdOnlyDataListWrapper"
+                  "$ref": "#/components/schemas/AgentSecretResponseIdOnlyDataWrapper"
                 }
               }
             }
@@ -3340,12 +3514,53 @@
       "get": {
         "operationId": "get_secrets_for_agent_tool_beta",
         "summary": "Get Secrets for Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList Agent Secret IDs referenced by an Agent Tool.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_secrets_for_agent_tool_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList Agent Secrets referenced by an Agent Tool.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_secrets_for_agent_tool_beta.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[agent-secret]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "id",
+                  "mask",
+                  "name",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -3367,7 +3582,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentSecretResponseIdOnlyDataListWrapper"
+                  "$ref": "#/components/schemas/AgentSecretResponseDataWrapper"
                 }
               }
             }
@@ -3724,7 +3939,11 @@
         "properties": {
           "source_type": {
             "description": "The knowledge item was created from an uploaded file.",
-            "$ref": "#/components/schemas/FileEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileEnum"
+              }
+            ]
           },
           "title": {
             "description": "Human-readable title for the file-backed knowledge item.",
@@ -3741,7 +3960,11 @@
         "properties": {
           "source_type": {
             "description": "The knowledge item is a folder that organizes other knowledge items.",
-            "$ref": "#/components/schemas/FolderEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FolderEnum"
+              }
+            ]
           },
           "title": {
             "description": "Human-readable title for the folder.",
@@ -3763,7 +3986,11 @@
         "properties": {
           "source_type": {
             "description": "Create a question-and-answer knowledge pair.",
-            "$ref": "#/components/schemas/QaEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QaEnum"
+              }
+            ]
           },
           "question": {
             "description": "Question text for the Q&A pair.",
@@ -3785,7 +4012,11 @@
         "properties": {
           "source_type": {
             "description": "The knowledge item is a question-and-answer pair.",
-            "$ref": "#/components/schemas/QaEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QaEnum"
+              }
+            ]
           },
           "question": {
             "description": "Question text for the Q&A pair.",
@@ -3917,7 +4148,11 @@
         "properties": {
           "source_type": {
             "description": "Create a text snippet from caller-provided content.",
-            "$ref": "#/components/schemas/SnippetEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SnippetEnum"
+              }
+            ]
           },
           "title": {
             "description": "Human-readable title for the snippet.",
@@ -3939,7 +4174,11 @@
         "properties": {
           "source_type": {
             "description": "The knowledge item was created from caller-provided content.",
-            "$ref": "#/components/schemas/SnippetEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SnippetEnum"
+              }
+            ]
           },
           "title": {
             "description": "Human-readable title for the snippet.",
@@ -4035,7 +4274,11 @@
         "properties": {
           "source_type": {
             "description": "Create a webpage-backed knowledge source from a URL.",
-            "$ref": "#/components/schemas/WebpageEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WebpageEnum"
+              }
+            ]
           },
           "url": {
             "description": "URL to scrape and index.",
@@ -4067,7 +4310,11 @@
         "properties": {
           "source_type": {
             "description": "The knowledge item was created from a webpage.",
-            "$ref": "#/components/schemas/WebpageEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WebpageEnum"
+              }
+            ]
           },
           "url": {
             "description": "Normalized URL for the webpage-backed knowledge item.",
@@ -4241,23 +4488,6 @@
           "links"
         ]
       },
-      "AgentSecretResponseDataListWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AgentSecretResponseData"
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
       "AgentSecretResponseDataWrapper": {
         "type": "object",
         "properties": {
@@ -4293,55 +4523,14 @@
           "links"
         ]
       },
-      "AgentSecretResponseIdOnlyDataListWrapper": {
+      "AgentSecretResponseIdOnlyDataWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AgentSecretResponseIdOnlyData"
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "AgentSecretResponseIdOnlyIdOnlyData": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/AgentSecretResourceName"
-          },
-          "id": {
-            "description": "Agent Secret identifier.",
-            "type": "string",
-            "example": "sec_abc123"
+            "$ref": "#/components/schemas/AgentSecretResponseIdOnlyData"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
-          }
-        },
-        "required": [
-          "type",
-          "id",
-          "links"
-        ]
-      },
-      "AgentSecretResponseIdOnlyIdOnlyDataListWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AgentSecretResponseIdOnlyIdOnlyData"
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
@@ -4434,7 +4623,11 @@
           },
           "references": {
             "description": "Named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters.",
-            "$ref": "#/components/schemas/AgentSkillReferencesRequest",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentSkillReferencesRequest"
+              }
+            ],
             "nullable": true
           }
         },
@@ -4580,7 +4773,11 @@
             "default": {
               "tools": {}
             },
-            "$ref": "#/components/schemas/AgentSkillReferences"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentSkillReferences"
+              }
+            ]
           },
           "created_at": {
             "description": "Date and time when the skill was created.",
@@ -4645,9 +4842,6 @@
                         "id"
                       ]
                     }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/RelationshipLinks"
                   }
                 }
               }
@@ -4666,23 +4860,6 @@
           "attributes",
           "relationships",
           "links"
-        ]
-      },
-      "AgentSkillResponseDataListWrapper": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AgentSkillResponseData"
-            }
-          },
-          "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
-          }
-        },
-        "required": [
-          "data"
         ]
       },
       "AgentSkillResponseDataWrapper": {
@@ -4775,7 +4952,11 @@
           },
           "references": {
             "description": "Full replacement set of named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. When changing this field, provide `instructions` in the same request.",
-            "$ref": "#/components/schemas/AgentSkillReferencesRequest",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentSkillReferencesRequest"
+              }
+            ],
             "nullable": true
           }
         }
@@ -4892,7 +5073,11 @@
           },
           "details": {
             "description": "Custom HTTPS tool configuration details.",
-            "$ref": "#/components/schemas/AgentToolCustomCreateDetailsRequest"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentToolCustomCreateDetailsRequest"
+              }
+            ]
           }
         },
         "required": [
@@ -4932,7 +5117,11 @@
         "properties": {
           "type": {
             "description": "Create detail variant for custom HTTPS tools.",
-            "$ref": "#/components/schemas/CustomEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomEnum"
+              }
+            ]
           },
           "protocol": {
             "description": "Message protocol for the tool. `https` is currently supported.",
@@ -4945,7 +5134,11 @@
           },
           "request_template": {
             "description": "Templated outbound HTTPS request configuration.",
-            "$ref": "#/components/schemas/AgentToolHTTPSRequestTemplateRequest"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentToolHTTPSRequestTemplateRequest"
+              }
+            ]
           },
           "variables": {
             "description": "Template variables referenced by the URL, query parameters, headers, or body. To reference a secret, include a variable with `source: secret` and `value` set to the `agent-secret` id.",
@@ -4985,7 +5178,11 @@
           },
           "request_template": {
             "description": "Templated outbound HTTPS request configuration.",
-            "$ref": "#/components/schemas/AgentToolHTTPSRequestTemplate"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentToolHTTPSRequestTemplate"
+              }
+            ]
           },
           "variables": {
             "description": "Template variables available to the request template.",
@@ -5040,7 +5237,11 @@
         "properties": {
           "type": {
             "description": "Update detail variant for custom HTTPS tools.",
-            "$ref": "#/components/schemas/CustomEnum"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomEnum"
+              }
+            ]
           },
           "protocol": {
             "description": "Message protocol for the tool. `https` is currently supported.",
@@ -5052,7 +5253,11 @@
           },
           "request_template": {
             "description": "Sparse update for the templated outbound HTTPS request configuration.",
-            "$ref": "#/components/schemas/AgentToolHTTPSRequestTemplateUpdateRequest",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentToolHTTPSRequestTemplateUpdateRequest"
+              }
+            ],
             "nullable": true
           },
           "variables": {
@@ -5478,7 +5683,11 @@
           },
           "details": {
             "description": "Sparse custom HTTPS tool configuration details.",
-            "$ref": "#/components/schemas/AgentToolCustomUpdateDetailsRequest",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentToolCustomUpdateDetailsRequest"
+              }
+            ],
             "nullable": true
           }
         }
@@ -5782,7 +5991,11 @@
           },
           "customer": {
             "description": "Optional public customer identity for this conversation.",
-            "$ref": "#/components/schemas/CustomerRequest",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerRequest"
+              }
+            ],
             "nullable": true
           }
         },
@@ -5928,12 +6141,20 @@
         "type": "object",
         "properties": {
           "status": {
-            "$ref": "#/components/schemas/ClosedEnum",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ClosedEnum"
+              }
+            ],
             "nullable": true
           },
           "customer": {
             "description": "Optional public customer identity to set on this conversation. Can only be set once; a conversation that already has customer data rejects further updates.",
-            "$ref": "#/components/schemas/CustomerRequest",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerRequest"
+              }
+            ],
             "nullable": true
           }
         }
@@ -6112,7 +6333,11 @@
           },
           "tone_of_voice": {
             "description": "Tone-of-voice settings for the Customer Agent resource.",
-            "$ref": "#/components/schemas/CustomerAgentToneOfVoice"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentToneOfVoice"
+              }
+            ]
           },
           "escalation_rules": {
             "description": "Natural-language triggers that, when matched, cause the agent to escalate to a human. Each rule is individually enabled or disabled.",
@@ -6231,7 +6456,7 @@
         "type": "object",
         "properties": {
           "events": {
-            "description": "Ordered public events emitted by Customer Agent for this turn.",
+            "description": "Events from this turn, in the order they were emitted. Alongside message and handoff events, can include structured data: `order-tracking`, `edit-order`, `order-return`, `product`, `subscriptions`, `discounts-coupons`, and `loyalty-card`. Ignore event types you don't recognize.",
             "type": "array",
             "items": {
               "oneOf": [
@@ -6246,6 +6471,27 @@
                 },
                 {
                   "$ref": "#/components/schemas/CustomerAgentResponseErrorEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseOrderTrackingEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseEditOrderEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseOrderReturnEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseProductEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseSubscriptionsEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseDiscountsCouponsEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseLoyaltyCardEvent"
                 }
               ]
             }
@@ -6330,8 +6576,9 @@
             "$ref": "#/components/schemas/CustomerAgentResourceName"
           },
           "id": {
-            "description": "Customer Agent resource id.",
-            "type": "string"
+            "description": "Customer Agent resource id. This is the account's ID.",
+            "type": "string",
+            "example": "AbC123"
           },
           "attributes": {
             "$ref": "#/components/schemas/CustomerAgentResponse"
@@ -6347,6 +6594,23 @@
           "links"
         ]
       },
+      "CustomerAgentResponseDataListWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerAgentResponseData"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "CustomerAgentResponseDataWrapper": {
         "type": "object",
         "properties": {
@@ -6359,6 +6623,44 @@
         },
         "required": [
           "data"
+        ]
+      },
+      "CustomerAgentResponseDiscountsCouponsEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/DiscountsCouponsEnum"
+          },
+          "discounts_coupons": {
+            "description": "Available discount codes.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiscountCoupon"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "discounts_coupons"
+        ]
+      },
+      "CustomerAgentResponseEditOrderEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/EditOrderEnum"
+          },
+          "orders": {
+            "description": "Orders that can still be changed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderData"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "orders"
         ]
       },
       "CustomerAgentResponseErrorEvent": {
@@ -6415,6 +6717,26 @@
           "silent"
         ]
       },
+      "CustomerAgentResponseLoyaltyCardEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LoyaltyCardEnum"
+          },
+          "loyalty_card": {
+            "description": "Points balance and rewards.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LoyaltyCard"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "loyalty_card"
+        ]
+      },
       "CustomerAgentResponseMessageEvent": {
         "type": "object",
         "properties": {
@@ -6434,6 +6756,64 @@
           "content"
         ]
       },
+      "CustomerAgentResponseOrderReturnEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/OrderReturnEnum"
+          },
+          "orders": {
+            "description": "Orders eligible for return.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderData"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "orders"
+        ]
+      },
+      "CustomerAgentResponseOrderTrackingEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/OrderTrackingEnum"
+          },
+          "orders": {
+            "description": "Orders being tracked.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderData"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "orders"
+        ]
+      },
+      "CustomerAgentResponseProductEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProductEnum"
+          },
+          "product": {
+            "description": "The recommended product.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ProductData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "product"
+        ]
+      },
       "CustomerAgentResponseRequireAuthenticationEvent": {
         "type": "object",
         "properties": {
@@ -6449,6 +6829,25 @@
         "type": "string",
         "enum": [
           "customer-agent-response"
+        ]
+      },
+      "CustomerAgentResponseSubscriptionsEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SubscriptionsEnum"
+          },
+          "subscriptions": {
+            "description": "Subscriptions.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subscription"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "subscriptions"
         ]
       },
       "CustomerAgentSkillValuesReportQueryRequest": {
@@ -6470,7 +6869,11 @@
           },
           "timeframe": {
             "description": "Time window for the report.",
-            "$ref": "#/components/schemas/ReportTimeframeRequest"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReportTimeframeRequest"
+              }
+            ]
           },
           "filter": {
             "description": "Optional Klaviyo filter syntax. Use any(skill,[...]) to narrow to specific skills; use any(channel,[...]) to narrow by channel. When omitted, returns aggregates for every skill the company has used in the timeframe.",
@@ -6588,13 +6991,6 @@
             "description": "Free-text instruction the agent uses for tone when `preset` is `custom`. Ignored otherwise.",
             "type": "string",
             "nullable": true
-          },
-          "updated_at": {
-            "description": "Date and time when the tone-of-voice configuration was last updated.",
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-11-08T00:00:00+00:00",
-            "nullable": true
           }
         },
         "required": [
@@ -6642,7 +7038,11 @@
           },
           "timeframe": {
             "description": "Time window for the report.",
-            "$ref": "#/components/schemas/ReportTimeframeRequest"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReportTimeframeRequest"
+              }
+            ]
           },
           "filter": {
             "description": "Optional Klaviyo filter syntax. Use any(tool,[...]) to narrow to specific namespaced tool ids; use any(source,[...]) to narrow by call source (conversation or test). When omitted, returns aggregates for every tool the company has called in the timeframe.",
@@ -6752,7 +7152,11 @@
           },
           "tone_of_voice": {
             "description": "Patchable tone-of-voice settings for the Customer Agent resource.",
-            "$ref": "#/components/schemas/CustomerAgentToneOfVoiceUpdateRequest",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentToneOfVoiceUpdateRequest"
+              }
+            ],
             "nullable": true
           },
           "escalation_rules": {
@@ -6816,7 +7220,11 @@
           },
           "timeframe": {
             "description": "Time window for the report.",
-            "$ref": "#/components/schemas/ReportTimeframeRequest"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReportTimeframeRequest"
+              }
+            ]
           },
           "groupings": {
             "description": "Optional dimension to break the result down by. Provide exactly one of channel or status, or omit entirely for a single aggregate row.",
@@ -6942,6 +7350,85 @@
           }
         }
       },
+      "DiscountCoupon": {
+        "type": "object",
+        "properties": {
+          "coupon_id": {
+            "description": "Coupon ID.",
+            "type": "integer",
+            "nullable": true
+          },
+          "coupon_type": {
+            "description": "Integration that issued the coupon, e.g. `shopify`.",
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "description": "Discount code to enter at checkout.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Coupon name.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Coupon status, e.g. `active`.",
+            "type": "string"
+          },
+          "status_code": {
+            "description": "Numeric code for `status`.",
+            "type": "integer",
+            "nullable": true
+          },
+          "description": {
+            "description": "Coupon description.",
+            "type": "string",
+            "nullable": true
+          },
+          "discount_amount": {
+            "description": "Discount value.",
+            "type": "number",
+            "nullable": true
+          },
+          "discount_type": {
+            "description": "Numeric discount type code.",
+            "type": "integer",
+            "nullable": true
+          },
+          "purchase_min": {
+            "description": "Minimum purchase amount.",
+            "type": "number",
+            "nullable": true
+          },
+          "start_time": {
+            "description": "Start of the validity period.",
+            "type": "string",
+            "nullable": true
+          },
+          "expires_at": {
+            "description": "Expiration time.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "status"
+        ]
+      },
+      "DiscountsCouponsEnum": {
+        "type": "string",
+        "enum": [
+          "discounts-coupons"
+        ]
+      },
+      "EditOrderEnum": {
+        "type": "string",
+        "enum": [
+          "edit-order"
+        ]
+      },
       "ErrorEnum": {
         "type": "string",
         "enum": [
@@ -6965,6 +7452,95 @@
         "enum": [
           "handoff"
         ]
+      },
+      "LoyaltyCard": {
+        "type": "object",
+        "properties": {
+          "points_balance": {
+            "description": "Current points balance.",
+            "type": "integer",
+            "nullable": true
+          },
+          "best_reward_name": {
+            "description": "Most valuable reward the customer can redeem now.",
+            "type": "string",
+            "nullable": true
+          },
+          "best_reward_points_cost": {
+            "description": "Points cost of `best_reward_name`.",
+            "type": "integer",
+            "nullable": true
+          },
+          "next_reward_name": {
+            "description": "Least expensive reward the customer can't redeem yet.",
+            "type": "string",
+            "nullable": true
+          },
+          "next_reward_points_cost": {
+            "description": "Points cost of `next_reward_name`.",
+            "type": "integer",
+            "nullable": true
+          },
+          "points_to_next_reward": {
+            "description": "Points still needed for `next_reward_name`.",
+            "type": "integer",
+            "nullable": true
+          },
+          "reward_progress_percent": {
+            "description": "Progress toward `next_reward_name`, from `0.0` to `1.0`.",
+            "type": "number",
+            "nullable": true
+          },
+          "available_rewards": {
+            "description": "Rewards the customer can redeem now.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoyaltyReward"
+            },
+            "default": []
+          },
+          "loyalty_program_url": {
+            "description": "Loyalty program page URL.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "LoyaltyCardEnum": {
+        "type": "string",
+        "enum": [
+          "loyalty-card"
+        ]
+      },
+      "LoyaltyReward": {
+        "type": "object",
+        "properties": {
+          "reward_id": {
+            "description": "Reward ID.",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "description": "Reward name.",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "description": "Reward description.",
+            "type": "string",
+            "nullable": true
+          },
+          "points_cost": {
+            "description": "Points needed to redeem.",
+            "type": "integer",
+            "nullable": true
+          },
+          "reward_type": {
+            "description": "Reward type, e.g. `discount`, `free_product`, `free_shipping`.",
+            "type": "string",
+            "nullable": true
+          }
+        }
       },
       "MessageEnum": {
         "type": "string",
@@ -7116,6 +7692,102 @@
           "self"
         ]
       },
+      "OrderData": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "description": "Order ID.",
+            "type": "string",
+            "nullable": true
+          },
+          "order_name": {
+            "description": "Order name shown to the customer, e.g. `#1001`.",
+            "type": "string",
+            "nullable": true
+          },
+          "order_status": {
+            "description": "Order status, e.g. `PLACED`, `IN_TRANSIT`, `DELIVERED`.",
+            "type": "string",
+            "example": "IN_TRANSIT",
+            "nullable": true
+          },
+          "item_count": {
+            "description": "Number of items in the order.",
+            "type": "integer",
+            "nullable": true
+          },
+          "image_url": {
+            "description": "Image URL of the order's first item.",
+            "type": "string",
+            "nullable": true
+          },
+          "source_name": {
+            "description": "Channel the order was placed through, e.g. `web`, `pos`.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "OrderReturnEnum": {
+        "type": "string",
+        "enum": [
+          "order-return"
+        ]
+      },
+      "OrderTrackingEnum": {
+        "type": "string",
+        "enum": [
+          "order-tracking"
+        ]
+      },
+      "ProductData": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "description": "Product ID.",
+            "type": "string"
+          },
+          "title": {
+            "description": "Product name.",
+            "type": "string"
+          },
+          "url": {
+            "description": "Product page URL.",
+            "type": "string"
+          },
+          "image": {
+            "description": "Featured image URL.",
+            "type": "string",
+            "nullable": true
+          },
+          "variant_id": {
+            "description": "Variant ID, if a variant applies.",
+            "type": "string",
+            "nullable": true
+          },
+          "request_id": {
+            "description": "ID of the recommendation request that returned this product.",
+            "type": "string",
+            "nullable": true
+          },
+          "recommendation_source": {
+            "description": "Recommendation provider, e.g. `shopify`.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "product_id",
+          "title",
+          "url"
+        ]
+      },
+      "ProductEnum": {
+        "type": "string",
+        "enum": [
+          "product"
+        ]
+      },
       "QaEnum": {
         "type": "string",
         "enum": [
@@ -7198,6 +7870,77 @@
         "type": "string",
         "enum": [
           "snippet"
+        ]
+      },
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "subscription_id": {
+            "description": "Subscription ID.",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "description": "Subscription status, e.g. `active`, `paused`, `cancelled`.",
+            "type": "string",
+            "example": "active",
+            "nullable": true
+          },
+          "next_billing_date": {
+            "description": "Date of the next charge and shipment.",
+            "type": "string",
+            "nullable": true
+          },
+          "billing_policy_interval": {
+            "description": "Billing interval: `day`, `week`, or `month`.",
+            "type": "string",
+            "example": "month",
+            "nullable": true
+          },
+          "lines": {
+            "description": "Products in the subscription.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubscriptionLineItem"
+            },
+            "default": []
+          }
+        }
+      },
+      "SubscriptionLineItem": {
+        "type": "object",
+        "properties": {
+          "product_title": {
+            "description": "Product name.",
+            "type": "string",
+            "nullable": true
+          },
+          "product_variant_title": {
+            "description": "Variant name.",
+            "type": "string",
+            "nullable": true
+          },
+          "image": {
+            "description": "Product image URL.",
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "description": "Price.",
+            "type": "number",
+            "nullable": true
+          },
+          "currency_code": {
+            "description": "ISO 4217 currency code, e.g. `USD`.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SubscriptionsEnum": {
+        "type": "string",
+        "enum": [
+          "subscriptions"
         ]
       },
       "SurveyResponseContextCreateRequestRequest": {
