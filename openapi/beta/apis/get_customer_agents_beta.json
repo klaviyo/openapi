@@ -27,22 +27,14 @@
     }
   ],
   "paths": {
-    "/api/agent-tools/{id}/agent-secrets": {
+    "/api/customer-agents": {
       "get": {
-        "operationId": "get_secrets_for_agent_tool_beta",
-        "summary": "Get Secrets for Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList Agent Secrets referenced by an Agent Tool.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_secrets_for_agent_tool_beta.json)",
+        "operationId": "get_customer_agents_beta",
+        "summary": "Get Customer Agents",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Customer Agent for the calling company.\n\nThere is at most one Customer Agent per company, so the array holds one Customer Agent, or is empty if Customer Agent is not enabled for the account. Use this to look up the Customer Agent's ``id`` before calling Get or Update Customer Agent.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_customer_agents_beta.json)",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fields[agent-secret]",
+            "name": "fields[customer-agent]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -51,36 +43,17 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "created_at",
+                  "communication_styles",
+                  "escalation_rules",
                   "id",
-                  "mask",
                   "name",
-                  "updated_at"
+                  "tone_of_voice",
+                  "tone_of_voice.custom_instruction",
+                  "tone_of_voice.preset"
                 ]
               }
             },
             "explode": false
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 50. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 50,
-              "maximum": 100,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "Page cursor",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           },
           {
             "name": "revision",
@@ -99,7 +72,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentSecretResponseDataWrapper"
+                  "$ref": "#/components/schemas/CustomerAgentResponseDataListWrapper"
                 }
               }
             }
@@ -113,9 +86,6 @@
         },
         "tags": [
           "Beta APIs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "get_agent_tool_secrets"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -237,96 +207,134 @@
       }
     },
     "schemas": {
-      "AgentSecretResourceName": {
-        "type": "string",
-        "enum": [
-          "agent-secret"
-        ]
-      },
-      "AgentSecretResponse": {
+      "CollectionLinks": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "Display name for the secret.",
+          "self": {
             "type": "string",
-            "example": "Order API key"
+            "format": "uri"
           },
-          "mask": {
-            "description": "Last 3 characters of the plaintext value, for visual disambiguation. The plaintext itself is never returned.",
+          "prev": {
             "type": "string",
-            "example": "**********ken"
+            "format": "uri"
           },
-          "created_at": {
-            "description": "Date and time when the secret was created.",
+          "next": {
             "type": "string",
-            "format": "date-time",
-            "example": "2026-05-13T12:00:00+00:00"
-          },
-          "updated_at": {
-            "description": "Date and time when the secret was last updated.",
-            "type": "string",
-            "format": "date-time",
-            "example": "2026-05-13T12:00:00+00:00"
+            "format": "uri"
           }
         },
         "required": [
-          "name",
-          "mask",
-          "created_at",
-          "updated_at"
+          "self"
         ]
       },
-      "AgentSecretResponseData": {
+      "CustomerAgentCommunicationStyle": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Short, human-readable label for the communication style.",
+            "type": "string"
+          },
+          "description": {
+            "description": "Natural-language communication style the agent must follow on every turn.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Whether this guidance item is active.",
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled"
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "status"
+        ]
+      },
+      "CustomerAgentEscalationRule": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Short, human-readable label for the escalation rule.",
+            "type": "string"
+          },
+          "description": {
+            "description": "Natural-language description of when this rule fires.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Whether this guidance item is active.",
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled"
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "status"
+        ]
+      },
+      "CustomerAgentResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent"
+        ]
+      },
+      "CustomerAgentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the AI agent.",
+            "type": "string",
+            "nullable": true
+          },
+          "tone_of_voice": {
+            "description": "Tone-of-voice settings for the Customer Agent resource.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentToneOfVoice"
+              }
+            ]
+          },
+          "escalation_rules": {
+            "description": "Natural-language triggers that, when matched, cause the agent to escalate to a human. Each rule is individually enabled or disabled.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerAgentEscalationRule"
+            }
+          },
+          "communication_styles": {
+            "description": "Global communication styles the agent applies on every turn, such as opening conventions, formatting preferences, and word choices to avoid. Each style is individually enabled or disabled.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerAgentCommunicationStyle"
+            }
+          }
+        },
+        "required": [
+          "tone_of_voice",
+          "escalation_rules",
+          "communication_styles"
+        ]
+      },
+      "CustomerAgentResponseData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/AgentSecretResourceName"
+            "$ref": "#/components/schemas/CustomerAgentResourceName"
           },
           "id": {
-            "description": "Agent Secret identifier.",
+            "description": "Customer Agent resource id. This is the account's ID.",
             "type": "string",
-            "example": "sec_abc123"
+            "example": "AbC123"
           },
           "attributes": {
-            "$ref": "#/components/schemas/AgentSecretResponse"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "agent-tools": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/AgentToolResourceName"
-                        },
-                        "id": {
-                          "description": "Agent tool IDs that reference this secret.",
-                          "type": "string",
-                          "example": [
-                            "custom:tool_123"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "type",
-                        "id"
-                      ]
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/RelationshipLinks"
-                  }
-                }
-              }
-            },
-            "required": [
-              "agent-tools"
-            ]
+            "$ref": "#/components/schemas/CustomerAgentResponse"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -336,28 +344,48 @@
           "type",
           "id",
           "attributes",
-          "relationships",
           "links"
         ]
       },
-      "AgentSecretResponseDataWrapper": {
+      "CustomerAgentResponseDataListWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/AgentSecretResponseData"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerAgentResponseData"
+            }
           },
           "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
           "data"
         ]
       },
-      "AgentToolResourceName": {
-        "type": "string",
-        "enum": [
-          "agent-tool"
+      "CustomerAgentToneOfVoice": {
+        "type": "object",
+        "properties": {
+          "preset": {
+            "description": "Built-in tone preset.",
+            "type": "string",
+            "enum": [
+              "neutral",
+              "professional",
+              "friendly",
+              "playful",
+              "custom"
+            ]
+          },
+          "custom_instruction": {
+            "description": "Free-text instruction the agent uses for tone when `preset` is `custom`. Ignored otherwise.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "preset"
         ]
       },
       "ObjectLinks": {
@@ -370,23 +398,6 @@
         },
         "required": [
           "self"
-        ]
-      },
-      "RelationshipLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "related": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self",
-          "related"
         ]
       }
     },

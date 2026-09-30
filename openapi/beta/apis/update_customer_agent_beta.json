@@ -57,8 +57,7 @@
                   "name",
                   "tone_of_voice",
                   "tone_of_voice.custom_instruction",
-                  "tone_of_voice.preset",
-                  "tone_of_voice.updated_at"
+                  "tone_of_voice.preset"
                 ]
               }
             },
@@ -347,7 +346,11 @@
           },
           "tone_of_voice": {
             "description": "Tone-of-voice settings for the Customer Agent resource.",
-            "$ref": "#/components/schemas/CustomerAgentToneOfVoice"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentToneOfVoice"
+              }
+            ]
           },
           "escalation_rules": {
             "description": "Natural-language triggers that, when matched, cause the agent to escalate to a human. Each rule is individually enabled or disabled.",
@@ -377,8 +380,9 @@
             "$ref": "#/components/schemas/CustomerAgentResourceName"
           },
           "id": {
-            "description": "Customer Agent resource id.",
-            "type": "string"
+            "description": "Customer Agent resource id. This is the account's ID.",
+            "type": "string",
+            "example": "AbC123"
           },
           "attributes": {
             "$ref": "#/components/schemas/CustomerAgentResponse"
@@ -426,13 +430,6 @@
             "description": "Free-text instruction the agent uses for tone when `preset` is `custom`. Ignored otherwise.",
             "type": "string",
             "nullable": true
-          },
-          "updated_at": {
-            "description": "Date and time when the tone-of-voice configuration was last updated.",
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-11-08T00:00:00+00:00",
-            "nullable": true
           }
         },
         "required": [
@@ -471,7 +468,11 @@
           },
           "tone_of_voice": {
             "description": "Patchable tone-of-voice settings for the Customer Agent resource.",
-            "$ref": "#/components/schemas/CustomerAgentToneOfVoiceUpdateRequest",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentToneOfVoiceUpdateRequest"
+              }
+            ],
             "nullable": true
           },
           "escalation_rules": {

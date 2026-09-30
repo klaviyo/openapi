@@ -27,22 +27,14 @@
     }
   ],
   "paths": {
-    "/api/agent-tools/{id}/agent-secrets": {
+    "/api/ksql-tables": {
       "get": {
-        "operationId": "get_secrets_for_agent_tool_beta",
-        "summary": "Get Secrets for Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList Agent Secrets referenced by an Agent Tool.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_secrets_for_agent_tool_beta.json)",
+        "operationId": "get_ksql_tables_beta",
+        "summary": "Get Ksql Tables",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList the k-sql tables this account can query.\n\nUnpaginated in this revision -- ``links.next``/``links.prev`` are emitted and always null so adding pagination later is not a schema change.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_ksql_tables_beta.json)",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fields[agent-secret]",
+            "name": "fields[ksql-table]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -51,36 +43,13 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "created_at",
+                  "description",
                   "id",
-                  "mask",
-                  "name",
-                  "updated_at"
+                  "kind"
                 ]
               }
             },
             "explode": false
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "description": "Default: 50. Min: 1. Max: 100.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 50,
-              "maximum": 100,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "page[cursor]",
-            "in": "query",
-            "description": "Page cursor",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           },
           {
             "name": "revision",
@@ -99,7 +68,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentSecretResponseDataWrapper"
+                  "$ref": "#/components/schemas/KsqlTableSummaryDataListWrapper"
                 }
               }
             }
@@ -114,8 +83,14 @@
         "tags": [
           "Beta APIs"
         ],
-        "x-klaviyo-operation-aliases": [
-          "get_agent_tool_secrets"
+        "x-klaviyo-optional-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
@@ -123,9 +98,14 @@
           "steady": "150/m"
         },
         "x-klaviyo-scopes": [
-          "agents:read"
-        ],
-        "x-klaviyo-subtag": "Customer Agent"
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ]
       }
     }
   },
@@ -237,96 +217,69 @@
       }
     },
     "schemas": {
-      "AgentSecretResourceName": {
-        "type": "string",
-        "enum": [
-          "agent-secret"
-        ]
-      },
-      "AgentSecretResponse": {
+      "CollectionLinks": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "Display name for the secret.",
+          "self": {
             "type": "string",
-            "example": "Order API key"
+            "format": "uri"
           },
-          "mask": {
-            "description": "Last 3 characters of the plaintext value, for visual disambiguation. The plaintext itself is never returned.",
+          "prev": {
             "type": "string",
-            "example": "**********ken"
+            "format": "uri"
           },
-          "created_at": {
-            "description": "Date and time when the secret was created.",
+          "next": {
             "type": "string",
-            "format": "date-time",
-            "example": "2026-05-13T12:00:00+00:00"
-          },
-          "updated_at": {
-            "description": "Date and time when the secret was last updated.",
-            "type": "string",
-            "format": "date-time",
-            "example": "2026-05-13T12:00:00+00:00"
+            "format": "uri"
           }
         },
         "required": [
-          "name",
-          "mask",
-          "created_at",
-          "updated_at"
+          "self"
         ]
       },
-      "AgentSecretResponseData": {
+      "KsqlTableResourceName": {
+        "type": "string",
+        "enum": [
+          "ksql-table"
+        ]
+      },
+      "KsqlTableSummary": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "description": "What the table contains. Never null on an inferred event table -- the service synthesizes one.",
+            "type": "string",
+            "nullable": true
+          },
+          "kind": {
+            "description": "What this table represents.",
+            "type": "string",
+            "enum": [
+              "event",
+              "object",
+              "relation",
+              "inferred_event",
+              "metric"
+            ]
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "KsqlTableSummaryData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/AgentSecretResourceName"
+            "$ref": "#/components/schemas/KsqlTableResourceName"
           },
           "id": {
-            "description": "Agent Secret identifier.",
+            "description": "The k-sql table identifier, verbatim. Write it exactly as given in a FROM clause, and percent-encode it for the retrieve path (RFC 3986 -- e.g. `%20` for a space).",
             "type": "string",
-            "example": "sec_abc123"
+            "example": "klaviyo.events.placed_order"
           },
           "attributes": {
-            "$ref": "#/components/schemas/AgentSecretResponse"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "agent-tools": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/AgentToolResourceName"
-                        },
-                        "id": {
-                          "description": "Agent tool IDs that reference this secret.",
-                          "type": "string",
-                          "example": [
-                            "custom:tool_123"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "type",
-                        "id"
-                      ]
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/RelationshipLinks"
-                  }
-                }
-              }
-            },
-            "required": [
-              "agent-tools"
-            ]
+            "$ref": "#/components/schemas/KsqlTableSummary"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -336,28 +289,24 @@
           "type",
           "id",
           "attributes",
-          "relationships",
           "links"
         ]
       },
-      "AgentSecretResponseDataWrapper": {
+      "KsqlTableSummaryDataListWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/AgentSecretResponseData"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KsqlTableSummaryData"
+            }
           },
           "links": {
-            "$ref": "#/components/schemas/ObjectLinks"
+            "$ref": "#/components/schemas/CollectionLinks"
           }
         },
         "required": [
           "data"
-        ]
-      },
-      "AgentToolResourceName": {
-        "type": "string",
-        "enum": [
-          "agent-tool"
         ]
       },
       "ObjectLinks": {
@@ -370,23 +319,6 @@
         },
         "required": [
           "self"
-        ]
-      },
-      "RelationshipLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "related": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self",
-          "related"
         ]
       }
     },

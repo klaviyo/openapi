@@ -1,0 +1,619 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-07-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/ksql-tables": {
+      "get": {
+        "operationId": "get_ksql_tables_beta",
+        "summary": "Get Ksql Tables",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList the k-sql tables this account can query.\n\nUnpaginated in this revision -- ``links.next``/``links.prev`` are emitted and always null so adding pagination later is not a schema change.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_ksql_tables_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[ksql-table]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "description",
+                  "id",
+                  "kind"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KsqlTableSummaryDataListWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ]
+      }
+    },
+    "/api/ksql-tables/{id}": {
+      "get": {
+        "operationId": "get_ksql_table_beta",
+        "summary": "Get Ksql Table",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nFetch the full column schema for one k-sql table, given its identifier.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_ksql_table_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[ksql-table]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "columns",
+                  "description",
+                  "event_sources",
+                  "id",
+                  "kind"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-07-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KsqlTableDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CollectionLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ColumnRelation": {
+        "type": "object",
+        "properties": {
+          "table_id": {
+            "description": "The `id` of the table this column points at. Always an entity table, so never backtick-quoted.",
+            "type": "string",
+            "example": "klaviyo.profiles"
+          },
+          "column": {
+            "description": "The column of `table_id` this column's value matches. This is the name to write in a join, not the underlying CDM column.",
+            "type": "string",
+            "example": "id"
+          },
+          "entity_alias": {
+            "description": "The link's alias for the target entity, for example `campaign`. Unique per table, and the value to pass as USING when a table has more than one link.",
+            "type": "string",
+            "example": "profile"
+          },
+          "description": {
+            "description": "What the link means, from the link manifest. Null when the manifest declares none.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "table_id",
+          "column",
+          "entity_alias"
+        ]
+      },
+      "ColumnSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The column's own name, not a path.",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DataType"
+          },
+          "description": {
+            "description": "What the column contains. Null when the manifest declares none. On an inferred event table the top-level CDM columns still carry descriptions; only the fields inside the satellite struct are null.",
+            "type": "string",
+            "nullable": true
+          },
+          "struct_fields": {
+            "description": "Members of a `struct` column, each an object of this same shape. Empty for every other type. An `array` of structs carries its members in `array_element.struct_fields`, not here.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ColumnSchema"
+            },
+            "default": []
+          },
+          "array_element": {
+            "description": "Present only when `type` is `array`, and null otherwise. An object of this same shape describing one element of the array: its `type`, its `struct_fields` when that element is a struct, and its own `array_element` when the array is itself an array of arrays.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnSchema"
+              }
+            ],
+            "nullable": true
+          },
+          "relations": {
+            "description": "Joinable relations declared against this column. Empty when there are none.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ColumnRelation"
+            },
+            "default": []
+          }
+        },
+        "required": [
+          "name",
+          "type"
+        ]
+      },
+      "DataType": {
+        "description": "A k-sql column's type.\n\n``array`` is always the bare string -- an array's element type lives\n    in ``ColumnSchema.array_element``, never encoded as ``array<...>``.\n    ``struct`` carries its members in ``ColumnSchema.struct_fields``.",
+        "type": "string",
+        "enum": [
+          "boolean",
+          "long",
+          "double",
+          "string",
+          "timestamptz",
+          "struct",
+          "array"
+        ]
+      },
+      "EventSource": {
+        "type": "object",
+        "properties": {
+          "type_id": {
+            "description": "The KDB activity type id, for example `shopify[Order]`.",
+            "type": "string",
+            "example": "shopify[Order]"
+          },
+          "identifier": {
+            "description": "The `id` of the inferred event table for this source. Percent-encode it to retrieve that table.",
+            "type": "string",
+            "example": "klaviyo.events.shopify.Order"
+          }
+        },
+        "required": [
+          "type_id",
+          "identifier"
+        ]
+      },
+      "KsqlTable": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "description": "What the table contains. Null when a canonical manifest declares none. Never null on an inferred event table -- the service synthesizes one stating the source and that field names are inferred.",
+            "type": "string",
+            "nullable": true
+          },
+          "kind": {
+            "description": "What this table represents.",
+            "type": "string",
+            "enum": [
+              "event",
+              "object",
+              "relation",
+              "inferred_event",
+              "metric"
+            ]
+          },
+          "columns": {
+            "description": "The table's top-level columns, in manifest order. Nested columns are reached through `struct_fields` and `array_element` rather than listed separately. Always present.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ColumnSchema"
+            },
+            "default": []
+          },
+          "event_sources": {
+            "description": "The source event types behind this canonical event table, each with the identifier of the inferred event table carrying that source's complete field set. Canonical tables normalize across sources and drop source-specific fields; those fields remain addressable on the identifiers listed here. Always present; empty for every kind except `event`.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventSource"
+            },
+            "default": []
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "KsqlTableData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/KsqlTableResourceName"
+          },
+          "id": {
+            "description": "The k-sql table identifier, verbatim -- write it exactly as given in a FROM clause.",
+            "type": "string",
+            "example": "klaviyo.events.placed_order"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/KsqlTable"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "KsqlTableDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/KsqlTableData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "KsqlTableResourceName": {
+        "type": "string",
+        "enum": [
+          "ksql-table"
+        ]
+      },
+      "KsqlTableSummary": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "description": "What the table contains. Never null on an inferred event table -- the service synthesizes one.",
+            "type": "string",
+            "nullable": true
+          },
+          "kind": {
+            "description": "What this table represents.",
+            "type": "string",
+            "enum": [
+              "event",
+              "object",
+              "relation",
+              "inferred_event",
+              "metric"
+            ]
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "KsqlTableSummaryData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/KsqlTableResourceName"
+          },
+          "id": {
+            "description": "The k-sql table identifier, verbatim. Write it exactly as given in a FROM clause, and percent-encode it for the retrieve path (RFC 3986 -- e.g. `%20` for a space).",
+            "type": "string",
+            "example": "klaviyo.events.placed_order"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/KsqlTableSummary"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "KsqlTableSummaryDataListWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KsqlTableSummaryData"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

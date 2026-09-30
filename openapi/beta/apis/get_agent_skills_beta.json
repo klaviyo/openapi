@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_agent_skills_beta",
         "summary": "Get Agent Skills",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every skill configured for the calling company's Customer Agent.\n\nUse this to inspect Customer Agent's current skills before adding or modifying a custom skill. Each item carries a prefixed ``id``, ``source``, ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, and ``handoff``. Use retrieve to inspect any one skill in detail.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skills_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the skills configured for the calling company's Customer Agent, one page at a time.\n\nUse this to inspect Customer Agent's current skills before adding or modifying a custom skill. Each item carries a prefixed ``id``, ``source``, ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, and ``handoff``. Use retrieve to inspect any one skill in detail. Follow ``links.next`` to fetch the next page. Results are sorted by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skills_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-skill]",
@@ -61,6 +61,27 @@
             "explode": false
           },
           {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -77,7 +98,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentSkillResponseDataListWrapper"
+                  "$ref": "#/components/schemas/AgentSkillResponseDataWrapper"
                 }
               }
             }
@@ -283,7 +304,11 @@
             "default": {
               "tools": {}
             },
-            "$ref": "#/components/schemas/AgentSkillReferences"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AgentSkillReferences"
+              }
+            ]
           },
           "created_at": {
             "description": "Date and time when the skill was created.",
@@ -348,9 +373,6 @@
                         "id"
                       ]
                     }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/RelationshipLinks"
                   }
                 }
               }
@@ -371,17 +393,14 @@
           "links"
         ]
       },
-      "AgentSkillResponseDataListWrapper": {
+      "AgentSkillResponseDataWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AgentSkillResponseData"
-            }
+            "$ref": "#/components/schemas/AgentSkillResponseData"
           },
           "links": {
-            "$ref": "#/components/schemas/CollectionLinks"
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
@@ -394,26 +413,6 @@
           "agent-tool"
         ]
       },
-      "CollectionLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "prev": {
-            "type": "string",
-            "format": "uri"
-          },
-          "next": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self"
-        ]
-      },
       "ObjectLinks": {
         "type": "object",
         "properties": {
@@ -424,23 +423,6 @@
         },
         "required": [
           "self"
-        ]
-      },
-      "RelationshipLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "related": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self",
-          "related"
         ]
       }
     },
