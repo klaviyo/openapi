@@ -8785,6 +8785,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "assigner_configuration",
+                  "assigner_configuration.unused_expired",
+                  "assigner_configuration.used",
                   "description",
                   "external_id",
                   "id",
@@ -8871,6 +8874,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "assigner_configuration",
+                  "assigner_configuration.unused_expired",
+                  "assigner_configuration.used",
                   "description",
                   "external_id",
                   "id",
@@ -8959,6 +8965,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "assigner_configuration",
+                  "assigner_configuration.unused_expired",
+                  "assigner_configuration.used",
                   "description",
                   "external_id",
                   "id",
@@ -9035,6 +9044,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "assigner_configuration",
+                  "assigner_configuration.unused_expired",
+                  "assigner_configuration.used",
                   "description",
                   "external_id",
                   "id",
@@ -9181,6 +9193,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "assigner_configuration",
+                  "assigner_configuration.unused_expired",
+                  "assigner_configuration.used",
                   "description",
                   "external_id",
                   "id",
@@ -9455,6 +9470,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "assigner_configuration",
+                  "assigner_configuration.unused_expired",
+                  "assigner_configuration.used",
                   "description",
                   "external_id",
                   "id",
@@ -9999,6 +10017,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "assigner_configuration",
+                  "assigner_configuration.unused_expired",
+                  "assigner_configuration.used",
                   "description",
                   "external_id",
                   "id",
@@ -36514,6 +36535,34 @@
   },
   "components": {
     "schemas": {
+      "CouponAssignerConfiguration": {
+        "type": "object",
+        "properties": {
+          "used": {
+            "description": "Controls when a new coupon code is issued relative to the customer's existing code being used.",
+            "type": "string",
+            "example": "ALWAYS_ASSIGN",
+            "enum": [
+              "ALWAYS_ASSIGN",
+              "ASSIGN_IF_EXPIRED",
+              "NEVER_ASSIGN"
+            ]
+          },
+          "unused_expired": {
+            "description": "Controls when a new coupon code is issued relative to the customer's existing, unused code expiring.",
+            "type": "string",
+            "example": "ALWAYS_ASSIGN",
+            "enum": [
+              "ALWAYS_ASSIGN",
+              "NEVER_ASSIGN"
+            ]
+          }
+        },
+        "required": [
+          "used",
+          "unused_expired"
+        ]
+      },
       "CouponEnum": {
         "type": "string",
         "enum": [
@@ -36551,6 +36600,11 @@
                 "example": {
                   "low_balance_threshold": 500
                 },
+                "nullable": true
+              },
+              "assigner_configuration": {
+                "description": "Controls when a new coupon code is issued relative to the customer's existing code's used/expired state.",
+                "$ref": "#/components/schemas/CouponAssignerConfiguration",
                 "nullable": true
               }
             },
@@ -66261,6 +66315,18 @@
           "deep_link_url": {
             "type": "string",
             "default": ""
+          },
+          "deep_link_url_ios": {
+            "type": "string",
+            "default": ""
+          },
+          "deep_link_url_android": {
+            "type": "string",
+            "default": ""
+          },
+          "use_separate_deep_link_urls": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -66407,6 +66473,118 @@
           "properties"
         ]
       },
+      "TextStyleOverrides": {
+        "type": "object",
+        "properties": {
+          "font_family": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Arial Black,Arial",
+                  "Arial, 'Helvetica Neue', Helvetica, sans-serif",
+                  "Century Gothic,AppleGothic,Arial",
+                  "Comic Sans MS,Comic Sans,cursive",
+                  "Courier",
+                  "Courier New",
+                  "Geneva,Arial",
+                  "Georgia",
+                  "Helvetica,Arial",
+                  "Lucida Grande,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "Lucida,Lucida Sans Unicode,Lucida Sans,Geneva,Verdana,sans-serif",
+                  "MS Serif,Georgia",
+                  "New York,Georgia",
+                  "Palatino Linotype,Palatino,Georgia",
+                  "Palatino,Georgia",
+                  "Tahoma,sans-serif",
+                  "Times New Roman",
+                  "Trebuchet MS",
+                  "Verdana"
+                ],
+                "description": "Web safe font enumeration."
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "font_size": {
+            "type": "integer",
+            "nullable": true
+          },
+          "font_weight": {
+            "description": "Font weight enumeration.",
+            "type": "integer",
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ],
+            "nullable": true
+          },
+          "character_spacing": {
+            "type": "integer",
+            "nullable": true
+          },
+          "text_color": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "InputStyleOverrides": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "input_text_styles": {
+            "$ref": "#/components/schemas/TextStyleOverrides",
+            "nullable": true
+          },
+          "label_text_styles": {
+            "$ref": "#/components/schemas/TextStyleOverrides",
+            "nullable": true
+          },
+          "placeholder_text_styles": {
+            "$ref": "#/components/schemas/TextStyleOverrides",
+            "nullable": true
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "border_focus_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "focus_outline_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "corner_radius": {
+            "type": "integer",
+            "nullable": true
+          },
+          "field_height": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
       "AgeGateStyles": {
         "type": "object",
         "properties": {
@@ -66415,6 +66593,10 @@
           },
           "background_color": {
             "type": "string",
+            "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
             "nullable": true
           }
         }
@@ -66713,6 +66895,10 @@
           "background_color": {
             "type": "string",
             "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
+            "nullable": true
           }
         }
       },
@@ -66807,6 +66993,10 @@
           },
           "background_color": {
             "type": "string",
+            "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
             "nullable": true
           }
         }
@@ -66966,6 +67156,10 @@
           "background_color": {
             "type": "string",
             "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
+            "nullable": true
           }
         }
       },
@@ -67060,6 +67254,10 @@
           },
           "background_color": {
             "type": "string",
+            "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
             "nullable": true
           }
         }
@@ -67316,6 +67514,10 @@
           "background_color": {
             "type": "string",
             "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
+            "nullable": true
           }
         }
       },
@@ -67405,6 +67607,10 @@
           },
           "background_color": {
             "type": "string",
+            "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
             "nullable": true
           },
           "arrangement": {
@@ -67540,6 +67746,10 @@
             "type": "string",
             "nullable": true
           },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
+            "nullable": true
+          },
           "arrangement": {
             "description": "Arrangement enumeration.",
             "type": "string",
@@ -67656,6 +67866,10 @@
           },
           "background_color": {
             "type": "string",
+            "nullable": true
+          },
+          "input_styles": {
+            "$ref": "#/components/schemas/InputStyleOverrides",
             "nullable": true
           }
         }
@@ -76475,6 +76689,11 @@
                   "low_balance_threshold": 500
                 },
                 "nullable": true
+              },
+              "assigner_configuration": {
+                "description": "Controls when a new coupon code is issued relative to the customer's existing code's used/expired state.",
+                "$ref": "#/components/schemas/CouponAssignerConfiguration",
+                "nullable": true
               }
             },
             "required": [
@@ -76532,6 +76751,11 @@
                     "example": {
                       "low_balance_threshold": 500
                     },
+                    "nullable": true
+                  },
+                  "assigner_configuration": {
+                    "description": "Controls when a new coupon code is issued relative to the customer's existing code's used/expired state.",
+                    "$ref": "#/components/schemas/CouponAssignerConfiguration",
                     "nullable": true
                   }
                 },
@@ -89483,7 +89707,69 @@
           "data"
         ]
       },
-      "ProfileUpsertQueryWithSubscriptionsResourceObject": {
+      "ClientTrackingConsentParameters": {
+        "type": "object",
+        "properties": {
+          "consent": {
+            "description": "The tracking consent operation. Supports \"SUBSCRIBED\" and \"UNSUBSCRIBED\".",
+            "type": "string",
+            "example": "SUBSCRIBED",
+            "enum": [
+              "SUBSCRIBED",
+              "UNSUBSCRIBED"
+            ]
+          }
+        },
+        "required": [
+          "consent"
+        ]
+      },
+      "ClientEmailSubscriptionParameters": {
+        "type": "object",
+        "properties": {
+          "marketing": {
+            "description": "The parameters to subscribe to on the \"EMAIL\" Channel. Currently supports \"MARKETING\".",
+            "$ref": "#/components/schemas/SubscriptionParameters",
+            "nullable": true
+          },
+          "open_tracking": {
+            "description": "The open-tracking consent to set on the \"EMAIL\" channel. Open-tracking consent is recorded on the profile only; it does not by itself add the profile to a list specified in the request.",
+            "$ref": "#/components/schemas/ClientTrackingConsentParameters",
+            "nullable": true
+          },
+          "click_tracking": {
+            "description": "The click-tracking consent to set on the \"EMAIL\" channel. Click-tracking consent is recorded on the profile only; it does not by itself add the profile to a list specified in the request.",
+            "$ref": "#/components/schemas/ClientTrackingConsentParameters",
+            "nullable": true
+          }
+        }
+      },
+      "ClientSubscriptionChannels": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "description": "The subscription parameters to subscribe to on the \"EMAIL\" Channel.",
+            "$ref": "#/components/schemas/ClientEmailSubscriptionParameters",
+            "nullable": true
+          },
+          "sms": {
+            "description": "The subscription parameters to subscribe to on the \"SMS\" Channel.",
+            "$ref": "#/components/schemas/SMSSubscriptionParameters",
+            "nullable": true
+          },
+          "whatsapp": {
+            "description": "The subscription parameters to subscribe to on the \"WhatsApp\" Channel.",
+            "$ref": "#/components/schemas/WhatsAppSubscriptionParameters",
+            "nullable": true
+          },
+          "push": {
+            "description": "The subscription parameters to subscribe to on the \"Push\" Channel.",
+            "$ref": "#/components/schemas/PushSubscriptionParameters",
+            "nullable": true
+          }
+        }
+      },
+      "ClientProfileUpsertQueryWithSubscriptionsResourceObject": {
         "type": "object",
         "properties": {
           "type": {
@@ -89568,7 +89854,8 @@
                 "nullable": true
               },
               "subscriptions": {
-                "$ref": "#/components/schemas/SubscriptionChannels",
+                "description": "The subscription parameters for this profile, by channel.",
+                "$ref": "#/components/schemas/ClientSubscriptionChannels",
                 "nullable": true
               }
             }
@@ -89608,7 +89895,7 @@
                 "type": "object",
                 "properties": {
                   "data": {
-                    "$ref": "#/components/schemas/ProfileUpsertQueryWithSubscriptionsResourceObject"
+                    "$ref": "#/components/schemas/ClientProfileUpsertQueryWithSubscriptionsResourceObject"
                   }
                 },
                 "required": [
@@ -90102,6 +90389,11 @@
                   "low_balance_threshold": 500
                 },
                 "nullable": true
+              },
+              "assigner_configuration": {
+                "description": "Controls when a new coupon code is issued relative to the customer's existing code's used/expired state.",
+                "$ref": "#/components/schemas/CouponAssignerConfiguration",
+                "nullable": true
               }
             }
           }
@@ -90157,6 +90449,11 @@
                     "example": {
                       "low_balance_threshold": 500
                     },
+                    "nullable": true
+                  },
+                  "assigner_configuration": {
+                    "description": "Controls when a new coupon code is issued relative to the customer's existing code's used/expired state.",
+                    "$ref": "#/components/schemas/CouponAssignerConfiguration",
                     "nullable": true
                   }
                 },
