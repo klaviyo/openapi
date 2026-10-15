@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API",
-    "version": "2026-07-15",
+    "version": "2026-10-15",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -31,70 +31,46 @@
       "patch": {
         "operationId": "update_campaign_message",
         "summary": "Update Campaign Message",
-        "description": "Update a campaign message<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_campaign_message.json)",
+        "description": "Update a campaign message.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_campaign_message.json)",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "The message ID to be retrieved",
+            "description": "The ID of the message",
             "required": true,
             "schema": {
-              "description": "The message ID to be retrieved",
+              "description": "The ID of the message",
               "type": "string"
             }
           },
           {
             "name": "fields[campaign-message]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string",
                 "enum": [
-                  "created_at",
+                  "created",
                   "definition",
-                  "definition.channel",
-                  "definition.content",
-                  "definition.content.action_buttons",
-                  "definition.content.bcc_email",
-                  "definition.content.body",
-                  "definition.content.cc_email",
-                  "definition.content.dynamic_image",
-                  "definition.content.from_email",
-                  "definition.content.from_label",
-                  "definition.content.media_url",
-                  "definition.content.preview_text",
-                  "definition.content.reply_to_email",
-                  "definition.content.subject",
-                  "definition.content.title",
-                  "definition.kv_pairs",
-                  "definition.label",
-                  "definition.notification_type",
-                  "definition.options",
-                  "definition.options.badge",
-                  "definition.options.badge.badge_options",
-                  "definition.options.badge.badge_options.badge_config",
-                  "definition.options.badge.badge_options.set_from_property",
-                  "definition.options.badge.badge_options.value",
-                  "definition.options.badge.display",
-                  "definition.options.on_open",
-                  "definition.options.on_open.android_deep_link",
-                  "definition.options.on_open.ios_deep_link",
-                  "definition.options.on_open.type",
-                  "definition.options.on_open.web_url",
-                  "definition.options.play_sound",
-                  "definition.options.push_platform_target",
-                  "definition.options.send_to_primary",
-                  "definition.render_options",
-                  "definition.render_options.add_info_link",
-                  "definition.render_options.add_opt_out_language",
-                  "definition.render_options.add_org_prefix",
-                  "definition.render_options.shorten_links",
+                  "definition.name",
+                  "definition.send_options",
+                  "definition.send_options.is_ignoring_unsubscribes",
+                  "definition.send_options.recipient_percentage",
+                  "definition.send_options.send_strategy",
+                  "definition.send_options.send_time",
+                  "definition.send_options.send_times",
+                  "definition.send_options.throttle_unit",
+                  "definition.send_options.throttling_type",
+                  "definition.status",
+                  "definition.tracking_options",
+                  "definition.tracking_options.is_add_utm",
+                  "definition.tracking_options.is_tracking_clicks",
+                  "definition.tracking_options.is_tracking_opens",
                   "id",
-                  "send_times",
-                  "updated_at"
+                  "updated"
                 ]
               }
             },
@@ -107,17 +83,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
         "requestBody": {
-          "description": "Update a message and return it",
           "required": true,
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/CampaignMessagePartialUpdateQuery"
+                "$ref": "#/components/schemas/MessagePartialUpdateQuery"
               }
             }
           }
@@ -128,7 +103,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PatchCampaignMessageResponse"
+                  "$ref": "#/components/schemas/PatchMessageResponse"
                 }
               }
             }
@@ -276,6 +251,12 @@
           }
         }
       },
+      "CampaignAudienceEnum": {
+        "type": "string",
+        "enum": [
+          "campaign-audience"
+        ]
+      },
       "CampaignEnum": {
         "type": "string",
         "enum": [
@@ -288,87 +269,72 @@
           "campaign-message"
         ]
       },
-      "CampaignMessageIncrement": {
-        "type": "object",
-        "properties": {
-          "badge_config": {
-            "type": "string",
-            "enum": [
-              "increment_one"
-            ]
-          }
-        },
-        "required": [
-          "badge_config"
+      "CampaignVariationEnum": {
+        "type": "string",
+        "enum": [
+          "campaign-variation"
         ]
       },
-      "CampaignMessagePartialUpdateQuery": {
+      "MessageDefinition": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the message",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "description": "The status of the message",
+            "type": "string",
+            "enum": [
+              "cancelled",
+              "draft",
+              "scheduled",
+              "sending",
+              "sent"
+            ],
+            "nullable": true
+          },
+          "tracking_options": {
+            "description": "The tracking options for this message",
+            "$ref": "#/components/schemas/MessageTrackingOptions",
+            "nullable": true
+          },
+          "send_options": {
+            "description": "The send options for this message",
+            "$ref": "#/components/schemas/MessageSendOptions",
+            "nullable": true
+          }
+        }
+      },
+      "MessagePartialUpdateQuery": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/CampaignMessagePartialUpdateQueryResourceObject"
+            "$ref": "#/components/schemas/MessagePartialUpdateQueryResourceObject"
           }
         },
         "required": [
           "data"
         ]
       },
-      "CampaignMessagePartialUpdateQueryResourceObject": {
+      "MessagePartialUpdateQueryResourceObject": {
         "type": "object",
         "properties": {
           "type": {
             "$ref": "#/components/schemas/CampaignMessageEnum"
           },
           "id": {
-            "description": "The message ID to be retrieved",
+            "description": "The ID of the message",
             "type": "string"
           },
           "attributes": {
             "type": "object",
             "properties": {
               "definition": {
-                "description": "The contents and settings of the campaign message",
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/EmailMessageDefinition"
-                  },
-                  {
-                    "$ref": "#/components/schemas/SMSMessageDefinitionCreate"
-                  },
-                  {
-                    "$ref": "#/components/schemas/MobilePushMessageStandardDefinitionUpdate"
-                  },
-                  {
-                    "$ref": "#/components/schemas/MobilePushMessageSilentDefinitionUpdate"
-                  }
-                ]
-              }
-            }
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "image": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "$ref": "#/components/schemas/ImageEnum"
-                      },
-                      "id": {
-                        "description": "The associated image for mobile_push or SMS messages",
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "id"
-                    ]
-                  }
-                }
+                "description": "The definition of this message",
+                "$ref": "#/components/schemas/MessageDefinition",
+                "nullable": true
               }
             }
           }
@@ -379,397 +345,82 @@
           "attributes"
         ]
       },
-      "CampaignMessageProperty": {
+      "MessageSendOptions": {
         "type": "object",
         "properties": {
-          "badge_config": {
+          "send_time": {
+            "description": "The UTC send time for this message",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          },
+          "send_times": {
+            "description": "Per-variation send times, keyed by variation ID. Populated for send-time optimization and AB send time test strategies.",
+            "type": "object",
+            "nullable": true
+          },
+          "send_strategy": {
+            "description": "The scheduling strategy for this message.",
             "type": "string",
             "enum": [
-              "set_property"
-            ]
+              "ab_send_time_test",
+              "content_variation",
+              "content_variation_local_timezone",
+              "local_timezone",
+              "personalized_send_time_optimization",
+              "send_time_optimization",
+              "static",
+              "throttled",
+              "variation_per_second_throttled"
+            ],
+            "nullable": true
           },
-          "set_from_property": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "badge_config",
-          "set_from_property"
-        ]
-      },
-      "CampaignMessageStaticCount": {
-        "type": "object",
-        "properties": {
-          "badge_config": {
+          "recipient_percentage": {
+            "description": "The percentage of recipients to send this message to",
+            "type": "integer",
+            "nullable": true
+          },
+          "throttling_type": {
+            "description": "The throttling type for this message",
             "type": "string",
             "enum": [
-              "set_count"
-            ]
-          },
-          "value": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "badge_config",
-          "value"
-        ]
-      },
-      "EmailContent": {
-        "type": "object",
-        "properties": {
-          "subject": {
-            "description": "The subject of the message",
-            "type": "string",
-            "example": "Buy our product!",
+              "none",
+              "throttle-for-campaigns",
+              "throttle-for-campaigns-and-flows",
+              "throttle-for-flows"
+            ],
             "nullable": true
           },
-          "preview_text": {
-            "description": "Preview text associated with the message",
+          "throttle_unit": {
+            "description": "The time unit each batch of recipients is sent over for throttled sends.",
             "type": "string",
-            "example": "My preview text",
+            "enum": [
+              "hour",
+              "minute"
+            ],
             "nullable": true
           },
-          "from_email": {
-            "description": "The email the message should be sent from",
-            "type": "string",
-            "example": "store@my-company.com",
-            "nullable": true
-          },
-          "from_label": {
-            "description": "The label associated with the from_email",
-            "type": "string",
-            "example": "My Company",
-            "nullable": true
-          },
-          "reply_to_email": {
-            "description": "Optional Reply-To email address",
-            "type": "string",
-            "example": "reply-to@my-company.com",
-            "nullable": true
-          },
-          "cc_email": {
-            "description": "Optional CC email address",
-            "type": "string",
-            "example": "cc@my-company.com",
-            "nullable": true
-          },
-          "bcc_email": {
-            "description": "Optional BCC email address",
-            "type": "string",
-            "example": "bcc@my-company.com",
+          "is_ignoring_unsubscribes": {
+            "description": "Whether to ignore unsubscribes for this message",
+            "type": "boolean",
             "nullable": true
           }
         }
       },
-      "EmailMessageDefinition": {
+      "MessageTrackingOptions": {
         "type": "object",
         "properties": {
-          "channel": {
-            "type": "string",
-            "enum": [
-              "email"
-            ]
-          },
-          "label": {
-            "description": "The label or name on the message",
-            "type": "string",
-            "example": "My message name",
-            "nullable": true
-          },
-          "content": {
-            "$ref": "#/components/schemas/EmailContent",
-            "description": "Additional attributes relating to the content of the message",
-            "nullable": true
-          }
-        },
-        "required": [
-          "channel"
-        ]
-      },
-      "ImageEnum": {
-        "type": "string",
-        "enum": [
-          "image"
-        ]
-      },
-      "MobilePushBadge": {
-        "type": "object",
-        "properties": {
-          "display": {
-            "description": "Whether to display a badge on the app icon",
+          "is_add_utm": {
             "type": "boolean",
-            "enum": [
-              true
-            ]
-          },
-          "badge_options": {
-            "description": "Badge options",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/CampaignMessageIncrement"
-              },
-              {
-                "$ref": "#/components/schemas/CampaignMessageStaticCount"
-              },
-              {
-                "$ref": "#/components/schemas/CampaignMessageProperty"
-              }
-            ]
-          }
-        },
-        "required": [
-          "display"
-        ]
-      },
-      "MobilePushContent": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "The title of the message",
-            "type": "string",
             "nullable": true
           },
-          "body": {
-            "description": "The message body",
-            "type": "string",
-            "example": "My preview push notification",
-            "nullable": true
-          },
-          "dynamic_image": {
-            "description": "The dynamic image to be used in the push notification",
-            "type": "string",
-            "nullable": true
-          },
-          "action_buttons": {
-            "description": "Action buttons for the push notification",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PushActionButtonDefinition"
-            },
-            "nullable": true
-          }
-        }
-      },
-      "MobilePushContentUpdate": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "The title of the message",
-            "type": "string",
-            "nullable": true
-          },
-          "body": {
-            "description": "The message body",
-            "type": "string",
-            "example": "My preview push notification",
-            "nullable": true
-          },
-          "dynamic_image": {
-            "description": "The dynamic image to be used in the push notification",
-            "type": "string",
-            "nullable": true
-          },
-          "action_buttons": {
-            "description": "Action buttons for the push notification (max 3, positions 0-indexed with no gaps)",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PushActionButtonDefinition"
-            },
-            "nullable": true
-          }
-        }
-      },
-      "MobilePushMessageSilentDefinition": {
-        "type": "object",
-        "properties": {
-          "channel": {
-            "type": "string",
-            "enum": [
-              "mobile_push"
-            ]
-          },
-          "notification_type": {
-            "description": "The type of notification to send",
-            "type": "string",
-            "enum": [
-              "silent"
-            ]
-          },
-          "kv_pairs": {
-            "description": "The key-value pairs to be sent with the push notification",
-            "type": "object",
-            "nullable": true
-          }
-        },
-        "required": [
-          "channel",
-          "notification_type"
-        ]
-      },
-      "MobilePushMessageSilentDefinitionUpdate": {
-        "type": "object",
-        "properties": {
-          "channel": {
-            "type": "string",
-            "enum": [
-              "mobile_push"
-            ]
-          },
-          "kv_pairs": {
-            "description": "The key-value pairs to be sent with the push notification",
-            "type": "object"
-          },
-          "notification_type": {
-            "description": "The type of notification to send",
-            "type": "string",
-            "example": "silent",
-            "default": "silent",
-            "enum": [
-              "silent"
-            ]
-          }
-        },
-        "required": [
-          "channel"
-        ]
-      },
-      "MobilePushMessageStandardDefinition": {
-        "type": "object",
-        "properties": {
-          "channel": {
-            "type": "string",
-            "enum": [
-              "mobile_push"
-            ]
-          },
-          "notification_type": {
-            "description": "The type of notification to send",
-            "type": "string",
-            "enum": [
-              "standard"
-            ]
-          },
-          "content": {
-            "$ref": "#/components/schemas/MobilePushContent",
-            "description": "Additional attributes relating to the content of the message"
-          },
-          "kv_pairs": {
-            "description": "The key-value pairs to be sent with the push notification",
-            "type": "object",
-            "nullable": true
-          },
-          "options": {
-            "$ref": "#/components/schemas/MobilePushOptions",
-            "nullable": true
-          }
-        },
-        "required": [
-          "channel",
-          "notification_type",
-          "content"
-        ]
-      },
-      "MobilePushMessageStandardDefinitionUpdate": {
-        "type": "object",
-        "properties": {
-          "channel": {
-            "type": "string",
-            "enum": [
-              "mobile_push"
-            ]
-          },
-          "kv_pairs": {
-            "description": "The key-value pairs to be sent with the push notification",
-            "type": "object",
-            "nullable": true
-          },
-          "content": {
-            "$ref": "#/components/schemas/MobilePushContentUpdate",
-            "description": "Additional attributes relating to the content of the message",
-            "nullable": true
-          },
-          "options": {
-            "description": "Additional device specific options for the push notification",
-            "$ref": "#/components/schemas/MobilePushOptions",
-            "nullable": true
-          },
-          "notification_type": {
-            "description": "The type of notification to send",
-            "type": "string",
-            "example": "standard",
-            "default": "standard",
-            "enum": [
-              "standard"
-            ]
-          }
-        },
-        "required": [
-          "channel"
-        ]
-      },
-      "MobilePushNoBadge": {
-        "type": "object",
-        "properties": {
-          "display": {
-            "description": "Whether to display a badge on the app icon",
+          "is_tracking_clicks": {
             "type": "boolean",
-            "enum": [
-              false
-            ]
-          }
-        },
-        "required": [
-          "display"
-        ]
-      },
-      "MobilePushOptions": {
-        "type": "object",
-        "properties": {
-          "on_open": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/PushOnOpenApp"
-              },
-              {
-                "$ref": "#/components/schemas/PushOnOpenDeepLink"
-              },
-              {
-                "$ref": "#/components/schemas/PushOnOpenWebUrl"
-              }
-            ]
-          },
-          "badge": {
-            "description": "Only supported on iOS.",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/MobilePushBadge"
-              },
-              {
-                "$ref": "#/components/schemas/MobilePushNoBadge"
-              }
-            ]
-          },
-          "play_sound": {
-            "description": "Only supported on iOS.",
-            "type": "boolean",
-            "default": false,
             "nullable": true
           },
-          "send_to_primary": {
-            "description": "Whether to send only to the profile's primary device.",
+          "is_tracking_opens": {
             "type": "boolean",
-            "default": false,
-            "nullable": true
-          },
-          "push_platform_target": {
-            "description": "Which device platform(s) to send to: all, ios, or android.",
-            "type": "string",
-            "example": "all",
-            "default": "all",
             "nullable": true
           }
         }
@@ -786,7 +437,7 @@
           "self"
         ]
       },
-      "PatchCampaignMessageResponse": {
+      "PatchMessageResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -796,52 +447,34 @@
                 "$ref": "#/components/schemas/CampaignMessageEnum"
               },
               "id": {
-                "description": "The message ID",
+                "description": "The ID of the message",
                 "type": "string"
               },
               "attributes": {
                 "type": "object",
                 "properties": {
+                  "created": {
+                    "description": "The datetime when this message was created",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
+                  "updated": {
+                    "description": "The datetime when this message was updated",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-11-08T00:00:00+00:00"
+                  },
                   "definition": {
-                    "nullable": true,
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/EmailMessageDefinition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/SMSMessageDefinition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/MobilePushMessageStandardDefinition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/MobilePushMessageSilentDefinition"
-                      }
-                    ]
-                  },
-                  "send_times": {
-                    "description": "The list of appropriate Send Time Sub-objects associated with the message",
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/SendTime"
-                    },
-                    "nullable": true
-                  },
-                  "created_at": {
-                    "description": "The datetime when the message was created",
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-11-08T00:00:00+00:00",
-                    "nullable": true
-                  },
-                  "updated_at": {
-                    "description": "The datetime when the message was last updated",
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-11-08T00:00:00+00:00",
-                    "nullable": true
+                    "description": "The definition of this message",
+                    "$ref": "#/components/schemas/MessageDefinition"
                   }
-                }
+                },
+                "required": [
+                  "created",
+                  "updated",
+                  "definition"
+                ]
               },
               "relationships": {
                 "type": "object",
@@ -856,7 +489,7 @@
                             "$ref": "#/components/schemas/CampaignEnum"
                           },
                           "id": {
-                            "description": "The parent campaign id",
+                            "description": "The parent campaign",
                             "type": "string"
                           }
                         },
@@ -870,17 +503,17 @@
                       }
                     }
                   },
-                  "template": {
+                  "campaign-audience": {
                     "type": "object",
                     "properties": {
                       "data": {
                         "type": "object",
                         "properties": {
                           "type": {
-                            "$ref": "#/components/schemas/TemplateEnum"
+                            "$ref": "#/components/schemas/CampaignAudienceEnum"
                           },
                           "id": {
-                            "description": "The associated template id",
+                            "description": "The audience this message targets",
                             "type": "string"
                           }
                         },
@@ -894,24 +527,27 @@
                       }
                     }
                   },
-                  "image": {
+                  "campaign-variations": {
                     "type": "object",
                     "properties": {
                       "data": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "$ref": "#/components/schemas/ImageEnum"
-                          },
-                          "id": {
-                            "description": "The associated image id",
-                            "type": "string"
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "id"
+                          ],
+                          "properties": {
+                            "type": {
+                              "$ref": "#/components/schemas/CampaignVariationEnum"
+                            },
+                            "id": {
+                              "description": "The content variations for this message",
+                              "type": "string"
+                            }
                           }
-                        },
-                        "required": [
-                          "type",
-                          "id"
-                        ]
+                        }
                       },
                       "links": {
                         "$ref": "#/components/schemas/RelationshipLinks"
@@ -942,100 +578,6 @@
           "data"
         ]
       },
-      "PushActionButtonDefinition": {
-        "type": "object",
-        "properties": {
-          "label": {
-            "description": "The button label (max 40 characters)",
-            "type": "string"
-          },
-          "action_type": {
-            "description": "The action type: open_app, deep_link, open_url, or dismiss",
-            "type": "string"
-          },
-          "position": {
-            "description": "The display order of the button (0-indexed). If omitted, inferred from the button's order in the list.",
-            "type": "integer",
-            "nullable": true
-          },
-          "url": {
-            "description": "URL for deep_link or open_url action types (max 2048 characters). Used as a fallback on platforms without a more specific ios_deep_link or android_deep_link.",
-            "type": "string",
-            "nullable": true
-          },
-          "ios_deep_link": {
-            "description": "iOS-specific URL for deep_link or open_url action types (max 2048 characters). Overrides url on iOS.",
-            "type": "string",
-            "nullable": true
-          },
-          "android_deep_link": {
-            "description": "Android-specific URL for deep_link or open_url action types (max 2048 characters). Overrides url on Android.",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "label",
-          "action_type"
-        ]
-      },
-      "PushOnOpenApp": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "open_app"
-            ]
-          }
-        },
-        "required": [
-          "type"
-        ]
-      },
-      "PushOnOpenDeepLink": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "deep_link"
-            ]
-          },
-          "ios_deep_link": {
-            "description": "required for all platforms enabled for push",
-            "type": "string",
-            "nullable": true
-          },
-          "android_deep_link": {
-            "description": "required for all platforms enabled for push",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "type"
-        ]
-      },
-      "PushOnOpenWebUrl": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "open_web_url"
-            ]
-          },
-          "web_url": {
-            "description": "External url to open when push notification is triggered",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "type"
-        ]
-      },
       "RelationshipLinks": {
         "type": "object",
         "properties": {
@@ -1053,34 +595,6 @@
           "related"
         ]
       },
-      "RenderOptions": {
-        "type": "object",
-        "properties": {
-          "shorten_links": {
-            "type": "boolean",
-            "example": true,
-            "default": true,
-            "nullable": true
-          },
-          "add_org_prefix": {
-            "type": "boolean",
-            "example": true,
-            "default": true,
-            "nullable": true
-          },
-          "add_info_link": {
-            "type": "boolean",
-            "example": true,
-            "default": true,
-            "nullable": true
-          },
-          "add_opt_out_language": {
-            "type": "boolean",
-            "default": false,
-            "nullable": true
-          }
-        }
-      },
       "ResponseMeta": {
         "description": "Response-level metadata",
         "type": "object",
@@ -1089,106 +603,6 @@
             "$ref": "#/components/schemas/AgentHints"
           }
         }
-      },
-      "SMSContent": {
-        "type": "object",
-        "properties": {
-          "body": {
-            "description": "The message body",
-            "type": "string",
-            "example": "My preview sms",
-            "nullable": true
-          },
-          "media_url": {
-            "description": "URL for included media",
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "SMSContentCreate": {
-        "type": "object",
-        "properties": {
-          "body": {
-            "description": "The message body",
-            "type": "string",
-            "example": "My preview sms",
-            "nullable": true
-          }
-        }
-      },
-      "SMSMessageDefinition": {
-        "type": "object",
-        "properties": {
-          "channel": {
-            "type": "string",
-            "enum": [
-              "sms"
-            ]
-          },
-          "content": {
-            "$ref": "#/components/schemas/SMSContent",
-            "description": "Additional attributes relating to the content of the message",
-            "nullable": true
-          },
-          "render_options": {
-            "description": "Additional options for rendering the message",
-            "$ref": "#/components/schemas/RenderOptions",
-            "nullable": true
-          }
-        },
-        "required": [
-          "channel"
-        ]
-      },
-      "SMSMessageDefinitionCreate": {
-        "type": "object",
-        "properties": {
-          "channel": {
-            "type": "string",
-            "enum": [
-              "sms"
-            ]
-          },
-          "content": {
-            "$ref": "#/components/schemas/SMSContentCreate",
-            "description": "Additional attributes relating to the content of the message",
-            "nullable": true
-          },
-          "render_options": {
-            "description": "Additional options for rendering the message",
-            "$ref": "#/components/schemas/RenderOptions",
-            "nullable": true
-          }
-        },
-        "required": [
-          "channel"
-        ]
-      },
-      "SendTime": {
-        "type": "object",
-        "properties": {
-          "datetime": {
-            "description": "The datetime that the message is to be sent",
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-11-08T00:00:00+00:00"
-          },
-          "is_local": {
-            "description": "Whether that datetime is to be a local datetime for the recipient",
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "datetime",
-          "is_local"
-        ]
-      },
-      "TemplateEnum": {
-        "type": "string",
-        "enum": [
-          "template"
-        ]
       }
     },
     "securitySchemes": {
@@ -1196,7 +610,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }

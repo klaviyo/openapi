@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API",
-    "version": "2026-07-15",
+    "version": "2026-10-15",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -36,7 +36,7 @@
           {
             "name": "fields[form]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -57,7 +57,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals` (string)<br>`name`: `any`, `contains`, `equals` (string)<br>`ab_test`: `equals` (boolean)<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`status`: `equals` (allowed values: `'live'`, `'draft'`)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`id`: `any`, `equals` (string)<br>`name`: `any`, `contains`, `equals` (string)<br>`ab_test`: `equals` (boolean)<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`status`: `equals` (allowed values: `'live'`, `'draft'`)",
             "schema": {
               "type": "string",
               "example": "equals(id,'Y6nRLr')"
@@ -66,7 +66,7 @@
           {
             "name": "page[cursor]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#pagination",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#pagination",
             "required": false,
             "schema": {
               "type": "string"
@@ -87,7 +87,7 @@
           {
             "name": "sort",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sorting",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sorting",
             "schema": {
               "type": "string",
               "enum": [
@@ -105,7 +105,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -230,7 +230,7 @@
           {
             "name": "fields[form]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -257,7 +257,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -323,7 +323,7 @@
           {
             "name": "fields[form]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -350,7 +350,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -384,6 +384,97 @@
           "forms:read"
         ]
       },
+      "patch": {
+        "operationId": "update_form",
+        "summary": "Update Form",
+        "description": "Update a form.\n\nOnly submitted attributes change, and `definition` replaces the stored definition. Live versions and form lifecycle fields cannot be edited.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`forms:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/update_form.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the form.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the form.",
+              "type": "string",
+              "example": "Y6nRLr"
+            }
+          },
+          {
+            "name": "fields[form]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ab_test",
+                  "created_at",
+                  "definition",
+                  "definition.versions",
+                  "id",
+                  "name",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update a form. Omitted attributes keep their current values.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FormPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchEncodedFormResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Forms"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "forms:write"
+        ]
+      },
       "delete": {
         "operationId": "delete_form",
         "summary": "Delete Form",
@@ -407,7 +498,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -455,7 +546,7 @@
           {
             "name": "fields[form-version]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -478,7 +569,7 @@
           {
             "name": "fields[form]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -499,7 +590,7 @@
           {
             "name": "include",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#relationships",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#relationships",
             "schema": {
               "type": "array",
               "items": {
@@ -518,7 +609,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -553,6 +644,166 @@
         ]
       }
     },
+    "/api/form-publish-jobs": {
+      "post": {
+        "operationId": "publish_form",
+        "summary": "Publish Form",
+        "description": "Publish the draft version of a form.\n\nThe publish completes synchronously; the returned job resource cannot be retrieved afterwards. Forms with a draft A/B test are not supported and must be published from the form editor.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`forms:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/publish_form.json)",
+        "parameters": [
+          {
+            "name": "fields[form-publish-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "id",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Publish the draft version of a form.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FormPublishJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostFormPublishJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Forms"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_form_publish_job"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "forms:write"
+        ]
+      }
+    },
+    "/api/form-unpublish-jobs": {
+      "post": {
+        "operationId": "unpublish_form",
+        "summary": "Unpublish Form",
+        "description": "Unpublish the live version of a form.\n\nThe unpublish completes synchronously; the returned job resource cannot be retrieved afterwards. Forms with a live A/B test are not supported and must be unpublished from the form editor.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`forms:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/unpublish_form.json)",
+        "parameters": [
+          {
+            "name": "fields[form-unpublish-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "id",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Unpublish the live version of a form.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FormUnpublishJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostFormUnpublishJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Forms"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_form_unpublish_job"
+        ],
+        "x-klaviyo-pre-release": "None",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "forms:write"
+        ]
+      }
+    },
     "/api/forms/{id}/form-versions": {
       "get": {
         "operationId": "get_versions_for_form",
@@ -574,7 +825,7 @@
           {
             "name": "fields[form-version]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -597,7 +848,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`form_type`: `any`, `equals` (allowed values: `'popup'`, `'embed'`, `'full_page'`, `'flyout'`, `'banner'`)<br>`status`: `equals` (allowed values: `'live'`, `'draft'`)<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`form_type`: `any`, `equals` (allowed values: `'popup'`, `'embed'`, `'full_page'`, `'flyout'`, `'banner'`)<br>`status`: `equals` (allowed values: `'live'`, `'draft'`)<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)",
             "schema": {
               "type": "string",
               "example": "equals(form_type,'popup')"
@@ -606,7 +857,7 @@
           {
             "name": "page[cursor]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#pagination",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#pagination",
             "required": false,
             "schema": {
               "type": "string"
@@ -627,7 +878,7 @@
           {
             "name": "sort",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sorting",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sorting",
             "schema": {
               "type": "string",
               "enum": [
@@ -645,7 +896,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -770,7 +1021,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`form_type`: `any`, `equals` (allowed values: `'popup'`, `'embed'`, `'full_page'`, `'flyout'`, `'banner'`)<br>`status`: `equals` (allowed values: `'live'`, `'draft'`)<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`form_type`: `any`, `equals` (allowed values: `'popup'`, `'embed'`, `'full_page'`, `'flyout'`, `'banner'`)<br>`status`: `equals` (allowed values: `'live'`, `'draft'`)<br>`updated_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)<br>`created_at`: `greater-or-equal`, `greater-than`, `less-or-equal`, `less-than` (date-time)",
             "schema": {
               "type": "string",
               "example": "equals(form_type,'popup')"
@@ -779,7 +1030,7 @@
           {
             "name": "page[cursor]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#pagination",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#pagination",
             "required": false,
             "schema": {
               "type": "string"
@@ -800,7 +1051,7 @@
           {
             "name": "sort",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sorting",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sorting",
             "schema": {
               "type": "string",
               "enum": [
@@ -818,7 +1069,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -942,7 +1193,7 @@
           {
             "name": "fields[form]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -967,7 +1218,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -1029,7 +1280,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15"
+              "default": "2026-10-15"
             }
           }
         ],
@@ -4283,6 +4534,109 @@
           "form"
         ]
       },
+      "FormPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/FormPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FormPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FormEnum"
+          },
+          "id": {
+            "description": "The ID of the form.",
+            "type": "string",
+            "example": "Y6nRLr"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "definition": {
+                "description": "The complete encoded form definition, which replaces the stored definition. This field cannot be null.",
+                "$ref": "#/components/schemas/FormDefinition",
+                "nullable": true
+              },
+              "name": {
+                "description": "The name of the form. This field cannot be null.",
+                "type": "string",
+                "example": "Cyber Monday Deals",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "FormPublishJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/FormPublishJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FormPublishJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FormPublishJobEnum"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "form": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/FormEnum"
+                      },
+                      "id": {
+                        "description": "The form to publish.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "form"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "relationships"
+        ]
+      },
+      "FormPublishJobEnum": {
+        "type": "string",
+        "enum": [
+          "form-publish-job"
+        ]
+      },
       "FormResponseObjectResource": {
         "type": "object",
         "properties": {
@@ -4375,6 +4729,64 @@
           "id",
           "attributes",
           "links"
+        ]
+      },
+      "FormUnpublishJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/FormUnpublishJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "FormUnpublishJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/FormUnpublishJobEnum"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "form": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/FormEnum"
+                      },
+                      "id": {
+                        "description": "The form to unpublish.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "form"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "relationships"
+        ]
+      },
+      "FormUnpublishJobEnum": {
+        "type": "string",
+        "enum": [
+          "form-unpublish-job"
         ]
       },
       "FormVersionABTest": {
@@ -6225,6 +6637,89 @@
           }
         }
       },
+      "PatchEncodedFormResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/FormEnum"
+              },
+              "id": {
+                "description": "The ID of the form",
+                "type": "string",
+                "example": "Y6nRLr"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "The status of the form.",
+                    "type": "string",
+                    "example": "draft",
+                    "enum": [
+                      "draft",
+                      "live"
+                    ]
+                  },
+                  "ab_test": {
+                    "description": "Whether the form has an A/B test configured.",
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "description": "The name of the form.",
+                    "type": "string",
+                    "example": "Cyber Monday Deals"
+                  },
+                  "definition": {
+                    "description": "The encoded form definition.",
+                    "$ref": "#/components/schemas/FormDefinition"
+                  },
+                  "created_at": {
+                    "description": "The ISO8601 timestamp when the form was created.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2024-03-04T00:00:00Z"
+                  },
+                  "updated_at": {
+                    "description": "The ISO8601 timestamp when the form was last updated.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2024-03-04T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "ab_test",
+                  "name",
+                  "definition",
+                  "created_at",
+                  "updated_at"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "PhoneNumber": {
         "type": "object",
         "properties": {
@@ -6410,6 +6905,184 @@
                   "created_at",
                   "updated_at"
                 ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostFormPublishJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/FormPublishJobEnum"
+              },
+              "id": {
+                "description": "ID of the publish job.",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "The status of the job. The publish completes synchronously, so this status does not transition and the job cannot be retrieved later.",
+                    "type": "string",
+                    "enum": [
+                      "cancelled",
+                      "complete",
+                      "processing",
+                      "queued"
+                    ]
+                  },
+                  "created_at": {
+                    "description": "ISO8601 timestamp when the job was created.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-07-15T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "created_at"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "form": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/FormEnum"
+                          },
+                          "id": {
+                            "description": "The form this job publishes.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PostFormUnpublishJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/FormUnpublishJobEnum"
+              },
+              "id": {
+                "description": "ID of the unpublish job.",
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "The status of the job. The unpublish completes synchronously, so this status does not transition and the job cannot be retrieved later.",
+                    "type": "string",
+                    "enum": [
+                      "cancelled",
+                      "complete",
+                      "processing",
+                      "queued"
+                    ]
+                  },
+                  "created_at": {
+                    "description": "ISO8601 timestamp when the job was created.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-07-15T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "status",
+                  "created_at"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "form": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/FormEnum"
+                          },
+                          "id": {
+                            "description": "The form this job unpublishes.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
               },
               "links": {
                 "$ref": "#/components/schemas/ObjectLinks"
@@ -9104,7 +9777,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }
