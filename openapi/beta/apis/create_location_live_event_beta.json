@@ -1,0 +1,691 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/location-live-events": {
+      "post": {
+        "operationId": "create_location_live_event_beta",
+        "summary": "Create Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate an in-person event.\n\nThe event has to be placeable on a map: supply either `address1`, or both `city` and `region`, or both `latitude` and `longitude`. Klaviyo geocodes whatever is supplied and fills in the remaining address fields it can resolve, so `latitude` and `longitude` may be absent from the response until geocoding finishes \u2014 check `geocode_status`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[location-live-event]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "ends_at",
+                  "event_type",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "name",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "starts_at",
+                  "timezone",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to create an in-person event.\n\nAn event must be placeable on a map, so the request has to carry either an address or a coordinate pair: a non-empty ``address1``, or both ``city`` and ``region``, or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LiveEventCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveEventResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "IncludedSegmentResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SegmentResourceName"
+          },
+          "id": {
+            "description": "Identifier of the segment.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "LiveEventCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the event as it should appear to your team and in profile properties. Leading and trailing whitespace is stripped; the result must be non-empty. Maximum 255 characters.",
+            "type": "string",
+            "example": "Summer Pop-Up"
+          },
+          "starts_at": {
+            "description": "Date and time the event starts.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T18:00:00Z"
+          },
+          "ends_at": {
+            "description": "Date and time the event ends. Must not be earlier than `starts_at`.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T22:00:00Z",
+            "nullable": true
+          },
+          "event_type": {
+            "description": "Your own category for this event, used to group events in reporting. Maximum 50 characters.",
+            "type": "string",
+            "example": "pop-up",
+            "nullable": true
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the event. Supply with longitude to place an event that has no resolvable street address.",
+            "type": "number",
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the event. Supply with latitude to place an event that has no resolvable street address.",
+            "type": "number",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the event.",
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this event. Maximum 500 characters.",
+            "type": "string",
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this event. Defaults to the event name when omitted. Maximum 500 characters.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "starts_at"
+        ]
+      },
+      "LiveEventCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationLiveEventResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LiveEventCreateRequestRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "host-locations": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/LocationResourceName"
+                        },
+                        "id": {
+                          "description": "IDs of the physical locations hosting this event.",
+                          "type": "string",
+                          "example": [
+                            "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "LiveEventCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LiveEventCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LiveEventResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the event.",
+            "type": "string",
+            "example": "Summer Pop-Up"
+          },
+          "event_type": {
+            "description": "Your own category for this event.",
+            "type": "string",
+            "example": "pop-up",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the event.",
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this event.",
+            "type": "string",
+            "nullable": true
+          },
+          "starts_at": {
+            "description": "Date and time the event starts.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T18:00:00Z"
+          },
+          "ends_at": {
+            "description": "Date and time the event ends.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T22:00:00Z",
+            "nullable": true
+          },
+          "timezone": {
+            "description": "IANA time zone `starts_at` and `ends_at` are interpreted in for display, resolved from the event's address.",
+            "type": "string",
+            "example": "America/New_York",
+            "nullable": true
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the event, resolved by geocoding when not supplied directly.",
+            "type": "number",
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the event, resolved by geocoding when not supplied directly.",
+            "type": "number",
+            "nullable": true
+          },
+          "geocode_status": {
+            "description": "Whether the supplied address has been resolved to coordinates. Events still `pending` or `queued` have no latitude or longitude yet.",
+            "type": "string",
+            "example": "queued",
+            "enum": [
+              "pending",
+              "queued",
+              "successful",
+              "failed"
+            ],
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this event.",
+            "type": "string",
+            "nullable": true
+          },
+          "profile_count": {
+            "description": "Number of profiles currently associated with this event. Recomputed periodically, so it lags recent segment membership changes.",
+            "type": "integer",
+            "nullable": true
+          },
+          "segment_count": {
+            "description": "Number of segments linked to this event. Available via `?include=segments`.",
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "starts_at"
+        ]
+      },
+      "LiveEventResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationLiveEventResourceName"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this live event.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6B"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LiveEventResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "host-locations": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/LocationResourceName"
+                        },
+                        "id": {
+                          "description": "IDs of the physical locations hosting this event.",
+                          "type": "string",
+                          "example": [
+                            "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  }
+                }
+              },
+              "segments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/SegmentResourceName"
+                        },
+                        "id": {
+                          "description": "IDs of the segments linked to this event. Available via `?include=segments`.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "LiveEventResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LiveEventResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncludedSegmentResponseData"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationLiveEventResourceName": {
+        "type": "string",
+        "enum": [
+          "location-live-event"
+        ]
+      },
+      "LocationResourceName": {
+        "type": "string",
+        "enum": [
+          "location"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "SegmentResourceName": {
+        "type": "string",
+        "enum": [
+          "segment"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

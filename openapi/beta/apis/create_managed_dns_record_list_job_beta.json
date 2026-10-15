@@ -1,0 +1,508 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/managed-dns-record-list-jobs": {
+      "post": {
+        "operationId": "create_managed_dns_record_list_job_beta",
+        "summary": "Create Managed Dns Record List Job",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nStart a job to list DNS records for a delegated managed zone.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_managed_dns_record_list_job_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[managed-dns-record-list-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "error_code",
+                  "errors",
+                  "id",
+                  "records",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManagedDnsRecordListJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostManagedDnsRecordListJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:read"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
+        "type": "object",
+        "properties": {
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ManagedDnsRecord": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "description": "Relative DNS hostname within the delegated zone (`@` for apex).",
+            "type": "string",
+            "example": "@"
+          },
+          "type": {
+            "description": "The DNS record type.",
+            "type": "string",
+            "enum": [
+              "a",
+              "aaaa",
+              "caa",
+              "cname",
+              "mx",
+              "ns",
+              "soa",
+              "txt"
+            ]
+          },
+          "ttl": {
+            "description": "Time to live in seconds.",
+            "type": "integer",
+            "example": 3600
+          },
+          "values": {
+            "description": "Record values as stored in DNS Zone.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "\"yahoo-verification-key=abc\""
+            ]
+          },
+          "locked": {
+            "description": "Whether Klaviyo manages this record and it cannot be changed.",
+            "type": "boolean"
+          },
+          "lock_reason": {
+            "description": "Why the record is locked, when applicable.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "host",
+          "type",
+          "ttl",
+          "values",
+          "locked"
+        ]
+      },
+      "ManagedDnsRecordListJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ManagedDnsRecordListJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ManagedDnsRecordListJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ManagedDnsRecordListJobEnum"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "sending-domain": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SendingDomainEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "sending-domain"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "relationships"
+        ]
+      },
+      "ManagedDnsRecordListJobEnum": {
+        "type": "string",
+        "enum": [
+          "managed-dns-record-list-job"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostManagedDnsRecordListJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/ManagedDnsRecordListJobEnum"
+              },
+              "id": {
+                "description": "The ID of the list job.",
+                "type": "string",
+                "example": "2040919"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "The status of the list job.",
+                    "type": "string",
+                    "enum": [
+                      "complete",
+                      "failed",
+                      "processing",
+                      "queued"
+                    ]
+                  },
+                  "records": {
+                    "description": "DNS records in the zone when the job completes.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ManagedDnsRecord"
+                    },
+                    "nullable": true
+                  },
+                  "errors": {
+                    "description": "Failure message when the job status is failed.",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "error_code": {
+                    "description": "Machine-readable failure code when the job status is failed.",
+                    "type": "string",
+                    "enum": [
+                      "record_locked",
+                      "validation_error"
+                    ],
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "sending-domain": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/SendingDomainEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
+      },
+      "SendingDomainEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

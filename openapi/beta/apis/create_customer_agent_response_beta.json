@@ -1,0 +1,1100 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/customer-agent-responses": {
+      "post": {
+        "operationId": "create_customer_agent_response_beta",
+        "summary": "Generate Customer Agent Response",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one or more messages to Customer Agent and returns every public event it emits in response, including structured data such as orders and products.\n\nMultiple messages can be attached, if the user has sent multiple or another agent's response should be included. The response is non-streaming; the entire event list is returned at once.\n\nImages the customer sent can be attached to the final message as `https://` URLs or base64 data URIs for the agent to take into account.\n\nRequires an open `conversation`, created via `POST /api/customer-agent-conversations`. Conversations can only be interacted with that were created via the API. A closed or unknown conversation is also rejected. A hard or silent handoff moves the conversation to `routed-to-team`, after which it no longer accepts responses.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[customer-agent-response]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "events",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "JSON:API request for running Customer Agent for one conversation turn.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerAgentResponseCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAgentResponseCreateResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:write"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AgentEnum": {
+        "type": "string",
+        "enum": [
+          "agent"
+        ]
+      },
+      "CustomerAgentConversationResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent-conversation"
+        ]
+      },
+      "CustomerAgentResponseCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "description": "Whether the response is for testing or a real shopper interaction. `preview` responses are not billed and are excluded from production conversations and metrics. `live` responses count toward billing, Customer Agent conversations, and production metrics.",
+            "type": "string",
+            "enum": [
+              "preview",
+              "live"
+            ]
+          },
+          "channel": {
+            "description": "Channel whose response conventions the agent should use, such as SMS terseness, email greetings and sign-offs, or web-chat formatting. This does not route or send the response through that channel; the caller delivers the output. Optional; defaults to `web-chat`.",
+            "type": "string",
+            "example": "web-chat",
+            "default": "web-chat",
+            "enum": [
+              "web-chat",
+              "sms",
+              "email",
+              "whatsapp"
+            ]
+          },
+          "messages": {
+            "description": "Conversation history for this turn. The final message must have `role: user`, and is the only message that can include `images`.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageRequest"
+            }
+          }
+        },
+        "required": [
+          "mode",
+          "messages"
+        ]
+      },
+      "CustomerAgentResponseCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentResponseResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/CustomerAgentResponseCreateRequestRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "conversation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
+                      },
+                      "id": {
+                        "description": "Conversation to continue. Create one first via `POST /api/customer-agent-conversations`. Customer identity can only be set on the conversation itself, via that create call or a subsequent `PATCH /api/customer-agent-conversations/{id}`.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "conversation"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "CustomerAgentResponseCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CustomerAgentResponseCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CustomerAgentResponseCreateResponse": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "description": "Events from this turn, in the order they were emitted. Alongside message and handoff events, can include structured data: `order-tracking`, `edit-order`, `order-return`, `product`, `subscriptions`, `discounts-coupons`, and `loyalty-card`. Ignore event types you don't recognize.",
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseMessageEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseHandoffEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseRequireAuthenticationEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseErrorEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseOrderTrackingEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseEditOrderEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseOrderReturnEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseProductEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseSubscriptionsEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseDiscountsCouponsEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/CustomerAgentResponseLoyaltyCardEvent"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "events"
+        ]
+      },
+      "CustomerAgentResponseCreateResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentResponseResourceName"
+          },
+          "id": {
+            "description": "Opaque identifier for this Customer Agent response.",
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/CustomerAgentResponseCreateResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "conversation": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
+                      },
+                      "id": {
+                        "description": "Conversation continued by this turn.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "conversation"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
+        ]
+      },
+      "CustomerAgentResponseCreateResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CustomerAgentResponseCreateResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CustomerAgentResponseDiscountsCouponsEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/DiscountsCouponsEnum"
+          },
+          "discounts_coupons": {
+            "description": "Available discount codes.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiscountCoupon"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "discounts_coupons"
+        ]
+      },
+      "CustomerAgentResponseEditOrderEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/EditOrderEnum"
+          },
+          "orders": {
+            "description": "Orders that can still be changed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderData"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "orders"
+        ]
+      },
+      "CustomerAgentResponseErrorEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ErrorEnum"
+          },
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "code",
+          "message"
+        ]
+      },
+      "CustomerAgentResponseHandoffEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/HandoffEnum"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/CustomerAgentResponseHandoffMode"
+          },
+          "category": {
+            "description": "Public handoff category.",
+            "type": "string",
+            "enum": [
+              "explicit-ask",
+              "escalation-rule",
+              "unintelligible-input",
+              "bad-billing-state"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "type",
+          "mode"
+        ]
+      },
+      "CustomerAgentResponseHandoffMode": {
+        "description": "Public handoff mode.",
+        "type": "string",
+        "enum": [
+          "hard",
+          "soft",
+          "silent"
+        ]
+      },
+      "CustomerAgentResponseLoyaltyCardEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LoyaltyCardEnum"
+          },
+          "loyalty_card": {
+            "description": "Points balance and rewards.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LoyaltyCard"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "loyalty_card"
+        ]
+      },
+      "CustomerAgentResponseMessageEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MessageEnum"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AgentEnum"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "role",
+          "content"
+        ]
+      },
+      "CustomerAgentResponseOrderReturnEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/OrderReturnEnum"
+          },
+          "orders": {
+            "description": "Orders eligible for return.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderData"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "orders"
+        ]
+      },
+      "CustomerAgentResponseOrderTrackingEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/OrderTrackingEnum"
+          },
+          "orders": {
+            "description": "Orders being tracked.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderData"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "orders"
+        ]
+      },
+      "CustomerAgentResponseProductEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProductEnum"
+          },
+          "product": {
+            "description": "The recommended product.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ProductData"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "product"
+        ]
+      },
+      "CustomerAgentResponseRequireAuthenticationEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/RequireAuthenticationEnum"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "CustomerAgentResponseResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent-response"
+        ]
+      },
+      "CustomerAgentResponseSubscriptionsEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SubscriptionsEnum"
+          },
+          "subscriptions": {
+            "description": "Subscriptions.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subscription"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "subscriptions"
+        ]
+      },
+      "DiscountCoupon": {
+        "type": "object",
+        "properties": {
+          "coupon_id": {
+            "description": "Coupon ID.",
+            "type": "integer",
+            "nullable": true
+          },
+          "coupon_type": {
+            "description": "Integration that issued the coupon, e.g. `shopify`.",
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "description": "Discount code to enter at checkout.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Coupon name.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Coupon status, e.g. `active`.",
+            "type": "string"
+          },
+          "status_code": {
+            "description": "Numeric code for `status`.",
+            "type": "integer",
+            "nullable": true
+          },
+          "description": {
+            "description": "Coupon description.",
+            "type": "string",
+            "nullable": true
+          },
+          "discount_amount": {
+            "description": "Discount value.",
+            "type": "number",
+            "nullable": true
+          },
+          "discount_type": {
+            "description": "Numeric discount type code.",
+            "type": "integer",
+            "nullable": true
+          },
+          "purchase_min": {
+            "description": "Minimum purchase amount.",
+            "type": "number",
+            "nullable": true
+          },
+          "start_time": {
+            "description": "Start of the validity period.",
+            "type": "string",
+            "nullable": true
+          },
+          "expires_at": {
+            "description": "Expiration time.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "status"
+        ]
+      },
+      "DiscountsCouponsEnum": {
+        "type": "string",
+        "enum": [
+          "discounts-coupons"
+        ]
+      },
+      "EditOrderEnum": {
+        "type": "string",
+        "enum": [
+          "edit-order"
+        ]
+      },
+      "ErrorEnum": {
+        "type": "string",
+        "enum": [
+          "error"
+        ]
+      },
+      "HandoffEnum": {
+        "type": "string",
+        "enum": [
+          "handoff"
+        ]
+      },
+      "LoyaltyCard": {
+        "type": "object",
+        "properties": {
+          "points_balance": {
+            "description": "Current points balance.",
+            "type": "integer",
+            "nullable": true
+          },
+          "best_reward_name": {
+            "description": "Most valuable reward the customer can redeem now.",
+            "type": "string",
+            "nullable": true
+          },
+          "best_reward_points_cost": {
+            "description": "Points cost of `best_reward_name`.",
+            "type": "integer",
+            "nullable": true
+          },
+          "next_reward_name": {
+            "description": "Least expensive reward the customer can't redeem yet.",
+            "type": "string",
+            "nullable": true
+          },
+          "next_reward_points_cost": {
+            "description": "Points cost of `next_reward_name`.",
+            "type": "integer",
+            "nullable": true
+          },
+          "points_to_next_reward": {
+            "description": "Points still needed for `next_reward_name`.",
+            "type": "integer",
+            "nullable": true
+          },
+          "reward_progress_percent": {
+            "description": "Progress toward `next_reward_name`, from `0.0` to `1.0`.",
+            "type": "number",
+            "nullable": true
+          },
+          "available_rewards": {
+            "description": "Rewards the customer can redeem now.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoyaltyReward"
+            },
+            "default": []
+          },
+          "loyalty_program_url": {
+            "description": "Loyalty program page URL.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "LoyaltyCardEnum": {
+        "type": "string",
+        "enum": [
+          "loyalty-card"
+        ]
+      },
+      "LoyaltyReward": {
+        "type": "object",
+        "properties": {
+          "reward_id": {
+            "description": "Reward ID.",
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "description": "Reward name.",
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "description": "Reward description.",
+            "type": "string",
+            "nullable": true
+          },
+          "points_cost": {
+            "description": "Points needed to redeem.",
+            "type": "integer",
+            "nullable": true
+          },
+          "reward_type": {
+            "description": "Reward type, e.g. `discount`, `free_product`, `free_shipping`.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "MessageEnum": {
+        "type": "string",
+        "enum": [
+          "message"
+        ]
+      },
+      "MessageImageRequest": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "description": "An `https://` URL to fetch the image from. Alternatively, a base64-encoded data URI (`data:image/...;base64,...`). Supported image formats: png, jpeg, gif, webp. Maximum image size: 5MB.",
+            "type": "string",
+            "example": "https://www.example.com/example.jpg"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "MessageRequest": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "description": "Message text.",
+            "type": "string"
+          },
+          "role": {
+            "description": "Author of a message in a Customer Agent conversation.",
+            "type": "string",
+            "enum": [
+              "user",
+              "agent"
+            ]
+          },
+          "images": {
+            "description": "Images the customer sent with this message, up to 4. Only allowed on the final message.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageImageRequest"
+            },
+            "nullable": true
+          }
+        },
+        "required": [
+          "content",
+          "role"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "OrderData": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "description": "Order ID.",
+            "type": "string",
+            "nullable": true
+          },
+          "order_name": {
+            "description": "Order name shown to the customer, e.g. `#1001`.",
+            "type": "string",
+            "nullable": true
+          },
+          "order_status": {
+            "description": "Order status, e.g. `PLACED`, `IN_TRANSIT`, `DELIVERED`.",
+            "type": "string",
+            "example": "IN_TRANSIT",
+            "nullable": true
+          },
+          "item_count": {
+            "description": "Number of items in the order.",
+            "type": "integer",
+            "nullable": true
+          },
+          "image_url": {
+            "description": "Image URL of the order's first item.",
+            "type": "string",
+            "nullable": true
+          },
+          "source_name": {
+            "description": "Channel the order was placed through, e.g. `web`, `pos`.",
+            "type": "string",
+            "nullable": true
+          },
+          "tracking_urls": {
+            "description": "Tracking URLs for the order's shipments.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        }
+      },
+      "OrderReturnEnum": {
+        "type": "string",
+        "enum": [
+          "order-return"
+        ]
+      },
+      "OrderTrackingEnum": {
+        "type": "string",
+        "enum": [
+          "order-tracking"
+        ]
+      },
+      "ProductData": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "description": "Product ID.",
+            "type": "string"
+          },
+          "title": {
+            "description": "Product name.",
+            "type": "string"
+          },
+          "url": {
+            "description": "Product page URL.",
+            "type": "string"
+          },
+          "image": {
+            "description": "Featured image URL.",
+            "type": "string",
+            "nullable": true
+          },
+          "variant_id": {
+            "description": "Variant ID, if a variant applies.",
+            "type": "string",
+            "nullable": true
+          },
+          "request_id": {
+            "description": "ID of the recommendation request that returned this product.",
+            "type": "string",
+            "nullable": true
+          },
+          "recommendation_source": {
+            "description": "Recommendation provider, e.g. `shopify`.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "product_id",
+          "title",
+          "url"
+        ]
+      },
+      "ProductEnum": {
+        "type": "string",
+        "enum": [
+          "product"
+        ]
+      },
+      "RequireAuthenticationEnum": {
+        "type": "string",
+        "enum": [
+          "require-authentication"
+        ]
+      },
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "subscription_id": {
+            "description": "Subscription ID.",
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "description": "Subscription status, e.g. `active`, `paused`, `cancelled`.",
+            "type": "string",
+            "example": "active",
+            "nullable": true
+          },
+          "next_billing_date": {
+            "description": "Date of the next charge and shipment.",
+            "type": "string",
+            "nullable": true
+          },
+          "billing_policy_interval": {
+            "description": "Billing interval: `day`, `week`, or `month`.",
+            "type": "string",
+            "example": "month",
+            "nullable": true
+          },
+          "lines": {
+            "description": "Products in the subscription.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubscriptionLineItem"
+            },
+            "default": []
+          }
+        }
+      },
+      "SubscriptionLineItem": {
+        "type": "object",
+        "properties": {
+          "product_title": {
+            "description": "Product name.",
+            "type": "string",
+            "nullable": true
+          },
+          "product_variant_title": {
+            "description": "Variant name.",
+            "type": "string",
+            "nullable": true
+          },
+          "image": {
+            "description": "Product image URL.",
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "description": "Price.",
+            "type": "number",
+            "nullable": true
+          },
+          "currency_code": {
+            "description": "ISO 4217 currency code, e.g. `USD`.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SubscriptionsEnum": {
+        "type": "string",
+        "enum": [
+          "subscriptions"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

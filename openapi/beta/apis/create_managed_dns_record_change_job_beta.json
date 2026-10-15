@@ -1,0 +1,539 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/managed-dns-record-change-jobs": {
+      "post": {
+        "operationId": "create_managed_dns_record_change_job_beta",
+        "summary": "Create Managed Dns Record Change Job",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nStart a job to upsert or delete DNS records in a delegated managed zone.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`sender-config:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_managed_dns_record_change_job_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[managed-dns-record-change-job]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "action",
+                  "error_code",
+                  "errors",
+                  "host",
+                  "id",
+                  "record_type",
+                  "status",
+                  "ttl",
+                  "values"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManagedDnsRecordChangeJobCreateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostManagedDnsRecordChangeJobResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "sender-config:write"
+        ],
+        "x-klaviyo-subtag": "Sending Domains"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
+        "type": "object",
+        "properties": {
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ManagedDnsRecordChangeJobCreateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ManagedDnsRecordChangeJobCreateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ManagedDnsRecordChangeJobCreateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ManagedDnsRecordChangeJobEnum"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "description": "Whether to upsert or delete a record set.",
+                "type": "string",
+                "enum": [
+                  "delete",
+                  "upsert"
+                ]
+              },
+              "host": {
+                "description": "Relative DNS hostname within the delegated zone.",
+                "type": "string",
+                "example": "@"
+              },
+              "record_type": {
+                "description": "The DNS record type to change.",
+                "type": "string",
+                "enum": [
+                  "a",
+                  "aaaa",
+                  "cname",
+                  "mx",
+                  "txt"
+                ]
+              },
+              "ttl": {
+                "description": "TTL in seconds. Required for upsert.",
+                "type": "integer",
+                "example": 3600,
+                "nullable": true
+              },
+              "values": {
+                "description": "Required non-empty list for upsert. For delete, omit or pass null to remove the entire record set, or pass specific values to remove.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            },
+            "required": [
+              "action",
+              "host",
+              "record_type"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "sending-domain": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/SendingDomainEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "sending-domain"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "ManagedDnsRecordChangeJobEnum": {
+        "type": "string",
+        "enum": [
+          "managed-dns-record-change-job"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PostManagedDnsRecordChangeJobResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/ManagedDnsRecordChangeJobEnum"
+              },
+              "id": {
+                "description": "The ID of the change job.",
+                "type": "string",
+                "example": "2040920"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "The status of the change job.",
+                    "type": "string",
+                    "enum": [
+                      "complete",
+                      "failed",
+                      "processing",
+                      "queued"
+                    ]
+                  },
+                  "action": {
+                    "description": "The requested change action.",
+                    "type": "string",
+                    "enum": [
+                      "delete",
+                      "upsert"
+                    ],
+                    "nullable": true
+                  },
+                  "host": {
+                    "description": "Relative DNS hostname within the delegated zone.",
+                    "type": "string",
+                    "example": "@",
+                    "nullable": true
+                  },
+                  "record_type": {
+                    "description": "The DNS record type being changed.",
+                    "type": "string",
+                    "enum": [
+                      "a",
+                      "aaaa",
+                      "cname",
+                      "mx",
+                      "txt"
+                    ],
+                    "nullable": true
+                  },
+                  "ttl": {
+                    "description": "TTL in seconds for upsert requests.",
+                    "type": "integer",
+                    "example": 3600,
+                    "nullable": true
+                  },
+                  "values": {
+                    "description": "Record values for upsert requests, or specific values to remove on delete requests.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "nullable": true
+                  },
+                  "errors": {
+                    "description": "Failure message when the job status is failed.",
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "error_code": {
+                    "description": "Machine-readable failure code when the job status is failed.",
+                    "type": "string",
+                    "enum": [
+                      "record_locked",
+                      "validation_error"
+                    ],
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "sending-domain": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/SendingDomainEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
+      },
+      "SendingDomainEnum": {
+        "type": "string",
+        "enum": [
+          "sending-domain"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

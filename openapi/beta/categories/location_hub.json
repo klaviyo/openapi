@@ -1,0 +1,3261 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/location-live-events": {
+      "get": {
+        "operationId": "get_location_live_events_beta",
+        "summary": "Get Location Live Events",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the in-person events in an account.\n\nReturns pop-ups, conferences, and other in-person events. Physical locations are a separate resource and are not returned here.\n\nReturns a maximum of 100 events per page (default 25), newest first unless another `sort` is requested.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_live_events_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[location-live-event]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "ends_at",
+                  "event_type",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "name",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "starts_at",
+                  "timezone",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "-created_at",
+              "enum": [
+                "name",
+                "-name",
+                "created_at",
+                "-created_at",
+                "updated_at",
+                "-updated_at",
+                "starts_at",
+                "-starts_at"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveEventResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "post": {
+        "operationId": "create_location_live_event_beta",
+        "summary": "Create Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate an in-person event.\n\nThe event has to be placeable on a map: supply either `address1`, or both `city` and `region`, or both `latitude` and `longitude`. Klaviyo geocodes whatever is supplied and fills in the remaining address fields it can resolve, so `latitude` and `longitude` may be absent from the response until geocoding finishes \u2014 check `geocode_status`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[location-live-event]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "ends_at",
+                  "event_type",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "name",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "starts_at",
+                  "timezone",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to create an in-person event.\n\nAn event must be placeable on a map, so the request has to carry either an address or a coordinate pair: a non-empty ``address1``, or both ``city`` and ``region``, or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LiveEventCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveEventResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
+    "/api/location-live-events/{id}": {
+      "get": {
+        "operationId": "get_location_live_event_beta",
+        "summary": "Get Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet an in-person event by id.\n\nReturns `404` if the id belongs to a physical location rather than a live event. Pass `?include=segments` to populate the linked segment ids and count.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[location-live-event]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "ends_at",
+                  "event_type",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "name",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "starts_at",
+                  "timezone",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveEventResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "patch": {
+        "operationId": "update_location_live_event_beta",
+        "summary": "Update Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate an in-person event.\n\nOnly the fields present in the request body change. Sending any address or coordinate field re-geocodes the event, which resets `geocode_status` and can change `latitude` and `longitude`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[location-live-event]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "ends_at",
+                  "event_type",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "name",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "starts_at",
+                  "timezone",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to partially update an in-person event.\n\nOnly the fields present in the request body are changed; omitting a field leaves it untouched. Sending an address or coordinate field re-geocodes the event.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LiveEventUpdateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveEventResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "delete": {
+        "operationId": "delete_location_live_event_beta",
+        "summary": "Delete Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete an in-person event.\n\nSegments linked to this event stop matching new profiles, and the location profile property is no longer written for it.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
+    "/api/locations": {
+      "get": {
+        "operationId": "get_locations_beta",
+        "summary": "Get Locations",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the physical locations in an account.\n\nReturns stores, venues, and other physical places. In-person events are a separate resource and are not returned here.\n\nReturns a maximum of 100 locations per page (default 25), newest first unless another `sort` is requested.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_locations_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[location]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "email",
+                  "features",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "manager_email",
+                  "manager_name",
+                  "name",
+                  "phone_number",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "type_label",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "-created_at",
+              "enum": [
+                "name",
+                "-name",
+                "created_at",
+                "-created_at",
+                "updated_at",
+                "-updated_at"
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "post": {
+        "operationId": "create_location_beta",
+        "summary": "Create Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a physical location.\n\nThe location has to be placeable on a map: supply either `address1`, or both `city` and `region`, or both `latitude` and `longitude`. Klaviyo geocodes whatever is supplied and fills in the remaining address fields it can resolve, so `latitude` and `longitude` may be absent from the response until geocoding finishes \u2014 check `geocode_status`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_location_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[location]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "email",
+                  "features",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "manager_email",
+                  "manager_name",
+                  "name",
+                  "phone_number",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "type_label",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to create a location.\n\nA location must be placeable on a map, so the request has to carry either an address or a coordinate pair: a non-empty ``address1``, or both ``city`` and ``region``, or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
+    "/api/locations/{id}": {
+      "get": {
+        "operationId": "get_location_beta",
+        "summary": "Get Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet a physical location by id.\n\nReturns `404` if the id belongs to an in-person event rather than a physical location. Pass `?include=segments` to populate the linked segment ids and count.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[location]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "email",
+                  "features",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "manager_email",
+                  "manager_name",
+                  "name",
+                  "phone_number",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "type_label",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "patch": {
+        "operationId": "update_location_beta",
+        "summary": "Update Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a physical location.\n\nOnly the fields present in the request body change. Sending any address or coordinate field re-geocodes the location, which resets `geocode_status` and can change `latitude` and `longitude`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_location_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[location]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "email",
+                  "features",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "manager_email",
+                  "manager_name",
+                  "name",
+                  "phone_number",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "type_label",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to partially update a location.\n\nOnly the fields present in the request body are changed; omitting a field leaves it untouched. Sending an address or coordinate field re-geocodes the location.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationUpdateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "delete": {
+        "operationId": "delete_location_beta",
+        "summary": "Delete Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete a physical location.\n\nSegments defined by proximity to this location stop matching new profiles, and the location profile property is no longer written for it.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_location_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
+    "/api/location-hub-settings/{id}": {
+      "get": {
+        "operationId": "get_location_hub_setting_beta",
+        "summary": "Get Location Hub Setting",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet Location Hub settings for an account.\n\nThe resource id is the account id. Returns the effective profile property key name Location Hub uses when linking profiles to locations.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_hub_setting_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[location-hub-setting]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "profile_property_key_name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationHubSettingResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "patch": {
+        "operationId": "update_location_hub_setting_beta",
+        "summary": "Update Location Hub Setting",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate Location Hub settings for an account.\n\nThe resource id is the account id. Only ``profile_property_key_name`` can be changed today.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_location_hub_setting_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[location-hub-setting]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "profile_property_key_name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to update Location Hub settings.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationHubSettingUpdateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationHubSettingResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
+    "/api/locations/{id}/relationships/segments": {
+      "get": {
+        "operationId": "get_segment_ids_for_location_beta",
+        "summary": "Get Segment IDs for Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the segments linked to a location.\n\nA segment is linked to at most one physical location, so a location's segments are the ones that target it.\n\nSegment details are read from the segments service and cached for five minutes, so a segment renamed moments ago may still report its old name.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_segment_ids_for_location_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_location_relationships_segments"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read",
+          "segments:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "post": {
+        "operationId": "add_segments_to_location_beta",
+        "summary": "Add Segments to Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nLink existing segments to a location.\n\nSegments already linked to this location are left alone, so sending the same request twice changes nothing. A segment linked to a *different* location moves to this one.\n\nTo create a new segment first, use `POST /api/segments`.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:write`\n`segments:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/add_segments_to_location_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A segment as a JSON:API resource identifier.\n\nWritten out rather than derived with ``TypeAndIdOnly`` because a dynamically built class can't be used as a type annotation.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SegmentIdentifierRequestDataListWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_location_relationships_segments"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write",
+          "segments:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "delete": {
+        "operationId": "remove_segments_from_location_beta",
+        "summary": "Remove Segments from Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUnlink segments from a location.\n\nThe segments themselves are not deleted; they stop targeting this location. Ids that aren't linked are ignored, so sending the same request twice changes nothing.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:write`\n`segments:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/remove_segments_from_location_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A segment as a JSON:API resource identifier.\n\nWritten out rather than derived with ``TypeAndIdOnly`` because a dynamically built class can't be used as a type annotation.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SegmentIdentifierRequestDataListWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "delete_location_relationships_segments"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write",
+          "segments:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
+    "/api/locations/{id}/segments": {
+      "get": {
+        "operationId": "get_segments_for_location_beta",
+        "summary": "Get Segments for Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the segments linked to a location.\n\nA segment is linked to at most one physical location, so a location's segments are the ones that target it.\n\nSegment details are read from the segments service and cached for five minutes, so a segment renamed moments ago may still report its old name.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_segments_for_location_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[segment]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "id",
+                  "linked_at",
+                  "name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_location_segments"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read",
+          "segments:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
+    "/api/proximity-segment-definitions": {
+      "post": {
+        "operationId": "query_proximity_segment_definition_beta",
+        "summary": "Create Proximity Segment Definition",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nBuild a segment definition that targets profiles near a location.\n\nNothing is created or stored. Pass the returned `name` and `definition` to `POST /api/segments`, then link the result with `POST /api/locations/{id}/relationships/segments`.\n\nThe definition matches on the location's postal code and country, so a location missing either cannot produce one.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_proximity_segment_definition_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[proximity-segment-definition]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "definition",
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to build a proximity segment definition seeded from a location.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProximitySegmentDefinitionQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProximitySegmentDefinitionResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_proximity_segment_definition"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read",
+          "segments:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "IncludedSegmentResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SegmentResourceName"
+          },
+          "id": {
+            "description": "Identifier of the segment.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "LiveEventCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the event as it should appear to your team and in profile properties. Leading and trailing whitespace is stripped; the result must be non-empty. Maximum 255 characters.",
+            "type": "string",
+            "example": "Summer Pop-Up"
+          },
+          "starts_at": {
+            "description": "Date and time the event starts.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T18:00:00Z"
+          },
+          "ends_at": {
+            "description": "Date and time the event ends. Must not be earlier than `starts_at`.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T22:00:00Z",
+            "nullable": true
+          },
+          "event_type": {
+            "description": "Your own category for this event, used to group events in reporting. Maximum 50 characters.",
+            "type": "string",
+            "example": "pop-up",
+            "nullable": true
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the event. Supply with longitude to place an event that has no resolvable street address.",
+            "type": "number",
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the event. Supply with latitude to place an event that has no resolvable street address.",
+            "type": "number",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the event.",
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this event. Maximum 500 characters.",
+            "type": "string",
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this event. Defaults to the event name when omitted. Maximum 500 characters.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "starts_at"
+        ]
+      },
+      "LiveEventCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationLiveEventResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LiveEventCreateRequestRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "host-locations": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/LocationResourceName"
+                        },
+                        "id": {
+                          "description": "IDs of the physical locations hosting this event.",
+                          "type": "string",
+                          "example": [
+                            "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "LiveEventCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LiveEventCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LiveEventResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the event.",
+            "type": "string",
+            "example": "Summer Pop-Up"
+          },
+          "event_type": {
+            "description": "Your own category for this event.",
+            "type": "string",
+            "example": "pop-up",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the event.",
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this event.",
+            "type": "string",
+            "nullable": true
+          },
+          "starts_at": {
+            "description": "Date and time the event starts.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T18:00:00Z"
+          },
+          "ends_at": {
+            "description": "Date and time the event ends.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T22:00:00Z",
+            "nullable": true
+          },
+          "timezone": {
+            "description": "IANA time zone `starts_at` and `ends_at` are interpreted in for display, resolved from the event's address.",
+            "type": "string",
+            "example": "America/New_York",
+            "nullable": true
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the event, resolved by geocoding when not supplied directly.",
+            "type": "number",
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the event, resolved by geocoding when not supplied directly.",
+            "type": "number",
+            "nullable": true
+          },
+          "geocode_status": {
+            "description": "Whether the supplied address has been resolved to coordinates. Events still `pending` or `queued` have no latitude or longitude yet.",
+            "type": "string",
+            "example": "queued",
+            "enum": [
+              "pending",
+              "queued",
+              "successful",
+              "failed"
+            ],
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this event.",
+            "type": "string",
+            "nullable": true
+          },
+          "profile_count": {
+            "description": "Number of profiles currently associated with this event. Recomputed periodically, so it lags recent segment membership changes.",
+            "type": "integer",
+            "nullable": true
+          },
+          "segment_count": {
+            "description": "Number of segments linked to this event. Available via `?include=segments`.",
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "starts_at"
+        ]
+      },
+      "LiveEventResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationLiveEventResourceName"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this live event.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6B"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LiveEventResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "host-locations": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/LocationResourceName"
+                        },
+                        "id": {
+                          "description": "IDs of the physical locations hosting this event.",
+                          "type": "string",
+                          "example": [
+                            "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  }
+                }
+              },
+              "segments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/SegmentResourceName"
+                        },
+                        "id": {
+                          "description": "IDs of the segments linked to this event. Available via `?include=segments`.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "LiveEventResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LiveEventResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncludedSegmentResponseData"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LiveEventUpdateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the event. Leading and trailing whitespace is stripped; the result must be non-empty. Maximum 255 characters.",
+            "type": "string",
+            "example": "Summer Pop-Up",
+            "nullable": true
+          },
+          "starts_at": {
+            "description": "New start date and time.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T18:00:00Z",
+            "nullable": true
+          },
+          "ends_at": {
+            "description": "New end date and time. Must not be earlier than `starts_at` when both are sent in the same request.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-07-01T23:00:00Z",
+            "nullable": true
+          },
+          "event_type": {
+            "description": "Your own category for this event. Maximum 50 characters.",
+            "type": "string",
+            "example": "pop-up",
+            "nullable": true
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the event.",
+            "type": "number",
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the event.",
+            "type": "number",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the event.",
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this event. Maximum 500 characters.",
+            "type": "string",
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this event. Maximum 500 characters.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "LiveEventUpdateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationLiveEventResourceName"
+          },
+          "id": {
+            "description": "Identifier of the live event to update. Must match the id in the path.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6B"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LiveEventUpdateRequestRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "host-locations": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/LocationResourceName"
+                        },
+                        "id": {
+                          "description": "Full replacement for the physical locations hosting this event. Omit to leave unchanged.",
+                          "type": "string",
+                          "example": [
+                            "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "LiveEventUpdateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LiveEventUpdateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the location as it should appear to your team and in profile properties. Leading and trailing whitespace is stripped; the result must be non-empty. Maximum 255 characters.",
+            "type": "string",
+            "example": "Klaviyo Boston"
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "example": "Floor 6",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the location. Supply with longitude to place a location that has no resolvable street address.",
+            "type": "number",
+            "example": 42.3505,
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the location. Supply with latitude to place a location that has no resolvable street address.",
+            "type": "number",
+            "example": -71.055,
+            "nullable": true
+          },
+          "type_label": {
+            "description": "Your own category for this location, used to group locations in reporting. Maximum 50 characters.",
+            "type": "string",
+            "example": "Flagship store",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the location.",
+            "type": "string",
+            "example": "Corner store with in-store pickup.",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this location. Maximum 500 characters.",
+            "type": "string",
+            "example": "https://example.com/stores/boston",
+            "nullable": true
+          },
+          "phone_number": {
+            "description": "Public phone number for this location. Maximum 20 characters.",
+            "type": "string",
+            "example": "+16175551234",
+            "nullable": true
+          },
+          "email": {
+            "description": "Public contact email address for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "boston@example.com",
+            "nullable": true
+          },
+          "manager_name": {
+            "description": "Name of the person responsible for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "Alex Chen",
+            "nullable": true
+          },
+          "manager_email": {
+            "description": "Email address of the person responsible for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "alex.chen@example.com",
+            "nullable": true
+          },
+          "features": {
+            "description": "Amenities or capabilities offered at this location.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "curbside-pickup",
+              "returns"
+            ],
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this location. Defaults to the location name when omitted. Maximum 500 characters.",
+            "type": "string",
+            "example": "Klaviyo Boston",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "LocationCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationCreateRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "LocationCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationHubSettingResourceName": {
+        "type": "string",
+        "enum": [
+          "location-hub-setting"
+        ]
+      },
+      "LocationHubSettingResponse": {
+        "type": "object",
+        "properties": {
+          "profile_property_key_name": {
+            "description": "Profile property key Location Hub writes when linking a profile to a location.",
+            "type": "string",
+            "example": "nearest_location"
+          }
+        },
+        "required": [
+          "profile_property_key_name"
+        ]
+      },
+      "LocationHubSettingResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationHubSettingResourceName"
+          },
+          "id": {
+            "description": "The account identifier for these settings.",
+            "type": "string",
+            "example": "abCdEf"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationHubSettingResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "LocationHubSettingResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationHubSettingResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationHubSettingUpdateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "profile_property_key_name": {
+            "description": "Profile property key Location Hub writes when linking a profile to a location.",
+            "type": "string",
+            "example": "nearest_location",
+            "nullable": true
+          }
+        }
+      },
+      "LocationHubSettingUpdateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationHubSettingResourceName"
+          },
+          "id": {
+            "description": "The account identifier for these settings.",
+            "type": "string",
+            "example": "abCdEf"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationHubSettingUpdateRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "LocationHubSettingUpdateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationHubSettingUpdateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationLiveEventResourceName": {
+        "type": "string",
+        "enum": [
+          "location-live-event"
+        ]
+      },
+      "LocationResourceName": {
+        "type": "string",
+        "enum": [
+          "location"
+        ]
+      },
+      "LocationResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the location.",
+            "type": "string",
+            "example": "Klaviyo Boston"
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "example": "Floor 6",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the location, resolved by geocoding when not supplied directly.",
+            "type": "number",
+            "example": 42.3505,
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the location, resolved by geocoding when not supplied directly.",
+            "type": "number",
+            "example": -71.055,
+            "nullable": true
+          },
+          "geocode_status": {
+            "description": "Whether the supplied address has been resolved to coordinates. Locations still `pending` or `queued` have no latitude or longitude yet, and locations that `failed` geocoding cannot be used for proximity segmentation.",
+            "type": "string",
+            "example": "successful",
+            "enum": [
+              "pending",
+              "queued",
+              "successful",
+              "failed"
+            ],
+            "nullable": true
+          },
+          "type_label": {
+            "description": "Your own category for this location.",
+            "type": "string",
+            "example": "Flagship store",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the location.",
+            "type": "string",
+            "example": "Corner store with in-store pickup.",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this location.",
+            "type": "string",
+            "example": "https://example.com/stores/boston",
+            "nullable": true
+          },
+          "phone_number": {
+            "description": "Public phone number for this location.",
+            "type": "string",
+            "example": "+16175551234",
+            "nullable": true
+          },
+          "email": {
+            "description": "Public contact email address for this location.",
+            "type": "string",
+            "example": "boston@example.com",
+            "nullable": true
+          },
+          "manager_name": {
+            "description": "Name of the person responsible for this location.",
+            "type": "string",
+            "example": "Alex Chen",
+            "nullable": true
+          },
+          "manager_email": {
+            "description": "Email address of the person responsible for this location.",
+            "type": "string",
+            "example": "alex.chen@example.com",
+            "nullable": true
+          },
+          "features": {
+            "description": "Amenities or capabilities offered at this location.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "curbside-pickup",
+              "returns"
+            ],
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this location.",
+            "type": "string",
+            "example": "Klaviyo Boston",
+            "nullable": true
+          },
+          "profile_count": {
+            "description": "Number of profiles currently associated with this location. Recomputed periodically, so it lags recent segment membership changes.",
+            "type": "integer",
+            "example": 1284,
+            "nullable": true
+          },
+          "segment_count": {
+            "description": "Number of segments linked to this location. Available via `?include=segments`.",
+            "type": "integer",
+            "example": 3,
+            "nullable": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "LocationResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationResourceName"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this location.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "segments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/SegmentResourceName"
+                        },
+                        "id": {
+                          "description": "IDs of the segments linked to this location. Available via `?include=segments`.",
+                          "type": "string",
+                          "example": [
+                            "01HQ8V5X9K2M4N6P8R0T2W4Y6C"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "LocationResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncludedSegmentResponseData"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationUpdateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the location. Leading and trailing whitespace is stripped; the result must be non-empty. Maximum 255 characters.",
+            "type": "string",
+            "example": "Klaviyo Boston",
+            "nullable": true
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "example": "Floor 6",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the location.",
+            "type": "number",
+            "example": 42.3505,
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the location.",
+            "type": "number",
+            "example": -71.055,
+            "nullable": true
+          },
+          "type_label": {
+            "description": "Your own category for this location. Maximum 50 characters.",
+            "type": "string",
+            "example": "Flagship store",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the location.",
+            "type": "string",
+            "example": "Corner store with in-store pickup.",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this location. Maximum 500 characters.",
+            "type": "string",
+            "example": "https://example.com/stores/boston",
+            "nullable": true
+          },
+          "phone_number": {
+            "description": "Public phone number for this location. Maximum 20 characters.",
+            "type": "string",
+            "example": "+16175551234",
+            "nullable": true
+          },
+          "email": {
+            "description": "Public contact email address for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "boston@example.com",
+            "nullable": true
+          },
+          "manager_name": {
+            "description": "Name of the person responsible for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "Alex Chen",
+            "nullable": true
+          },
+          "manager_email": {
+            "description": "Email address of the person responsible for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "alex.chen@example.com",
+            "nullable": true
+          },
+          "features": {
+            "description": "Amenities or capabilities offered at this location.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "curbside-pickup",
+              "returns"
+            ],
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this location. Maximum 500 characters.",
+            "type": "string",
+            "example": "Klaviyo Boston",
+            "nullable": true
+          }
+        }
+      },
+      "LocationUpdateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationResourceName"
+          },
+          "id": {
+            "description": "Identifier of the location to update. Must match the id in the path.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationUpdateRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "LocationUpdateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationUpdateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ProximitySegmentDefinitionQueryRequest": {
+        "type": "object",
+        "properties": {
+          "radius": {
+            "description": "Distance from the location that profiles must be within, in `unit`.",
+            "type": "number",
+            "example": 30,
+            "default": 30
+          },
+          "unit": {
+            "description": "Unit `radius` is measured in.",
+            "type": "string",
+            "example": "miles",
+            "default": "miles",
+            "enum": [
+              "miles",
+              "kilometers"
+            ]
+          }
+        }
+      },
+      "ProximitySegmentDefinitionQueryRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProximitySegmentDefinitionResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ProximitySegmentDefinitionQueryRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/LocationResourceName"
+                      },
+                      "id": {
+                        "description": "Identifier of the location to seed the definition from.",
+                        "type": "string",
+                        "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "location"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "ProximitySegmentDefinitionQueryRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ProximitySegmentDefinitionQueryRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ProximitySegmentDefinitionResourceName": {
+        "type": "string",
+        "enum": [
+          "proximity-segment-definition"
+        ]
+      },
+      "ProximitySegmentDefinitionResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Suggested segment name, taken from the location's name.",
+            "type": "string",
+            "example": "Klaviyo Boston"
+          },
+          "definition": {
+            "description": "The segment's conditions, in the same format the segments API uses. Pass this back unchanged when creating a segment through `POST /api/segments`.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "name",
+          "definition"
+        ]
+      },
+      "ProximitySegmentDefinitionResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ProximitySegmentDefinitionResourceName"
+          },
+          "id": {
+            "description": "Identifier of the location this definition was seeded from.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ProximitySegmentDefinitionResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ProximitySegmentDefinitionResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ProximitySegmentDefinitionResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SegmentIdentifierRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SegmentResourceName"
+          },
+          "id": {
+            "description": "Identifier of the segment.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          }
+        },
+        "required": [
+          "type",
+          "id"
+        ]
+      },
+      "SegmentIdentifierRequestDataListWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentIdentifierRequestData"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SegmentResourceName": {
+        "type": "string",
+        "enum": [
+          "segment"
+        ]
+      },
+      "SegmentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the segment.",
+            "type": "string",
+            "example": "Klaviyo Boston - within 10 miles"
+          },
+          "definition": {
+            "description": "The segment's conditions, in the same format the segments API uses. Pass this back unchanged when creating a segment through `POST /api/segments`.",
+            "type": "object",
+            "nullable": true
+          },
+          "created": {
+            "description": "Date and time when the segment was created, in ISO 8601 format.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          },
+          "updated": {
+            "description": "Date and time when the segment was last updated, in ISO 8601 format.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          },
+          "linked_at": {
+            "description": "Date and time when this segment was linked to the location, in ISO 8601 format.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "SegmentResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SegmentResourceName"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this segment.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/SegmentResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "SegmentResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SegmentResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SegmentResponseIdOnlyData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SegmentResourceName"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this segment.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "SegmentResponseIdOnlyDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SegmentResponseIdOnlyData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}
