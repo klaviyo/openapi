@@ -27,6 +27,104 @@
     }
   ],
   "paths": {
+    "/api/ksql-ask": {
+      "post": {
+        "operationId": "ask_analytics_question_beta",
+        "summary": "Ask Analytics Question",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk a question about your account data in plain language and get a plain-language answer.\n\nK-SQL turns your question into read-only queries over your account's data, runs them, and summarizes the results. The result sets behind the answer are included so you can see how it was reached.\n\nIf the question is too ambiguous to answer, `status` is `clarification` and `answer` contains a question for you. Ask again with more detail.\n\nAn answer can only draw on data that your API key or OAuth token has scopes for. Each request uses Composer AI Credits. This API is available to accounts that have been enabled for it.\n\nAnswers can take several seconds, so allow for this in your client's request timeout.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/ask_analytics_question_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[ksql-ask]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "answer",
+                  "id",
+                  "result_sets",
+                  "status",
+                  "warnings"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A natural-language question about your account data.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KsqlAskRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KsqlAskResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_ksql_ask"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
     "/api/social-series-reports": {
       "post": {
         "operationId": "query_social_series_beta",
@@ -183,104 +281,6 @@
         },
         "x-klaviyo-scopes": [
           "social:read"
-        ],
-        "x-klaviyo-subtag": "Reporting"
-      }
-    },
-    "/api/ksql-ask": {
-      "post": {
-        "operationId": "ask_analytics_question_beta",
-        "summary": "Ask Analytics Question",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk a question about your account data in plain language and get a plain-language answer.\n\nK-SQL turns your question into read-only queries over your account's data, runs them, and summarizes the results. The result sets behind the answer are included so you can see how it was reached.\n\nIf the question is too ambiguous to answer, `status` is `clarification` and `answer` contains a question for you. Ask again with more detail.\n\nAn answer can only draw on data that your API key or OAuth token has scopes for. Each request uses Composer AI Credits. This API is available to accounts that have been enabled for it.\n\nAnswers can take several seconds, so allow for this in your client's request timeout.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/ask_analytics_question_beta.json)",
-        "parameters": [
-          {
-            "name": "fields[ksql-ask]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "answer",
-                  "id",
-                  "result_sets",
-                  "status",
-                  "warnings"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2026-10-15.pre"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "A natural-language question about your account data.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/KsqlAskRequestRequestDataWrapper"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KsqlAskResponseDataWrapper"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Beta APIs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "create_ksql_ask"
-        ],
-        "x-klaviyo-optional-scopes": [
-          "campaigns:read",
-          "catalogs:read",
-          "events:read",
-          "lists:read",
-          "metrics:read",
-          "profiles:read",
-          "segments:read"
-        ],
-        "x-klaviyo-pre-release": "BETA",
-        "x-klaviyo-ratelimit": {
-          "burst": "1/s",
-          "steady": "15/m"
-        },
-        "x-klaviyo-scopes": [
-          "campaigns:read",
-          "catalogs:read",
-          "events:read",
-          "lists:read",
-          "metrics:read",
-          "profiles:read",
-          "segments:read"
         ],
         "x-klaviyo-subtag": "Reporting"
       }
@@ -617,7 +617,7 @@
             "nullable": true
           },
           "sql": {
-            "description": "The K-SQL query that produced this result set, so you can see how the numbers were derived. Read-only and for explanation only: K-SQL is an internal dialect with no endpoint that runs it, and it is not a stable interface -- do not parse it, store it, or build on its syntax.",
+            "description": "The K-SQL query that produced this result set, so you can see how the numbers were derived. Read-only and for explanation only: it is not a stable interface while K-SQL is in alpha -- do not parse it or store it. To run a K-SQL query yourself, see `POST /api/ksql-query`.",
             "type": "string",
             "example": "SELECT count(*) FROM orders WHERE placed_at >= '2026-09-01'",
             "nullable": true
