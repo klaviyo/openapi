@@ -1,0 +1,715 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/locations/{id}": {
+      "patch": {
+        "operationId": "update_location_beta",
+        "summary": "Update Location",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a physical location.\n\nOnly the fields present in the request body change. Sending any address or coordinate field re-geocodes the location, which resets `geocode_status` and can change `latitude` and `longitude`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_location_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[location]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "address1",
+                  "address2",
+                  "city",
+                  "country",
+                  "description",
+                  "email",
+                  "features",
+                  "geocode_status",
+                  "id",
+                  "latitude",
+                  "longitude",
+                  "manager_email",
+                  "manager_name",
+                  "name",
+                  "phone_number",
+                  "profile_count",
+                  "profile_property_value",
+                  "region",
+                  "segment_count",
+                  "type_label",
+                  "url",
+                  "zip"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "segments"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request to partially update a location.\n\nOnly the fields present in the request body are changed; omitting a field leaves it untouched. Sending an address or coordinate field re-geocodes the location.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationUpdateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "IncludedSegmentResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SegmentResourceName"
+          },
+          "id": {
+            "description": "Identifier of the segment.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "LocationResourceName": {
+        "type": "string",
+        "enum": [
+          "location"
+        ]
+      },
+      "LocationResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the location.",
+            "type": "string",
+            "example": "Klaviyo Boston"
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "example": "Floor 6",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the location, resolved by geocoding when not supplied directly.",
+            "type": "number",
+            "example": 42.3505,
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the location, resolved by geocoding when not supplied directly.",
+            "type": "number",
+            "example": -71.055,
+            "nullable": true
+          },
+          "geocode_status": {
+            "description": "Whether the supplied address has been resolved to coordinates. Locations still `pending` or `queued` have no latitude or longitude yet, and locations that `failed` geocoding cannot be used for proximity segmentation.",
+            "type": "string",
+            "example": "successful",
+            "enum": [
+              "pending",
+              "queued",
+              "successful",
+              "failed"
+            ],
+            "nullable": true
+          },
+          "type_label": {
+            "description": "Your own category for this location.",
+            "type": "string",
+            "example": "Flagship store",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the location.",
+            "type": "string",
+            "example": "Corner store with in-store pickup.",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this location.",
+            "type": "string",
+            "example": "https://example.com/stores/boston",
+            "nullable": true
+          },
+          "phone_number": {
+            "description": "Public phone number for this location.",
+            "type": "string",
+            "example": "+16175551234",
+            "nullable": true
+          },
+          "email": {
+            "description": "Public contact email address for this location.",
+            "type": "string",
+            "example": "boston@example.com",
+            "nullable": true
+          },
+          "manager_name": {
+            "description": "Name of the person responsible for this location.",
+            "type": "string",
+            "example": "Alex Chen",
+            "nullable": true
+          },
+          "manager_email": {
+            "description": "Email address of the person responsible for this location.",
+            "type": "string",
+            "example": "alex.chen@example.com",
+            "nullable": true
+          },
+          "features": {
+            "description": "Amenities or capabilities offered at this location.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "curbside-pickup",
+              "returns"
+            ],
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this location.",
+            "type": "string",
+            "example": "Klaviyo Boston",
+            "nullable": true
+          },
+          "profile_count": {
+            "description": "Number of profiles currently associated with this location. Recomputed periodically, so it lags recent segment membership changes.",
+            "type": "integer",
+            "example": 1284,
+            "nullable": true
+          },
+          "segment_count": {
+            "description": "Number of segments linked to this location. Available via `?include=segments`.",
+            "type": "integer",
+            "example": 3,
+            "nullable": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "LocationResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationResourceName"
+          },
+          "id": {
+            "description": "Primary key that uniquely identifies this location.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "segments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/SegmentResourceName"
+                        },
+                        "id": {
+                          "description": "IDs of the segments linked to this location. Available via `?include=segments`.",
+                          "type": "string",
+                          "example": [
+                            "01HQ8V5X9K2M4N6P8R0T2W4Y6C"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "LocationResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncludedSegmentResponseData"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationUpdateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the location. Leading and trailing whitespace is stripped; the result must be non-empty. Maximum 255 characters.",
+            "type": "string",
+            "example": "Klaviyo Boston",
+            "nullable": true
+          },
+          "address1": {
+            "description": "First line of the street address.",
+            "type": "string",
+            "example": "125 Summer St",
+            "nullable": true
+          },
+          "address2": {
+            "description": "Second line of the street address, such as a suite or floor.",
+            "type": "string",
+            "example": "Floor 6",
+            "nullable": true
+          },
+          "city": {
+            "description": "City or town.",
+            "type": "string",
+            "example": "Boston",
+            "nullable": true
+          },
+          "region": {
+            "description": "State, province, or other top-level administrative area.",
+            "type": "string",
+            "example": "MA",
+            "nullable": true
+          },
+          "zip": {
+            "description": "Postal code.",
+            "type": "string",
+            "example": "02110",
+            "nullable": true
+          },
+          "country": {
+            "description": "Country name or ISO country code.",
+            "type": "string",
+            "example": "US",
+            "nullable": true
+          },
+          "latitude": {
+            "description": "Latitude of the location.",
+            "type": "number",
+            "example": 42.3505,
+            "nullable": true
+          },
+          "longitude": {
+            "description": "Longitude of the location.",
+            "type": "number",
+            "example": -71.055,
+            "nullable": true
+          },
+          "type_label": {
+            "description": "Your own category for this location. Maximum 50 characters.",
+            "type": "string",
+            "example": "Flagship store",
+            "nullable": true
+          },
+          "description": {
+            "description": "Free-text description of the location.",
+            "type": "string",
+            "example": "Corner store with in-store pickup.",
+            "nullable": true
+          },
+          "url": {
+            "description": "Web page for this location. Maximum 500 characters.",
+            "type": "string",
+            "example": "https://example.com/stores/boston",
+            "nullable": true
+          },
+          "phone_number": {
+            "description": "Public phone number for this location. Maximum 20 characters.",
+            "type": "string",
+            "example": "+16175551234",
+            "nullable": true
+          },
+          "email": {
+            "description": "Public contact email address for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "boston@example.com",
+            "nullable": true
+          },
+          "manager_name": {
+            "description": "Name of the person responsible for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "Alex Chen",
+            "nullable": true
+          },
+          "manager_email": {
+            "description": "Email address of the person responsible for this location. Maximum 255 characters.",
+            "type": "string",
+            "example": "alex.chen@example.com",
+            "nullable": true
+          },
+          "features": {
+            "description": "Amenities or capabilities offered at this location.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "curbside-pickup",
+              "returns"
+            ],
+            "nullable": true
+          },
+          "profile_property_value": {
+            "description": "Value written to the location profile property on profiles associated with this location. Maximum 500 characters.",
+            "type": "string",
+            "example": "Klaviyo Boston",
+            "nullable": true
+          }
+        }
+      },
+      "LocationUpdateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationResourceName"
+          },
+          "id": {
+            "description": "Identifier of the location to update. Must match the id in the path.",
+            "type": "string",
+            "example": "01HQ8V5X9K2M4N6P8R0T2W4Y6A"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationUpdateRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "LocationUpdateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationUpdateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "SegmentResourceName": {
+        "type": "string",
+        "enum": [
+          "segment"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

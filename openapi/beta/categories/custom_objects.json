@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API (Beta)",
-    "version": "2026-07-15.pre",
+    "version": "2026-10-15.pre",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -27,11 +27,122 @@
     }
   ],
   "paths": {
+    "/api/data-sources": {
+      "get": {
+        "operationId": "get_data_sources_beta",
+        "summary": "Get Data Sources",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all data sources in an account.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_data_sources_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[data-source]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "description",
+                  "id",
+                  "namespace",
+                  "title",
+                  "visibility"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`namespace_filter`: `equals` (string)",
+            "schema": {
+              "type": "string",
+              "example": "equals(namespace_filter,'custom-objects')"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#pagination",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 20. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDataSourceResponseCollection"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-filters": {
+          "namespace_filter": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "custom-objects:read"
+        ],
+        "x-klaviyo-subtag": "Custom Objects"
+      }
+    },
     "/api/source-mappings/{id}": {
       "get": {
         "operationId": "get_source_mapping_beta",
         "summary": "Get Source Mapping",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the source mapping with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_source_mapping_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the source mapping with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_source_mapping_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -47,7 +158,7 @@
           {
             "name": "fields[source-mapping]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -69,7 +180,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -107,7 +218,7 @@
       "patch": {
         "operationId": "update_source_mapping_beta",
         "summary": "Update Source Mapping",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the source mapping with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_source_mapping_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the source mapping with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_source_mapping_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -123,7 +234,7 @@
           {
             "name": "fields[source-mapping]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -145,7 +256,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -196,12 +307,12 @@
       "get": {
         "operationId": "get_object_types_beta",
         "summary": "Get Object Types",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object types in an account.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_types_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object types in an account.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_types_beta.json)",
         "parameters": [
           {
             "name": "fields[object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -230,7 +341,7 @@
           {
             "name": "fields[object-type]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -254,16 +365,16 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`namespace`: `equals` (string)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`namespace_filter`: `equals` (string)",
             "schema": {
               "type": "string",
-              "example": "equals(namespace,'example')"
+              "example": "equals(namespace_filter,'custom-objects')"
             }
           },
           {
             "name": "include",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
             "schema": {
               "type": "array",
               "items": {
@@ -283,7 +394,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -309,7 +420,7 @@
           "Beta APIs"
         ],
         "x-klaviyo-filters": {
-          "namespace": {
+          "namespace_filter": {
             "operators": {
               "single": [
                 "equals"
@@ -333,12 +444,12 @@
       "post": {
         "operationId": "create_object_type_beta",
         "summary": "Create Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate an object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate an object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_object_type_beta.json)",
         "parameters": [
           {
             "name": "fields[object-type]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -366,7 +477,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -417,7 +528,7 @@
       "get": {
         "operationId": "get_object_type_beta",
         "summary": "Get Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object type with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object type with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -433,7 +544,7 @@
           {
             "name": "fields[object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -462,7 +573,7 @@
           {
             "name": "fields[object-type]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -486,7 +597,7 @@
           {
             "name": "fields[profile-object-type]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -502,7 +613,7 @@
           {
             "name": "include",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
             "schema": {
               "type": "array",
               "items": {
@@ -525,7 +636,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -563,7 +674,7 @@
       "delete": {
         "operationId": "delete_object_type_beta",
         "summary": "Delete Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete the object type with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete the object type with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -583,7 +694,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -616,7 +727,7 @@
       "get": {
         "operationId": "get_object_schema_beta",
         "summary": "Get Object Schema",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object schema with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_schema_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object schema with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_schema_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -632,7 +743,7 @@
           {
             "name": "fields[object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -661,7 +772,7 @@
           {
             "name": "fields[profile-object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -677,7 +788,7 @@
           {
             "name": "fields[source-mapping]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -695,7 +806,7 @@
           {
             "name": "include",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#relationships",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
             "schema": {
               "type": "array",
               "items": {
@@ -716,7 +827,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -754,7 +865,7 @@
       "patch": {
         "operationId": "update_object_schema_beta",
         "summary": "Update Object Schema",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the object schema with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_object_schema_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate the object schema with the given ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_object_schema_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -770,7 +881,7 @@
           {
             "name": "fields[object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -803,7 +914,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -854,7 +965,7 @@
       "get": {
         "operationId": "get_object_record_beta",
         "summary": "Get Object Record",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object record with the given compound ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_record_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the object record with the given compound ID.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_record_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -870,7 +981,7 @@
           {
             "name": "fields[object-record]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -891,7 +1002,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -931,12 +1042,12 @@
       "post": {
         "operationId": "create_object_schema_beta",
         "summary": "Create Object Schema",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate an object schema.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_object_schema_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate an object schema.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_object_schema_beta.json)",
         "parameters": [
           {
             "name": "fields[object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -969,7 +1080,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1020,7 +1131,7 @@
       "get": {
         "operationId": "get_records_for_object_type_beta",
         "summary": "Get Records for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object records for a given object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_records_for_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object records for a given object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_records_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1036,7 +1147,7 @@
           {
             "name": "fields[object-record]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -1053,7 +1164,7 @@
           {
             "name": "page[cursor]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#pagination",
             "required": false,
             "schema": {
               "type": "string"
@@ -1089,7 +1200,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1132,7 +1243,7 @@
       "get": {
         "operationId": "get_record_ids_for_object_type_beta",
         "summary": "Get Record IDs for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object records for a given object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_record_ids_for_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all object records for a given object type.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_record_ids_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1148,7 +1259,7 @@
           {
             "name": "page[cursor]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#pagination",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#pagination",
             "required": false,
             "schema": {
               "type": "string"
@@ -1184,7 +1295,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1227,7 +1338,7 @@
       "get": {
         "operationId": "get_current_schema_for_object_type_beta",
         "summary": "Get Current Schema for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet current schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_current_schema_for_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet current schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_current_schema_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1243,7 +1354,7 @@
           {
             "name": "fields[object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -1270,7 +1381,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1313,7 +1424,7 @@
       "get": {
         "operationId": "get_current_schema_id_for_object_type_beta",
         "summary": "Get Current Schema ID for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet current schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_current_schema_id_for_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet current schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_current_schema_id_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1333,7 +1444,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1376,7 +1487,7 @@
       "get": {
         "operationId": "get_draft_schema_for_object_type_beta",
         "summary": "Get Draft Schema for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet draft schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_draft_schema_for_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet draft schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_draft_schema_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1392,7 +1503,7 @@
           {
             "name": "fields[object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -1419,7 +1530,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1462,7 +1573,7 @@
       "get": {
         "operationId": "get_draft_schema_id_for_object_type_beta",
         "summary": "Get Draft Schema ID for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet draft schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_draft_schema_id_for_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet draft schema for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_draft_schema_id_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1482,7 +1593,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1525,7 +1636,7 @@
       "get": {
         "operationId": "get_schema_versions_for_object_type_beta",
         "summary": "Get Schema Versions for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all schema versions for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_schema_versions_for_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all schema versions for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_schema_versions_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1541,7 +1652,7 @@
           {
             "name": "fields[object-schema]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -1568,7 +1679,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1611,7 +1722,7 @@
       "get": {
         "operationId": "get_schema_version_ids_for_object_type_beta",
         "summary": "Get Schema Version IDs for Object Type",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all schema versions for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_schema_version_ids_for_object_type_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet all schema versions for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_schema_version_ids_for_object_type_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1631,7 +1742,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1674,7 +1785,7 @@
       "get": {
         "operationId": "get_object_type_relationships_beta",
         "summary": "Get Object Type Relationships",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related object types for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_type_relationships_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related object types for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_type_relationships_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1694,7 +1805,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1738,7 +1849,7 @@
       "get": {
         "operationId": "get_profile_type_relationships_beta",
         "summary": "Get Profile Type Relationships",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related profile object types for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_profile_type_relationships_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related profile object types for an object type<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_profile_type_relationships_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1758,7 +1869,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1802,7 +1913,7 @@
       "get": {
         "operationId": "get_source_mapping_for_object_schema_beta",
         "summary": "Get Source Mapping for Object Schema",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet source mapping for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_source_mapping_for_object_schema_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet source mapping for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_source_mapping_for_object_schema_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1818,7 +1929,7 @@
           {
             "name": "fields[source-mapping]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -1840,7 +1951,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1883,7 +1994,7 @@
       "get": {
         "operationId": "get_source_mapping_id_for_object_schema_beta",
         "summary": "Get Source Mapping ID for Object Schema",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet source mapping for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_source_mapping_id_for_object_schema_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet source mapping for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_source_mapping_id_for_object_schema_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1903,7 +2014,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -1946,7 +2057,7 @@
       "get": {
         "operationId": "get_object_schema_relationships_beta",
         "summary": "Get Object Schema Relationships",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related object schemas for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_schema_relationships_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related object schemas for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_object_schema_relationships_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -1966,7 +2077,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -2008,7 +2119,7 @@
       "post": {
         "operationId": "create_object_schema_relationship_beta",
         "summary": "Create Object Schema Relationship",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a relationship between object schemas.\n\nNote that flow filtering and segmentation are currently not supported for object-to-object relationships.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_object_schema_relationship_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a relationship between object schemas.\n\nNote that flow filtering and segmentation are currently not supported for object-to-object relationships.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_object_schema_relationship_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2028,7 +2139,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -2074,7 +2185,7 @@
       "patch": {
         "operationId": "update_object_schema_relationship_beta",
         "summary": "Update Object Schema Relationship",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a relationship between object schemas<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_object_schema_relationship_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a relationship between object schemas<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_object_schema_relationship_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2094,7 +2205,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -2140,7 +2251,7 @@
       "delete": {
         "operationId": "delete_object_schema_relationship_beta",
         "summary": "Delete Object Schema Relationship",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete a relationship between object schemas<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_object_schema_relationship_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete a relationship between object schemas<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_object_schema_relationship_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2160,7 +2271,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -2208,7 +2319,7 @@
       "get": {
         "operationId": "get_profile_schema_relationships_beta",
         "summary": "Get Profile Schema Relationships",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related profile object schemas for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_profile_schema_relationships_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet related profile object schemas for an object schema<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_profile_schema_relationships_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2228,7 +2339,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -2270,7 +2381,7 @@
       "post": {
         "operationId": "create_profile_schema_relationship_beta",
         "summary": "Create Profile Schema Relationship",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a relationship between an object schema and a profile<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_profile_schema_relationship_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a relationship between an object schema and a profile<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_profile_schema_relationship_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2290,7 +2401,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -2336,7 +2447,7 @@
       "patch": {
         "operationId": "update_profile_schema_relationship_beta",
         "summary": "Update Profile Schema Relationship",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a relationship between an object schema and a profile<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_profile_schema_relationship_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a relationship between an object schema and a profile<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_profile_schema_relationship_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2356,7 +2467,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -2402,7 +2513,7 @@
       "delete": {
         "operationId": "delete_profile_schema_relationship_beta",
         "summary": "Delete Profile Schema Relationship",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete a relationship between an object schema and a profile<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_profile_schema_relationship_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDelete a relationship between an object schema and a profile<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`custom-objects:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_profile_schema_relationship_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2422,7 +2533,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -2730,6 +2841,68 @@
           "related_id_path"
         ]
       },
+      "DataSourceEnum": {
+        "type": "string",
+        "enum": [
+          "data-source"
+        ]
+      },
+      "DataSourceResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/DataSourceEnum"
+          },
+          "id": {
+            "description": "The ID of the data source",
+            "type": "string",
+            "example": "01KH1D6P9Y8TJ7Q6MHXWZMPDN3"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "description": "The title of the data source",
+                "type": "string",
+                "example": "Pet Care CRM"
+              },
+              "visibility": {
+                "description": "The status of the data source",
+                "type": "string",
+                "enum": [
+                  "private",
+                  "shared"
+                ]
+              },
+              "description": {
+                "description": "The description of the data source",
+                "type": "string",
+                "example": "Subscription records exported from the pet care CRM"
+              },
+              "namespace": {
+                "description": "The namespace of the data source",
+                "type": "string",
+                "example": "custom-objects"
+              }
+            },
+            "required": [
+              "title",
+              "visibility",
+              "description",
+              "namespace"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
       "EmbeddedObjectSchemaResourceObject": {
         "type": "object",
         "properties": {
@@ -2785,6 +2958,26 @@
         "required": [
           "type",
           "attributes"
+        ]
+      },
+      "GetDataSourceResponseCollection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataSourceResponseObjectResource"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/CollectionLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
         ]
       },
       "GetObjectRecordResponse": {
@@ -5622,7 +5815,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }

@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API (Beta)",
-    "version": "2026-07-15.pre",
+    "version": "2026-10-15.pre",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -31,12 +31,12 @@
       "post": {
         "operationId": "create_customer_agent_response_beta",
         "summary": "Generate Customer Agent Response",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one or more messages to Customer Agent and returns every public event it emits in response, including structured data such as orders and products.\n\nMultiple messages can be attached, if the user has sent multiple or another agent's response should be included. The response is non-streaming; the entire event list is returned at once.\n\nRequires an open `conversation`, created via `POST /api/customer-agent-conversations`. Conversations can only be interacted with that were created via the API. A closed or unknown conversation is also rejected.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nSends one or more messages to Customer Agent and returns every public event it emits in response, including structured data such as orders and products.\n\nMultiple messages can be attached, if the user has sent multiple or another agent's response should be included. The response is non-streaming; the entire event list is returned at once.\n\nImages the customer sent can be attached to the final message as `https://` URLs or base64 data URIs for the agent to take into account.\n\nRequires an open `conversation`, created via `POST /api/customer-agent-conversations`. Conversations can only be interacted with that were created via the API. A closed or unknown conversation is also rejected. A hard or silent handoff moves the conversation to `routed-to-team`, after which it no longer accepts responses.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_customer_agent_response_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-response]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -57,7 +57,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -249,7 +249,7 @@
             ]
           },
           "messages": {
-            "description": "Conversation history for this turn. The final message must have `role: user`.",
+            "description": "Conversation history for this turn. The final message must have `role: user`, and is the only message that can include `images`.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MessageRequest"
@@ -392,7 +392,7 @@
                         "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
                       },
                       "id": {
-                        "description": "Conversation continued or created by this turn.",
+                        "description": "Conversation continued by this turn.",
                         "type": "string"
                       }
                     },
@@ -845,6 +845,19 @@
           "message"
         ]
       },
+      "MessageImageRequest": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "description": "An `https://` URL to fetch the image from. Alternatively, a base64-encoded data URI (`data:image/...;base64,...`). Supported image formats: png, jpeg, gif, webp. Maximum image size: 5MB.",
+            "type": "string",
+            "example": "https://www.example.com/example.jpg"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
       "MessageRequest": {
         "type": "object",
         "properties": {
@@ -859,6 +872,14 @@
               "user",
               "agent"
             ]
+          },
+          "images": {
+            "description": "Images the customer sent with this message, up to 4. Only allowed on the final message.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageImageRequest"
+            },
+            "nullable": true
           }
         },
         "required": [
@@ -911,6 +932,14 @@
             "description": "Channel the order was placed through, e.g. `web`, `pos`.",
             "type": "string",
             "nullable": true
+          },
+          "tracking_urls": {
+            "description": "Tracking URLs for the order's shipments.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
           }
         }
       },
@@ -1057,7 +1086,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }

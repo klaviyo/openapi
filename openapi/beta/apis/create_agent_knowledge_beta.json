@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API (Beta)",
-    "version": "2026-07-15.pre",
+    "version": "2026-10-15.pre",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -31,18 +31,19 @@
       "post": {
         "operationId": "create_agent_knowledge_beta",
         "summary": "Create Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds an Agent Knowledge item from a text snippet (``source.source_type: snippet``, requires ``title`` and ``content``), a single URL (``source.source_type: webpage``, requires ``url``), or a Q&A pair (``source.source_type: qa``, requires ``question`` and ``answer``).\n\nThe URL is normalized before the uniqueness check; duplicate normalized URLs or duplicate Q&A questions return ``409 Conflict``. The resource is fetchable immediately; clients can poll its ``status`` until indexing completes. For files, use ``POST /agent-knowledge-files``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds an Agent Knowledge item from a text snippet (``source.source_type: snippet``, requires ``title`` and ``content``), a single URL (``source.source_type: webpage``, requires ``url``), a Q&A pair (``source.source_type: qa``, requires ``question`` and ``answer``), or a folder (``source.source_type: folder``, requires ``title``). Set ``parent_id`` to create the item inside a folder.\n\nTitles are unique across every knowledge type; a webpage's title is its normalized URL and a Q&A item's title is its question. Returns ``409 Conflict`` if the title is already in use, if an ``entire-site`` webpage overlaps an existing one, or if the company has reached its knowledge item limit. The resource is fetchable immediately; clients can poll its ``status`` until indexing completes. For files, use ``POST /agent-knowledge-files``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-knowledge]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string",
                 "enum": [
+                  "countries",
                   "created_at",
                   "error",
                   "id",
@@ -52,6 +53,7 @@
                   "source.auto_reindex",
                   "source.child_count",
                   "source.content",
+                  "source.exclude_prefixes",
                   "source.question",
                   "source.scope",
                   "source.source_type",
@@ -71,12 +73,12 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
         "requestBody": {
-          "description": "Request to create snippet-, webpage-, or Q&A-backed Agent Knowledge.",
+          "description": "Request to create snippet-, webpage-, Q&A-, or folder-backed Agent Knowledge.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -231,7 +233,7 @@
         "type": "object",
         "properties": {
           "source": {
-            "description": "Source payload for the new item. `snippet` requires `title` and `content`; `webpage` requires `url` and does not accept caller-provided content; `qa` requires `question` and `answer`. To upload a file, use `POST /agent-knowledge-files`.",
+            "description": "Source payload for the new item. `snippet` requires `title` and `content`; `webpage` requires `url` and does not accept caller-provided content; `qa` requires `question` and `answer`; `folder` requires `title`. To upload a file, use `POST /agent-knowledge-files`.",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/AgentKnowledgeSnippetCreateSourceRequest"
@@ -241,8 +243,16 @@
               },
               {
                 "$ref": "#/components/schemas/AgentKnowledgeQaCreateSourceRequest"
+              },
+              {
+                "$ref": "#/components/schemas/AgentKnowledgeFolderCreateSourceRequest"
               }
             ]
+          },
+          "parent_id": {
+            "description": "Folder to create the item in. Omit to create it at the top level.",
+            "type": "string",
+            "nullable": true
           }
         },
         "required": [
@@ -294,6 +304,27 @@
         },
         "required": [
           "source_type"
+        ]
+      },
+      "AgentKnowledgeFolderCreateSourceRequest": {
+        "type": "object",
+        "properties": {
+          "source_type": {
+            "description": "Create a folder to organize other knowledge items.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FolderEnum"
+              }
+            ]
+          },
+          "title": {
+            "description": "Human-readable title for the folder.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_type",
+          "title"
         ]
       },
       "AgentKnowledgeFolderResponseSource": {
@@ -437,6 +468,14 @@
             "description": "Error message when indexing failed; otherwise null.",
             "type": "string",
             "nullable": true
+          },
+          "countries": {
+            "description": "ISO 3166-1 alpha-2 codes of the countries the knowledge item is available in. Null means it is available in every country.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           }
         },
         "required": [
@@ -552,18 +591,27 @@
             "type": "string"
           },
           "scope": {
-            "description": "Crawl scope for the webpage. `single-page` indexes only the given URL; `entire-site` crawls URLs listed in the site's root sitemap.",
+            "description": "Crawl scope for the webpage. `single-page` indexes only the given URL; `entire-site` crawls URLs listed in the site's root sitemap; `selected-pages` crawls those URLs across every English locale, except those under `exclude_prefixes`.",
             "type": "string",
             "example": "single-page",
             "default": "single-page",
             "enum": [
               "single-page",
-              "entire-site"
+              "entire-site",
+              "selected-pages"
             ]
           },
           "auto_reindex": {
             "description": "Whether to periodically re-index the webpage.",
             "type": "boolean",
+            "nullable": true
+          },
+          "exclude_prefixes": {
+            "description": "URL paths to skip when crawling, each starting with `/`, such as `/blog/archive`. Up to 500 paths of up to 2048 characters each. Only accepted with `selected-pages` scope.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           }
         },
@@ -588,18 +636,32 @@
             "type": "string",
             "nullable": true
           },
+          "title": {
+            "description": "Page title from the webpage's HTML, once crawled; otherwise null.",
+            "type": "string",
+            "nullable": true
+          },
           "scope": {
             "description": "Crawl scope for the webpage-backed knowledge item.",
             "type": "string",
             "enum": [
               "single-page",
-              "entire-site"
+              "entire-site",
+              "selected-pages"
             ],
             "nullable": true
           },
           "auto_reindex": {
             "description": "Whether the webpage is periodically re-indexed.",
             "type": "boolean",
+            "nullable": true
+          },
+          "exclude_prefixes": {
+            "description": "URL paths skipped when crawling a `selected-pages` webpage. Values are normalized and may include paths Customer Agent excludes automatically.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           }
         },
@@ -655,7 +717,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }

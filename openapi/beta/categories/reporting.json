@@ -1,0 +1,1124 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/social-series-reports": {
+      "post": {
+        "operationId": "query_social_series_beta",
+        "summary": "Query Social Series",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nTime-bucketed series for one or more statistics.\n\n``social_subscribers`` requires ``filter.channel``. The funnel statistics (``funnel_started``, ``funnel_submitted_identifier``, ``funnel_ended``) require ``filter.automation_id`` and can't be combined with ``social_subscribers`` in one request. A statistic that is not yet available returns ``422`` with code ``statistic_not_yet_available``.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`social:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_social_series_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[social-series-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for the social-series-report endpoint.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SocialSeriesReportQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocialSeriesReportResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_social_series_report"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "social:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
+    "/api/social-values-reports": {
+      "post": {
+        "operationId": "query_social_values_beta",
+        "summary": "Query Social Values",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPoint-in-time aggregate statistics, optionally broken down by dimension.\n\nOmit ``dimension`` for a single account-level row, or set it to ``content``, ``creator``, or ``auto_reply`` for one row per item. The revenue statistics (``social_revenue``, ``auto_reply_revenue``, ``engagement_revenue``) can't be combined with a dimension. An invalid statistic / dimension combination returns ``422`` with code ``invalid_statistic``; a combination that is not yet available returns ``422`` with code ``statistic_not_yet_available``.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`social:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_social_values_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[social-values-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for the social-values-report endpoint.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SocialValuesReportQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocialValuesReportResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_social_values_report"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "social:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
+    "/api/ksql-ask": {
+      "post": {
+        "operationId": "ask_analytics_question_beta",
+        "summary": "Ask Analytics Question",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk a question about your account data in plain language and get a plain-language answer.\n\nK-SQL turns your question into read-only queries over your account's data, runs them, and summarizes the results. The result sets behind the answer are included so you can see how it was reached.\n\nIf the question is too ambiguous to answer, `status` is `clarification` and `answer` contains a question for you. Ask again with more detail.\n\nAn answer can only draw on data that your API key or OAuth token has scopes for. Each request uses Composer AI Credits. This API is available to accounts that have been enabled for it.\n\nAnswers can take several seconds, so allow for this in your client's request timeout.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/ask_analytics_question_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[ksql-ask]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "answer",
+                  "id",
+                  "result_sets",
+                  "status",
+                  "warnings"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A natural-language question about your account data.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KsqlAskRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KsqlAskResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_ksql_ask"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "KsqlAskRequestRequest": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "description": "The natural-language question to ask. 1-2000 characters.",
+            "type": "string",
+            "example": "How many orders were placed last week?"
+          },
+          "max_rows": {
+            "description": "Cap on rows per result set. 1-1000.",
+            "type": "integer",
+            "example": 100,
+            "default": 100
+          }
+        },
+        "required": [
+          "question"
+        ]
+      },
+      "KsqlAskRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/KsqlAskResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/KsqlAskRequestRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "KsqlAskRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/KsqlAskRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "KsqlAskResourceName": {
+        "type": "string",
+        "enum": [
+          "ksql-ask"
+        ]
+      },
+      "KsqlAskResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "Whether this ask was answered or needs more input.",
+            "type": "string",
+            "enum": [
+              "success",
+              "clarification"
+            ]
+          },
+          "answer": {
+            "description": "Plain-language answer when `status` is `success`, or the clarifying question back to the caller when `status` is `clarification`.",
+            "type": "string"
+          },
+          "result_sets": {
+            "description": "The executed queries' typed result sets supporting `answer`. Always empty when `status` is `clarification`; may also be empty on `success` when the answer required no query execution.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KsqlResultSet"
+            },
+            "default": []
+          },
+          "warnings": {
+            "description": "Caveats that change how `answer` and `result_sets` should be read -- a sampled result set, row data elided by a cap, a table withheld from this ask. Several conditions are reported nowhere else, so surface these alongside the answer rather than discarding them.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Showing the first 100 of 4,182 matching orders."
+            ],
+            "default": []
+          }
+        },
+        "required": [
+          "status",
+          "answer"
+        ]
+      },
+      "KsqlAskResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/KsqlAskResourceName"
+          },
+          "id": {
+            "description": "Identifier for this ask, for joining logs across services.",
+            "type": "string"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/KsqlAskResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "KsqlAskResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/KsqlAskResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "KsqlColumnSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The column's name.",
+            "type": "string",
+            "example": "order_count"
+          },
+          "type": {
+            "description": "The column's data type. It determines how the column's values appear in `rows`.",
+            "type": "string",
+            "example": "long",
+            "enum": [
+              "boolean",
+              "long",
+              "double",
+              "string",
+              "timestamptz",
+              "unknown"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "type"
+        ]
+      },
+      "KsqlResultSet": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "description": "The result set's columns, in the order their values appear in each row.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KsqlColumnSchema"
+            }
+          },
+          "rows": {
+            "description": "The result rows. Each row is a list of values in the same order as `columns`. A value is a boolean for `boolean` columns, a number for `long` and `double` columns, and a string for every other type. A missing value is `null`.",
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  }
+                ],
+                "nullable": true
+              }
+            },
+            "example": [
+              [
+                42,
+                19.99
+              ]
+            ]
+          },
+          "row_count": {
+            "description": "The number of rows in the query's result.",
+            "type": "integer",
+            "example": 42
+          },
+          "rows_returned": {
+            "description": "The number of rows included in `rows`. This is lower than `row_count` when row data was left out by a cap.",
+            "type": "integer",
+            "example": 42
+          },
+          "completeness": {
+            "description": "Whether the QUERY's result was complete -- it says nothing about this payload. `sample` means the query's row count equalled its own `LIMIT`, so the underlying result may be larger; `truncated` means it hit K-SQL's own result cap. Compare `rows_returned` to `row_count` for payload elision, which is separate: `complete` with `rows_returned` below `row_count` is a full query result only partially included here.",
+            "type": "string",
+            "example": "complete",
+            "enum": [
+              "complete",
+              "sample",
+              "truncated"
+            ]
+          },
+          "description": {
+            "description": "A short plain-language description of what this result set contains.",
+            "type": "string",
+            "example": "Order count and average price for last week.",
+            "nullable": true
+          },
+          "sql": {
+            "description": "The K-SQL query that produced this result set, so you can see how the numbers were derived. Read-only and for explanation only: K-SQL is an internal dialect with no endpoint that runs it, and it is not a stable interface -- do not parse it, store it, or build on its syntax.",
+            "type": "string",
+            "example": "SELECT count(*) FROM orders WHERE placed_at >= '2026-09-01'",
+            "nullable": true
+          },
+          "caveats": {
+            "description": "Caveats about this result set, in plain language and safe to show an end user as sent. The same sentences also appear in the response-level `warnings`; read them here when you need to know which result set a caveat applies to.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Showing the first 100 of 4,182 matching orders."
+            ],
+            "default": []
+          }
+        },
+        "required": [
+          "columns",
+          "rows",
+          "row_count",
+          "rows_returned",
+          "completeness"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "SocialReportTimeframeRequest": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "description": "Named preset window.",
+            "type": "string",
+            "example": "last_90_days",
+            "enum": [
+              "last_7_days",
+              "last_30_days",
+              "last_90_days",
+              "month_to_date"
+            ],
+            "nullable": true
+          },
+          "start": {
+            "description": "ISO-8601 lower-bound (inclusive) for the report window.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-08-07T00:00:00+00:00",
+            "nullable": true
+          },
+          "end": {
+            "description": "ISO-8601 upper-bound (exclusive) for the report window.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-08-14T00:00:00+00:00",
+            "nullable": true
+          }
+        }
+      },
+      "SocialSeriesData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Bucket start date (ISO-8601), unique within the response.",
+            "type": "string",
+            "example": "2026-08-07T00:00:00+00:00"
+          },
+          "interval": {
+            "description": "Echo of the requested granularity.",
+            "type": "string",
+            "enum": [
+              "day",
+              "week"
+            ]
+          },
+          "statistics": {
+            "description": "Map of statistic key -> value for this bucket.",
+            "type": "object",
+            "example": {
+              "social_subscribers": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "interval",
+          "statistics"
+        ]
+      },
+      "SocialSeriesFilterRequest": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "description": "Subscriber-growth channel to scope social_subscribers to. Required when requesting social_subscribers; ignored otherwise.",
+            "type": "string",
+            "example": "email",
+            "enum": [
+              "email",
+              "sms",
+              "whatsapp"
+            ],
+            "nullable": true
+          },
+          "automation_id": {
+            "description": "Scopes funnel_started/funnel_submitted_identifier/funnel_ended to one auto-reply automation. Required for those statistics.",
+            "type": "string",
+            "example": "01KTKY9QMP6R13ZMEX1HMAMB8Q",
+            "nullable": true
+          }
+        }
+      },
+      "SocialSeriesReportQueryRequest": {
+        "type": "object",
+        "properties": {
+          "statistics": {
+            "description": "Statistics to compute per time bucket.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocialSeriesStatistic"
+            },
+            "example": [
+              "social_subscribers"
+            ]
+          },
+          "timeframe": {
+            "description": "Time window for the report.",
+            "example": {
+              "key": "last_90_days"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SocialReportTimeframeRequest"
+              }
+            ]
+          },
+          "interval": {
+            "description": "Bucket granularity: day or week.",
+            "type": "string",
+            "example": "day",
+            "enum": [
+              "day",
+              "week"
+            ]
+          },
+          "filter": {
+            "description": "Statistic-appropriate filters.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SocialSeriesFilterRequest"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "statistics",
+          "timeframe",
+          "interval"
+        ]
+      },
+      "SocialSeriesReportQueryRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SocialSeriesReportResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/SocialSeriesReportQueryRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "SocialSeriesReportQueryRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SocialSeriesReportQueryRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SocialSeriesReportResourceName": {
+        "type": "string",
+        "enum": [
+          "social-series-report"
+        ]
+      },
+      "SocialSeriesReportResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "description": "Computed series-report buckets.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocialSeriesData"
+            }
+          }
+        },
+        "required": [
+          "results"
+        ]
+      },
+      "SocialSeriesReportResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SocialSeriesReportResourceName"
+          },
+          "id": {
+            "description": "Opaque identifier for the series report response.",
+            "type": "string",
+            "example": "b13f8dea-895a-4a7c-a349-cc8efd25b1ba"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/SocialSeriesReportResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "SocialSeriesReportResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SocialSeriesReportResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SocialSeriesStatistic": {
+        "description": "Metrics computable per time bucket.",
+        "type": "string",
+        "enum": [
+          "social_subscribers",
+          "funnel_started",
+          "funnel_submitted_identifier",
+          "funnel_ended"
+        ]
+      },
+      "SocialValuesData": {
+        "type": "object",
+        "properties": {
+          "groupings": {
+            "description": "Bucket-identifying values for this row. Empty when the request omits a dimension for a single account-level row. dimension=content rows also include 'posted_date' (YYYY-MM-DD) when available.",
+            "type": "object",
+            "example": {
+              "content": "a2f90559e8e7471a92f17a3c8b62636e",
+              "posted_date": "2026-08-15"
+            }
+          },
+          "statistics": {
+            "description": "Computed metrics for this row. Only the statistics named in the request appear here. A value is null when the aggregate has no data to report (e.g. no post reported a value) rather than being omitted.",
+            "type": "object",
+            "example": {
+              "likes": 12,
+              "views": 340,
+              "engagement_rate": 0.83333
+            }
+          }
+        },
+        "required": [
+          "groupings",
+          "statistics"
+        ]
+      },
+      "SocialValuesFilterRequest": {
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "description": "Restrict dimension=content rows to owned or user_generated content. Ignored for every other dimension. Omit to rank across both.",
+            "type": "string",
+            "enum": [
+              "owned",
+              "user_generated"
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "SocialValuesReportQueryRequest": {
+        "type": "object",
+        "properties": {
+          "statistics": {
+            "description": "Statistics to compute. Combine multiple in one call to receive all of them per row.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocialValuesStatistic"
+            },
+            "example": [
+              "likes",
+              "views",
+              "engagement_rate"
+            ]
+          },
+          "timeframe": {
+            "description": "Time window for the report.",
+            "example": {
+              "key": "last_90_days"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SocialReportTimeframeRequest"
+              }
+            ]
+          },
+          "dimension": {
+            "description": "Optional breakdown dimension. Omit for a single account-level row. Not valid combined with any revenue statistic (engagement_revenue, auto_reply_revenue, social_revenue).",
+            "type": "string",
+            "example": "content",
+            "enum": [
+              "content",
+              "creator",
+              "auto_reply"
+            ],
+            "nullable": true
+          },
+          "filter": {
+            "description": "Statistic-appropriate filters.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SocialValuesFilterRequest"
+              }
+            ],
+            "nullable": true
+          },
+          "sort": {
+            "description": "Sort key when dimension is set; prefix '-' for descending. Ignored otherwise.",
+            "type": "string",
+            "nullable": true
+          },
+          "page_cursor": {
+            "description": "Cursor for the next page of results.",
+            "type": "string",
+            "nullable": true
+          },
+          "page_size": {
+            "description": "Rows per page. Only applies when dimension is set.",
+            "type": "integer",
+            "example": 20,
+            "default": 20
+          }
+        },
+        "required": [
+          "statistics",
+          "timeframe"
+        ]
+      },
+      "SocialValuesReportQueryRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SocialValuesReportResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/SocialValuesReportQueryRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "SocialValuesReportQueryRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SocialValuesReportQueryRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SocialValuesReportResourceName": {
+        "type": "string",
+        "enum": [
+          "social-values-report"
+        ]
+      },
+      "SocialValuesReportResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "description": "Computed values-report rows.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocialValuesData"
+            }
+          }
+        },
+        "required": [
+          "results"
+        ]
+      },
+      "SocialValuesReportResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/SocialValuesReportResourceName"
+          },
+          "id": {
+            "description": "Opaque identifier for the values report response.",
+            "type": "string",
+            "example": "a2f90559-e8e7-471a-92f1-7a3c8b62636e"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/SocialValuesReportResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "SocialValuesReportResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SocialValuesReportResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SocialValuesStatistic": {
+        "description": "Metrics computable for each social values-report row.",
+        "type": "string",
+        "enum": [
+          "engagement_revenue",
+          "auto_reply_revenue",
+          "social_revenue",
+          "views",
+          "engagement_rate",
+          "engagements_total",
+          "followers",
+          "follower_growth",
+          "shares",
+          "saves",
+          "posts",
+          "likes",
+          "comments",
+          "engagement_per_post",
+          "tags_used",
+          "funnel_started",
+          "funnel_responded",
+          "funnel_submitted_identifier",
+          "funnel_ended",
+          "completion_rate",
+          "subscribers",
+          "revenue"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

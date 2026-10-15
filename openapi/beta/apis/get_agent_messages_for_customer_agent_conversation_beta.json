@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API (Beta)",
-    "version": "2026-07-15.pre",
+    "version": "2026-10-15.pre",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_agent_messages_for_customer_agent_conversation_beta",
         "summary": "Get Agent Messages for Customer Agent Conversation",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList message linkage or full message resources for a conversation.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_messages_for_customer_agent_conversation_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nList message linkage or full message resources for a conversation.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_messages_for_customer_agent_conversation_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -44,7 +44,7 @@
           {
             "name": "fields[customer-agent-message]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
@@ -54,6 +54,7 @@
                   "content",
                   "created_at",
                   "id",
+                  "images",
                   "role",
                   "updated_at"
                 ]
@@ -89,7 +90,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -243,6 +244,19 @@
           "customer-agent-message"
         ]
       },
+      "MessageImageResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "description": "Public URL of the image. Expires 30 days after it is returned.",
+            "type": "string",
+            "example": "https://www.example.com/attachments/01J.../image.webp"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
       "MessageResponse": {
         "type": "object",
         "properties": {
@@ -271,6 +285,14 @@
             "type": "string",
             "format": "date-time",
             "example": "2026-05-13T12:00:00+00:00"
+          },
+          "images": {
+            "description": "Images the customer attached to this message.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageImageResponse"
+            },
+            "default": []
           }
         },
         "required": [
@@ -337,7 +359,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }

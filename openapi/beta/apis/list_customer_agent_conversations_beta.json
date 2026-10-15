@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Klaviyo API (Beta)",
-    "version": "2026-07-15.pre",
+    "version": "2026-10-15.pre",
     "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
     "contact": {
       "name": "Klaviyo Developer Experience Team",
@@ -31,20 +31,27 @@
       "get": {
         "operationId": "list_customer_agent_conversations_beta",
         "summary": "List Conversations",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-07-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns all Customer Agent conversations.\n\nResults are ordered by newest conversations first. Supports filters by ``status`` and ``created_at`` time window, plus cursor pagination for large conversations.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns all Customer Agent conversations.\n\nResults are ordered by newest conversations first. Supports filters by ``status``, ``mode``, and ``created_at`` time window, plus cursor pagination for large conversations.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-conversation]",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#sparse-fieldsets",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string",
                 "enum": [
+                  "channel",
                   "created_at",
+                  "customer",
+                  "customer.email",
+                  "customer.first_name",
+                  "customer.last_name",
+                  "customer.phone_number",
                   "id",
+                  "mode",
                   "status",
                   "updated_at"
                 ]
@@ -55,7 +62,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`created_at`: `greater-or-equal` (date-time)<br>`status`: `any`, `equals` (allowed values: `'open'`, `'routed-to-team'`, `'resolved-by-ai'`, `'closed'`)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`created_at`: `greater-or-equal` (date-time)<br>`status`: `any`, `equals` (allowed values: `'open'`, `'routed-to-team'`, `'resolved-by-ai'`, `'closed'`)<br>`mode`: `any`, `equals` (allowed values: `'preview'`, `'live'`)",
             "required": false,
             "schema": {
               "type": "string",
@@ -90,7 +97,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "default": "2026-07-15.pre"
+              "default": "2026-10-15.pre"
             }
           }
         ],
@@ -140,6 +147,20 @@
                 "routed-to-team",
                 "resolved-by-ai",
                 "closed"
+              ]
+            }
+          },
+          "mode": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "preview",
+                "live"
               ]
             }
           }
@@ -281,6 +302,36 @@
               "closed"
             ]
           },
+          "mode": {
+            "description": "Whether the conversation is for testing or a real shopper interaction.",
+            "type": "string",
+            "enum": [
+              "preview",
+              "live"
+            ]
+          },
+          "channel": {
+            "description": "Channel this conversation is associated with, if known.",
+            "type": "string",
+            "enum": [
+              "web-chat",
+              "sms",
+              "email",
+              "whatsapp",
+              "instagram",
+              "voice"
+            ],
+            "nullable": true
+          },
+          "customer": {
+            "description": "Contact details that identify the customer, if any.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Customer"
+              }
+            ],
+            "nullable": true
+          },
           "created_at": {
             "description": "Date and time when the conversation was created.",
             "type": "string",
@@ -296,6 +347,7 @@
         },
         "required": [
           "status",
+          "mode",
           "created_at",
           "updated_at"
         ]
@@ -307,9 +359,9 @@
             "$ref": "#/components/schemas/CustomerAgentConversationResourceName"
           },
           "id": {
-            "description": "Conversation identifier.",
+            "description": "Conversation identifier. Treat it as an opaque string; its format varies by where the conversation started.",
             "type": "string",
-            "example": "conv_abc123"
+            "example": "d1cfa5b1-80ce-4069-8067-b708dab722bd"
           },
           "attributes": {
             "$ref": "#/components/schemas/ConversationResponse"
@@ -317,6 +369,27 @@
           "relationships": {
             "type": "object",
             "properties": {
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ProfileResourceName"
+                      },
+                      "id": {
+                        "description": "Signed-in Klaviyo profile of the customer, if any.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
               "customer-agent-messages": {
                 "type": "object",
                 "properties": {
@@ -375,6 +448,27 @@
           "data"
         ]
       },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone_number": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CustomerAgentConversationResourceName": {
         "type": "string",
         "enum": [
@@ -397,6 +491,12 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "ProfileResourceName": {
+        "type": "string",
+        "enum": [
+          "profile"
         ]
       },
       "RelationshipLinks": {
@@ -422,7 +522,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-07-15.pre/reference/api-overview#authentication",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
         "x-default": "Klaviyo-API-Key your-private-api-key"
       }
     }
