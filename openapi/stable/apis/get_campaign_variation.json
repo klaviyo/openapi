@@ -56,6 +56,10 @@
                 "enum": [
                   "created",
                   "definition",
+                  "definition.ab_test",
+                  "definition.ab_test.winner_metric",
+                  "definition.ab_test.winner_percentage",
+                  "definition.ab_test.winner_wait_hours",
                   "definition.name",
                   "definition.send_options",
                   "definition.send_options.is_ignoring_unsubscribes",
@@ -353,6 +357,31 @@
       }
     },
     "schemas": {
+      "ABTestSettings": {
+        "type": "object",
+        "properties": {
+          "winner_metric": {
+            "description": "The metric used to pick the winning variation.",
+            "type": "string",
+            "enum": [
+              "clicks_unique",
+              "opens_unique",
+              "placed_orders_unique"
+            ],
+            "nullable": true
+          },
+          "winner_percentage": {
+            "description": "The percentage of the audience that receives the winning variation. The remainder is split evenly across the variations under test.",
+            "type": "integer",
+            "nullable": true
+          },
+          "winner_wait_hours": {
+            "description": "How long to collect results before picking a winner, in hours.",
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
       "AgentHints": {
         "description": "Optional hints emitted by the API for agent callers",
         "type": "object",
@@ -757,6 +786,11 @@
           "send_options": {
             "description": "The send options for this message",
             "$ref": "#/components/schemas/MessageSendOptions",
+            "nullable": true
+          },
+          "ab_test": {
+            "description": "A/B test settings. Returned for any message that runs an experiment, but only writable on content tests: a message with more than one variation that is not a send-time test.",
+            "$ref": "#/components/schemas/ABTestSettings",
             "nullable": true
           }
         }
