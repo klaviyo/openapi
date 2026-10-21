@@ -27,31 +27,14 @@
     }
   ],
   "paths": {
-    "/api/folders": {
+    "/api/location-values-reports": {
       "post": {
-        "operationId": "create_folder_beta",
-        "summary": "Create Folder",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nCreate a folder, optionally nested under `relationships.parent`.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`folders:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_folder_beta.json)",
+        "operationId": "query_location_values_beta",
+        "summary": "Query Location Values",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet totals for a live event.\n\nReturns how many people your campaigns for the event reached on each channel, and in-store sales during the event.\n\nSet `filter.live_event_id` to the event, and set the timeframe to `{\"key\": \"all_time\"}`. Other timeframes aren't supported: reach always counts every campaign sent for the event, and sales always cover the event's start and end time.\n\nTo get sales for one host location, also set `filter.location_id`. You can't combine this filter with reach statistics.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_location_values_beta.json)",
         "parameters": [
           {
-            "name": "additional-fields[folder]",
-            "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'child_count', 'item_count'",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "child_count",
-                  "item_count"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "fields[folder]",
+            "name": "fields[location-values-report]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -60,28 +43,8 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "child_count",
-                  "folder_type",
                   "id",
-                  "item_count",
-                  "name"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "include",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "ancestors",
-                  "parent"
+                  "results"
                 ]
               }
             },
@@ -99,23 +62,23 @@
           }
         ],
         "requestBody": {
-          "description": "Request to create a folder.",
+          "description": "Request body for the location-values-report endpoint.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/FolderCreateRequestRequestDataWrapper"
+                "$ref": "#/components/schemas/LocationValuesReportQueryRequestDataWrapper"
               }
             }
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Success",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FolderResponseDataWrapper"
+                  "$ref": "#/components/schemas/LocationValuesReportResponseDataWrapper"
                 }
               }
             }
@@ -130,15 +93,18 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-operation-aliases": [
+          "create_location_values_report"
+        ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
-          "burst": "10/s",
-          "steady": "150/m"
+          "burst": "3/s",
+          "steady": "60/m"
         },
         "x-klaviyo-scopes": [
-          "folders:write"
+          "locations:read"
         ],
-        "x-klaviyo-subtag": "Folders"
+        "x-klaviyo-subtag": "Reporting"
       }
     }
   },
@@ -250,59 +216,137 @@
       }
     },
     "schemas": {
-      "FolderCreateRequestRequest": {
+      "LocationReportTimeframeRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
-          },
-          "folder_type": {
-            "description": "Folder types a caller may create via the public API.\n\nDeliberately narrower than the internal `FolderType` (`media` |\n    `email_template`) \u2014 `email_template` is the only type with an end-\n    to-end public item-membership path today.",
+          "key": {
+            "description": "Named preset window.",
             "type": "string",
-            "example": "email_template",
-            "default": "email_template",
+            "example": "last_30_days",
             "enum": [
-              "email_template"
-            ]
+              "all_time",
+              "today",
+              "yesterday",
+              "this_week",
+              "last_7_days",
+              "last_week",
+              "this_month",
+              "last_30_days",
+              "last_month",
+              "last_90_days",
+              "last_3_months",
+              "last_365_days",
+              "last_12_months",
+              "this_year",
+              "last_year"
+            ],
+            "nullable": true
+          },
+          "start": {
+            "description": "First day to include, in the account's timezone.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-09-01T00:00:00+00:00",
+            "nullable": true
+          },
+          "end": {
+            "description": "Last day to include, in the account's timezone.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-09-30T00:00:00+00:00",
+            "nullable": true
+          }
+        }
+      },
+      "LocationValuesData": {
+        "type": "object",
+        "properties": {
+          "groupings": {
+            "description": "The live event, and the host location if you filtered by one.",
+            "type": "object",
+            "example": {
+              "live_event_id": "01JABCDEFGHJKMNPQRSTVWXYZ1"
+            }
+          },
+          "statistics": {
+            "description": "Each requested statistic and its value. Null if it isn't available.",
+            "type": "object",
+            "example": {
+              "email_reach": 4200,
+              "gross_revenue": 950.5
+            }
           }
         },
         "required": [
-          "name"
+          "groupings",
+          "statistics"
         ]
       },
-      "FolderCreateRequestRequestData": {
+      "LocationValuesFilterRequest": {
+        "type": "object",
+        "properties": {
+          "live_event_id": {
+            "description": "The live event to report on. Required.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ1",
+            "nullable": true
+          },
+          "location_id": {
+            "description": "Only count sales at this host location. Can't be used with reach statistics.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0",
+            "nullable": true
+          }
+        }
+      },
+      "LocationValuesReportQueryRequest": {
+        "type": "object",
+        "properties": {
+          "statistics": {
+            "description": "Statistics to return. `email_reach`, `sms_reach`, and `push_reach` count the people your campaigns for this event reached on each channel. `whatsapp_messages_delivered` counts messages, not people. Someone reached on two channels is counted on both, so don't add the channels together. `gross_revenue`, `purchasers`, and `order_count` are in-store sales during the event.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationValuesStatistic"
+            },
+            "example": [
+              "email_reach",
+              "gross_revenue"
+            ]
+          },
+          "timeframe": {
+            "description": "Must be `{\"key\": \"all_time\"}`. Reach always counts every campaign sent for the event, and sales always cover the event's start and end time.",
+            "example": {
+              "key": "all_time"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationReportTimeframeRequest"
+              }
+            ]
+          },
+          "filter": {
+            "description": "Which live event to report on.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationValuesFilterRequest"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "statistics",
+          "timeframe"
+        ]
+      },
+      "LocationValuesReportQueryRequestData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/FolderResourceName"
+            "$ref": "#/components/schemas/LocationValuesReportResourceName"
           },
           "attributes": {
-            "$ref": "#/components/schemas/FolderCreateRequestRequest"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "parent": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "$ref": "#/components/schemas/FolderResourceName"
-                      },
-                      "id": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "id"
-                    ]
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/schemas/LocationValuesReportQueryRequest"
           }
         },
         "required": [
@@ -310,111 +354,51 @@
           "attributes"
         ]
       },
-      "FolderCreateRequestRequestDataWrapper": {
+      "LocationValuesReportQueryRequestDataWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/FolderCreateRequestRequestData"
+            "$ref": "#/components/schemas/LocationValuesReportQueryRequestData"
           }
         },
         "required": [
           "data"
         ]
       },
-      "FolderResourceName": {
+      "LocationValuesReportResourceName": {
         "type": "string",
         "enum": [
-          "folder"
+          "location-values-report"
         ]
       },
-      "FolderResponse": {
+      "LocationValuesReportResponse": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
-          },
-          "folder_type": {
-            "$ref": "#/components/schemas/FolderType"
-          },
-          "item_count": {
-            "type": "integer",
-            "nullable": true
-          },
-          "child_count": {
-            "type": "integer",
-            "nullable": true
+          "results": {
+            "description": "One row per live event.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationValuesData"
+            }
           }
         },
         "required": [
-          "name",
-          "folder_type"
+          "results"
         ]
       },
-      "FolderResponseData": {
+      "LocationValuesReportResponseData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/FolderResourceName"
+            "$ref": "#/components/schemas/LocationValuesReportResourceName"
           },
           "id": {
-            "type": "string"
+            "description": "Opaque identifier for this report response.",
+            "type": "string",
+            "example": "b13f8dea-895a-4a7c-a349-cc8efd25b1ba"
           },
           "attributes": {
-            "$ref": "#/components/schemas/FolderResponse"
-          },
-          "relationships": {
-            "type": "object",
-            "properties": {
-              "parent": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "$ref": "#/components/schemas/FolderResourceName"
-                      },
-                      "id": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "id"
-                    ]
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/RelationshipLinks"
-                  }
-                }
-              },
-              "ancestors": {
-                "type": "object",
-                "properties": {
-                  "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "$ref": "#/components/schemas/FolderResourceName"
-                        },
-                        "id": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "type",
-                        "id"
-                      ]
-                    }
-                  },
-                  "links": {
-                    "$ref": "#/components/schemas/RelationshipLinks"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/schemas/LocationValuesReportResponse"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -427,11 +411,11 @@
           "links"
         ]
       },
-      "FolderResponseDataWrapper": {
+      "LocationValuesReportResponseDataWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/FolderResponseData"
+            "$ref": "#/components/schemas/LocationValuesReportResponseData"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -441,12 +425,17 @@
           "data"
         ]
       },
-      "FolderType": {
-        "description": "Type/domain of a folder, constraining what objects it can contain.\n\nM1 values: media folders hold images/videos/products, while\n    email_template folders hold email template references.",
+      "LocationValuesStatistic": {
+        "description": "Totals for a live event.",
         "type": "string",
         "enum": [
-          "media",
-          "email_template"
+          "email_reach",
+          "sms_reach",
+          "push_reach",
+          "whatsapp_messages_delivered",
+          "gross_revenue",
+          "purchasers",
+          "order_count"
         ]
       },
       "ObjectLinks": {
@@ -459,23 +448,6 @@
         },
         "required": [
           "self"
-        ]
-      },
-      "RelationshipLinks": {
-        "type": "object",
-        "properties": {
-          "self": {
-            "type": "string",
-            "format": "uri"
-          },
-          "related": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
-          "self",
-          "related"
         ]
       }
     },
