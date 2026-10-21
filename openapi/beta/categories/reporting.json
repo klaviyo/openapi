@@ -27,14 +27,14 @@
     }
   ],
   "paths": {
-    "/api/ksql-ask": {
+    "/api/location-values-reports": {
       "post": {
-        "operationId": "ask_analytics_question_beta",
-        "summary": "Ask Analytics Question",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk a question about your account data in plain language and get a plain-language answer.\n\nK-SQL turns your question into read-only queries over your account's data, runs them, and summarizes the results. The result sets behind the answer are included so you can see how it was reached.\n\nIf the question is too ambiguous to answer, `status` is `clarification` and `answer` contains a question for you. Ask again with more detail.\n\nAn answer can only draw on data that your API key or OAuth token has scopes for. Each request uses Composer AI Credits. This API is available to accounts that have been enabled for it.\n\nAnswers can take several seconds, so allow for this in your client's request timeout.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/ask_analytics_question_beta.json)",
+        "operationId": "query_location_values_beta",
+        "summary": "Query Location Values",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet totals for a live event.\n\nReturns how many people your campaigns for the event reached on each channel, and in-store sales during the event.\n\nSet `filter.live_event_id` to the event, and set the timeframe to `{\"key\": \"all_time\"}`. Other timeframes aren't supported: reach always counts every campaign sent for the event, and sales always cover the event's start and end time.\n\nTo get sales for one host location, also set `filter.location_id`. You can't combine this filter with reach statistics.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_location_values_beta.json)",
         "parameters": [
           {
-            "name": "fields[ksql-ask]",
+            "name": "fields[location-values-report]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -43,11 +43,8 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "answer",
                   "id",
-                  "result_sets",
-                  "status",
-                  "warnings"
+                  "results"
                 ]
               }
             },
@@ -65,12 +62,12 @@
           }
         ],
         "requestBody": {
-          "description": "A natural-language question about your account data.",
+          "description": "Request body for the location-values-report endpoint.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
               "schema": {
-                "$ref": "#/components/schemas/KsqlAskRequestRequestDataWrapper"
+                "$ref": "#/components/schemas/LocationValuesReportQueryRequestDataWrapper"
               }
             }
           }
@@ -81,7 +78,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/KsqlAskResponseDataWrapper"
+                  "$ref": "#/components/schemas/LocationValuesReportResponseDataWrapper"
                 }
               }
             }
@@ -97,30 +94,96 @@
           "Beta APIs"
         ],
         "x-klaviyo-operation-aliases": [
-          "create_ksql_ask"
-        ],
-        "x-klaviyo-optional-scopes": [
-          "campaigns:read",
-          "catalogs:read",
-          "events:read",
-          "lists:read",
-          "metrics:read",
-          "profiles:read",
-          "segments:read"
+          "create_location_values_report"
         ],
         "x-klaviyo-pre-release": "BETA",
         "x-klaviyo-ratelimit": {
-          "burst": "1/s",
-          "steady": "15/m"
+          "burst": "3/s",
+          "steady": "60/m"
         },
         "x-klaviyo-scopes": [
-          "campaigns:read",
-          "catalogs:read",
-          "events:read",
-          "lists:read",
-          "metrics:read",
-          "profiles:read",
-          "segments:read"
+          "locations:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
+    "/api/location-series-reports": {
+      "post": {
+        "operationId": "query_location_series_beta",
+        "summary": "Query Location Series",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet daily in-store sales for a location.\n\nSet `filter.location_id` to the location. Sales come from the location's connected point-of-sale integration. If no integration is connected, each statistic returns an empty list.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_location_series_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[location-series-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "date_times",
+                  "id",
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for the location-series-report endpoint.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationSeriesReportQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationSeriesReportResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_location_series_report"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read"
         ],
         "x-klaviyo-subtag": "Reporting"
       }
@@ -281,6 +344,104 @@
         },
         "x-klaviyo-scopes": [
           "social:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
+    "/api/ksql-ask": {
+      "post": {
+        "operationId": "ask_analytics_question_beta",
+        "summary": "Ask Analytics Question",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAsk a question about your account data in plain language and get a plain-language answer.\n\nK-SQL turns your question into read-only queries over your account's data, runs them, and summarizes the results. The result sets behind the answer are included so you can see how it was reached.\n\nIf the question is too ambiguous to answer, `status` is `clarification` and `answer` contains a question for you. Ask again with more detail.\n\nAn answer can only draw on data that your API key or OAuth token has scopes for. Each request uses Composer AI Credits. This API is available to accounts that have been enabled for it.\n\nAnswers can take several seconds, so allow for this in your client's request timeout.<br><br>*Rate limits*:<br>Burst: `1/s`<br>Steady: `15/m`\n\n**Optional Scopes:**\n`campaigns:read`\n`catalogs:read`\n`events:read`\n`lists:read`\n`metrics:read`\n`profiles:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/ask_analytics_question_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[ksql-ask]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "answer",
+                  "id",
+                  "result_sets",
+                  "status",
+                  "warnings"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A natural-language question about your account data.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KsqlAskRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KsqlAskResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_ksql_ask"
+        ],
+        "x-klaviyo-optional-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "1/s",
+          "steady": "15/m"
+        },
+        "x-klaviyo-scopes": [
+          "campaigns:read",
+          "catalogs:read",
+          "events:read",
+          "lists:read",
+          "metrics:read",
+          "profiles:read",
+          "segments:read"
         ],
         "x-klaviyo-subtag": "Reporting"
       }
@@ -640,6 +801,429 @@
           "row_count",
           "rows_returned",
           "completeness"
+        ]
+      },
+      "LocationReportTimeframeRequest": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "description": "Named preset window.",
+            "type": "string",
+            "example": "last_30_days",
+            "enum": [
+              "all_time",
+              "today",
+              "yesterday",
+              "this_week",
+              "last_7_days",
+              "last_week",
+              "this_month",
+              "last_30_days",
+              "last_month",
+              "last_90_days",
+              "last_3_months",
+              "last_365_days",
+              "last_12_months",
+              "this_year",
+              "last_year"
+            ],
+            "nullable": true
+          },
+          "start": {
+            "description": "First day to include, in the account's timezone.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-09-01T00:00:00+00:00",
+            "nullable": true
+          },
+          "end": {
+            "description": "Last day to include, in the account's timezone.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-09-30T00:00:00+00:00",
+            "nullable": true
+          }
+        }
+      },
+      "LocationSeriesData": {
+        "type": "object",
+        "properties": {
+          "groupings": {
+            "description": "The location this series belongs to.",
+            "type": "object",
+            "example": {
+              "location_id": "01JABCDEFGHJKMNPQRSTVWXYZ0"
+            }
+          },
+          "statistics": {
+            "description": "Each requested statistic, with one value per day in `date_times`. Null if the statistic isn't available for this location.",
+            "type": "object",
+            "example": {
+              "revenue": [
+                100,
+                80
+              ],
+              "order_count": [
+                4,
+                2
+              ]
+            }
+          }
+        },
+        "required": [
+          "groupings",
+          "statistics"
+        ]
+      },
+      "LocationSeriesFilterRequest": {
+        "type": "object",
+        "properties": {
+          "location_id": {
+            "description": "The location to report on. Required.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0",
+            "nullable": true
+          }
+        }
+      },
+      "LocationSeriesReportQueryRequest": {
+        "type": "object",
+        "properties": {
+          "statistics": {
+            "description": "Statistics to return for each day. `revenue` is sales after refunds (`gross_revenue` minus `refunds`). `purchasers` counts unique buyers per day, so adding up days can count the same buyer more than once.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationSeriesStatistic"
+            },
+            "example": [
+              "revenue",
+              "order_count"
+            ]
+          },
+          "timeframe": {
+            "description": "The days to report on. Use a preset `key` or a `start` and `end` up to 365 days apart. `all_time` isn't supported.",
+            "example": {
+              "key": "last_30_days"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationReportTimeframeRequest"
+              }
+            ]
+          },
+          "interval": {
+            "description": "How to group the results. Only `day` is supported.",
+            "type": "string",
+            "example": "day",
+            "enum": [
+              "day"
+            ]
+          },
+          "filter": {
+            "description": "Which location to report on.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationSeriesFilterRequest"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "statistics",
+          "timeframe",
+          "interval"
+        ]
+      },
+      "LocationSeriesReportQueryRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationSeriesReportResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationSeriesReportQueryRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "LocationSeriesReportQueryRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationSeriesReportQueryRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationSeriesReportResourceName": {
+        "type": "string",
+        "enum": [
+          "location-series-report"
+        ]
+      },
+      "LocationSeriesReportResponse": {
+        "type": "object",
+        "properties": {
+          "date_times": {
+            "description": "The start of each day in the report, in the account's timezone.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2022-11-08T00:00:00+00:00"
+            },
+            "example": [
+              "2026-10-01T00:00:00+00:00",
+              "2026-10-02T00:00:00+00:00"
+            ]
+          },
+          "results": {
+            "description": "One series per location.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationSeriesData"
+            }
+          }
+        },
+        "required": [
+          "date_times",
+          "results"
+        ]
+      },
+      "LocationSeriesReportResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationSeriesReportResourceName"
+          },
+          "id": {
+            "description": "Opaque identifier for this report response.",
+            "type": "string",
+            "example": "b13f8dea-895a-4a7c-a349-cc8efd25b1ba"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationSeriesReportResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "LocationSeriesReportResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationSeriesReportResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationSeriesStatistic": {
+        "description": "In-store statistics for a location, one value per interval.",
+        "type": "string",
+        "enum": [
+          "revenue",
+          "gross_revenue",
+          "refunds",
+          "purchasers",
+          "order_count"
+        ]
+      },
+      "LocationValuesData": {
+        "type": "object",
+        "properties": {
+          "groupings": {
+            "description": "The live event, and the host location if you filtered by one.",
+            "type": "object",
+            "example": {
+              "live_event_id": "01JABCDEFGHJKMNPQRSTVWXYZ1"
+            }
+          },
+          "statistics": {
+            "description": "Each requested statistic and its value. Null if it isn't available.",
+            "type": "object",
+            "example": {
+              "email_reach": 4200,
+              "gross_revenue": 950.5
+            }
+          }
+        },
+        "required": [
+          "groupings",
+          "statistics"
+        ]
+      },
+      "LocationValuesFilterRequest": {
+        "type": "object",
+        "properties": {
+          "live_event_id": {
+            "description": "The live event to report on. Required.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ1",
+            "nullable": true
+          },
+          "location_id": {
+            "description": "Only count sales at this host location. Can't be used with reach statistics.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0",
+            "nullable": true
+          }
+        }
+      },
+      "LocationValuesReportQueryRequest": {
+        "type": "object",
+        "properties": {
+          "statistics": {
+            "description": "Statistics to return. `email_reach`, `sms_reach`, and `push_reach` count the people your campaigns for this event reached on each channel. `whatsapp_messages_delivered` counts messages, not people. Someone reached on two channels is counted on both, so don't add the channels together. `gross_revenue`, `purchasers`, and `order_count` are in-store sales during the event.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationValuesStatistic"
+            },
+            "example": [
+              "email_reach",
+              "gross_revenue"
+            ]
+          },
+          "timeframe": {
+            "description": "Must be `{\"key\": \"all_time\"}`. Reach always counts every campaign sent for the event, and sales always cover the event's start and end time.",
+            "example": {
+              "key": "all_time"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationReportTimeframeRequest"
+              }
+            ]
+          },
+          "filter": {
+            "description": "Which live event to report on.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationValuesFilterRequest"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "statistics",
+          "timeframe"
+        ]
+      },
+      "LocationValuesReportQueryRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationValuesReportResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationValuesReportQueryRequest"
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ]
+      },
+      "LocationValuesReportQueryRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationValuesReportQueryRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationValuesReportResourceName": {
+        "type": "string",
+        "enum": [
+          "location-values-report"
+        ]
+      },
+      "LocationValuesReportResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "description": "One row per live event.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationValuesData"
+            }
+          }
+        },
+        "required": [
+          "results"
+        ]
+      },
+      "LocationValuesReportResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/LocationValuesReportResourceName"
+          },
+          "id": {
+            "description": "Opaque identifier for this report response.",
+            "type": "string",
+            "example": "b13f8dea-895a-4a7c-a349-cc8efd25b1ba"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/LocationValuesReportResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "LocationValuesReportResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LocationValuesReportResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "LocationValuesStatistic": {
+        "description": "Totals for a live event.",
+        "type": "string",
+        "enum": [
+          "email_reach",
+          "sms_reach",
+          "push_reach",
+          "whatsapp_messages_delivered",
+          "gross_revenue",
+          "purchasers",
+          "order_count"
         ]
       },
       "ObjectLinks": {
