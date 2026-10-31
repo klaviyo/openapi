@@ -3948,6 +3948,7 @@
               "America/Coral_Harbour",
               "America/Cordoba",
               "America/Costa_Rica",
+              "America/Coyhaique",
               "America/Creston",
               "America/Cuiaba",
               "America/Curacao",
@@ -7975,6 +7976,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/MarketingTrackingConsentCheckbox"
+                },
+                {
+                  "$ref": "#/components/schemas/ScratchCard"
                 }
               ]
             }
@@ -8398,6 +8402,173 @@
           "text_decoration": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "ScratchCard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "scratch_card"
+            ]
+          },
+          "styles": {
+            "$ref": "#/components/schemas/ScratchCardStyles"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/ScratchCardProperties"
+          },
+          "action": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Close"
+              },
+              {
+                "$ref": "#/components/schemas/NextStep"
+              },
+              {
+                "$ref": "#/components/schemas/OpenForm"
+              },
+              {
+                "$ref": "#/components/schemas/PromotionalSMSSubscription"
+              },
+              {
+                "$ref": "#/components/schemas/Redirect"
+              },
+              {
+                "$ref": "#/components/schemas/ResendOptInCode"
+              },
+              {
+                "$ref": "#/components/schemas/SubmitOptInCode"
+              },
+              {
+                "$ref": "#/components/schemas/SubscribeViaSMS"
+              },
+              {
+                "$ref": "#/components/schemas/SubscribeViaWhatsApp"
+              },
+              {
+                "$ref": "#/components/schemas/GoToInbox"
+              },
+              {
+                "$ref": "#/components/schemas/SubmitBackInStock"
+              },
+              {
+                "$ref": "#/components/schemas/SkipToSuccess"
+              },
+              {
+                "$ref": "#/components/schemas/IafDeeplinkToScreen"
+              },
+              {
+                "$ref": "#/components/schemas/IafOpenUrl"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "ScratchCardProperties": {
+        "type": "object",
+        "properties": {
+          "display_device": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "both",
+                "desktop",
+                "mobile"
+              ],
+              "description": "Enumeration for mobile and desktop."
+            }
+          },
+          "classname": {
+            "type": "string",
+            "nullable": true
+          },
+          "block_animation": {
+            "$ref": "#/components/schemas/Animation",
+            "nullable": true
+          },
+          "revealed_content": {
+            "type": "string",
+            "default": ""
+          },
+          "prompt_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "reveal_threshold": {
+            "type": "integer",
+            "example": 50,
+            "default": 50
+          }
+        }
+      },
+      "ScratchCardStyles": {
+        "type": "object",
+        "properties": {
+          "padding": {
+            "$ref": "#/components/schemas/Padding"
+          },
+          "background_color": {
+            "type": "string",
+            "nullable": true
+          },
+          "cover_color": {
+            "type": "string",
+            "example": "rgba(201,166,70,1)",
+            "default": "rgba(201,166,70,1)"
+          },
+          "cover_image": {
+            "$ref": "#/components/schemas/BackgroundImage",
+            "nullable": true
+          },
+          "border_styles": {
+            "$ref": "#/components/schemas/BorderStyle",
+            "nullable": true
+          },
+          "alignment": {
+            "description": "Horizontal alignment enumeration.",
+            "type": "string",
+            "example": "center",
+            "default": "center",
+            "enum": [
+              "center",
+              "left",
+              "right"
+            ]
+          },
+          "full_width": {
+            "type": "boolean",
+            "example": true,
+            "default": true
+          },
+          "width": {
+            "type": "integer",
+            "example": 300,
+            "default": 300
+          },
+          "height": {
+            "type": "integer",
+            "example": 210,
+            "default": 210
+          },
+          "text_styles": {
+            "$ref": "#/components/schemas/TextStyleV0"
+          },
+          "prompt_text_styles": {
+            "$ref": "#/components/schemas/TextStyleV0"
           }
         }
       },
