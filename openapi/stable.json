@@ -19179,7 +19179,7 @@
       "get": {
         "operationId": "get_events",
         "summary": "Get Events",
-        "description": "Get all events in an account\n\nRequests can be sorted by the following fields: `datetime`, `timestamp`\n\n[Custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview) are not supported in the `metric_id` filter.\n\nReturns a maximum of 200 events per page.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_events.json)",
+        "description": "Get all events in an account\n\nRequests can be sorted by the following fields: `datetime`, `timestamp`\n\n[Custom metrics](https://developers.klaviyo.com/en/reference/custom_metrics_api_overview) are not supported in the `metric_id` filter.\n\nReturns 200 events per page by default, and up to 1000 with `page[size]`.<br><br>*Rate limits*:<br>Burst: `350/s`<br>Steady: `3500/m`\n\n**Scopes:**\n`events:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/get_events.json)",
         "parameters": [
           {
             "name": "fields[attribution]",
@@ -19894,7 +19894,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -19902,7 +19902,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -19922,6 +19924,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -20166,6 +20170,7 @@
                   "definition.data.action_output_filter",
                   "definition.data.action_output_filter.condition_groups",
                   "definition.data.branches",
+                  "definition.data.code_function_id",
                   "definition.data.concluded_experiment_id",
                   "definition.data.current_experiment",
                   "definition.data.current_experiment.allocations",
@@ -20717,6 +20722,7 @@
                   "definition.data.action_output_filter",
                   "definition.data.action_output_filter.condition_groups",
                   "definition.data.branches",
+                  "definition.data.code_function_id",
                   "definition.data.concluded_experiment_id",
                   "definition.data.current_experiment",
                   "definition.data.current_experiment.allocations",
@@ -21148,6 +21154,7 @@
                   "definition.data.action_output_filter",
                   "definition.data.action_output_filter.condition_groups",
                   "definition.data.branches",
+                  "definition.data.code_function_id",
                   "definition.data.concluded_experiment_id",
                   "definition.data.current_experiment",
                   "definition.data.current_experiment.allocations",
@@ -21482,6 +21489,7 @@
                   "definition.data.action_output_filter",
                   "definition.data.action_output_filter.condition_groups",
                   "definition.data.branches",
+                  "definition.data.code_function_id",
                   "definition.data.concluded_experiment_id",
                   "definition.data.current_experiment",
                   "definition.data.current_experiment.allocations",
@@ -21771,6 +21779,7 @@
                   "definition.data.action_output_filter",
                   "definition.data.action_output_filter.condition_groups",
                   "definition.data.branches",
+                  "definition.data.code_function_id",
                   "definition.data.concluded_experiment_id",
                   "definition.data.current_experiment",
                   "definition.data.current_experiment.allocations",
@@ -22100,6 +22109,7 @@
                   "definition.data.action_output_filter",
                   "definition.data.action_output_filter.condition_groups",
                   "definition.data.branches",
+                  "definition.data.code_function_id",
                   "definition.data.concluded_experiment_id",
                   "definition.data.current_experiment",
                   "definition.data.current_experiment.allocations",
@@ -22341,6 +22351,7 @@
                   "definition.data.action_output_filter",
                   "definition.data.action_output_filter.condition_groups",
                   "definition.data.branches",
+                  "definition.data.code_function_id",
                   "definition.data.concluded_experiment_id",
                   "definition.data.current_experiment",
                   "definition.data.current_experiment.allocations",
@@ -23533,6 +23544,7 @@
                   "definition.data.action_output_filter",
                   "definition.data.action_output_filter.condition_groups",
                   "definition.data.branches",
+                  "definition.data.code_function_id",
                   "definition.data.concluded_experiment_id",
                   "definition.data.current_experiment",
                   "definition.data.current_experiment.allocations",
@@ -25440,7 +25452,7 @@
       "post": {
         "operationId": "upload_image_from_url",
         "summary": "Upload Image From URL",
-        "description": "Import an image from a url or data uri.\n\nIf you want to upload an image from a file, use the Upload Image From File endpoint instead.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `100/m`<br>Daily: `100/d`\n\n**Scopes:**\n`images:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/upload_image_from_url.json)",
+        "description": "Import an image from a url or data uri.\n\nIf you want to upload an image from a file, use the Upload Image From File endpoint instead.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `100/m`<br>Daily: `500/d`\n\n**Scopes:**\n`images:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/upload_image_from_url.json)",
         "parameters": [
           {
             "name": "fields[image]",
@@ -25513,7 +25525,7 @@
         "x-klaviyo-ratelimit": {
           "burst": "3/s",
           "steady": "100/m",
-          "daily": "100/d"
+          "daily": "500/d"
         },
         "x-klaviyo-scopes": [
           "images:write"
@@ -26522,7 +26534,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -26530,7 +26542,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -26550,6 +26564,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "joined_group_at",
@@ -29471,7 +29487,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -29479,7 +29495,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -29516,6 +29534,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -29933,7 +29953,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -29941,7 +29961,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -29961,6 +29983,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -30145,7 +30169,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -30153,7 +30177,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -30210,6 +30236,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -30462,7 +30490,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -30470,7 +30498,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -30490,6 +30520,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -32116,7 +32148,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -32124,7 +32156,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -32144,6 +32178,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -33408,7 +33444,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -33416,7 +33452,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -33436,6 +33474,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -33828,7 +33868,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -33836,7 +33876,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -33856,6 +33898,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -35974,7 +36018,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -35982,7 +36026,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -36002,6 +36048,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "joined_group_at",
@@ -49640,6 +49688,18 @@
                       "predictive_analytics": {
                         "$ref": "#/components/schemas/PredictiveAnalytics",
                         "nullable": true
+                      },
+                      "hashed_email": {
+                        "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                        "type": "string",
+                        "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                        "nullable": true
+                      },
+                      "hashed_phone_number": {
+                        "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                        "type": "string",
+                        "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
+                        "nullable": true
                       }
                     }
                   }
@@ -50740,6 +50800,18 @@
                         },
                         "predictive_analytics": {
                           "$ref": "#/components/schemas/PredictiveAnalytics",
+                          "nullable": true
+                        },
+                        "hashed_email": {
+                          "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                          "type": "string",
+                          "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                          "nullable": true
+                        },
+                        "hashed_phone_number": {
+                          "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                          "type": "string",
+                          "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
                           "nullable": true
                         }
                       }
@@ -54932,6 +55004,18 @@
                         "predictive_analytics": {
                           "$ref": "#/components/schemas/PredictiveAnalytics",
                           "nullable": true
+                        },
+                        "hashed_email": {
+                          "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                          "type": "string",
+                          "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                          "nullable": true
+                        },
+                        "hashed_phone_number": {
+                          "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                          "type": "string",
+                          "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
+                          "nullable": true
                         }
                       }
                     }
@@ -55539,6 +55623,18 @@
                         "predictive_analytics": {
                           "$ref": "#/components/schemas/PredictiveAnalytics",
                           "nullable": true
+                        },
+                        "hashed_email": {
+                          "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                          "type": "string",
+                          "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                          "nullable": true
+                        },
+                        "hashed_phone_number": {
+                          "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                          "type": "string",
+                          "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
+                          "nullable": true
                         }
                       }
                     }
@@ -55879,6 +55975,18 @@
                       },
                       "predictive_analytics": {
                         "$ref": "#/components/schemas/PredictiveAnalytics",
+                        "nullable": true
+                      },
+                      "hashed_email": {
+                        "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                        "type": "string",
+                        "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                        "nullable": true
+                      },
+                      "hashed_phone_number": {
+                        "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                        "type": "string",
+                        "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
                         "nullable": true
                       }
                     }
@@ -56466,6 +56574,18 @@
                         },
                         "predictive_analytics": {
                           "$ref": "#/components/schemas/PredictiveAnalytics",
+                          "nullable": true
+                        },
+                        "hashed_email": {
+                          "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                          "type": "string",
+                          "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                          "nullable": true
+                        },
+                        "hashed_phone_number": {
+                          "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                          "type": "string",
+                          "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
                           "nullable": true
                         }
                       }
@@ -61558,6 +61678,19 @@
           "type"
         ]
       },
+      "CodeActionData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "code_function_id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CodeAction": {
         "type": "object",
         "properties": {
@@ -61585,6 +61718,7 @@
             "nullable": true
           },
           "data": {
+            "$ref": "#/components/schemas/CodeActionData",
             "nullable": true
           }
         },
@@ -64571,7 +64705,7 @@
             "nullable": true
           },
           "winner_wait_hours": {
-            "description": "How long to collect results before picking a winner, in hours.",
+            "description": "How long to collect results before picking a winner, in hours. New values may be at most 264 (11 days).",
             "type": "integer",
             "nullable": true
           }
@@ -93870,6 +94004,18 @@
                   "predictive_analytics": {
                     "$ref": "#/components/schemas/PredictiveAnalytics",
                     "nullable": true
+                  },
+                  "hashed_email": {
+                    "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                    "type": "string",
+                    "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                    "nullable": true
+                  },
+                  "hashed_phone_number": {
+                    "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                    "type": "string",
+                    "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
+                    "nullable": true
                   }
                 }
               },
@@ -110079,6 +110225,18 @@
                   },
                   "predictive_analytics": {
                     "$ref": "#/components/schemas/PredictiveAnalytics",
+                    "nullable": true
+                  },
+                  "hashed_email": {
+                    "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                    "type": "string",
+                    "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                    "nullable": true
+                  },
+                  "hashed_phone_number": {
+                    "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                    "type": "string",
+                    "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
                     "nullable": true
                   }
                 }
