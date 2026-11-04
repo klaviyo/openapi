@@ -1,0 +1,507 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/brand-fonts/{id}": {
+      "patch": {
+        "operationId": "update_brand_font_beta",
+        "summary": "Update Brand Font",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUpdate a Google or web-safe font in the brand font library.\n\nUploaded and Adobe fonts cannot be updated through this API.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_font_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand font.",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand font.",
+              "type": "string",
+              "example": "google:42"
+            }
+          },
+          {
+            "name": "fields[brand-font]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "fallback",
+                  "family",
+                  "font_family",
+                  "font_type",
+                  "id",
+                  "name",
+                  "variants"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandFontPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandFontResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
+        "type": "object",
+        "properties": {
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BrandFontEnum": {
+        "type": "string",
+        "enum": [
+          "brand-font"
+        ]
+      },
+      "BrandFontPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandFontPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandFontPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandFontEnum"
+          },
+          "id": {
+            "description": "The ID of the brand font.",
+            "type": "string",
+            "example": "google:42"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Human-readable name for this font. Cannot be null.",
+                "type": "string",
+                "example": "Headings",
+                "nullable": true
+              },
+              "variants": {
+                "description": "The Google font variants, replacing the current ones. Google fonts only; cannot be null or empty.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BrandFontVariant"
+                },
+                "nullable": true
+              },
+              "fallback": {
+                "description": "The web-safe fallback font. Google fonts only; cannot be null.",
+                "type": "string",
+                "example": "helvetica",
+                "enum": [
+                  "arial",
+                  "arial-black",
+                  "century-gothic",
+                  "comic-sans",
+                  "courier",
+                  "courier-new",
+                  "geneva",
+                  "georgia",
+                  "helvetica",
+                  "lucida",
+                  "lucida-grande",
+                  "lucida-sans",
+                  "ms-serif",
+                  "new-york",
+                  "palatino",
+                  "palatino-linotype",
+                  "tahoma",
+                  "times-new-roman",
+                  "trebuchet-ms",
+                  "verdana"
+                ],
+                "nullable": true
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "BrandFontVariant": {
+        "type": "object",
+        "properties": {
+          "weight": {
+            "description": "The font weight.",
+            "type": "integer",
+            "example": 400,
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ]
+          },
+          "style": {
+            "description": "The font style.",
+            "type": "string",
+            "example": "normal",
+            "enum": [
+              "italic",
+              "normal"
+            ]
+          }
+        },
+        "required": [
+          "weight",
+          "style"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PatchBrandFontResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandFontEnum"
+              },
+              "id": {
+                "description": "The ID of the brand font.",
+                "type": "string",
+                "example": "google:42"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "font_type": {
+                    "description": "The kind of font.",
+                    "type": "string",
+                    "example": "google",
+                    "enum": [
+                      "custom",
+                      "google",
+                      "typekit",
+                      "websafe"
+                    ]
+                  },
+                  "family": {
+                    "description": "The font family name.",
+                    "type": "string",
+                    "example": "Barlow Condensed"
+                  },
+                  "name": {
+                    "description": "Human-readable name for this font.",
+                    "type": "string",
+                    "example": "Barlow Condensed"
+                  },
+                  "font_family": {
+                    "description": "The CSS font-family value to set as `font_family` in brand text styles to use this font.",
+                    "type": "string",
+                    "example": "'Barlow Condensed', Helvetica, Arial, sans-serif"
+                  },
+                  "fallback": {
+                    "description": "The web-safe font used while this font loads or where it is unsupported. Null for web-safe fonts.",
+                    "type": "string",
+                    "example": "helvetica",
+                    "enum": [
+                      "arial",
+                      "arial-black",
+                      "century-gothic",
+                      "comic-sans",
+                      "courier",
+                      "courier-new",
+                      "geneva",
+                      "georgia",
+                      "helvetica",
+                      "lucida",
+                      "lucida-grande",
+                      "lucida-sans",
+                      "ms-serif",
+                      "new-york",
+                      "palatino",
+                      "palatino-linotype",
+                      "tahoma",
+                      "times-new-roman",
+                      "trebuchet-ms",
+                      "verdana"
+                    ],
+                    "nullable": true
+                  },
+                  "variants": {
+                    "description": "The weights and styles available for this font. Null for fonts without individually selectable variants.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BrandFontVariant"
+                    },
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "font_type",
+                  "family",
+                  "name",
+                  "font_family"
+                ]
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

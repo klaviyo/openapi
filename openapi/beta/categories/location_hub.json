@@ -69,22 +69,6 @@
             "explode": false
           },
           {
-            "name": "include",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "segments"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
             "name": "page[cursor]",
             "in": "query",
             "description": "Page cursor",
@@ -234,7 +218,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request to create an in-person event.\n\nAn event must be placeable on a map, so the request has to carry either an address or a coordinate pair: a non-empty ``address1``, or both ``city`` and ``region``, or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
+          "description": "Request to create an in-person event.\n\nAn event must be placeable on a map, so the request has to carry either a full address (``address1``, ``city``, ``zip``, and ``country``, plus ``region`` in countries that have states or provinces), or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -280,7 +264,7 @@
       "get": {
         "operationId": "get_location_live_event_beta",
         "summary": "Get Location Live Event",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet an in-person event by id.\n\nReturns `404` if the id belongs to a physical location rather than a live event. Pass `?include=segments` to populate the linked segment ids and count.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_live_event_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet an in-person event by id.\n\nReturns `404` if the id belongs to a physical location rather than a live event. Pass `?include=segments` to populate the linked segment ids and count; included segments carry their id only, no attributes.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_live_event_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -549,6 +533,317 @@
         "x-klaviyo-subtag": "Location Hub"
       }
     },
+    "/api/location-live-events/{id}/relationships/segments": {
+      "get": {
+        "operationId": "get_segment_ids_for_location_live_event_beta",
+        "summary": "Get Segment IDs for Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the segments linked to a live event.\n\nA segment is linked to at most one live event or physical location, so an event's segments are the ones that target it.\n\nSegment details are read from the segments service and cached for five minutes, so a segment renamed moments ago may still report its old name.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_segment_ids_for_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_location_live_event_relationships_segments"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read",
+          "segments:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "post": {
+        "operationId": "add_segments_to_location_live_event_beta",
+        "summary": "Add Segments to Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nLink existing segments to a live event.\n\nSegments already linked to this event are left alone, so sending the same request twice changes nothing. A segment linked to a *different* live event or location moves to this one.\n\nTo create a new segment first, use `POST /api/segments`.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:write`\n`segments:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/add_segments_to_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A segment as a JSON:API resource identifier.\n\nWritten out rather than derived with ``TypeAndIdOnly`` because a dynamically built class can't be used as a type annotation.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SegmentIdentifierRequestDataListWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_location_live_event_relationships_segments"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write",
+          "segments:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      },
+      "delete": {
+        "operationId": "remove_segments_from_location_live_event_beta",
+        "summary": "Remove Segments from Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nUnlink segments from a live event.\n\nThe segments themselves are not deleted; they stop targeting this event. Ids that aren't linked are ignored, so sending the same request twice changes nothing.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:write`\n`segments:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/remove_segments_from_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A segment as a JSON:API resource identifier.\n\nWritten out rather than derived with ``TypeAndIdOnly`` because a dynamically built class can't be used as a type annotation.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SegmentIdentifierRequestDataListWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "delete_location_live_event_relationships_segments"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:write",
+          "segments:write"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
+    "/api/location-live-events/{id}/segments": {
+      "get": {
+        "operationId": "get_segments_for_location_live_event_beta",
+        "summary": "Get Segments for Location Live Event",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet the segments linked to a live event.\n\nA segment is linked to at most one live event or physical location, so an event's segments are the ones that target it.\n\nSegment details are read from the segments service and cached for five minutes, so a segment renamed moments ago may still report its old name.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n`segments:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_segments_for_location_live_event_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[segment]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created",
+                  "definition",
+                  "id",
+                  "linked_at",
+                  "name",
+                  "updated"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 25. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_location_live_event_segments"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read",
+          "segments:read"
+        ],
+        "x-klaviyo-subtag": "Location Hub"
+      }
+    },
     "/api/locations": {
       "get": {
         "operationId": "get_locations_beta",
@@ -587,22 +882,6 @@
                   "type_label",
                   "url",
                   "zip"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "include",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "segments"
                 ]
               }
             },
@@ -758,7 +1037,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request to create a location.\n\nA location must be placeable on a map, so the request has to carry either an address or a coordinate pair: a non-empty ``address1``, or both ``city`` and ``region``, or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
+          "description": "Request to create a location.\n\nA location must be placeable on a map, so the request has to carry either a full address (``address1``, ``city``, ``zip``, and ``country``, plus ``region`` in countries that have states or provinces), or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -804,7 +1083,7 @@
       "get": {
         "operationId": "get_location_beta",
         "summary": "Get Location",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet a physical location by id.\n\nReturns `404` if the id belongs to an in-person event rather than a physical location. Pass `?include=segments` to populate the linked segment ids and count.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet a physical location by id.\n\nReturns `404` if the id belongs to an in-person event rather than a physical location. Pass `?include=segments` to populate the linked segment ids and count; included segments carry their id only, no attributes.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2094,6 +2373,9 @@
                         "id"
                       ]
                     }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
                   }
                 }
               }

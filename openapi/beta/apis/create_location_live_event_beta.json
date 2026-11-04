@@ -96,7 +96,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request to create an in-person event.\n\nAn event must be placeable on a map, so the request has to carry either an address or a coordinate pair: a non-empty ``address1``, or both ``city`` and ``region``, or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
+          "description": "Request to create an in-person event.\n\nAn event must be placeable on a map, so the request has to carry either a full address (``address1``, ``city``, ``zip``, and ``country``, plus ``region`` in countries that have states or provinces), or both ``latitude`` and ``longitude``. Whatever is supplied is geocoded, and the fields it can resolve are filled in on the created resource.",
           "required": true,
           "content": {
             "application/vnd.api+json": {
@@ -605,6 +605,9 @@
                         "id"
                       ]
                     }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
                   }
                 }
               }
@@ -663,6 +666,23 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
         ]
       },
       "SegmentResourceName": {
