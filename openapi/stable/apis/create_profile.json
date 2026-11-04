@@ -36,7 +36,7 @@
           {
             "name": "additional-fields[profile]",
             "in": "query",
-            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics'",
+            "description": "Request additional fields not included by default in the response. Supported values: 'subscriptions', 'predictive_analytics', 'hashed_email', 'hashed_phone_number'",
             "required": false,
             "schema": {
               "type": "array",
@@ -44,7 +44,9 @@
                 "type": "string",
                 "enum": [
                   "subscriptions",
-                  "predictive_analytics"
+                  "predictive_analytics",
+                  "hashed_email",
+                  "hashed_phone_number"
                 ]
               }
             },
@@ -64,6 +66,8 @@
                   "email",
                   "external_id",
                   "first_name",
+                  "hashed_email",
+                  "hashed_phone_number",
                   "id",
                   "image",
                   "last_event_date",
@@ -728,6 +732,18 @@
                   },
                   "predictive_analytics": {
                     "$ref": "#/components/schemas/PredictiveAnalytics",
+                    "nullable": true
+                  },
+                  "hashed_email": {
+                    "description": "Lowercase hex SHA-256 hash of the individual's email address, trimmed and lowercased before hashing",
+                    "type": "string",
+                    "example": "e4b42fb3f813e47f4a184542114582bf163da3c3838eea8ced2a415940d9a41f",
+                    "nullable": true
+                  },
+                  "hashed_phone_number": {
+                    "description": "Lowercase hex SHA-256 hash of the individual's phone number, reduced to its digits with leading zeros removed before hashing",
+                    "type": "string",
+                    "example": "af411f76144cfd1ee066118bf8f893b6f89652a547c34c4cebfc2baaf879a296",
                     "nullable": true
                   }
                 }
