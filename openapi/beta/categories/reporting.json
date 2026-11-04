@@ -27,167 +27,6 @@
     }
   ],
   "paths": {
-    "/api/location-values-reports": {
-      "post": {
-        "operationId": "query_location_values_beta",
-        "summary": "Query Location Values",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet totals for a live event.\n\nReturns how many people your campaigns for the event reached on each channel, and in-store sales during the event.\n\nSet `filter.live_event_id` to the event, and set the timeframe to `{\"key\": \"all_time\"}`. Other timeframes aren't supported: reach always counts every campaign sent for the event, and sales always cover the event's start and end time.\n\nTo get sales for one host location, also set `filter.location_id`. You can't combine this filter with reach statistics.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_location_values_beta.json)",
-        "parameters": [
-          {
-            "name": "fields[location-values-report]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "id",
-                  "results"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2026-10-15.pre"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Request body for the location-values-report endpoint.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LocationValuesReportQueryRequestDataWrapper"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationValuesReportResponseDataWrapper"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Beta APIs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "create_location_values_report"
-        ],
-        "x-klaviyo-pre-release": "BETA",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "locations:read"
-        ],
-        "x-klaviyo-subtag": "Reporting"
-      }
-    },
-    "/api/location-series-reports": {
-      "post": {
-        "operationId": "query_location_series_beta",
-        "summary": "Query Location Series",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet daily in-store sales for a location.\n\nSet `filter.location_id` to the location. Sales come from the location's connected point-of-sale integration. If no integration is connected, each statistic returns an empty list.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_location_series_beta.json)",
-        "parameters": [
-          {
-            "name": "fields[location-series-report]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "date_times",
-                  "id",
-                  "results"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2026-10-15.pre"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Request body for the location-series-report endpoint.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LocationSeriesReportQueryRequestDataWrapper"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocationSeriesReportResponseDataWrapper"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Beta APIs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "create_location_series_report"
-        ],
-        "x-klaviyo-pre-release": "BETA",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "locations:read"
-        ],
-        "x-klaviyo-subtag": "Reporting"
-      }
-    },
     "/api/social-series-reports": {
       "post": {
         "operationId": "query_social_series_beta",
@@ -442,6 +281,167 @@
           "metrics:read",
           "profiles:read",
           "segments:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
+    "/api/location-values-reports": {
+      "post": {
+        "operationId": "query_location_values_beta",
+        "summary": "Query Location Values",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet totals for a live event.\n\nReturns how many people your campaigns for the event reached on each channel, and in-store sales during the event.\n\nSet `filter.live_event_id` to the event, and set the timeframe to `{\"key\": \"all_time\"}`. Other timeframes aren't supported: reach always counts every campaign sent for the event, and sales always cover the event's start and end time.\n\nTo get sales for one host location, also set `filter.location_id`. You can't combine this filter with reach statistics.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_location_values_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[location-values-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for the location-values-report endpoint.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationValuesReportQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationValuesReportResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_location_values_report"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
+    "/api/location-series-reports": {
+      "post": {
+        "operationId": "query_location_series_beta",
+        "summary": "Query Location Series",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet daily in-store sales for a location.\n\nSet `filter.location_id` to the location. Sales come from the location's connected point-of-sale integration. If no integration is connected, each statistic returns an empty list.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_location_series_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[location-series-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "date_times",
+                  "id",
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for the location-series-report endpoint.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationSeriesReportQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationSeriesReportResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_location_series_report"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "locations:read"
         ],
         "x-klaviyo-subtag": "Reporting"
       }

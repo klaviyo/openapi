@@ -31,7 +31,7 @@
       "get": {
         "operationId": "get_location_live_event_beta",
         "summary": "Get Location Live Event",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet an in-person event by id.\n\nReturns `404` if the id belongs to a physical location rather than a live event. Pass `?include=segments` to populate the linked segment ids and count.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_live_event_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nGet an in-person event by id.\n\nReturns `404` if the id belongs to a physical location rather than a live event. Pass `?include=segments` to populate the linked segment ids and count; included segments carry their id only, no attributes.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`locations:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_location_live_event_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -451,6 +451,9 @@
                         "id"
                       ]
                     }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
                   }
                 }
               }
@@ -509,6 +512,23 @@
         },
         "required": [
           "self"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
         ]
       },
       "SegmentResourceName": {
