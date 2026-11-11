@@ -90,6 +90,9 @@
                   "predictive_analytics.average_days_between_orders",
                   "predictive_analytics.average_order_value",
                   "predictive_analytics.churn_probability",
+                  "predictive_analytics.discount_affinity",
+                  "predictive_analytics.discount_affinity.is_control",
+                  "predictive_analytics.discount_affinity.predicted_rank",
                   "predictive_analytics.expected_date_of_next_order",
                   "predictive_analytics.historic_clv",
                   "predictive_analytics.historic_number_of_orders",
@@ -406,6 +409,29 @@
           "consent",
           "can_receive"
         ]
+      },
+      "DiscountAffinityPredictiveAnalytics": {
+        "type": "object",
+        "properties": {
+          "predicted_rank": {
+            "description": "How often this profile has purchased with a discount or offer, relative to others in the account. One of Deal seeker, Mixed buyer, Full-price buyer, or Unknown (not enough history to estimate)",
+            "type": "string",
+            "example": "Deal seeker",
+            "enum": [
+              "Deal seeker",
+              "Full-price buyer",
+              "Mixed buyer",
+              "Unknown"
+            ],
+            "nullable": true
+          },
+          "is_control": {
+            "description": "Whether this profile is in the discount affinity holdout group. Holdout profiles are scored, but discount affinity isn't used to personalize their messages, so results can be measured",
+            "type": "boolean",
+            "example": true,
+            "nullable": true
+          }
+        }
       },
       "EmailChannel": {
         "type": "object",
@@ -928,6 +954,11 @@
               "email",
               "push"
             ],
+            "nullable": true
+          },
+          "discount_affinity": {
+            "description": "Discount affinity data for this profile. Included only for accounts eligible for discount affinity",
+            "$ref": "#/components/schemas/DiscountAffinityPredictiveAnalytics",
             "nullable": true
           }
         }

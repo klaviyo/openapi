@@ -3187,6 +3187,74 @@
           "versions"
         ]
       },
+      "FormEngagement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "form_engagement"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/FormEngagementProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "FormEngagementLookback": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer"
+          },
+          "unit": {
+            "description": "Unit of a lookback window.",
+            "type": "string",
+            "enum": [
+              "days",
+              "hours",
+              "minutes"
+            ]
+          }
+        },
+        "required": [
+          "value",
+          "unit"
+        ]
+      },
+      "FormEngagementProperties": {
+        "type": "object",
+        "properties": {
+          "engagement": {
+            "description": "How the visitor engaged with another form.",
+            "type": "string",
+            "example": "viewed",
+            "default": "viewed",
+            "enum": [
+              "submitted",
+              "viewed"
+            ]
+          },
+          "form_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lookback": {
+            "$ref": "#/components/schemas/FormEngagementLookback",
+            "nullable": true
+          }
+        }
+      },
       "FormEnum": {
         "type": "string",
         "enum": [
@@ -7578,6 +7646,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ExitIntent"
+                },
+                {
+                  "$ref": "#/components/schemas/FormEngagement"
                 },
                 {
                   "$ref": "#/components/schemas/IdentifiedProfiles"
