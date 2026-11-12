@@ -43,8 +43,27 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "channels",
+                  "channels.email",
+                  "channels.email.blockers",
+                  "channels.email.enabled",
+                  "channels.sms",
+                  "channels.sms.blockers",
+                  "channels.sms.enabled",
+                  "channels.web_chat",
+                  "channels.web_chat.blockers",
+                  "channels.web_chat.enabled",
+                  "channels.whatsapp",
+                  "channels.whatsapp.blockers",
+                  "channels.whatsapp.enabled",
                   "communication_styles",
                   "escalation_rules",
+                  "handoff",
+                  "handoff.email_address",
+                  "handoff.fallback_message",
+                  "handoff.handoff_message",
+                  "handoff.include_ticket_id",
+                  "handoff.mechanism",
                   "id",
                   "name",
                   "tone_of_voice",
@@ -227,6 +246,81 @@
           "self"
         ]
       },
+      "CustomerAgentChannel": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Whether the agent answers on this channel.",
+            "type": "boolean"
+          },
+          "blockers": {
+            "description": "Reasons the channel cannot be enabled. Read-only. Empty when the channel can be enabled. SMS and WhatsApp always report `NOT_CONFIGURABLE_VIA_API`.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerAgentChannelBlocker"
+            }
+          }
+        },
+        "required": [
+          "enabled",
+          "blockers"
+        ]
+      },
+      "CustomerAgentChannelBlocker": {
+        "description": "A reason a channel cannot be enabled.",
+        "type": "string",
+        "enum": [
+          "HANDOFF_NOT_CONFIGURED",
+          "FALLBACK_MESSAGE_EMPTY",
+          "HELPDESK_NOT_CONNECTED",
+          "NO_REMAINING_RESOLUTIONS",
+          "WEB_CHAT_NOT_ENABLED",
+          "NOT_CONFIGURABLE_VIA_API"
+        ]
+      },
+      "CustomerAgentChannels": {
+        "type": "object",
+        "properties": {
+          "web_chat": {
+            "description": "Web chat.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannel"
+              }
+            ]
+          },
+          "email": {
+            "description": "Email.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannel"
+              }
+            ]
+          },
+          "sms": {
+            "description": "SMS. Read-only through the API.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannel"
+              }
+            ]
+          },
+          "whatsapp": {
+            "description": "WhatsApp. Read-only through the API.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannel"
+              }
+            ]
+          }
+        },
+        "required": [
+          "web_chat",
+          "email",
+          "sms",
+          "whatsapp"
+        ]
+      },
       "CustomerAgentCommunicationStyle": {
         "type": "object",
         "properties": {
@@ -311,6 +405,45 @@
           "status"
         ]
       },
+      "CustomerAgentHandoff": {
+        "type": "object",
+        "properties": {
+          "mechanism": {
+            "description": "How the agent hands a shopper off to a human. Null when the account uses a mechanism this API does not expose.",
+            "type": "string",
+            "enum": [
+              "GORGIAS",
+              "ZENDESK",
+              "INBOX",
+              "OTHER_EMAIL_BASED",
+              "FALLBACK_MESSAGE"
+            ],
+            "nullable": true
+          },
+          "fallback_message": {
+            "description": "Sent when the agent is unable to answer and no human is available.",
+            "type": "string",
+            "nullable": true
+          },
+          "handoff_message": {
+            "description": "Sent when the agent hands the shopper off to a human.",
+            "type": "string",
+            "nullable": true
+          },
+          "include_ticket_id": {
+            "description": "Whether the handoff message includes the helpdesk ticket reference number.",
+            "type": "boolean"
+          },
+          "email_address": {
+            "description": "Address handoffs are emailed to. Used when `mechanism` is `OTHER_EMAIL_BASED`.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "include_ticket_id"
+        ]
+      },
       "CustomerAgentResourceName": {
         "type": "string",
         "enum": [
@@ -346,12 +479,30 @@
             "items": {
               "$ref": "#/components/schemas/CustomerAgentCommunicationStyle"
             }
+          },
+          "handoff": {
+            "description": "The account-wide default handoff configuration, which every channel inherits.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentHandoff"
+              }
+            ]
+          },
+          "channels": {
+            "description": "Whether each channel is on, and what stops it from being turned on.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannels"
+              }
+            ]
           }
         },
         "required": [
           "tone_of_voice",
           "escalation_rules",
-          "communication_styles"
+          "communication_styles",
+          "handoff",
+          "channels"
         ]
       },
       "CustomerAgentResponseData": {
