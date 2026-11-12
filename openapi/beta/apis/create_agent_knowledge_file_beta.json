@@ -54,6 +54,8 @@
                   "source.child_count",
                   "source.content",
                   "source.exclude_prefixes",
+                  "source.indexed_child_count",
+                  "source.pending_child_count",
                   "source.question",
                   "source.scope",
                   "source.source_type",
@@ -511,6 +513,21 @@
             "items": {
               "type": "string"
             },
+            "nullable": true
+          },
+          "child_count": {
+            "description": "Total number of pages discovered beneath this webpage, at any depth, in every indexing state. Use it with `indexed_child_count` and `pending_child_count` to track the progress of a site crawl, which can take hours. Only populated when listed via GET /agent-knowledge; null when fetched by id via GET /agent-knowledge/{id}, and null for every non-webpage source. `0` is not null: it means a webpage with no pages beneath it yet.",
+            "type": "integer",
+            "nullable": true
+          },
+          "indexed_child_count": {
+            "description": "Number of those pages that have finished indexing. Null under the same conditions as `child_count`. This and `pending_child_count` do not necessarily add up to `child_count`, which also counts pages that failed or were rejected.",
+            "type": "integer",
+            "nullable": true
+          },
+          "pending_child_count": {
+            "description": "Number of those pages still waiting to be indexed. Null under the same conditions as `child_count`. Pages that failed or were rejected are not counted here, so this is not `child_count` minus `indexed_child_count`.",
+            "type": "integer",
             "nullable": true
           }
         },

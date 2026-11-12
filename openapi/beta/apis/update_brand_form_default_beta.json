@@ -1,0 +1,736 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/brand-form-defaults/{id}": {
+      "patch": {
+        "operationId": "update_brand_form_default_beta",
+        "summary": "Update Brand Form Default",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPartial update of the brand form defaults for the authenticated account.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`brands:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_brand_form_default_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the brand form defaults (must equal the account ID).",
+            "required": true,
+            "schema": {
+              "description": "The ID of the brand form defaults (must equal the account ID).",
+              "type": "string",
+              "example": "abc123"
+            }
+          },
+          {
+            "name": "fields[brand-form-default]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "background_color",
+                  "body_text",
+                  "body_text.color",
+                  "body_text.font_family",
+                  "body_text.font_size",
+                  "body_text.font_style",
+                  "body_text.font_weight",
+                  "body_text.letter_spacing",
+                  "body_text.text_decoration",
+                  "corner_radius",
+                  "heading_text",
+                  "heading_text.color",
+                  "heading_text.font_family",
+                  "heading_text.font_size",
+                  "heading_text.font_style",
+                  "heading_text.font_weight",
+                  "heading_text.letter_spacing",
+                  "heading_text.text_decoration",
+                  "id",
+                  "input",
+                  "input.background_color",
+                  "input.border_color",
+                  "input.corner_radius",
+                  "input.focus_border_color",
+                  "input.input_field_height",
+                  "input.input_text",
+                  "input.input_text.color",
+                  "input.input_text.font_family",
+                  "input.input_text.font_size",
+                  "input.input_text.font_style",
+                  "input.input_text.font_weight",
+                  "input.input_text.letter_spacing",
+                  "input.input_text.text_decoration",
+                  "input.label_text",
+                  "input.label_text.color",
+                  "input.label_text.font_family",
+                  "input.label_text.font_size",
+                  "input.label_text.font_style",
+                  "input.label_text.font_weight",
+                  "input.label_text.letter_spacing",
+                  "input.label_text.text_decoration",
+                  "input.placeholder_text",
+                  "input.placeholder_text.color",
+                  "input.placeholder_text.font_family",
+                  "input.placeholder_text.font_size",
+                  "input.placeholder_text.font_style",
+                  "input.placeholder_text.font_weight",
+                  "input.placeholder_text.letter_spacing",
+                  "input.placeholder_text.text_decoration"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /api/brand-form-defaults/{id}: JSON:API field-level partial update.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandFormDefaultPartialUpdateQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchBrandFormDefaultResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "brands:write"
+        ],
+        "x-klaviyo-subtag": "Brands"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AgentHints": {
+        "description": "Optional hints emitted by the API for agent callers",
+        "type": "object",
+        "properties": {
+          "next_steps": {
+            "description": "Suggested follow-up actions for agents to take after this response",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BrandButtonEnum": {
+        "type": "string",
+        "enum": [
+          "brand-button"
+        ]
+      },
+      "BrandFormDefaultEnum": {
+        "type": "string",
+        "enum": [
+          "brand-form-default"
+        ]
+      },
+      "BrandFormDefaultPartialUpdateQuery": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BrandFormDefaultPartialUpdateQueryResourceObject"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandFormDefaultPartialUpdateQueryResourceObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/BrandFormDefaultEnum"
+          },
+          "id": {
+            "description": "The ID of the brand form defaults (must equal the account ID).",
+            "type": "string",
+            "example": "abc123"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "heading_text": {
+                "description": "Heading text styles. Send `null` to clear.",
+                "$ref": "#/components/schemas/BrandLibraryTextStyles",
+                "nullable": true
+              },
+              "body_text": {
+                "description": "Body text styles. Send `null` to clear.",
+                "$ref": "#/components/schemas/BrandLibraryTextStyles",
+                "nullable": true
+              },
+              "input": {
+                "description": "Patch the input field styles (per-field merge). Send `null` to clear.",
+                "$ref": "#/components/schemas/BrandFormInputPatchAttributes",
+                "nullable": true
+              },
+              "background_color": {
+                "description": "Hex color for the form background. Send `null` to clear.",
+                "type": "string",
+                "example": "#ffffff",
+                "nullable": true
+              },
+              "corner_radius": {
+                "description": "Corner radius of the form, in pixels. Send `null` to clear.",
+                "type": "integer",
+                "example": 8,
+                "nullable": true
+              }
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "brand-button": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/BrandButtonEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "secondary-brand-button": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/BrandButtonEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ]
+      },
+      "BrandFormInputPatchAttributes": {
+        "type": "object",
+        "properties": {
+          "label_text": {
+            "description": "Text styles for input field labels. Cannot be null.",
+            "$ref": "#/components/schemas/BrandLibraryTextStyles",
+            "nullable": true
+          },
+          "input_text": {
+            "description": "Text styles for text typed into input fields. Cannot be null.",
+            "$ref": "#/components/schemas/BrandLibraryTextStyles",
+            "nullable": true
+          },
+          "placeholder_text": {
+            "description": "Text styles for input field placeholders. Cannot be null.",
+            "$ref": "#/components/schemas/BrandLibraryTextStyles",
+            "nullable": true
+          },
+          "background_color": {
+            "description": "Hex color for the input field background. Cannot be null.",
+            "type": "string",
+            "example": "#ffffff",
+            "nullable": true
+          },
+          "border_color": {
+            "description": "Hex color for the input field border. Cannot be null.",
+            "type": "string",
+            "example": "#b4bbc3",
+            "nullable": true
+          },
+          "focus_border_color": {
+            "description": "Hex color for the input field border while it has focus. Cannot be null.",
+            "type": "string",
+            "example": "#000000",
+            "nullable": true
+          },
+          "corner_radius": {
+            "description": "Corner radius of input fields, in pixels. Cannot be null.",
+            "type": "integer",
+            "example": 2,
+            "nullable": true
+          },
+          "input_field_height": {
+            "description": "Height of input fields, in pixels. Cannot be null.",
+            "type": "integer",
+            "example": 38,
+            "nullable": true
+          }
+        }
+      },
+      "BrandLibraryTextStyles": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string"
+          },
+          "font_size": {
+            "type": "integer"
+          },
+          "font_style": {
+            "description": "Font style.",
+            "type": "string",
+            "enum": [
+              "italic",
+              "normal"
+            ]
+          },
+          "font_family": {
+            "type": "string"
+          },
+          "font_weight": {
+            "description": "Font weight.",
+            "type": "integer",
+            "enum": [
+              100,
+              200,
+              300,
+              400,
+              500,
+              600,
+              700,
+              800,
+              900
+            ]
+          },
+          "letter_spacing": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "text_decoration": {
+            "description": "Text decoration.",
+            "type": "string",
+            "enum": [
+              "",
+              "line-through",
+              "line-through underline",
+              "none",
+              "underline",
+              "underline line-through"
+            ]
+          }
+        },
+        "required": [
+          "color",
+          "font_size",
+          "font_style",
+          "font_family",
+          "font_weight",
+          "letter_spacing",
+          "text_decoration"
+        ]
+      },
+      "FormInputStyles": {
+        "type": "object",
+        "properties": {
+          "label_text": {
+            "$ref": "#/components/schemas/BrandLibraryTextStyles"
+          },
+          "input_text": {
+            "$ref": "#/components/schemas/BrandLibraryTextStyles"
+          },
+          "placeholder_text": {
+            "$ref": "#/components/schemas/BrandLibraryTextStyles"
+          },
+          "background_color": {
+            "type": "string"
+          },
+          "border_color": {
+            "type": "string"
+          },
+          "focus_border_color": {
+            "type": "string"
+          },
+          "corner_radius": {
+            "type": "integer"
+          },
+          "input_field_height": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "label_text",
+          "input_text",
+          "placeholder_text",
+          "background_color",
+          "border_color",
+          "focus_border_color",
+          "corner_radius",
+          "input_field_height"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "PatchBrandFormDefaultResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/components/schemas/BrandFormDefaultEnum"
+              },
+              "id": {
+                "description": "The ID of the brand form defaults (equal to the account ID).",
+                "type": "string",
+                "example": "abc123"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "heading_text": {
+                    "description": "Heading text styles. `null` when not set.",
+                    "$ref": "#/components/schemas/BrandLibraryTextStyles",
+                    "nullable": true
+                  },
+                  "body_text": {
+                    "description": "Body text styles. `null` when not set.",
+                    "$ref": "#/components/schemas/BrandLibraryTextStyles",
+                    "nullable": true
+                  },
+                  "input": {
+                    "description": "Input field styles. `null` when not set.",
+                    "$ref": "#/components/schemas/FormInputStyles",
+                    "nullable": true
+                  },
+                  "background_color": {
+                    "description": "Hex color for the form background. `null` when not set.",
+                    "type": "string",
+                    "example": "#ffffff",
+                    "nullable": true
+                  },
+                  "corner_radius": {
+                    "description": "Corner radius of the form, in pixels. `null` when not set.",
+                    "type": "integer",
+                    "example": 8,
+                    "nullable": true
+                  }
+                }
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "brand-button": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/BrandButtonEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  },
+                  "secondary-brand-button": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "$ref": "#/components/schemas/BrandButtonEnum"
+                          },
+                          "id": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ]
+                      },
+                      "links": {
+                        "$ref": "#/components/schemas/RelationshipLinks"
+                      }
+                    }
+                  }
+                }
+              },
+              "links": {
+                "$ref": "#/components/schemas/ObjectLinks"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "attributes",
+              "links"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
+      "ResponseMeta": {
+        "description": "Response-level metadata",
+        "type": "object",
+        "properties": {
+          "agent_hints": {
+            "$ref": "#/components/schemas/AgentHints"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}

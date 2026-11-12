@@ -27,14 +27,82 @@
     }
   ],
   "paths": {
-    "/api/service-agents": {
+    "/api/customer-agent-conversations/{id}/relationships/service-ticket": {
       "get": {
-        "operationId": "get_service_agents_beta",
-        "summary": "Get Service Agents",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Customer Agent for the calling company.\n\nThere is at most one Customer Agent per company, so the array holds one Customer Agent, or is empty if Customer Agent is not enabled for the account. Use this to look up the Customer Agent's ``id`` before calling Get or Update Service Agent.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_agents_beta.json)",
+        "operationId": "get_service_ticket_id_for_customer_agent_conversation_beta",
+        "summary": "Get Service Ticket ID for Customer Agent Conversation",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Helpdesk ticket a conversation belongs to, if it has one.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_ticket_id_for_customer_agent_conversation_beta.json)",
         "parameters": [
           {
-            "name": "fields[service-agent]",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_customer_agent_conversation_relationships_service_ticket"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/customer-agent-conversations/{id}/service-ticket": {
+      "get": {
+        "operationId": "get_service_ticket_for_customer_agent_conversation_beta",
+        "summary": "Get Service Ticket for Customer Agent Conversation",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Helpdesk ticket a conversation belongs to, if it has one.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_ticket_for_customer_agent_conversation_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-ticket]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -43,13 +111,11 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "communication_styles",
-                  "escalation_rules",
+                  "channel",
+                  "created_at",
                   "id",
-                  "name",
-                  "tone_of_voice",
-                  "tone_of_voice.custom_instruction",
-                  "tone_of_voice.preset"
+                  "status",
+                  "updated_at"
                 ]
               }
             },
@@ -72,7 +138,87 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ServiceAgentResponseDataListWrapper"
+                  "$ref": "#/components/schemas/ServiceTicketResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_customer_agent_conversation_service_ticket"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-messages/{id}": {
+      "get": {
+        "operationId": "get_service_message_beta",
+        "summary": "Get Service Message",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Helpdesk ticket message by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_message_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "author_type",
+                  "channel",
+                  "content",
+                  "created_at",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceMessageResponseDataWrapper"
                 }
               }
             }
@@ -98,11 +244,11 @@
         "x-klaviyo-subtag": "Service"
       }
     },
-    "/api/service-agents/{id}": {
+    "/api/service-notes/{id}": {
       "get": {
-        "operationId": "get_service_agent_beta",
-        "summary": "Get Service Agent",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Customer Agent resource for the calling company.\n\nIncludes ``name``, ``tone_of_voice`` with preset and optional custom instruction, ``escalation_rules``, and ``communication_styles``. There is one Customer Agent per company; its ``id`` is the account's ID, which Get Service Agents returns.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_agent_beta.json)",
+        "operationId": "get_service_note_beta",
+        "summary": "Get Service Note",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Helpdesk ticket note by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_note_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -113,7 +259,7 @@
             }
           },
           {
-            "name": "fields[service-agent]",
+            "name": "fields[service-note]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -122,13 +268,9 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "communication_styles",
-                  "escalation_rules",
-                  "id",
-                  "name",
-                  "tone_of_voice",
-                  "tone_of_voice.custom_instruction",
-                  "tone_of_voice.preset"
+                  "content",
+                  "created_at",
+                  "id"
                 ]
               }
             },
@@ -151,7 +293,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ServiceAgentResponseDataWrapper"
+                  "$ref": "#/components/schemas/ServiceNoteResponseDataWrapper"
                 }
               }
             }
@@ -175,22 +317,16 @@
           "agents:read"
         ],
         "x-klaviyo-subtag": "Service"
-      },
-      "patch": {
-        "operationId": "update_service_agent_beta",
-        "summary": "Update Service Agent",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches the Customer Agent resource for the calling company.\n\nThe request body ``data.id`` must match the path parameter. Supports ``name``, ``tone_of_voice``, ``escalation_rules``, and ``communication_styles``. For tone, provide ``tone_of_voice.preset`` from the supported enum, or ``preset: \"custom\"`` together with ``custom_instruction``. For ``escalation_rules`` and ``communication_styles``, the supplied array replaces the existing list; omit the field to leave the existing list unchanged. Takes effect on the next turn.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_service_agent_beta.json)",
+      }
+    },
+    "/api/service-teams": {
+      "get": {
+        "operationId": "get_service_teams_beta",
+        "summary": "Get Service Teams",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the Helpdesk support teams for the calling company, one page at a time.\n\nFollow ``links.next`` to fetch the next page. Results are sorted by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_teams_beta.json)",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fields[service-agent]",
+            "name": "fields[service-team]",
             "in": "query",
             "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
             "required": false,
@@ -199,17 +335,36 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "communication_styles",
-                  "escalation_rules",
+                  "created_at",
+                  "description",
                   "id",
                   "name",
-                  "tone_of_voice",
-                  "tone_of_voice.custom_instruction",
-                  "tone_of_voice.preset"
+                  "updated_at"
                 ]
               }
             },
             "explode": false
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "revision",
@@ -222,24 +377,13 @@
             }
           }
         ],
-        "requestBody": {
-          "description": "JSON:API request for updating the `service-agent` resource.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ServiceAgentUpdateRequestRequestDataWrapper"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ServiceAgentResponseDataWrapper"
+                  "$ref": "#/components/schemas/ServiceTeamResponseDataWrapper"
                 }
               }
             }
@@ -260,7 +404,1118 @@
           "steady": "150/m"
         },
         "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-teams/{id}": {
+      "get": {
+        "operationId": "get_service_team_beta",
+        "summary": "Get Service Team",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Helpdesk support team by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_team_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-team]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "description",
+                  "id",
+                  "name",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTeamResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-teams/{id}/relationships/service-tickets": {
+      "get": {
+        "operationId": "get_ticket_ids_for_service_team_beta",
+        "summary": "Get Ticket IDs for Service Team",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the team's tickets, newest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_ticket_ids_for_service_team_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_service_team_relationships_tickets"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-teams/{id}/service-tickets": {
+      "get": {
+        "operationId": "get_tickets_for_service_team_beta",
+        "summary": "Get Tickets for Service Team",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the team's tickets, newest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_tickets_for_service_team_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-ticket]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "channel",
+                  "created_at",
+                  "id",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_service_team_tickets"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-tickets": {
+      "get": {
+        "operationId": "get_service_tickets_beta",
+        "summary": "Get Service Tickets",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns Helpdesk tickets, newest first.\n\nFilter by ``profile.id`` to get one customer's tickets.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_tickets_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[service-ticket]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "channel",
+                  "created_at",
+                  "id",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`profile.id`: `equals` (string)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "equals(profile.id,'01GDDKASAP8TKDDA2GRZDSVP4H')"
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-filters": {
+          "profile.id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-tickets/{id}": {
+      "get": {
+        "operationId": "get_service_ticket_beta",
+        "summary": "Get Service Ticket",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one Helpdesk ticket by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_ticket_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-ticket]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "channel",
+                  "created_at",
+                  "id",
+                  "status",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-ticket-csat-responses": {
+      "post": {
+        "operationId": "create_service_ticket_csat_response_beta",
+        "summary": "Create Service Ticket Csat Response",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nRecords the customer's CSAT response for a closed ticket.\n\nA ticket has at most one CSAT response.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_service_ticket_csat_response_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[service-ticket-csat-response]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "answers",
+                  "id",
+                  "rating",
+                  "submitted_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "JSON:API request to record a ticket's CSAT response.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceTicketCSATResponseCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketCSATResponseResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
           "agents:write"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-ticket-csat-responses/{id}": {
+      "get": {
+        "operationId": "get_service_ticket_csat_response_beta",
+        "summary": "Get Service Ticket Csat Response",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns one ticket CSAT response by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_ticket_csat_response_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-ticket-csat-response]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "answers",
+                  "id",
+                  "rating",
+                  "submitted_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketCSATResponseResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-ticket-csat-surveys": {
+      "get": {
+        "operationId": "get_service_ticket_csat_surveys_beta",
+        "summary": "Get Service Ticket Csat Surveys",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the account's CSAT survey.\n\nThere is one survey per account. Use its questions to submit a ticket CSAT response.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_ticket_csat_surveys_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[service-ticket-csat-survey]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "enabled",
+                  "icon",
+                  "id",
+                  "questions",
+                  "style"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketCSATSurveyResponseDataListWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-ticket-csat-surveys/{id}": {
+      "get": {
+        "operationId": "get_service_ticket_csat_survey_beta",
+        "summary": "Get Service Ticket Csat Survey",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the account's CSAT survey by ``id``, which is the account's ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_ticket_csat_survey_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-ticket-csat-survey]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "enabled",
+                  "icon",
+                  "id",
+                  "questions",
+                  "style"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceTicketCSATSurveyResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-tickets/{id}/relationships/service-messages": {
+      "get": {
+        "operationId": "get_message_ids_for_service_ticket_beta",
+        "summary": "Get Message IDs for Service Ticket",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the ticket's messages, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_message_ids_for_service_ticket_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceMessageResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_service_ticket_relationships_messages"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-tickets/{id}/service-messages": {
+      "get": {
+        "operationId": "get_messages_for_service_ticket_beta",
+        "summary": "Get Messages for Service Ticket",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the ticket's messages, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_messages_for_service_ticket_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-message]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "author_type",
+                  "channel",
+                  "content",
+                  "created_at",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceMessageResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_service_ticket_messages"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-tickets/{id}/relationships/service-notes": {
+      "get": {
+        "operationId": "get_note_ids_for_service_ticket_beta",
+        "summary": "Get Note IDs for Service Ticket",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the ticket's notes, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_note_ids_for_service_ticket_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceNoteResponseIdOnlyDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_service_ticket_relationships_notes"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    },
+    "/api/service-tickets/{id}/service-notes": {
+      "get": {
+        "operationId": "get_notes_for_service_ticket_beta",
+        "summary": "Get Notes for Service Ticket",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the ticket's notes, oldest first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_notes_for_service_ticket_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-note]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "content",
+                  "created_at",
+                  "id"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "description": "Default: 50. Min: 1. Max: 100.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page[cursor]",
+            "in": "query",
+            "description": "Page cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceNoteResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "get_service_ticket_notes"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
         ],
         "x-klaviyo-subtag": "Service"
       }
@@ -394,220 +1649,6 @@
           "self"
         ]
       },
-      "CustomerAgentCommunicationStyle": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "Short, human-readable label for the communication style.",
-            "type": "string"
-          },
-          "description": {
-            "description": "Natural-language communication style the agent must follow on every turn.",
-            "type": "string"
-          },
-          "status": {
-            "description": "Whether this guidance item is active.",
-            "type": "string",
-            "enum": [
-              "enabled",
-              "disabled"
-            ]
-          },
-          "countries": {
-            "description": "Countries this rule applies to, as ISO 3166-1 alpha-2 codes. Empty or null means every country.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "languages": {
-            "description": "Languages this rule applies to, as ISO 639-1 codes, or ISO 639-3 where none exists. Some languages aren't supported. Empty or null means every language.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          }
-        },
-        "required": [
-          "title",
-          "description",
-          "status"
-        ]
-      },
-      "CustomerAgentCommunicationStyleRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "Short, human-readable label for the communication style.",
-            "type": "string"
-          },
-          "description": {
-            "description": "Natural-language communication style the agent must follow on every turn.",
-            "type": "string"
-          },
-          "status": {
-            "description": "Whether this guidance item is active.",
-            "type": "string",
-            "enum": [
-              "enabled",
-              "disabled"
-            ]
-          },
-          "countries": {
-            "description": "Countries this rule applies to, as ISO 3166-1 alpha-2 codes. Empty or null means every country.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "languages": {
-            "description": "Languages this rule applies to, as ISO 639-1 codes, or ISO 639-3 where none exists. Some languages aren't supported. Empty or null means every language.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          }
-        },
-        "required": [
-          "title",
-          "description",
-          "status"
-        ]
-      },
-      "CustomerAgentEscalationRule": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "Short, human-readable label for the escalation rule.",
-            "type": "string"
-          },
-          "description": {
-            "description": "Natural-language description of when this rule fires.",
-            "type": "string"
-          },
-          "status": {
-            "description": "Whether this guidance item is active.",
-            "type": "string",
-            "enum": [
-              "enabled",
-              "disabled"
-            ]
-          },
-          "countries": {
-            "description": "Countries this rule applies to, as ISO 3166-1 alpha-2 codes. Empty or null means every country.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "languages": {
-            "description": "Languages this rule applies to, as ISO 639-1 codes, or ISO 639-3 where none exists. Some languages aren't supported. Empty or null means every language.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          }
-        },
-        "required": [
-          "title",
-          "description",
-          "status"
-        ]
-      },
-      "CustomerAgentEscalationRuleRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "description": "Short, human-readable label for the escalation rule.",
-            "type": "string"
-          },
-          "description": {
-            "description": "Natural-language description of when this rule fires.",
-            "type": "string"
-          },
-          "status": {
-            "description": "Whether this guidance item is active.",
-            "type": "string",
-            "enum": [
-              "enabled",
-              "disabled"
-            ]
-          },
-          "countries": {
-            "description": "Countries this rule applies to, as ISO 3166-1 alpha-2 codes. Empty or null means every country.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "languages": {
-            "description": "Languages this rule applies to, as ISO 639-1 codes, or ISO 639-3 where none exists. Some languages aren't supported. Empty or null means every language.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          }
-        },
-        "required": [
-          "title",
-          "description",
-          "status"
-        ]
-      },
-      "CustomerAgentToneOfVoice": {
-        "type": "object",
-        "properties": {
-          "preset": {
-            "description": "Built-in tone preset.",
-            "type": "string",
-            "enum": [
-              "neutral",
-              "professional",
-              "friendly",
-              "playful",
-              "custom"
-            ]
-          },
-          "custom_instruction": {
-            "description": "Free-text instruction the agent uses for tone when `preset` is `custom`. Ignored otherwise.",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "preset"
-        ]
-      },
-      "CustomerAgentToneOfVoiceUpdateRequest": {
-        "type": "object",
-        "properties": {
-          "preset": {
-            "description": "Built-in tone preset.",
-            "type": "string",
-            "enum": [
-              "neutral",
-              "professional",
-              "friendly",
-              "playful",
-              "custom"
-            ],
-            "nullable": true
-          },
-          "custom_instruction": {
-            "description": "Free-text instruction the agent uses for tone when `preset` is `custom`. Ignored otherwise.",
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "ObjectLinks": {
         "type": "object",
         "properties": {
@@ -620,62 +1661,454 @@
           "self"
         ]
       },
-      "ServiceAgentResourceName": {
+      "ProfileResourceName": {
         "type": "string",
         "enum": [
-          "service-agent"
+          "profile"
         ]
       },
-      "ServiceAgentResponse": {
+      "RelationshipLinks": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the AI agent.",
+          "self": {
             "type": "string",
-            "nullable": true
+            "format": "uri"
           },
-          "tone_of_voice": {
-            "description": "Tone-of-voice settings for the Customer Agent resource.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CustomerAgentToneOfVoice"
-              }
-            ]
-          },
-          "escalation_rules": {
-            "description": "Natural-language triggers that, when matched, cause the agent to escalate to a human. Each rule is individually enabled or disabled.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CustomerAgentEscalationRule"
-            }
-          },
-          "communication_styles": {
-            "description": "Communication styles the agent applies on every turn, such as opening conventions, formatting preferences, and word choices to avoid. Each style is individually enabled or disabled.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CustomerAgentCommunicationStyle"
-            }
+          "related": {
+            "type": "string",
+            "format": "uri"
           }
         },
         "required": [
-          "tone_of_voice",
-          "escalation_rules",
-          "communication_styles"
+          "self",
+          "related"
         ]
       },
-      "ServiceAgentResponseData": {
+      "ServiceMessageResourceName": {
+        "type": "string",
+        "enum": [
+          "service-message"
+        ]
+      },
+      "ServiceMessageResponse": {
+        "type": "object",
+        "properties": {
+          "author_type": {
+            "description": "Who wrote the message.",
+            "type": "string",
+            "example": "human-agent",
+            "enum": [
+              "customer",
+              "human-agent",
+              "ai-agent",
+              "automation"
+            ]
+          },
+          "channel": {
+            "description": "Channel the message was sent on.",
+            "type": "string",
+            "example": "email"
+          },
+          "content": {
+            "description": "Message content.",
+            "example": "Your order shipped today.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "Date and time when the message was sent.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-01T12:00:00+00:00"
+          }
+        },
+        "required": [
+          "author_type",
+          "channel",
+          "content",
+          "created_at"
+        ]
+      },
+      "ServiceMessageResponseData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/ServiceAgentResourceName"
+            "$ref": "#/components/schemas/ServiceMessageResourceName"
           },
           "id": {
-            "description": "Customer Agent resource id. This is the account's ID.",
+            "description": "Service message identifier.",
             "type": "string",
-            "example": "AbC123"
+            "example": "48213907"
           },
           "attributes": {
-            "$ref": "#/components/schemas/ServiceAgentResponse"
+            "$ref": "#/components/schemas/ServiceMessageResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "service-ticket": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ServiceTicketResourceName"
+                      },
+                      "id": {
+                        "description": "Ticket the message belongs to.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ProfileResourceName"
+                      },
+                      "id": {
+                        "description": "Klaviyo profile of the customer who wrote the message, if known.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/UserResourceName"
+                      },
+                      "id": {
+                        "description": "Klaviyo user who wrote the message, for a support rep's message.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "service-ticket"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
+        ]
+      },
+      "ServiceMessageResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceMessageResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServiceMessageResponseIdOnlyData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceMessageResourceName"
+          },
+          "id": {
+            "description": "Service message identifier.",
+            "type": "string",
+            "example": "48213907"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "ServiceMessageResponseIdOnlyDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceMessageResponseIdOnlyData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServiceNoteResourceName": {
+        "type": "string",
+        "enum": [
+          "service-note"
+        ]
+      },
+      "ServiceNoteResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "description": "Note content.",
+            "example": "Refund approved.",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "Date and time when the note was written.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-01T12:00:00+00:00"
+          }
+        },
+        "required": [
+          "content",
+          "created_at"
+        ]
+      },
+      "ServiceNoteResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceNoteResourceName"
+          },
+          "id": {
+            "description": "Service note identifier.",
+            "type": "string",
+            "example": "7"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ServiceNoteResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "service-ticket": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ServiceTicketResourceName"
+                      },
+                      "id": {
+                        "description": "Ticket the note belongs to.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/UserResourceName"
+                      },
+                      "id": {
+                        "description": "Klaviyo user who wrote the note, if known.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "service-ticket"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
+        ]
+      },
+      "ServiceNoteResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceNoteResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServiceNoteResponseIdOnlyData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceNoteResourceName"
+          },
+          "id": {
+            "description": "Service note identifier.",
+            "type": "string",
+            "example": "7"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "ServiceNoteResponseIdOnlyDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceNoteResponseIdOnlyData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServiceTeamResourceName": {
+        "type": "string",
+        "enum": [
+          "service-team"
+        ]
+      },
+      "ServiceTeamResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Team name. Unique within the account.",
+            "type": "string",
+            "example": "Returns"
+          },
+          "description": {
+            "description": "Optional description of the team.",
+            "type": "string",
+            "example": "Handles returns and exchanges.",
+            "nullable": true
+          },
+          "created_at": {
+            "description": "Date and time when the team was created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-01T12:00:00+00:00"
+          },
+          "updated_at": {
+            "description": "Date and time when the team was last updated.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-02T12:00:00+00:00"
+          }
+        },
+        "required": [
+          "name",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "ServiceTeamResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceTeamResourceName"
+          },
+          "id": {
+            "description": "Service team identifier.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ServiceTeamResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "service-tickets": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ServiceTicketResourceName"
+                        },
+                        "id": {
+                          "description": "Tickets assigned to this team.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -688,13 +2121,319 @@
           "links"
         ]
       },
-      "ServiceAgentResponseDataListWrapper": {
+      "ServiceTeamResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceTeamResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServiceTicketCSATAnswer": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "nullable": true
+          },
+          "answer": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "question"
+        ]
+      },
+      "ServiceTicketCSATQuestionType": {
+        "description": "What a CSAT question asks for.",
+        "type": "string",
+        "enum": [
+          "rating",
+          "text",
+          "text_and_rating"
+        ]
+      },
+      "ServiceTicketCSATResponseCreateRequestRequest": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "description": "The CSAT question the customer answered.",
+            "type": "string",
+            "example": "How did we do?"
+          },
+          "rating": {
+            "description": "The customer's rating, from 1 to 5.",
+            "type": "integer",
+            "example": 5
+          },
+          "answer": {
+            "description": "The customer's written feedback, if any.",
+            "type": "string",
+            "example": "Great",
+            "nullable": true
+          }
+        },
+        "required": [
+          "question",
+          "rating"
+        ]
+      },
+      "ServiceTicketCSATResponseCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceTicketCsatResponseResourceName"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ServiceTicketCSATResponseCreateRequestRequest"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "service-ticket": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ServiceTicketResourceName"
+                      },
+                      "id": {
+                        "description": "The ticket this CSAT response is for.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "service-ticket"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes",
+          "relationships"
+        ]
+      },
+      "ServiceTicketCSATResponseCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceTicketCSATResponseCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServiceTicketCSATResponseResponse": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "description": "Overall rating from 1 to 5.",
+            "type": "number",
+            "example": 4
+          },
+          "answers": {
+            "description": "Answers to the CSAT questions.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceTicketCSATAnswer"
+            }
+          },
+          "submitted_at": {
+            "description": "Date and time when the response was submitted.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-02T12:00:00+00:00"
+          }
+        },
+        "required": [
+          "rating",
+          "answers",
+          "submitted_at"
+        ]
+      },
+      "ServiceTicketCSATResponseResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceTicketCsatResponseResourceName"
+          },
+          "id": {
+            "description": "Service ticket CSAT response identifier.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ServiceTicketCSATResponseResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "service-ticket": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ServiceTicketResourceName"
+                      },
+                      "id": {
+                        "description": "The ticket this CSAT response is for.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "service-ticket"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
+        ]
+      },
+      "ServiceTicketCSATResponseResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceTicketCSATResponseResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServiceTicketCSATSurveyQuestion": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ServiceTicketCSATQuestionType"
+          },
+          "placeholder": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "question",
+          "type"
+        ]
+      },
+      "ServiceTicketCSATSurveyResponse": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Whether customers are sent the survey.",
+            "type": "boolean",
+            "example": true
+          },
+          "style": {
+            "description": "How the survey is shown to customers.",
+            "type": "string",
+            "example": "basic",
+            "enum": [
+              "basic",
+              "rich"
+            ]
+          },
+          "icon": {
+            "description": "Rating icons, for a `rich` survey.",
+            "type": "string",
+            "example": "stars",
+            "enum": [
+              "emoji",
+              "flat",
+              "stars"
+            ],
+            "nullable": true
+          },
+          "questions": {
+            "description": "The survey's questions. A CSAT response answers each by its `question` text.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceTicketCSATSurveyQuestion"
+            }
+          }
+        },
+        "required": [
+          "enabled",
+          "style",
+          "questions"
+        ]
+      },
+      "ServiceTicketCSATSurveyResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceTicketCsatSurveyResourceName"
+          },
+          "id": {
+            "description": "The account's ID.",
+            "type": "string",
+            "example": "AbC123"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ServiceTicketCSATSurveyResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ServiceTicketCSATSurveyResponseDataListWrapper": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ServiceAgentResponseData"
+              "$ref": "#/components/schemas/ServiceTicketCSATSurveyResponseData"
             }
           },
           "links": {
@@ -705,11 +2444,11 @@
           "data"
         ]
       },
-      "ServiceAgentResponseDataWrapper": {
+      "ServiceTicketCSATSurveyResponseDataWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ServiceAgentResponseData"
+            "$ref": "#/components/schemas/ServiceTicketCSATSurveyResponseData"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -719,70 +2458,228 @@
           "data"
         ]
       },
-      "ServiceAgentUpdateRequestRequest": {
+      "ServiceTicketCsatResponseResourceName": {
+        "type": "string",
+        "enum": [
+          "service-ticket-csat-response"
+        ]
+      },
+      "ServiceTicketCsatSurveyResourceName": {
+        "type": "string",
+        "enum": [
+          "service-ticket-csat-survey"
+        ]
+      },
+      "ServiceTicketResourceName": {
+        "type": "string",
+        "enum": [
+          "service-ticket"
+        ]
+      },
+      "ServiceTicketResponse": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the AI agent.",
+          "status": {
+            "description": "Current status of the ticket.",
             "type": "string",
+            "example": "open",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          "channel": {
+            "description": "Channel of the ticket's latest message, if it has any messages.",
+            "type": "string",
+            "example": "email",
             "nullable": true
           },
-          "tone_of_voice": {
-            "description": "Patchable tone-of-voice settings for the Customer Agent resource.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CustomerAgentToneOfVoiceUpdateRequest"
-              }
-            ],
-            "nullable": true
+          "created_at": {
+            "description": "Date and time when the ticket was created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-01T12:00:00+00:00"
           },
-          "escalation_rules": {
-            "description": "Natural-language triggers that, when matched, cause the agent to escalate to a human. When provided, the supplied array replaces the existing list; omit to leave the existing list unchanged.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CustomerAgentEscalationRuleRequest"
-            },
-            "nullable": true
-          },
-          "communication_styles": {
-            "description": "Communication styles the agent applies on every turn. When provided, the supplied array replaces the existing list; omit to leave the existing list unchanged.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CustomerAgentCommunicationStyleRequest"
-            },
+          "updated_at": {
+            "description": "Date and time when the ticket was last updated.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-02T12:00:00+00:00",
             "nullable": true
           }
-        }
+        },
+        "required": [
+          "status",
+          "created_at"
+        ]
       },
-      "ServiceAgentUpdateRequestRequestData": {
+      "ServiceTicketResponseData": {
         "type": "object",
         "properties": {
           "type": {
-            "$ref": "#/components/schemas/ServiceAgentResourceName"
+            "$ref": "#/components/schemas/ServiceTicketResourceName"
           },
           "id": {
-            "description": "Customer Agent resource id. Must match the `id` path parameter.",
-            "type": "string"
+            "description": "Service ticket identifier.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0"
           },
           "attributes": {
-            "$ref": "#/components/schemas/ServiceAgentUpdateRequestRequest"
+            "$ref": "#/components/schemas/ServiceTicketResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "service-team": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ServiceTeamResourceName"
+                      },
+                      "id": {
+                        "description": "Team the ticket is assigned to, if any.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ProfileResourceName"
+                      },
+                      "id": {
+                        "description": "Klaviyo profile of the customer, if known.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "assignee": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/UserResourceName"
+                      },
+                      "id": {
+                        "description": "Klaviyo user the ticket is assigned to, if any.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              },
+              "service-ticket-csat-response": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ServiceTicketCsatResponseResourceName"
+                      },
+                      "id": {
+                        "description": "The customer's CSAT response, if they submitted one.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
           "type",
           "id",
-          "attributes"
+          "attributes",
+          "links"
         ]
       },
-      "ServiceAgentUpdateRequestRequestDataWrapper": {
+      "ServiceTicketResponseDataWrapper": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/ServiceAgentUpdateRequestRequestData"
+            "$ref": "#/components/schemas/ServiceTicketResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
           }
         },
         "required": [
           "data"
+        ]
+      },
+      "ServiceTicketResponseIdOnlyData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceTicketResourceName"
+          },
+          "id": {
+            "description": "Service ticket identifier.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "links"
+        ]
+      },
+      "ServiceTicketResponseIdOnlyDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceTicketResponseIdOnlyData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UserResourceName": {
+        "type": "string",
+        "enum": [
+          "user"
         ]
       }
     },

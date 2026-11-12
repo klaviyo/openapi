@@ -69,6 +69,38 @@
             "explode": false
           },
           {
+            "name": "fields[tag]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "tags"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "revision",
             "in": "header",
             "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
@@ -85,7 +117,7 @@
             "content": {
               "application/vnd.api+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetPolymorphicFormResponse"
+                  "$ref": "#/components/schemas/GetPolymorphicFormResponseCompoundDocument"
                 }
               }
             }
@@ -1154,6 +1186,12 @@
             "$ref": "#/components/schemas/ButtonDropShadowStyles"
           }
         }
+      },
+      "CampaignEnum": {
+        "type": "string",
+        "enum": [
+          "campaign"
+        ]
       },
       "CartContent": {
         "type": "object",
@@ -3164,17 +3202,97 @@
           "timezone"
         ]
       },
+      "FlowEnum": {
+        "type": "string",
+        "enum": [
+          "flow"
+        ]
+      },
+      "FormEngagement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Not allowed on create.",
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "form_engagement"
+            ]
+          },
+          "properties": {
+            "$ref": "#/components/schemas/FormEngagementProperties"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "FormEngagementLookback": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer"
+          },
+          "unit": {
+            "description": "Unit of a lookback window.",
+            "type": "string",
+            "enum": [
+              "days",
+              "hours",
+              "minutes"
+            ]
+          }
+        },
+        "required": [
+          "value",
+          "unit"
+        ]
+      },
+      "FormEngagementProperties": {
+        "type": "object",
+        "properties": {
+          "engagement": {
+            "description": "How the visitor engaged with another form.",
+            "type": "string",
+            "example": "viewed",
+            "default": "viewed",
+            "enum": [
+              "submitted",
+              "viewed"
+            ]
+          },
+          "form_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lookback": {
+            "$ref": "#/components/schemas/FormEngagementLookback",
+            "nullable": true
+          }
+        }
+      },
       "FormEnum": {
         "type": "string",
         "enum": [
           "form"
         ]
       },
-      "GetPolymorphicFormResponse": {
+      "GetPolymorphicFormResponseCompoundDocument": {
         "type": "object",
         "properties": {
           "data": {
             "$ref": "#/components/schemas/PolymorphicFormResponseObjectResource"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagResponseObjectResource"
+            }
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -4473,6 +4591,12 @@
             ]
           }
         }
+      },
+      "ListEnum": {
+        "type": "string",
+        "enum": [
+          "list"
+        ]
       },
       "ListsAndSegments": {
         "type": "object",
@@ -6104,6 +6228,23 @@
           }
         }
       },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
       "ResendOptInCode": {
         "type": "object",
         "properties": {
@@ -7191,6 +7332,12 @@
           }
         }
       },
+      "SegmentEnum": {
+        "type": "string",
+        "enum": [
+          "segment"
+        ]
+      },
       "SideImageSettings": {
         "type": "object",
         "properties": {
@@ -7720,6 +7867,185 @@
           "opt_in_keyword",
           "opt_in_message",
           "sending_number"
+        ]
+      },
+      "TagEnum": {
+        "type": "string",
+        "enum": [
+          "tag"
+        ]
+      },
+      "TagGroupEnum": {
+        "type": "string",
+        "enum": [
+          "tag-group"
+        ]
+      },
+      "TagResponseObjectResource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TagEnum"
+          },
+          "id": {
+            "description": "The Tag ID",
+            "type": "string",
+            "example": "abcd1234-ef56-gh78-ij90-abcdef123456"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "The Tag name",
+                "type": "string",
+                "example": "My Tag"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "tag-group": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/TagGroupEnum"
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "lists": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ListEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "segments": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/SegmentEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "campaigns": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/CampaignEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              },
+              "flows": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/FlowEnum"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
         ]
       },
       "Teaser": {
@@ -8282,6 +8608,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/ExitIntent"
+                },
+                {
+                  "$ref": "#/components/schemas/FormEngagement"
                 },
                 {
                   "$ref": "#/components/schemas/IdentifiedProfiles"

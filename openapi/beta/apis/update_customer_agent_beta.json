@@ -31,7 +31,7 @@
       "patch": {
         "operationId": "update_customer_agent_beta",
         "summary": "Update Customer Agent",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches the Customer Agent resource for the calling company.\n\nThe request body ``data.id`` must match the path parameter. Supports ``name``, ``tone_of_voice``, ``escalation_rules``, and ``communication_styles``. For tone, provide ``tone_of_voice.preset`` from the supported enum, or ``preset: \"custom\"`` together with ``custom_instruction``. For ``escalation_rules`` and ``communication_styles``, the supplied array replaces the existing list; omit the field to leave the existing list unchanged. Takes effect on the next turn.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches the Customer Agent resource for the calling company.\n\nThe request body ``data.id`` must match the path parameter. Supports ``name``, ``tone_of_voice``, ``escalation_rules``, ``communication_styles``, ``handoff``, and ``channels``. For tone, provide ``tone_of_voice.preset`` from the supported enum, or ``preset: \"custom\"`` together with ``custom_instruction``. For ``escalation_rules`` and ``communication_styles``, the supplied array replaces the existing list; omit the field to leave the existing list unchanged. ``handoff`` is merged into the stored default handoff configuration: fields you omit are unchanged, and selecting a helpdesk that is not connected is rejected. In ``channels``, set ``enabled`` to turn a channel on or off. Enabling a channel that has ``blockers`` is rejected, and ``sms`` and ``whatsapp`` cannot be changed through the API. Takes effect on the next turn.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_customer_agent_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -51,8 +51,27 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "channels",
+                  "channels.email",
+                  "channels.email.blockers",
+                  "channels.email.enabled",
+                  "channels.sms",
+                  "channels.sms.blockers",
+                  "channels.sms.enabled",
+                  "channels.web_chat",
+                  "channels.web_chat.blockers",
+                  "channels.web_chat.enabled",
+                  "channels.whatsapp",
+                  "channels.whatsapp.blockers",
+                  "channels.whatsapp.enabled",
                   "communication_styles",
                   "escalation_rules",
+                  "handoff",
+                  "handoff.email_address",
+                  "handoff.fallback_message",
+                  "handoff.handoff_message",
+                  "handoff.include_ticket_id",
+                  "handoff.mechanism",
                   "id",
                   "name",
                   "tone_of_voice",
@@ -226,6 +245,132 @@
       }
     },
     "schemas": {
+      "CustomerAgentChannel": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Whether the agent answers on this channel.",
+            "type": "boolean"
+          },
+          "blockers": {
+            "description": "Reasons the channel cannot be enabled. Read-only. Empty when the channel can be enabled. SMS and WhatsApp always report `NOT_CONFIGURABLE_VIA_API`.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerAgentChannelBlocker"
+            }
+          }
+        },
+        "required": [
+          "enabled",
+          "blockers"
+        ]
+      },
+      "CustomerAgentChannelBlocker": {
+        "description": "A reason a channel cannot be enabled.",
+        "type": "string",
+        "enum": [
+          "HANDOFF_NOT_CONFIGURED",
+          "FALLBACK_MESSAGE_EMPTY",
+          "HELPDESK_NOT_CONNECTED",
+          "NO_REMAINING_RESOLUTIONS",
+          "WEB_CHAT_NOT_ENABLED",
+          "NOT_CONFIGURABLE_VIA_API"
+        ]
+      },
+      "CustomerAgentChannelUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Turn the channel on or off. Turning a channel on is rejected while it has blockers. Not allowed for SMS or WhatsApp.",
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "CustomerAgentChannels": {
+        "type": "object",
+        "properties": {
+          "web_chat": {
+            "description": "Web chat.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannel"
+              }
+            ]
+          },
+          "email": {
+            "description": "Email.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannel"
+              }
+            ]
+          },
+          "sms": {
+            "description": "SMS. Read-only through the API.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannel"
+              }
+            ]
+          },
+          "whatsapp": {
+            "description": "WhatsApp. Read-only through the API.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannel"
+              }
+            ]
+          }
+        },
+        "required": [
+          "web_chat",
+          "email",
+          "sms",
+          "whatsapp"
+        ]
+      },
+      "CustomerAgentChannelsUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "web_chat": {
+            "description": "Web chat.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannelUpdateRequest"
+              }
+            ],
+            "nullable": true
+          },
+          "email": {
+            "description": "Email.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannelUpdateRequest"
+              }
+            ],
+            "nullable": true
+          },
+          "sms": {
+            "description": "SMS. Writes are rejected.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannelUpdateRequest"
+              }
+            ],
+            "nullable": true
+          },
+          "whatsapp": {
+            "description": "WhatsApp. Writes are rejected.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannelUpdateRequest"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "CustomerAgentCommunicationStyle": {
         "type": "object",
         "properties": {
@@ -394,6 +539,82 @@
           "status"
         ]
       },
+      "CustomerAgentHandoff": {
+        "type": "object",
+        "properties": {
+          "mechanism": {
+            "description": "How the agent hands a shopper off to a human. Null when the account uses a mechanism this API does not expose.",
+            "type": "string",
+            "enum": [
+              "GORGIAS",
+              "ZENDESK",
+              "INBOX",
+              "OTHER_EMAIL_BASED",
+              "FALLBACK_MESSAGE"
+            ],
+            "nullable": true
+          },
+          "fallback_message": {
+            "description": "Sent when the agent is unable to answer and no human is available.",
+            "type": "string",
+            "nullable": true
+          },
+          "handoff_message": {
+            "description": "Sent when the agent hands the shopper off to a human.",
+            "type": "string",
+            "nullable": true
+          },
+          "include_ticket_id": {
+            "description": "Whether the handoff message includes the helpdesk ticket reference number.",
+            "type": "boolean"
+          },
+          "email_address": {
+            "description": "Address handoffs are emailed to. Used when `mechanism` is `OTHER_EMAIL_BASED`.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "include_ticket_id"
+        ]
+      },
+      "CustomerAgentHandoffUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "mechanism": {
+            "description": "How the agent hands a shopper off to a human. Cannot be null. A helpdesk that is not connected is rejected.",
+            "type": "string",
+            "enum": [
+              "GORGIAS",
+              "ZENDESK",
+              "INBOX",
+              "OTHER_EMAIL_BASED",
+              "FALLBACK_MESSAGE"
+            ],
+            "nullable": true
+          },
+          "fallback_message": {
+            "description": "Sent when the agent is unable to answer and no human is available. Cannot be null.",
+            "type": "string",
+            "nullable": true
+          },
+          "handoff_message": {
+            "description": "Sent when the agent hands the shopper off to a human. Cannot be null.",
+            "type": "string",
+            "nullable": true
+          },
+          "include_ticket_id": {
+            "description": "Whether the handoff message includes the helpdesk ticket reference number. Cannot be null.",
+            "type": "boolean",
+            "nullable": true
+          },
+          "email_address": {
+            "description": "Address handoffs are emailed to. Required when `mechanism` is `OTHER_EMAIL_BASED`.",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CustomerAgentResourceName": {
         "type": "string",
         "enum": [
@@ -429,12 +650,30 @@
             "items": {
               "$ref": "#/components/schemas/CustomerAgentCommunicationStyle"
             }
+          },
+          "handoff": {
+            "description": "The account-wide default handoff configuration, which every channel inherits.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentHandoff"
+              }
+            ]
+          },
+          "channels": {
+            "description": "Whether each channel is on, and what stops it from being turned on.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannels"
+              }
+            ]
           }
         },
         "required": [
           "tone_of_voice",
           "escalation_rules",
-          "communication_styles"
+          "communication_styles",
+          "handoff",
+          "channels"
         ]
       },
       "CustomerAgentResponseData": {
@@ -553,6 +792,24 @@
             "items": {
               "$ref": "#/components/schemas/CustomerAgentCommunicationStyleRequest"
             },
+            "nullable": true
+          },
+          "handoff": {
+            "description": "Patchable default handoff configuration. Fields you omit are left unchanged.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentHandoffUpdateRequest"
+              }
+            ],
+            "nullable": true
+          },
+          "channels": {
+            "description": "Patchable channel state. Channels you omit are left unchanged.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAgentChannelsUpdateRequest"
+              }
+            ],
             "nullable": true
           }
         }

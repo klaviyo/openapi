@@ -1,0 +1,410 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/customer-agent-training-runs": {
+      "post": {
+        "operationId": "start_customer_agent_training_run_beta",
+        "summary": "Start Customer Agent Training Run",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nStart training for the specified Customer Agent and return its current status.\n\nReturns `409 Conflict` if training is already pending or running. Poll Get Customer Agent Training Runs to monitor progress. You can start another run after the current run succeeds or fails.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/start_customer_agent_training_run_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[customer-agent-training-run]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "error",
+                  "id",
+                  "source",
+                  "stage",
+                  "started_at",
+                  "status"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Start training for a Customer Agent belonging to the authenticated account.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerAgentTrainingRunCreateRequestRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAgentTrainingRunResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-operation-aliases": [
+          "create_customer_agent_training_run"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:write"
+        ],
+        "x-klaviyo-subtag": "Customer Agent"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CustomerAgentResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent"
+        ]
+      },
+      "CustomerAgentTrainingRunCreateRequestRequestData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentTrainingRunResourceName"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "customer-agent": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/CustomerAgentResourceName"
+                      },
+                      "id": {
+                        "description": "Customer Agent to train. Use the ID returned by Get Customer Agents.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "customer-agent"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "relationships"
+        ]
+      },
+      "CustomerAgentTrainingRunCreateRequestRequestDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CustomerAgentTrainingRunCreateRequestRequestData"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CustomerAgentTrainingRunResourceName": {
+        "type": "string",
+        "enum": [
+          "customer-agent-training-run"
+        ]
+      },
+      "CustomerAgentTrainingRunResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "Training lifecycle status. Stop polling only when this is `succeeded` or `failed`, regardless of `stage`. Accounts that have never trained return `not_started`.",
+            "type": "string",
+            "enum": [
+              "not_started",
+              "pending",
+              "running",
+              "succeeded",
+              "failed"
+            ]
+          },
+          "stage": {
+            "description": "Current pipeline step. May be null during training; never use it to stop polling.",
+            "type": "string",
+            "enum": [
+              "selecting_source",
+              "importing_conversations",
+              "clustering_conversations",
+              "preparing_scenario_inputs",
+              "generating_scenarios",
+              "running_simulations",
+              "complete"
+            ],
+            "nullable": true
+          },
+          "source": {
+            "description": "Selected training corpus: `customer_agent`, `third_party_helpdesk`, or `canonical`. Null until selected.",
+            "type": "string",
+            "enum": [
+              "customer_agent",
+              "third_party_helpdesk",
+              "canonical"
+            ],
+            "nullable": true
+          },
+          "error": {
+            "description": "Customer-safe explanation when training did not finish, otherwise null.",
+            "type": "string",
+            "nullable": true
+          },
+          "started_at": {
+            "description": "When the most recent training was requested. Null before the first run.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-08T00:00:00+00:00",
+            "nullable": true
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "CustomerAgentTrainingRunResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/CustomerAgentTrainingRunResourceName"
+          },
+          "id": {
+            "description": "The account's ID.",
+            "type": "string",
+            "example": "AbC123"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/CustomerAgentTrainingRunResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "CustomerAgentTrainingRunResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/CustomerAgentTrainingRunResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}
