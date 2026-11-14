@@ -64765,7 +64765,7 @@
             "nullable": true
           },
           "winner_wait_hours": {
-            "description": "How long to collect results before picking a winner, in hours. New values may be at most 264 (11 days).",
+            "description": "How long to collect results before picking a winner, in hours. New values may be at most 264 (11 days). Returned as null when no wait is set or the saved wait is outside 1-720 hours.",
             "type": "integer",
             "nullable": true
           }
@@ -95819,7 +95819,7 @@
         "type": "object",
         "properties": {
           "audience_temporary_id": {
-            "description": "Must match a temporary_id in the definition.audiences array.",
+            "description": "Must match a temporary_id in the attributes.audiences array.",
             "type": "string"
           },
           "name": {
@@ -95844,7 +95844,7 @@
             "nullable": true
           },
           "variations": {
-            "description": "Inline variations for this message. Default variation created if omitted.",
+            "description": "Inline variations for this message. If omitted, the message has no variation; add one with the create campaign variation endpoint.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/VariationInlineCreate"
@@ -95907,7 +95907,7 @@
             "type": "object",
             "properties": {
               "definition": {
-                "description": "The campaign definition containing audiences and optional messages",
+                "description": "The campaign name, builder, display settings, and default send settings. Audiences and messages go in the top-level audiences and messages arrays.",
                 "$ref": "#/components/schemas/CampaignDefinition"
               },
               "messages": {
@@ -95919,7 +95919,7 @@
                 "nullable": true
               },
               "audiences": {
-                "description": "Audiences to create on this campaign. Each references a message via audience_temporary_id.",
+                "description": "Audiences to create on this campaign. At least one is required. Each audience has a temporary_id that messages reference through audience_temporary_id.",
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/AudienceInlineCreate"
