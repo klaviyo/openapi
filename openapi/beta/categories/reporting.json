@@ -96,6 +96,7 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-beta-revision": "2026-10-15.pre",
         "x-klaviyo-operation-aliases": [
           "create_ksql_ask"
         ],
@@ -123,166 +124,6 @@
           "metrics:read",
           "profiles:read",
           "segments:read"
-        ],
-        "x-klaviyo-subtag": "Reporting"
-      }
-    },
-    "/api/social-series-reports": {
-      "post": {
-        "operationId": "query_social_series_beta",
-        "summary": "Query Social Series",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nTime-bucketed series for one or more statistics.\n\n``social_subscribers`` requires ``filter.channel``. The funnel statistics (``funnel_started``, ``funnel_submitted_identifier``, ``funnel_ended``) require ``filter.automation_id`` and can't be combined with ``social_subscribers`` in one request. A statistic that is not yet available returns ``422`` with code ``statistic_not_yet_available``.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`social:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_social_series_beta.json)",
-        "parameters": [
-          {
-            "name": "fields[social-series-report]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "id",
-                  "results"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2026-10-15.pre"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Request body for the social-series-report endpoint.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SocialSeriesReportQueryRequestDataWrapper"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SocialSeriesReportResponseDataWrapper"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Beta APIs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "create_social_series_report"
-        ],
-        "x-klaviyo-pre-release": "BETA",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "social:read"
-        ],
-        "x-klaviyo-subtag": "Reporting"
-      }
-    },
-    "/api/social-values-reports": {
-      "post": {
-        "operationId": "query_social_values_beta",
-        "summary": "Query Social Values",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPoint-in-time aggregate statistics, optionally broken down by dimension.\n\nOmit ``dimension`` for a single account-level row, or set it to ``content``, ``creator``, or ``auto_reply`` for one row per item. The revenue statistics (``social_revenue``, ``auto_reply_revenue``, ``engagement_revenue``) can't be combined with a dimension. An invalid statistic / dimension combination returns ``422`` with code ``invalid_statistic``; a combination that is not yet available returns ``422`` with code ``statistic_not_yet_available``.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`social:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_social_values_beta.json)",
-        "parameters": [
-          {
-            "name": "fields[social-values-report]",
-            "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "id",
-                  "results"
-                ]
-              }
-            },
-            "explode": false
-          },
-          {
-            "name": "revision",
-            "in": "header",
-            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "2026-10-15.pre"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Request body for the social-values-report endpoint.",
-          "required": true,
-          "content": {
-            "application/vnd.api+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SocialValuesReportQueryRequestDataWrapper"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SocialValuesReportResponseDataWrapper"
-                }
-              }
-            }
-          },
-          "4XX": {
-            "$ref": "#/components/responses/ClientError"
-          },
-          "5XX": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        },
-        "tags": [
-          "Beta APIs"
-        ],
-        "x-klaviyo-operation-aliases": [
-          "create_social_values_report"
-        ],
-        "x-klaviyo-pre-release": "BETA",
-        "x-klaviyo-ratelimit": {
-          "burst": "3/s",
-          "steady": "60/m"
-        },
-        "x-klaviyo-scopes": [
-          "social:read"
         ],
         "x-klaviyo-subtag": "Reporting"
       }
@@ -353,6 +194,7 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-beta-revision": "2026-10-15.pre",
         "x-klaviyo-operation-aliases": [
           "create_location_values_report"
         ],
@@ -434,6 +276,7 @@
         "tags": [
           "Beta APIs"
         ],
+        "x-klaviyo-beta-revision": "2026-10-15.pre",
         "x-klaviyo-operation-aliases": [
           "create_location_series_report"
         ],
@@ -444,6 +287,168 @@
         },
         "x-klaviyo-scopes": [
           "locations:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
+    "/api/social-series-reports": {
+      "post": {
+        "operationId": "query_social_series_beta",
+        "summary": "Query Social Series",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nTime-bucketed series for one or more statistics.\n\n``social_subscribers`` requires ``filter.channel``. The funnel statistics (``funnel_started``, ``funnel_submitted_identifier``, ``funnel_ended``) require ``filter.automation_id`` and can't be combined with ``social_subscribers`` in one request. A statistic that is not yet available returns ``422`` with code ``statistic_not_yet_available``.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`social:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_social_series_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[social-series-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for the social-series-report endpoint.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SocialSeriesReportQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocialSeriesReportResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-beta-revision": "2026-10-15.pre",
+        "x-klaviyo-operation-aliases": [
+          "create_social_series_report"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "social:read"
+        ],
+        "x-klaviyo-subtag": "Reporting"
+      }
+    },
+    "/api/social-values-reports": {
+      "post": {
+        "operationId": "query_social_values_beta",
+        "summary": "Query Social Values",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPoint-in-time aggregate statistics, optionally broken down by dimension.\n\nOmit ``dimension`` for a single account-level row, or set it to ``content``, ``creator``, or ``auto_reply`` for one row per item. The revenue statistics (``social_revenue``, ``auto_reply_revenue``, ``engagement_revenue``) can't be combined with a dimension. An invalid statistic / dimension combination returns ``422`` with code ``invalid_statistic``; a combination that is not yet available returns ``422`` with code ``statistic_not_yet_available``.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`social:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/query_social_values_beta.json)",
+        "parameters": [
+          {
+            "name": "fields[social-values-report]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "results"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Request body for the social-values-report endpoint.",
+          "required": true,
+          "content": {
+            "application/vnd.api+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SocialValuesReportQueryRequestDataWrapper"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocialValuesReportResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-beta-revision": "2026-10-15.pre",
+        "x-klaviyo-operation-aliases": [
+          "create_social_values_report"
+        ],
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "3/s",
+          "steady": "60/m"
+        },
+        "x-klaviyo-scopes": [
+          "social:read"
         ],
         "x-klaviyo-subtag": "Reporting"
       }

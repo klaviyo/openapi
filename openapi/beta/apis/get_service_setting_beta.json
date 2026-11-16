@@ -1,0 +1,416 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Klaviyo API (Beta)",
+    "version": "2026-10-15.pre",
+    "description": "The Klaviyo REST API. Please visit https://developers.klaviyo.com for more details.",
+    "contact": {
+      "name": "Klaviyo Developer Experience Team",
+      "email": "developers@klaviyo.com",
+      "url": "https://developers.klaviyo.com"
+    },
+    "termsOfService": "https://www.klaviyo.com/legal/api-terms",
+    "license": {
+      "name": "License",
+      "url": "https://www.klaviyo.com/legal"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://a.klaviyo.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "Klaviyo-API-Key": []
+    }
+  ],
+  "paths": {
+    "/api/service-settings/{id}": {
+      "get": {
+        "operationId": "get_service_setting_beta",
+        "summary": "Get Service Setting",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the account's Helpdesk settings by ``id``, which is the account's ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_service_setting_beta.json)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields[service-setting]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "id",
+                  "office_hours",
+                  "office_hours.timezone",
+                  "office_hours.weekly_hours",
+                  "office_hours.weekly_hours.friday",
+                  "office_hours.weekly_hours.monday",
+                  "office_hours.weekly_hours.saturday",
+                  "office_hours.weekly_hours.sunday",
+                  "office_hours.weekly_hours.thursday",
+                  "office_hours.weekly_hours.tuesday",
+                  "office_hours.weekly_hours.wednesday"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "revision",
+            "in": "header",
+            "description": "API endpoint revision (format: YYYY-MM-DD[.suffix])",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2026-10-15.pre"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceSettingResponseDataWrapper"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/ClientError"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "tags": [
+          "Beta APIs"
+        ],
+        "x-klaviyo-beta-revision": "2026-10-15.pre",
+        "x-klaviyo-beta-subtag": "Settings",
+        "x-klaviyo-pre-release": "BETA",
+        "x-klaviyo-ratelimit": {
+          "burst": "10/s",
+          "steady": "150/m"
+        },
+        "x-klaviyo-scopes": [
+          "agents:read"
+        ],
+        "x-klaviyo-subtag": "Service"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ClientError": {
+        "description": "Client Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "application/vnd.api+json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "title",
+                      "detail"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "pointer": {
+                            "type": "string"
+                          },
+                          "parameter": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "errors"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ObjectLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self"
+        ]
+      },
+      "ServiceOfficeHours": {
+        "type": "object",
+        "properties": {
+          "timezone": {
+            "description": "IANA timezone name.",
+            "type": "string",
+            "example": "America/New_York"
+          },
+          "weekly_hours": {
+            "description": "Open intervals for each day. If every day is empty, the account is always open.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServiceWeeklyHours"
+              }
+            ]
+          }
+        },
+        "required": [
+          "timezone",
+          "weekly_hours"
+        ]
+      },
+      "ServiceOfficeHoursInterval": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "description": "Opening time, as `HH:MM`.",
+            "type": "string",
+            "example": "09:00"
+          },
+          "end": {
+            "description": "Closing time, as `HH:MM`. Must be after `start`.",
+            "type": "string",
+            "example": "17:00"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ]
+      },
+      "ServiceSettingResourceName": {
+        "type": "string",
+        "enum": [
+          "service-setting"
+        ]
+      },
+      "ServiceSettingResponse": {
+        "type": "object",
+        "properties": {
+          "office_hours": {
+            "description": "When the Helpdesk is open.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServiceOfficeHours"
+              }
+            ]
+          }
+        },
+        "required": [
+          "office_hours"
+        ]
+      },
+      "ServiceSettingResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceSettingResourceName"
+          },
+          "id": {
+            "description": "The account's ID.",
+            "type": "string",
+            "example": "AbC123"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ServiceSettingResponse"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ServiceSettingResponseDataWrapper": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceSettingResponseData"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ServiceWeeklyHours": {
+        "type": "object",
+        "properties": {
+          "monday": {
+            "description": "Open intervals for the day. Empty means closed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceOfficeHoursInterval"
+            },
+            "default": []
+          },
+          "tuesday": {
+            "description": "Open intervals for the day. Empty means closed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceOfficeHoursInterval"
+            },
+            "default": []
+          },
+          "wednesday": {
+            "description": "Open intervals for the day. Empty means closed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceOfficeHoursInterval"
+            },
+            "default": []
+          },
+          "thursday": {
+            "description": "Open intervals for the day. Empty means closed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceOfficeHoursInterval"
+            },
+            "default": []
+          },
+          "friday": {
+            "description": "Open intervals for the day. Empty means closed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceOfficeHoursInterval"
+            },
+            "default": []
+          },
+          "saturday": {
+            "description": "Open intervals for the day. Empty means closed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceOfficeHoursInterval"
+            },
+            "default": []
+          },
+          "sunday": {
+            "description": "Open intervals for the day. Empty means closed.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceOfficeHoursInterval"
+            },
+            "default": []
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Klaviyo-API-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Private key authentication for /api/ endpoints is performed by setting the `Authorization` header to `Klaviyo-API-Key your-private-api-key`<br>For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#authentication",
+        "x-default": "Klaviyo-API-Key your-private-api-key"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Beta APIs",
+      "description": "beta apis"
+    }
+  ]
+}
