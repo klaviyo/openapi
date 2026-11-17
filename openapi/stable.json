@@ -4766,7 +4766,7 @@
       "delete": {
         "operationId": "delete_campaign_audience",
         "summary": "Delete Campaign Audience",
-        "description": "Delete the campaign audience with the given ID.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/delete_campaign_audience.json)",
+        "description": "Delete the campaign audience with the given ID.\n\nThis also deletes every draft message in the audience. To keep a message, clone it to another audience before you delete this one. If the audience has a message that is not a draft, the request fails with a 400 and nothing is deleted.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`campaigns:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/stable/apis/delete_campaign_audience.json)",
         "parameters": [
           {
             "name": "id",
@@ -95830,6 +95830,21 @@
           "is_add_utm": {
             "description": "Whether to add UTM parameters to links in this message",
             "type": "boolean",
+            "nullable": true
+          },
+          "tracking_params": {
+            "description": "Custom UTM tracking parameters for this message. Each entry is a static or dynamic parameter. Requires at least one variation.",
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/StaticMessageTrackingParam"
+                },
+                {
+                  "$ref": "#/components/schemas/DynamicMessageTrackingParam"
+                }
+              ]
+            },
             "nullable": true
           },
           "throttling_type": {
