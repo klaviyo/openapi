@@ -462,6 +462,29 @@
           "campaign-message"
         ]
       },
+      "DynamicMessageTrackingParam": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "dynamic",
+            "default": "dynamic",
+            "enum": [
+              "dynamic"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
       "DynamicSMSImage": {
         "type": "object",
         "properties": {
@@ -796,6 +819,21 @@
           "is_add_utm": {
             "description": "Whether to add UTM parameters to links in this message",
             "type": "boolean",
+            "nullable": true
+          },
+          "tracking_params": {
+            "description": "Custom UTM tracking parameters for this message. Each entry is a static or dynamic parameter. Requires at least one variation.",
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/StaticMessageTrackingParam"
+                },
+                {
+                  "$ref": "#/components/schemas/DynamicMessageTrackingParam"
+                }
+              ]
+            },
             "nullable": true
           },
           "throttling_type": {
@@ -1441,6 +1479,29 @@
             "nullable": true
           }
         }
+      },
+      "StaticMessageTrackingParam": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "static",
+            "default": "static",
+            "enum": [
+              "static"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
       },
       "StaticSMSImage": {
         "type": "object",
