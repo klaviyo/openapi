@@ -31,7 +31,7 @@
       "get": {
         "operationId": "list_agent_knowledge_beta",
         "summary": "List Agent Knowledge",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every Agent Knowledge item for the calling company, including items that are pending, indexing, indexed, failed, or rejected.\n\nReturns only top-level items by default. Filter by ``folder_id`` to instead list one folder's immediate contents (one level deep, not recursive).\n\nTo add a snippet, webpage, or Q&A pair, POST to this endpoint with the appropriate nested ``source.source_type``; upload files with the file upload endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_agent_knowledge_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns every Agent Knowledge item for the calling company, including items that are pending, indexing, indexed, failed, or rejected.\n\nReturns only top-level items by default. Filter by ``folder_id`` to instead list one folder's immediate contents (one level deep, not recursive). Also filters by ``source_type`` and by ``created_at`` and ``updated_at`` time windows.\n\nTo add a snippet, webpage, or Q&A pair, POST to this endpoint with the appropriate nested ``source.source_type``; upload files with the file upload endpoint.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_agent_knowledge_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-knowledge]",
@@ -71,7 +71,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`folder_id`: `equals` (string)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`folder_id`: `equals` (string)<br>`source_type`: `any`, `equals` (allowed values: `'snippet'`, `'file'`, `'webpage'`, `'folder'`, `'qa'`)<br>`created_at`: `greater-or-equal`, `less-than` (date-time)<br>`updated_at`: `greater-or-equal`, `less-than` (date-time)",
             "required": false,
             "schema": {
               "type": "string",
@@ -155,6 +155,47 @@
             },
             "value": {
               "type": "string"
+            }
+          },
+          "source_type": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "snippet",
+                "file",
+                "webpage",
+                "folder",
+                "qa"
+              ]
+            }
+          },
+          "created_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "updated_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
             }
           }
         },
@@ -701,7 +742,7 @@
       "get": {
         "operationId": "list_customer_agent_conversations_beta",
         "summary": "List Conversations",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns all Customer Agent conversations.\n\nResults are ordered by newest conversations first. Supports filters by ``status``, ``mode``, and ``created_at`` time window, plus cursor pagination for large conversations.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns all Customer Agent conversations.\n\nResults are ordered by newest conversations first. Supports filters by ``status``, ``mode``, ``channel``, ``profile.id``, and ``created_at`` and ``updated_at`` time windows, plus cursor pagination for large conversations. ``updated_at`` changes when the conversation's own fields change, such as its status.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-conversation]",
@@ -732,11 +773,11 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`created_at`: `greater-or-equal` (date-time)<br>`status`: `any`, `equals` (allowed values: `'open'`, `'routed-to-team'`, `'resolved-by-ai'`, `'closed'`)<br>`mode`: `any`, `equals` (allowed values: `'preview'`, `'live'`)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`created_at`: `greater-or-equal`, `less-than` (date-time)<br>`updated_at`: `greater-or-equal`, `less-than` (date-time)<br>`channel`: `any`, `equals` (allowed values: `'web-chat'`, `'sms'`, `'email'`, `'whatsapp'`, `'instagram'`, `'voice'`, `'personal-agent'`)<br>`profile.id`: `equals` (string)<br>`status`: `any`, `equals` (allowed values: `'open'`, `'routed-to-team'`, `'resolved-by-ai'`, `'closed'`)<br>`mode`: `any`, `equals` (allowed values: `'preview'`, `'live'`)",
             "required": false,
             "schema": {
               "type": "string",
-              "example": "greater-or-equal(created_at,2024-01-01T00:00:00+00:00)"
+              "example": "less-than(created_at,2024-01-01T00:00:00+00:00)"
             }
           },
           {
@@ -798,12 +839,54 @@
           "created_at": {
             "operators": {
               "single": [
-                "greater-or-equal"
+                "greater-or-equal",
+                "less-than"
               ]
             },
             "value": {
               "type": "string",
               "format": "date-time"
+            }
+          },
+          "updated_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "channel": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "web-chat",
+                "sms",
+                "email",
+                "whatsapp",
+                "instagram",
+                "voice",
+                "personal-agent"
+              ]
+            }
+          },
+          "profile.id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
             }
           },
           "status": {
@@ -2709,7 +2792,7 @@
       "get": {
         "operationId": "get_agent_skills_beta",
         "summary": "Get Agent Skills",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the skills configured for the calling company's Customer Agent, one page at a time.\n\nUse this to inspect Customer Agent's current skills before adding or modifying a custom skill. Each item carries a prefixed ``id``, ``source``, ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, ``handoff``, and ``countries``. Use retrieve to inspect any one skill in detail. Follow ``links.next`` to fetch the next page. Results are sorted by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skills_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns the skills configured for the calling company's Customer Agent, one page at a time.\n\nUse this to inspect Customer Agent's current skills before adding or modifying a custom skill. Each item carries an ``id``, ``source``, ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, ``handoff``, and ``countries``. Use retrieve to inspect any one skill in detail. Follow ``links.next`` to fetch the next page. Results are sorted by ``id``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skills_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-skill]",
@@ -2807,7 +2890,7 @@
       "post": {
         "operationId": "create_agent_skill_beta",
         "summary": "Create Agent Skill",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds a skill to Customer Agent.\n\nCustomer Agent will invoke this skill when the customer message matches its ``description``. Provide ``display_name``, ``description`` (summary of the skill's capabilities and when it should be used), ``instructions`` (the system prompt the skill uses to handle a turn), optional ``handoff`` (escalation behavior), optional ``references`` for named tools used as ``{{tool ref=<name>}}`` in instructions, optional ``agent-tools`` relationship data, optional ``countries`` to limit the skill to specific countries, and ``status``. Set ``status: draft`` to stage without going live, ``live`` to activate immediately. Customer Agent generates the skill name and returns a prefixed custom id plus the generated ``name`` attribute.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_skill_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nAdds a skill to Customer Agent.\n\nCustomer Agent will invoke this skill when the customer message matches its ``description``. Provide ``display_name``, ``description`` (summary of the skill's capabilities and when it should be used), ``instructions`` (the system prompt the skill uses to handle a turn), optional ``handoff`` (escalation behavior), optional ``references`` for named tools used as ``{{tool ref=<name>}}`` in instructions, optional ``agent-tools`` relationship data, optional ``countries`` to limit the skill to specific countries, and ``status``. Set ``status: draft`` to stage without going live, ``live`` to activate immediately. Customer Agent generates the skill name and returns its ``id`` plus the generated ``name`` attribute.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/create_agent_skill_beta.json)",
         "parameters": [
           {
             "name": "fields[agent-skill]",
@@ -2897,7 +2980,7 @@
       "get": {
         "operationId": "get_agent_skill_beta",
         "summary": "Get Agent Skill",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns full detail for a single skill: ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, ``handoff``, and ``countries``.\n\nSkills are looked up by prefixed ``id``. To list all skills, use ``GET /agent-skills``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skill_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns full detail for a single skill: ``name``, ``display_name``, ``description``, ``instructions``, bound ``agent-tools`` relationship data, ``status``, ``handoff``, and ``countries``.\n\nTo list all skills, use ``GET /agent-skills``.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/get_agent_skill_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -2982,7 +3065,7 @@
       "patch": {
         "operationId": "update_agent_skill_beta",
         "summary": "Update Agent Skill",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches one or more fields on an existing skill: ``display_name``, ``description``, ``instructions``, ``status``, ``handoff``, ``countries``, and the ``agent-tools`` relationship or named ``references`` used as ``{{tool ref=<name>}}`` in instructions.\n\nSend ``instructions`` and ``references`` together when changing either one. They form one replacement document and are validated together. To rebind tools, send a new ``agent-tools`` relationship list; this is a full replacement, not merged. Skills are looked up by prefixed ``id``. Use ``status: draft`` to pause a custom skill.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_skill_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPatches one or more fields on an existing skill: ``display_name``, ``description``, ``instructions``, ``status``, ``handoff``, ``countries``, and the ``agent-tools`` relationship or named ``references`` used as ``{{tool ref=<name>}}`` in instructions.\n\nSend ``instructions`` and ``references`` together when changing either one. They form one replacement document and are validated together. To rebind tools, send a new ``agent-tools`` relationship list; this is a full replacement, not merged. Use ``status: draft`` to pause a custom skill.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/update_agent_skill_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -3647,7 +3730,7 @@
       "delete": {
         "operationId": "delete_agent_tool_beta",
         "summary": "Delete Agent Tool",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nPermanently removes the tool.\n\nSkills that referenced it lose the binding; Customer Agent will not be able to use that tool with those skills until it is rebound.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_tool_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nDeletes the tool.\n\nA tool that a live skill uses can't be deleted. Remove it from those skills first.<br><br>*Rate limits*:<br>Burst: `10/s`<br>Steady: `150/m`\n\n**Scopes:**\n`agents:write`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/delete_agent_tool_beta.json)",
         "parameters": [
           {
             "name": "id",
@@ -5170,7 +5253,7 @@
             "nullable": true
           },
           "references": {
-            "description": "Named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters.",
+            "description": "Named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects an Agent Tool and optional fixed configuration parameters.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/AgentSkillReferencesRequest"
@@ -5256,7 +5339,7 @@
         "type": "object",
         "properties": {
           "tools": {
-            "description": "Tool definitions keyed by the name used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
+            "description": "Tool definitions keyed by the name used in instructions as `{{tool ref=<name>}}`. Each value selects an Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
             "type": "object"
           }
         }
@@ -5265,7 +5348,7 @@
         "type": "object",
         "properties": {
           "tools": {
-            "description": "Tool definitions keyed by the name used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
+            "description": "Tool definitions keyed by the name used in instructions as `{{tool ref=<name>}}`. Each value selects an Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
             "type": "object"
           }
         }
@@ -5324,7 +5407,7 @@
             ]
           },
           "references": {
-            "description": "Named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
+            "description": "Named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects an Agent Tool and optional fixed configuration parameters. Returned names are authoritative after a write.",
             "example": {
               "tools": {}
             },
@@ -5379,7 +5462,7 @@
           "id": {
             "description": "Skill identifier.",
             "type": "string",
-            "example": "custom:agent_123"
+            "example": "agent_123"
           },
           "attributes": {
             "$ref": "#/components/schemas/AgentSkillResponse"
@@ -5451,7 +5534,7 @@
           "id": {
             "description": "Skill identifier.",
             "type": "string",
-            "example": "custom:agent_123"
+            "example": "agent_123"
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
@@ -5517,7 +5600,7 @@
             "nullable": true
           },
           "references": {
-            "description": "Full replacement set of named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects a namespaced Agent Tool and optional fixed configuration parameters. When changing this field, provide `instructions` in the same request.",
+            "description": "Full replacement set of named tool definitions used in instructions as `{{tool ref=<name>}}`. Each value selects an Agent Tool and optional fixed configuration parameters. When changing this field, provide `instructions` in the same request.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/AgentSkillReferencesRequest"
@@ -5544,7 +5627,7 @@
           "id": {
             "description": "Skill identifier. This must match the `id` path parameter.",
             "type": "string",
-            "example": "custom:agent_123"
+            "example": "agent_123"
           },
           "attributes": {
             "$ref": "#/components/schemas/AgentSkillUpdateRequestRequest"
@@ -6616,6 +6699,30 @@
                 "required": [
                   "data"
                 ]
+              },
+              "service-ticket": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ServiceTicketResourceName"
+                      },
+                      "id": {
+                        "description": "Open ticket to add this `live` conversation to. The conversation takes the ticket's customer. Optional; without it, a `live` conversation gets a new ticket.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
               }
             }
           }
@@ -7395,24 +7502,24 @@
         "type": "object",
         "properties": {
           "mode": {
-            "description": "Whether the response is for testing or a real shopper interaction. `preview` responses are not billed and are excluded from production conversations and metrics. `live` responses count toward billing, Customer Agent conversations, and production metrics.",
+            "description": "Deprecated: ignored. The conversation's mode is used.",
             "type": "string",
             "enum": [
               "preview",
               "live"
-            ]
+            ],
+            "nullable": true
           },
           "channel": {
-            "description": "Channel whose response conventions the agent should use, such as SMS terseness, email greetings and sign-offs, or web-chat formatting. This does not route or send the response through that channel; the caller delivers the output. Optional; defaults to `web-chat`.",
+            "description": "Deprecated: ignored. The conversation's channel is used.",
             "type": "string",
-            "example": "web-chat",
-            "default": "web-chat",
             "enum": [
               "web-chat",
               "sms",
               "email",
               "whatsapp"
-            ]
+            ],
+            "nullable": true
           },
           "messages": {
             "description": "Conversation history for this turn. The final message must have `role: user`, and is the only message that can include `images`.",
@@ -7423,7 +7530,6 @@
           }
         },
         "required": [
-          "mode",
           "messages"
         ]
       },
@@ -8071,7 +8177,7 @@
             }
           },
           "timeframe": {
-            "description": "Time window for the report.",
+            "description": "Time window for the report. Explicit ranges can span at most 90 days.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ReportTimeframeRequest"
@@ -9132,6 +9238,12 @@
         "type": "string",
         "enum": [
           "require-authentication"
+        ]
+      },
+      "ServiceTicketResourceName": {
+        "type": "string",
+        "enum": [
+          "service-ticket"
         ]
       },
       "SkillGrouping": {

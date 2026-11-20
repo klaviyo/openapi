@@ -62,6 +62,62 @@
             "explode": false
           },
           {
+            "name": "fields[service-team]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "created_at",
+                  "description",
+                  "id",
+                  "name",
+                  "updated_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "fields[service-ticket-csat-response]",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#sparse-fieldsets",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "answers",
+                  "id",
+                  "rating",
+                  "submitted_at"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#relationships",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "service-team",
+                  "service-ticket-csat-response"
+                ]
+              }
+            },
+            "explode": false
+          },
+          {
             "name": "page[size]",
             "in": "query",
             "description": "Default: 50. Min: 1. Max: 100.",
@@ -257,10 +313,219 @@
           "profile"
         ]
       },
+      "RelationshipLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri"
+          },
+          "related": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "self",
+          "related"
+        ]
+      },
       "ServiceTeamResourceName": {
         "type": "string",
         "enum": [
           "service-team"
+        ]
+      },
+      "ServiceTeamResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Team name. Unique within the account.",
+            "type": "string",
+            "example": "Returns"
+          },
+          "description": {
+            "description": "Optional description of the team.",
+            "type": "string",
+            "example": "Handles returns and exchanges.",
+            "nullable": true
+          },
+          "created_at": {
+            "description": "Date and time when the team was created.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-01T12:00:00+00:00"
+          },
+          "updated_at": {
+            "description": "Date and time when the team was last updated.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-02T12:00:00+00:00"
+          }
+        },
+        "required": [
+          "name",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "ServiceTeamResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceTeamResourceName"
+          },
+          "id": {
+            "description": "Service team identifier.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ServiceTeamResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "service-tickets": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/components/schemas/ServiceTicketResourceName"
+                        },
+                        "id": {
+                          "description": "Tickets assigned to this team.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id"
+                      ]
+                    }
+                  },
+                  "links": {
+                    "$ref": "#/components/schemas/RelationshipLinks"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "links"
+        ]
+      },
+      "ServiceTicketCSATAnswer": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "nullable": true
+          },
+          "answer": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "question"
+        ]
+      },
+      "ServiceTicketCSATResponseResponse": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "description": "Overall rating from 1 to 5.",
+            "type": "number",
+            "example": 4
+          },
+          "answers": {
+            "description": "Answers to the CSAT questions.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceTicketCSATAnswer"
+            }
+          },
+          "submitted_at": {
+            "description": "Date and time when the response was submitted.",
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-02T12:00:00+00:00"
+          }
+        },
+        "required": [
+          "rating",
+          "answers",
+          "submitted_at"
+        ]
+      },
+      "ServiceTicketCSATResponseResponseData": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ServiceTicketCsatResponseResourceName"
+          },
+          "id": {
+            "description": "Service ticket CSAT response identifier.",
+            "type": "string",
+            "example": "01JABCDEFGHJKMNPQRSTVWXYZ0"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/ServiceTicketCSATResponseResponse"
+          },
+          "relationships": {
+            "type": "object",
+            "properties": {
+              "service-ticket": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/components/schemas/ServiceTicketResourceName"
+                      },
+                      "id": {
+                        "description": "The ticket this CSAT response is for.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "service-ticket"
+            ]
+          },
+          "links": {
+            "$ref": "#/components/schemas/ObjectLinks"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "attributes",
+          "relationships",
+          "links"
         ]
       },
       "ServiceTicketCsatResponseResourceName": {
@@ -434,6 +699,19 @@
           },
           "links": {
             "$ref": "#/components/schemas/ObjectLinks"
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ServiceTeamResponseData"
+                },
+                {
+                  "$ref": "#/components/schemas/ServiceTicketCSATResponseResponseData"
+                }
+              ]
+            }
           }
         },
         "required": [
