@@ -31,7 +31,7 @@
       "get": {
         "operationId": "list_customer_agent_conversations_beta",
         "summary": "List Conversations",
-        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns all Customer Agent conversations.\n\nResults are ordered by newest conversations first. Supports filters by ``status``, ``mode``, and ``created_at`` time window, plus cursor pagination for large conversations.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
+        "description": "\n            > \ud83d\udea7 This endpoint is in beta and subject to change.\n            >\n            > A beta revision header (2026-10-15.pre) is required to use our beta APIs. Klaviyo APIs in beta are not intended for use in production. See our [versioning and deprecation policy](https://developers.klaviyo.com/en/docs/api_versioning_and_deprecation_policy) for more information.\n\nReturns all Customer Agent conversations.\n\nResults are ordered by newest conversations first. Supports filters by ``status``, ``mode``, ``channel``, ``profile.id``, and ``created_at`` and ``updated_at`` time windows, plus cursor pagination for large conversations. ``updated_at`` changes when the conversation's own fields change, such as its status.<br><br>*Rate limits*:<br>Burst: `3/s`<br>Steady: `60/m`\n\n**Scopes:**\n`agents:read`\n\n[OpenAPI Spec](https://raw.githubusercontent.com/klaviyo/openapi/main/openapi/beta/apis/list_customer_agent_conversations_beta.json)",
         "parameters": [
           {
             "name": "fields[customer-agent-conversation]",
@@ -62,11 +62,11 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`created_at`: `greater-or-equal` (date-time)<br>`status`: `any`, `equals` (allowed values: `'open'`, `'routed-to-team'`, `'resolved-by-ai'`, `'closed'`)<br>`mode`: `any`, `equals` (allowed values: `'preview'`, `'live'`)",
+            "description": "For more information please visit https://developers.klaviyo.com/en/v2026-10-15.pre/reference/api-overview#filtering<br>Allowed field(s)/operator(s):<br>`created_at`: `greater-or-equal`, `less-than` (date-time)<br>`updated_at`: `greater-or-equal`, `less-than` (date-time)<br>`channel`: `any`, `equals` (allowed values: `'web-chat'`, `'sms'`, `'email'`, `'whatsapp'`, `'instagram'`, `'voice'`, `'personal-agent'`)<br>`profile.id`: `equals` (string)<br>`status`: `any`, `equals` (allowed values: `'open'`, `'routed-to-team'`, `'resolved-by-ai'`, `'closed'`)<br>`mode`: `any`, `equals` (allowed values: `'preview'`, `'live'`)",
             "required": false,
             "schema": {
               "type": "string",
-              "example": "greater-or-equal(created_at,2024-01-01T00:00:00+00:00)"
+              "example": "less-than(created_at,2024-01-01T00:00:00+00:00)"
             }
           },
           {
@@ -128,12 +128,54 @@
           "created_at": {
             "operators": {
               "single": [
-                "greater-or-equal"
+                "greater-or-equal",
+                "less-than"
               ]
             },
             "value": {
               "type": "string",
               "format": "date-time"
+            }
+          },
+          "updated_at": {
+            "operators": {
+              "single": [
+                "greater-or-equal",
+                "less-than"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "channel": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "web-chat",
+                "sms",
+                "email",
+                "whatsapp",
+                "instagram",
+                "voice",
+                "personal-agent"
+              ]
+            }
+          },
+          "profile.id": {
+            "operators": {
+              "single": [
+                "equals"
+              ]
+            },
+            "value": {
+              "type": "string"
             }
           },
           "status": {
